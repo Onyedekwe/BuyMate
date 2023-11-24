@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item
+        android:id="@+id/share"
+        android:icon="@drawable/final_share_icon"
+        android:title="@string/favourites_toolbar_share_text"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/sort"
+        android:title="@string/item_toolbar_sort_text"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/check"
+        android:title="@string/favourites_toolbar_check_text"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/unCheck"
+        android:title="@string/item_toolbar_uncheck_text"
+        app:showAsAction="never" />
+
+
+</menu>

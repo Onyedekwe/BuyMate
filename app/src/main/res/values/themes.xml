@@ -1,0 +1,94 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.ShoppingList" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">#026EAA</item>
+        <item name="colorPrimaryVariant">#026499</item>
+        <item name="colorOnPrimary">@color/text_color</item>
+        <item name="colorAccent">?attr/colorPrimary</item>
+
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">#026EAA</item>
+        <item name="colorSecondaryVariant">#026EAA</item>
+        <item name="colorOnSecondary">@color/black</item>
+
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/backgroundColor</item>
+        <item name="android:navigationBarColor">#FCFAFA</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:fontFamily">@font/lexend</item>
+
+
+        <!-- Customize your theme here. -->
+        <item name="backgroundColor">#F1F5F5</item>
+        <item name="colorSurface">@color/white</item>
+        <item name="trackColor">#EFEDED</item>
+        <item name="colorError">@color/light_red</item>
+        <item name="textFillColor">#52616E</item>
+        <item name="android:shadowColor">#E8F1F5</item>
+        <item name="color">#F6F9F9</item>
+        <item name="colorControlHighlight">#A2D1E6</item>
+        <item name="iconTint">#868B8F</item>
+        <item name="buttonTint">?attr/colorPrimary</item>
+        <item name="itemTextAppearanceInactive">@color/inactive_text_color_dark</item>
+    </style>
+
+    <style name="TimePickerTheme">
+        <item name="android:windowBackground">?attr/color</item>
+        <item name="android:textColorPrimary">?attr/colorPrimary</item>
+        <item name="android:colorAccent">?attr/colorPrimary</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:colorControlActivated">?attr/colorPrimary</item>
+
+
+    </style>
+
+    <style name="DialogAnimations">
+        <item name="android:windowEnterAnimation">@anim/slide_in_bottom</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
+    </style>
+
+    <style name="custom_toast">
+        <!-- <item name="stTextBold">@color/white</item> -->
+        <item name="stTextColor">#fff</item>
+        <!--<item name="stFont">@font/retrofont</item> -->
+        <item name="stTextSize">16sp</item>
+        <item name="stColorBackground">?attr/colorPrimary</item>
+        <!--  <item name="stIconEnd">@drawable/final_close_icon</item> -->
+        <item name="stLength">SHORT</item>
+        LONG or SHORT
+        <item name="stRadius">25dp</item>
+    </style>
+
+
+    <style name="custom_toast_2">
+        <!-- <item name="stTextBold">@color/white</item> -->
+        <item name="stTextColor">#fff</item>
+        <!--<item name="stFont">@font/retrofont</item> -->
+        <item name="stTextSize">16sp</item>
+        <item name="stColorBackground">?attr/colorPrimary</item>
+        <!--  <item name="stIconEnd">@drawable/final_close_icon</item> -->
+        <item name="stLength">SHORT</item>
+        LONG or SHORT
+        <item name="stGravity">top</item>
+        top or center
+        <item name="stRadius">25dp</item>
+    </style>
+
+
+    <style name="custom_toast_3">
+        <!-- <item name="stTextBold">@color/white</item> -->
+        <item name="stTextColor">#fff</item>
+        <!--<item name="stFont">@font/retrofont</item> -->
+        <item name="stTextSize">16sp</item>
+        <item name="stColorBackground">?attr/colorPrimary</item>
+        <!--  <item name="stIconEnd">@drawable/final_close_icon</item> -->
+        <item name="stLength">SHORT</item>
+        LONG or SHORT
+        <item name="stGravity">center</item>
+        top or center
+        <item name="stRadius">25dp</item>
+    </style>
+
+</resources>

@@ -1,0 +1,424 @@
+<resources>
+    <string name="app_name">BuyMate</string>
+
+
+    //HomeFragment
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="sort_price_text">Size</string>
+
+    //ItemActivity
+    <string name="itemActivityFAB">Add item</string>
+    <string name="item_activity_currency_icon_content_description">Currency</string>
+
+    //SettingsActivity
+    <string name="settingsToolbar">Settings</string>
+    <string name="adsPaneText_1">Try BuyMate Premium</string>
+    <string name="adsPaneText_2">Remove ads and enjoy more features</string>
+    <string name="premium_icon_content_description">Premium Icon </string>
+    <string name="header_1">GENERAL</string>
+    <string name="account_icon_content_description">Login Icon </string>
+    <string name="header_1_option_1">Account</string>
+    <string name="language_icon_content_description">Set Language Icon </string>
+    <string name="header_1_option_2">Language</string>
+    <string name="darkMode_icon_content_description">Dark Mode Icon </string>
+    <string name="header_1_option_3">Dark Mode</string>
+    <string name="keepScreenBright_icon_content_description">Keep Screen Bright Icon </string>
+    <string name="header_1_option_4">Keep Screen Bright</string>
+    <string name="textSize_icon_content_description">Text Size Icon </string>
+    <string name="header_1_option_5">Text Size</string>
+    <string name="lock_icon_content_description">Lock Icon </string>
+    <string name="header_1_option_6">App lock</string>
+
+    <string name="header_2">FEEDBACK</string>
+    <string name="messageUs_icon_content_description">Message Us Icon </string>
+    <string name="header_2_option_1">Message us</string>
+    <string name="rateUs_icon_content_description">Rate Us Icon </string>
+    <string name="header_2_option_2.0">Enjoy using the app?</string>
+    <string name="header_2_option_2.1">rate us "\u2606""\u2606""\u2606""\u2606""\u2606" on Google Play</string>
+    <string name="header_3">ABOUT</string>
+    <string name="privacy_icon_content_description">Privacy Icon </string>
+    <string name="header_3_option_1">Privacy policy</string>
+    <string name="logout_icon_content_description">Logout Icon </string>
+    <string name="header_3_option_2">Logout</string>
+    <string name="open_icon_content_description">Open</string>
+
+
+    //category_title_set_popup
+    <string name="category_title_set_popup_query1">Enter List Name</string>
+    <string name="category_title_set_popup_query2">and click <b>Create</b> when finished</string>
+    <string name="category_title_set_popup_editText_Hint">New list</string>
+    <string name="category_title_set_popup_suggestion_textView">Suggestions:</string>
+    <string name="category_title_set_popup_suggestion_option_textView1">Shopping</string>
+    <string name="category_title_set_popup_suggestion_option_textView2">Groceries</string>
+    <string name="category_title_set_popup_suggestion_option_textView3">Date</string>
+    <string name="category_title_set_popup_suggestion_option_textView4">Food</string>
+    <string name="category_title_set_popup_suggestion_option_textView5">Tools</string>
+    <string name="category_title_set_popup_suggestion_option_textView6">Toiletries</string>
+    <string name="category_title_set_popup_suggestion_option_textView7">Pharmacy</string>
+    <string name="category_title_set_popup_suggestion_option_textView8">Trip</string>
+    <string name="category_title_set_popup_fabButton">Create</string>
+    <string name="category_name_illustration_content_description">Name List</string>
+
+
+    //edit_category_layout
+    <string name="edit_category_rename_icon_content_description">Rename Icon</string>
+    <string name="edit_category_rename_text">Rename</string>
+    <string name="edit_category_share_icon_content_description">Share Icon</string>
+    <string name="edit_category_share_text">Share list</string>
+    <string name="edit_category_setReminder_icon_content_description">Set Alarm Icon</string>
+    <string name="edit_category_setReminder_text">Set alarm</string>
+    <string name="edit_category_delete_icon_content_description">Delete Icon</string>
+    <string name="edit_category_delete_text">Delete</string>
+
+    //edit_item_layout
+    <string name="edit_item_rename_icon_content_description">Rename Icon</string>
+    <string name="edit_item_rename_text">Rename</string>
+    <string name="edit_item_price_icon_content_description">Price Icon</string>
+    <string name="edit_item_price_text">Change price</string>
+    <string name="edit_item_quantity_icon_content_description">Quantity Icon</string>
+    <string name="edit_item_quantity_text">Change quantity</string>
+    <string name="edit_item_copy_icon_content_description">Copy Icon</string>
+    <string name="edit_item_copy_text">Copy</string>
+    <string name="edit_item_move_icon_content_description">Move Icon</string>
+    <string name="edit_item_move_text">Move</string>
+    <string name="edit_item_favourites_icon_content_description">Favourites Icon</string>
+    <string name="edit_item_favourites_text_1">Add to Starred</string>
+    <string name="edit_item_delete_icon_content_description">Delete Icon</string>
+    <string name="edit_item_delete_text">Delete</string>
+    <string name="edit_item_information_icon_content_description">Details Icon</string>
+    <string name="edit_item_information_text">Details</string>
+
+
+    //favourites_layout
+    <string name="favourites_layout_favourites_icon_content_description">Favourites Icon</string>
+
+
+    //fragment_favourites
+    <string name="fragment_favourites_toolbar_title">Starred</string>
+    <string name="fragment_favourites_illustration_content_description">Starred Items List</string>
+    <string name="fragment_favourites_illustration_text_1">No Starred Items</string>
+    <string name="fragment_favourites_illustration_text_2">Add stars to items you want to</string>
+    <string name="fragment_favourites_illustration_text_3">easily find later</string>
+    <string name="fragment_favourites_currency_icon_content_description">Currency</string>
+    <string name="fragment_favourites_subtotal">Total:</string>
+
+    //fragment_notes
+    <string name="fragment_notes_toolbar_title">Notes</string>
+    <string name="fragment_notes_illustration_content_description">Note List</string>
+    <string name="fragment_notes_illustration_text_1">No Note</string>
+    <string name="fragment_notes_illustration_text_2">Add notes for a smoother</string>
+    <string name="fragment_notes_illustration_text_3">shopping experience</string>
+    <string name="fragment_notes_fab_content_description">Create note button</string>
+    <string name="fragment_notes_subtotal">Subtotal:</string>
+
+    //fragment_home
+    <string name="fragment_home_search_view_hint">Search</string>
+    <string name="fragment_home_nav_bar_icon_content_description">Navigation Bar Icon</string>
+    <string name="fragment_home_notification_icon_content_description">Notification Icon</string>
+    <string name="fragment_home_app_icon_content_description">App Icon</string>
+    <string name="fragment_home_voice_type_icon_content_description">Voice Type Icon</string>
+    <string name="fragment_home_layout_style_icon_content_description">Layout Style Icon</string>
+    <string name="fragment_home_sort_by_text">Sort by</string>
+    <string name="fragment_home_empty_illustration_content_description">No List</string>
+    <string name="fragment_home_noList_text_1">Let\'s get you started</string>
+    <string name="fragment_home_noList_text_2">Click the + button below</string>
+    <string name="fragment_home_noList_text_3">to create a new list</string>
+    <string name="fragment_home_fab_content_description">Create List Button</string>
+
+
+    //info_layout
+    <string name="info_layout_favourites_icon_content_description">Favourites Icon</string>
+    <string name="info_layout_price_text">Price:</string>
+    <string name="info_layout_quantity_text">Quantity:</string>
+    <string name="info_layout_subTotal_text">Subtotal:</string>
+    <string name="info_layout_minus_icon_content_description">Remove one from this item</string>
+    <string name="info_layout_plus_icon_content_description">Add one to this item</string>
+    <string name="info_layout_zero_hint">0</string>
+
+    //move_bottom_layout
+    <string name="move_bottom_layout_new_list_button">Create new list</string>
+
+
+    //nav_drawer_header
+    <string name="nav_drawer_header_hello_text">Hello!</string>
+    <string name="nav_drawer_header_account_icon_content_description">Login Icon</string>
+    <string name="nav_drawer_header_premium_text_1">Try Shopping List Premium</string>
+    <string name="nav_drawer_header_premium_text_2">Remove ads and enjoy more features</string>
+    <string name="nav_drawer_header_diamond_icon_content_description">Premium Icon</string>
+
+    //price_update_popup
+    <string name="price_update_popup_price_textBox_hint">Price per unit</string>
+    <string name="price_update_popup_done_icon_content_description">Done</string>
+
+
+    //quantity_set_popup
+    <string name="quantity_set_popup_quantity_textBox_hint">Insert quantity</string>
+    <string name="quantity_set_popup_done_icon_content_description">Done</string>
+
+    //shop_bottom_layout
+    <string name="shop_bottom_layout_item_name_textBox_hint">Item name</string>
+    <string name="shop_bottom_layout_price_textBox_hint">Price</string>
+    <string name="shop_bottom_layout_quantity_textBox_hint">Quantity</string>
+    <string name="shop_bottom_layout_cancel_button_text">Cancel</string>
+    <string name="shop_bottom_layout_done_button_text">Done</string>
+    <string name="shop_bottom_layout_illustration_content_description">Add item</string>
+    <string name="shop_bottom_layout_illustration_text_1">You\'re almost done!</string>
+    <string name="shop_bottom_layout_illustration_text_2">Add an item to your list</string>
+
+    //success_dialog_popup
+    <string name="success_dialog_popup_success_illustration_content_description">Success</string>
+    <string name="success_dialog_popup_illustration_text_1">Congratulations!</string>
+    <string name="success_dialog_popup_illustration_text_2">Your first list is ready!</string>
+    <string name="success_dialog_popup_button_text">OK</string>
+
+    //update_category_name_layout
+    <string name="update_category_name_layout_header_text">Rename</string>
+    <string name="update_category_name_textBox_hint">List name</string>
+    <string name="update_category_name_layout_button_text">Save</string>
+
+    //update_item_name_layout
+    <string name="update_item_name_layout_header_text">Rename</string>
+    <string name="update_item_name_textBox_hint">Item name</string>
+    <string name="update_item_name_layout_button_text">Save</string>
+
+
+    //side_Nav_menu
+    <string name="nav_home_text">Home</string>
+    <string name="nav_settings_text">Settings</string>
+    <string name="nav_extras_text">Extras</string>
+    <string name="nav_rate_text">Rate app</string>
+    <string name="nav_message_text">Message us</string>
+    <string name="nav_about_text">About</string>
+    <string name="nav_logout_text">Logout</string>
+
+    //bottom_bar_menu
+    <string name="bottom_bar_home_text">Home</string>
+    <string name="bottom_bar_favourites_text">Starred</string>
+    <string name="bottom_bar_notes_text">Notes</string>
+    <string name="bottom_bar_more_text">Menu</string>
+
+    //item_toolbar_menu
+    <string name="item_toolbar_search_text">Search</string>
+    <string name="item_toolbar_sort_text">Sort by</string>
+    <string name="item_toolbar_check_text">Check all</string>
+    <string name="item_toolbar_uncheck_text">Uncheck all</string>
+    <string name="item_toolbar_mark_text">Mark all</string>
+    <string name="item_toolbar_reminder_text">Set alarm</string>
+    <string name="item_toolbar_rename_text">Rename list</string>
+    <string name="item_toolbar_share_text">Share list</string>
+    <string name="item_toolbar_delete_text">Delete list</string>
+
+
+    //note_toolbar_menu
+    <string name="note_toolbar_save_text">Save</string>
+    <string name="note_toolbar_share_text">Share note</string>
+    <string name="note_toolbar_delete_text">Delete</string>
+
+
+    //sort_bottom_layout
+    <string name="sort_bottom_layout_title_text">Sort by:</string>
+    <string name="sort_bottom_layout_name_text">Name</string>
+    <string name="sort_bottom_layout_date_text">Date created</string>
+    <string name="sort_bottom_layout_price_text">Price</string>
+    <string name="sort_bottom_layout_noSort_text">No sort</string>
+    <string name="sort_bottom_layout_quantity_text">Quantity</string>
+
+
+    //favourites_toolbar_menu
+    <string name="favourites_toolbar_share_text">Share list</string>
+    <string name="favourites_toolbar_check_text">Check all</string>
+    <string name="favourites_toolbar_Remove_all_text">Remove all</string>
+    <string name="favourites_toolbar_mark_text">Mark all</string>
+
+
+    //item_toolbar_hold_menu
+    <string name="item_toolbar_hold_menu_copy_text">Copy</string>
+    <string name="item_toolbar_hold_menu_delete_text">Delete</string>
+    <string name="item_toolbar_hold_menu_move_text">Move</string>
+    <string name="item_toolbar_hold_menu_check_text">Check</string>
+    <string name="item_toolbar_hold_menu_unStar_text">Remove from starred</string>
+
+
+    //category_toolbar_menu
+    <string name="category_toolbar_mark_text">Mark all</string>
+    <string name="category_toolbar_delete_text">Delete</string>
+
+    //General
+    <string name="option_icon_content_description">Options Icon</string>
+    <string name="add_to_starred">Add to Starred</string>
+    <string name="remove_from_starred">Remove from Starred</string>
+    <string name="added_to_starred">Added to Starred</string>
+    <string name="removed_from_starred">Removed from Starred</string>
+
+    <string name="remove">Delete</string>
+    <string name="remove_star">Remove</string>
+    <string name="single_remove">Delete this item</string>
+    <string name="list_remove">Delete this list</string>
+    <string name="multiple_list_remove">Delete these lists</string>
+    <string name="single_note_remove">Delete this note</string>
+    <string name="single_unstar">Remove from starred</string>
+    <string name="multiple_remove">Delete these items</string>
+    <string name="multiple_notes_remove">Delete these notes</string>
+    <string name="remove_item_warning">This action cannot be undone</string>
+    <string name="remove_list_warning">This will permanently remove</string>
+    <string name="cancel">Cancel</string>
+    <string name="removed">Deleted</string>
+    <string name="user_name">Chinedu</string>
+    <string name="user_email">henryonyedekwe@gmail.com</string>
+
+    <string name="total_items_text">Items checked: </string>
+    <string name="rename_success">Item renamed</string>
+    <string name="rename_fail">Rename failed</string>
+    <string name="item_exist_already">Item already exists</string>
+    <string name="please_insert_name">Name field is empty</string>
+    <string name="price_change_success">Price changed</string>
+    <string name="please_insert_price">Price field is empty</string>
+    <string name="quantity_change_success">Quantity changed</string>
+    <string name="please_insert_quantity">Quantity field is empty</string>
+    <string name="back_to_exit">Press back again to exit app</string>
+    <string name="no_alarm_app">No app to perform this action</string>
+
+    <string name="list_created">List created</string>
+    <string name="no_list">No list</string>
+    <string name="list_exist_already">This list already exists</string>
+    <string name="insert_item_name">Item name field is empty</string>
+    <string name="share_list_total">TOTAL:</string>
+    <string name="send_message_via">Send message via:</string>
+    <string name="list_rename_success">List renamed</string>
+    <string name="item_search_hint">Search in list</string>
+    <string name="move_to">Move to:</string>
+    <string name="copy_to">Copy to:</string>
+    <string name="moved">Item moved to </string>
+    <string name="copied">Item copied to </string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="units">
+        <item>Bottle</item>
+        <item>oz</item>
+        <item>lb</item>
+        <item>gal</item>
+        <item>qt</item>
+        <item>pkg</item>
+        <item>Can</item>
+        <item>Pack</item>
+        <item>Box</item>
+        <item>Piece</item>
+        <item>Bag</item>
+    </string-array>
+
+    <string-array name="currency">
+        <item>"\u0024"</item>
+        <item>"\u20A6"</item>
+        <item>"\u20AC"</item>
+        <item>"\u00A5"</item>
+        <item>"\u00A3"</item>
+
+    </string-array>
+
+    <string-array name="item_suggestions">
+        <item>Fruits</item>
+        <item>Apples</item>
+        <item>Bananas</item>
+        <item>Oranges</item>
+        <item>Grapes</item>
+        <item>Meat</item>
+        <item>Strawberries</item>
+        <item>Blueberries</item>
+        <item>Pineapples</item>
+        <item>Mangoes</item>
+        <item>Peaches</item>
+        <item>Plums</item>
+        <item>Vegetables</item>
+        <item>Carrots</item>
+        <item>Broccoli</item>
+        <item>Tomatoes</item>
+        <item>Cucumbers</item>
+        <item>Spinach</item>
+        <item>Green beans</item>
+        <item>Peppers</item>
+        <item>Zucchini</item>
+        <item>Cauliflower</item>
+        <item>Food</item>
+        <item>Bread</item>
+        <item>Milk</item>
+        <item>Eggs</item>
+        <item>Cereal</item>
+        <item>Pasta</item>
+        <item>Rice</item>
+        <item>Chicken</item>
+        <item>Beef</item>
+        <item>Fish</item>
+        <item>Tools</item>
+        <item>Knife</item>
+        <item>Cutting board</item>
+        <item>Potatoes peeler</item>
+        <item>Can opener</item>
+        <item>Measuring spoons</item>
+        <item>Measuring cups</item>
+        <item>Mixing bowls</item>
+        <item>Baking sheets</item>
+        <item>Whisk</item>
+        <item>Cleaning equipment</item>
+        <item>Broom</item>
+        <item>Mop</item>
+        <item>Dish soap</item>
+        <item>Trash bags</item>
+        <item>Broom</item>
+        <item>Sponges</item>
+        <item>Vacuum cleaner</item>
+        <item>Beating equipment</item>
+        <item>Mixer</item>
+        <item>Blender</item>
+        <item>Hand mixer</item>
+        <item>Juicer</item>
+        <item>Toothpaste</item>
+        <item>Shampoo</item>
+        <item>Conditioner</item>
+        <item>Chocolate</item>
+        <item>Soap</item>
+        <item>Lotion</item>
+        <item>Razors</item>
+        <item>Deodorant</item>
+        <item>Laundry detergent</item>
+        <item>Dishwasher detergent</item>
+        <item>Garbage bags</item>
+        <item>Bleach</item>
+        <item>Paper towels</item>
+        <item>Toilet paper</item>
+        <item>Coffee</item>
+        <item>Tea</item>
+        <item>Sugar</item>
+        <item>Flour</item>
+        <item>Cooking oil</item>
+        <item>Spices</item>
+        <item>Canned soup</item>
+        <item>Frozen vegetables</item>
+        <item>Ice cream</item>
+        <item>Cookies</item>
+        <item>Chips</item>
+        <item>Soda</item>
+        <item>Water</item>
+        <item>Beer</item>
+        <item>Wine</item>
+        <item>Snacks</item>
+        <item>Candles</item>
+        <item>Light bulbs</item>
+        <item>Garage storage bins</item>
+        <item>Stationery</item>
+        <item>Pet food</item>
+        <item>Cat litter</item>
+        <item>First aid kit</item>
+        <item>Batteries</item>
+        <item>Plant fertilizer</item>
+        <item>Picture frames</item>
+        <item>Gift cards</item>
+        <item>Magazines</item>
+        <!-- Add more items as needed -->
+    </string-array>
+
+
+</resources>

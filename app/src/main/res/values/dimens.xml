@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="small_text">14sp</dimen>
+    <dimen name="medium_text">16sp</dimen>
+    <dimen name="large_text">19sp</dimen>
+
+
+    <dimen name="mini_text">12sp</dimen>
+    <dimen name="maxi_text">15sp</dimen>
+    <dimen name="max_max_text">18sp</dimen>
+    <dimen name="max_max_max_text">20sp</dimen>
+</resources>

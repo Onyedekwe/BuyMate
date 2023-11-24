@@ -1,0 +1,51 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="Theme.ShoppingList" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">#00A8E6</item>
+        <item name="colorPrimaryVariant">#0096CC</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorAccent">?attr/colorPrimary</item>
+
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">#424D52</item>
+        <item name="colorSecondaryVariant">#DCEDF5</item>
+        <item name="colorOnSecondary">@color/black</item>
+
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/backgroundColor</item>
+        <item name="android:navigationBarColor">#262626</item>
+        <item name="android:fontFamily">@font/lexend</item>
+
+
+        <!-- Customize your theme here. -->
+        <item name="backgroundColor">#2d383c</item>
+        <item name="colorSurface">#424D52</item>
+        <item name="trackColor">#6E7780</item>
+        <item name="colorError">@color/light_red</item>
+        <item name="textFillColor">#f5f5f5</item>
+        <item name="android:shadowColor">#3A4447</item>
+        <item name="color">#3C464A</item>
+        <item name="colorControlHighlight">#6B8A99</item>
+        <item name="iconTint">#f5f5f5</item>
+        <item name="buttonTint">?attr/colorPrimary</item>
+        <item name="itemTextAppearanceInactive">@color/inactive_text_color</item>
+    </style>
+
+    <style name="TimePickerTheme">
+        <item name="android:windowBackground">?attr/color</item>
+        <item name="android:textColorPrimary">?attr/colorPrimary</item>
+        <item name="android:colorAccent">?attr/colorPrimary</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:colorControlActivated">?attr/colorPrimary</item>
+
+
+    </style>
+
+    <style name="DialogAnimations">
+        <item name="android:windowEnterAnimation">@anim/slide_in_bottom</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
+    </style>
+
+</resources>

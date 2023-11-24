@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/mark"
+        android:icon="@drawable/final_mark_all_icon"
+        android:title="@string/item_toolbar_mark_text"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/delete"
+        android:icon="@drawable/final_trash_icon"
+        android:title="@string/item_toolbar_hold_menu_delete_text"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/copy"
+        android:icon="@drawable/final_copy_icon"
+        android:title="@string/item_toolbar_hold_menu_copy_text"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/move"
+        android:title="@string/item_toolbar_hold_menu_move_text"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/star"
+        android:title="@string/add_to_starred"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/unStar"
+        android:title="@string/item_toolbar_hold_menu_unStar_text"
+        app:showAsAction="never" />
+
+
+</menu>

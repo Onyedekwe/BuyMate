@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "401382920363",
+    "project_id": "buymate-b7923",
+    "storage_bucket": "buymate-b7923.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:401382920363:android:742219c035c3da687267ee",
+        "android_client_info": {
+          "package_name": "com.hemerick.buymate"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTTksa4GvnmthI-AM1KnkxzYG5LEquHgc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_bottom_popup"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:text="Select action"
+        android:textColor="?attr/textFillColor"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="20dp"
+        android:background="?attr/trackColor"
+        android:orientation="vertical" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:layout_weight="1"
+            android:hint="@string/quantity_set_popup_quantity_textBox_hint"
+            android:textColor="?attr/colorOnSurface"
+            app:counterEnabled="true"
+            app:counterMaxLength="7"
+            app:endIconMode="clear_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/line">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/quantity_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:lineSpacingExtra="4dp"
+                android:maxLength="7"
+                android:maxLines="1"
+                android:scrollbars="vertical"
+                android:textColor="?attr/textFillColor" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageButton
+            android:id="@+id/quantity_btnSave"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="?attr/backgroundColor"
+            android:contentDescription="@string/quantity_set_popup_done_icon_content_description"
+            android:src="@drawable/final_done_all_icon" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

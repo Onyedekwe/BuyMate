@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_bottom_popup"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/item_edit_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:textColor="?attr/textFillColor"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="5dp"
+        android:background="?attr/iconTint"
+        android:orientation="vertical" />
+
+    <LinearLayout
+        android:id="@+id/editName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="20dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="@string/edit_item_rename_icon_content_description"
+            android:src="@drawable/final_rename_icon">
+
+        </ImageView>
+
+        <TextView
+            android:id="@+id/edit_rename_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:padding="5dp"
+            android:text="@string/edit_item_rename_text"
+            android:textColor="?attr/textFillColor" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/copy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="20dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="37dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/edit_item_copy_icon_content_description"
+            android:src="@drawable/final_copy_icon">
+
+        </ImageView>
+
+        <TextView
+            android:id="@+id/edit_copy_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:padding="5dp"
+            android:text="@string/edit_item_copy_text"
+            android:textColor="?attr/textFillColor" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/move"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="20dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="37dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/edit_item_move_icon_content_description"
+            android:src="@drawable/final_move_icon">
+
+        </ImageView>
+
+        <TextView
+            android:id="@+id/edit_move_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:padding="5dp"
+            android:text="@string/edit_item_move_text"
+            android:textColor="?attr/textFillColor" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/editPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="20dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="37dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/edit_item_price_icon_content_description"
+            android:src="@drawable/final_credit_card_icon">
+
+        </ImageView>
+
+        <TextView
+            android:id="@+id/edit_price_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:padding="5dp"
+            android:text="@string/edit_item_price_text"
+            android:textColor="?attr/textFillColor" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/editQuantity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="20dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="37dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/edit_item_quantity_icon_content_description"
+            android:src="@drawable/final_shopping_basket_icon">
+
+        </ImageView>
+
+        <TextView
+            android:id="@+id/edit_quantity_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:padding="5dp"
+            android:text="@string/edit_item_quantity_text"
+            android:textColor="?attr/textFillColor" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/editFavourites"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="20dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="37dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/edit_item_favourites_icon_content_description"
+            android:src="@drawable/final_star_icon">
+
+        </ImageView>
+
+        <TextView
+            android:id="@+id/edit_fav_box"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:padding="5dp"
+            android:text="@string/edit_item_favourites_text_1"
+            android:textColor="?attr/textFillColor" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/remove"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="20dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="37dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/edit_item_delete_icon_content_description"
+            android:src="@drawable/final_trash_icon">
+
+        </ImageView>
+
+        <TextView
+            android:id="@+id/edit_delete_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:padding="5dp"
+            android:text="@string/edit_item_delete_text"
+            android:textColor="?attr/textFillColor" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/information"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="20dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:contentDescription="@string/edit_item_information_icon_content_description"
+            android:src="@drawable/final_info_circle_icon">
+
+        </ImageView>
+
+        <TextView
+            android:id="@+id/edit_details_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:padding="5dp"
+            android:text="@string/edit_item_information_text"
+            android:textColor="?attr/textFillColor" />
+    </LinearLayout>
+
+
+</LinearLayout>

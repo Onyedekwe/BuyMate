@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item
+        android:id="@+id/search"
+        android:icon="@drawable/final_search_icon"
+        android:title="@string/item_toolbar_search_text"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/rename"
+        android:title="@string/item_toolbar_rename_text"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/share"
+        android:title="@string/item_toolbar_share_text"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/sort"
+        android:title="@string/item_toolbar_sort_text"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/check"
+        android:title="@string/item_toolbar_check_text"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/unCheck"
+        android:title="@string/item_toolbar_uncheck_text"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/reminder"
+        android:title="@string/item_toolbar_reminder_text"
+        app:showAsAction="never" />
+
+</menu>
