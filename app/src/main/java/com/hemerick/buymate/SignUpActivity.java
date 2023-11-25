@@ -1,6 +1,7 @@
 package com.hemerick.buymate;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.cardview.widget.CardView;
@@ -9,24 +10,36 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.PowerManager;
 import android.util.Patterns;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.identity.BeginSignInRequest;
+import com.google.android.gms.auth.api.identity.Identity;
+import com.google.android.gms.auth.api.identity.SignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.hemerick.buymate.Database.UserSettings;
 
 import io.github.muddz.styleabletoast.StyleableToast;
@@ -37,17 +50,21 @@ public class SignUpActivity extends AppCompatActivity {
     private PowerManager.WakeLock wakeLock;
 
     SharedPreferences sharedPreferences;
+    private GoogleSignInClient googleSignInClient;
+
+    int RC_SIGN_IN = 40;
 
     TextView sub_header, or_text, loginText1, loginText2;
     TextInputEditText fullnamebox, emailbox, passwordbox, confirmpasswordbox;
     TextInputLayout fullnameLayout, emailLayout, passwordLayout, confirmPasswordLayout;
     Button signUpButton;
 
-    boolean verificationMessageSent = false;
-
-    CardView googleCard, facebookCard, twitterCard;
+    CardView googleCard;
 
     FirebaseAuth firebaseAuth;
+
+    ProgressBar progressBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +89,26 @@ public class SignUpActivity extends AppCompatActivity {
         emailLayout = findViewById(R.id.email_box_parent);
         passwordLayout = findViewById(R.id.password_box_parent);
         confirmPasswordLayout = findViewById(R.id.confirm_password_box_parent);
+
+        progressBar = findViewById(R.id.progress_bar);
+
+
+        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+
+        googleSignInClient = GoogleSignIn.getClient(SignUpActivity.this, googleSignInOptions);
+
+
+        googleCard = findViewById(R.id.googleCard);
+        googleCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                authenticateUserGoogle();
+            }
+        });
 
 
         signUpButton = findViewById(R.id.signUpBtn);
@@ -104,78 +141,159 @@ public class SignUpActivity extends AppCompatActivity {
         String passwordText = passwordbox.getText().toString().trim();
         String confirm_passwordText = confirmpasswordbox.getText().toString().trim();
 
-        if(!fullnameText.isEmpty()){
+        if (!fullnameText.isEmpty()) {
 
-        if (!emailText.isEmpty()) {
-            if (!passwordText.isEmpty()) {
-                if (!confirm_passwordText.isEmpty()) {
-                    if (isValidEmail(emailText)) {
+            if (!emailText.isEmpty()) {
+                if (!passwordText.isEmpty()) {
+                    if (!confirm_passwordText.isEmpty()) {
+                        if (isValidEmail(emailText)) {
+                            if(passwordText.length() >= 6){
+                                if (passwordText.equals(confirm_passwordText)) {
+                                progressBar.setVisibility(View.VISIBLE);
+                                new Handler().postDelayed(new Runnable() {
+                                    ;
 
-                        if (passwordText.equals(confirm_passwordText)) {
+                                    @Override
+                                    public void run() {
 
-                            firebaseAuth.createUserWithEmailAndPassword(emailText, passwordText).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                        firebaseAuth.createUserWithEmailAndPassword(emailText, passwordText).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<AuthResult> task) {
 
-                                    if (task.isSuccessful()) {
-                                        StyleableToast.makeText(SignUpActivity.this, "Sign up successful", R.style.custom_toast).show();
+                                                if (task.isSuccessful()) {
+                                                    StyleableToast.makeText(SignUpActivity.this, "Sign up successful", R.style.custom_toast).show();
 
-                                        settings.setIsAuthenticated(UserSettings.IS_AUTHENTICATED);
-                                        settings.setUsername(fullnameText);
+                                                    settings.setIsAuthenticated(UserSettings.IS_AUTHENTICATED);
+                                                    settings.setUsername(fullnameText);
 
-                                        SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
-                                        editor.putString(UserSettings.IS_AUTHENTICATED, settings.getIsAuthenticated());
-                                        editor.putString(UserSettings.USER_NAME, settings.getUsername());
-                                        editor.apply();
+                                                    SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
+                                                    editor.putString(UserSettings.IS_AUTHENTICATED, settings.getIsAuthenticated());
+                                                    editor.putString(UserSettings.USER_NAME, settings.getUsername());
+                                                    editor.apply();
 
-                                        Intent intent = new Intent(SignUpActivity.this, HomeActivity.class);
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        startActivity(intent);
-                                    } else {
-                                        StyleableToast.makeText(SignUpActivity.this, "Sign up failed", R.style.custom_toast).show();
+                                                    progressBar.setVisibility(View.INVISIBLE);
+
+                                                    Intent intent = new Intent(SignUpActivity.this, HomeActivity.class);
+                                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                    startActivity(intent);
+                                                } else {
+                                                    StyleableToast.makeText(SignUpActivity.this, "Sign up failed", R.style.custom_toast).show();
+                                                }
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                if (e instanceof FirebaseAuthUserCollisionException) {
+                                                    progressBar.setVisibility(View.INVISIBLE);
+                                                    emailLayout.setError("Email already registered");
+                                                }
+                                            }
+                                        });
+
                                     }
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    if (e instanceof FirebaseAuthUserCollisionException) {
-                                        emailLayout.setError("Email already registered");
-                                    }
-                                }
-                            });
+                                }, 2000);
+
+
+                            } else {
+                                confirmPasswordLayout.setError("Password does not match");
+                            }
+
+                            }else{
+                                passwordLayout.setError("Password must be at least 6 characters long");
+                            }
 
                         } else {
-                            confirmPasswordLayout.setError("Password does not match");
+                            emailLayout.setError("Not a valid email address");
+
                         }
 
                     } else {
-                        emailLayout.setError("Not a valid email address");
-
+                        confirmPasswordLayout.setError("Retype password to proceed");
                     }
 
                 } else {
-                    confirmPasswordLayout.setError("Retype password to proceed");
+                    passwordLayout.setError("Insert password");
                 }
 
             } else {
-                passwordLayout.setError("Insert password");
+                emailLayout.setError("Enter email address");
             }
-
         } else {
-            emailLayout.setError("Enter email address");
-        }
-        }else{
             fullnameLayout.setError("Enter your username to proceed");
         }
 
 
     }
 
+    public void authenticateUserGoogle() {
+        Intent intent = googleSignInClient.getSignInIntent();
+        startActivityForResult(intent, RC_SIGN_IN);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_SIGN_IN) {
+
+
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                firebaseAuth(account.getIdToken());
+            } catch (ApiException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void firebaseAuth(String idToken) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
+
+        progressBar.setVisibility(View.VISIBLE);
+        new Handler().postDelayed(new Runnable() {
+            ;
+
+            @Override
+            public void run() {
+
+                firebaseAuth.signInWithCredential(credential)
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+
+                                    FirebaseUser user = firebaseAuth.getCurrentUser();
+
+
+                                    StyleableToast.makeText(SignUpActivity.this, "Sign up successful", R.style.custom_toast).show();
+
+                                    settings.setIsAuthenticated(UserSettings.IS_AUTHENTICATED);
+                                    settings.setUsername(user.getDisplayName());
+
+                                    SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
+                                    editor.putString(UserSettings.IS_AUTHENTICATED, settings.getIsAuthenticated());
+                                    editor.putString(UserSettings.USER_NAME, settings.getUsername());
+                                    editor.apply();
+
+                                    progressBar.setVisibility(View.INVISIBLE);
+
+                                    Intent intent = new Intent(SignUpActivity.this, HomeActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intent);
+                                }
+                            }
+                        });
+
+            }
+        }, 2000);
+
+
+    }
 
     private boolean isValidEmail(String email) {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
-
 
 
     private void updateView() {
@@ -259,15 +377,15 @@ public class SignUpActivity extends AppCompatActivity {
 
         boolean isWakeLockEnabled = UserSettings.isWakeLockEnabled(this);
 
-            if (isWakeLockEnabled) {
-                PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-                wakeLock = powerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "MyApp:KeepScreeOn");
+        if (isWakeLockEnabled) {
+            PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+            wakeLock = powerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "MyApp:KeepScreeOn");
 
-                if (!wakeLock.isHeld()) {
-                    wakeLock.acquire();
-                }
+            if (!wakeLock.isHeld()) {
+                wakeLock.acquire();
             }
-
         }
+
+    }
 
 }

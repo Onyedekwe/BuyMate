@@ -66,8 +66,7 @@ public class MoreFragment extends Fragment {
         message_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), SignUpActivity.class);
-                startActivity(intent);
+
             }
         });
 
@@ -75,8 +74,7 @@ public class MoreFragment extends Fragment {
         backup_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), LogInActivity.class);
-                startActivity(intent);
+
             }
         });
 

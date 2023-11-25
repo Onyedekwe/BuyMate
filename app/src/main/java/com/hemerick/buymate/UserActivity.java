@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
@@ -14,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -29,6 +31,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.hemerick.buymate.Database.UserSettings;
+import com.squareup.picasso.Picasso;
 
 import io.github.muddz.styleabletoast.StyleableToast;
 
@@ -39,10 +42,13 @@ public class UserActivity extends AppCompatActivity {
     private UserSettings settings;
     private PowerManager.WakeLock wakeLock;
 
-    TextView userNameText, emailText, editNameText, changeEmailText, changePasswordText, logoutText, deleteAccountText;
-    ConstraintLayout editNameLayout, changeEmailLayout, changePasswordLayout, logOutLayout, deleteAccountLayout;
+    TextView userNameText, emailText, editNameText, changePasswordText, logoutText, deleteAccountText;
+    ConstraintLayout editNameLayout,  changePasswordLayout, logOutLayout, deleteAccountLayout;
 
+    ImageView profileImage;
     SharedPreferences sharedPreferences;
+
+    TextView prefix_text;
 
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
@@ -64,14 +70,30 @@ public class UserActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
 
+
+
         userNameText = findViewById(R.id.userNameText);
         emailText = findViewById(R.id.emailText);
         editNameText = findViewById(R.id.edit_nameText);
-        changeEmailText = findViewById(R.id.change_emailText);
         changePasswordText = findViewById(R.id.change_passwordText);
         logoutText = findViewById(R.id.logoutText);
         deleteAccountText = findViewById(R.id.delete_accountText);
 
+        profileImage = findViewById(R.id.profile_image);
+
+
+        Uri photoUrl = firebaseUser.getPhotoUrl();
+        if(photoUrl != null){
+            Picasso.get().load(photoUrl.toString()).into(profileImage);
+        }else{
+            String email = firebaseUser.getEmail().toString().trim();
+            String pref = String.valueOf(email.charAt(0)).toUpperCase();
+            prefix_text = findViewById(R.id.email_prefix);
+           prefix_text.setVisibility(View.VISIBLE);
+           profileImage.setVisibility(View.INVISIBLE);
+           prefix_text.setText(pref);
+
+        }
 
         emailText.setText(firebaseUser.getEmail().trim());
 
@@ -84,8 +106,6 @@ public class UserActivity extends AppCompatActivity {
             }
         });
 
-        changeEmailLayout = findViewById(R.id.change_emailLayout);
-        changePasswordLayout = findViewById(R.id.change_passwordLayout);
 
         logOutLayout = findViewById(R.id.logoutLayout);
         logOutLayout.setOnClickListener(new View.OnClickListener() {
@@ -95,14 +115,6 @@ public class UserActivity extends AppCompatActivity {
             }
         });
 
-        changeEmailLayout = findViewById(R.id.change_emailLayout);
-        changeEmailLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(UserActivity.this, ChangeEmailActivity.class);
-                startActivity(intent);
-            }
-        });
 
         changePasswordLayout = findViewById(R.id.change_passwordLayout);
         changePasswordLayout.setOnClickListener(new View.OnClickListener() {
@@ -341,6 +353,7 @@ public class UserActivity extends AppCompatActivity {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
+
                         firebaseUser.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
@@ -394,7 +407,6 @@ public class UserActivity extends AppCompatActivity {
             userNameText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             emailText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             editNameText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-            changeEmailText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             changePasswordText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             logoutText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             deleteAccountText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
@@ -406,7 +418,6 @@ public class UserActivity extends AppCompatActivity {
             userNameText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             emailText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             editNameText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-            changeEmailText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             changePasswordText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             logoutText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             deleteAccountText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
@@ -418,7 +429,6 @@ public class UserActivity extends AppCompatActivity {
             userNameText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             emailText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             editNameText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-            changeEmailText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             changePasswordText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             logoutText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             deleteAccountText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));

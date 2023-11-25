@@ -119,6 +119,7 @@
           android:hint="Password"
           android:textColor="?attr/colorOnSurface"
           app:endIconMode="password_toggle"
+          app:endIconTint="?attr/iconTint"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@id/email_box_parent">
@@ -143,6 +144,7 @@
           android:hint="Confirm Password"
           android:textColor="?attr/colorOnSurface"
           app:endIconMode="password_toggle"
+          app:endIconTint="?attr/iconTint"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@id/password_box_parent">
@@ -159,11 +161,11 @@
 
       <Button
           android:id="@+id/signUpBtn"
-          android:layout_width="match_parent"
+          android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:minHeight="70dp"
-          android:layout_marginHorizontal="40dp"
-          android:layout_marginTop="30dp"
+          android:paddingHorizontal="80dp"
+          android:layout_marginTop="20dp"
           android:layout_marginBottom="30dp"
           android:backgroundTint="?attr/buttonTint"
           android:text="Sign up"
@@ -174,13 +176,25 @@
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@id/confirm_password_box_parent" />
+
+      <ProgressBar
+          android:id="@+id/progress_bar"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:visibility="invisible"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintHorizontal_bias="0.5"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          app:layout_constraintVertical_bias="0.5" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/orText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="-Or continue with-"
+        android:text="-Or-"
         android:layout_gravity="center"
         android:textColor="?attr/textFillColor"/>
 
@@ -194,77 +208,38 @@
 
       <androidx.cardview.widget.CardView
           android:id="@+id/googleCard"
-          android:layout_width="wrap_content"
+          android:layout_width="260dp"
           android:layout_height="wrap_content"
-          app:cardCornerRadius="8dp"
+          app:cardCornerRadius="25dp"
           android:layout_margin="5dp"
-          app:cardElevation="1dp"
-          android:elevation="5dp">
+          android:clickable="true"
+          android:focusable="true"
+          android:foreground="?attr/selectableItemBackground"
+          app:cardElevation="1dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="5dp"
             android:orientation="horizontal">
 
 
           <ImageView
-              android:layout_width="50dp"
+              android:layout_width="20dp"
               android:layout_height="20dp"
               android:layout_margin="10dp"
               android:scaleType="fitCenter"
               android:src="@drawable/final_google_icon" />
 
-        </LinearLayout>
-      </androidx.cardview.widget.CardView>
-
-
-      <androidx.cardview.widget.CardView
-          android:id="@+id/facebookCard"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          app:cardCornerRadius="8dp"
-          android:layout_margin="5dp"
-          app:cardElevation="1dp"
-          android:elevation="5dp">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-
-          <ImageView
-              android:layout_width="50dp"
-              android:layout_height="20dp"
-              android:layout_margin="10dp"
-              android:scaleType="fitCenter"
-              android:src="@drawable/final_facebook_icon" />
-
-        </LinearLayout>
-      </androidx.cardview.widget.CardView>
-
-      <androidx.cardview.widget.CardView
-          android:id="@+id/twitterCard"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          app:cardCornerRadius="8dp"
-          android:layout_margin="5dp"
-          app:cardElevation="1dp"
-          android:elevation="5dp">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-
-          <ImageView
-              android:layout_width="50dp"
-              android:layout_height="20dp"
-              android:layout_margin="10dp"
-              android:scaleType="fitCenter"
-              android:src="@drawable/final_twitter_icon" />
-
+          <TextView
+              android:id="@+id/googleText"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:layout_gravity="center"
+              android:layout_marginStart="10dp"
+              android:text="Continue with Google"
+              android:textSize="16dp"/>
         </LinearLayout>
       </androidx.cardview.widget.CardView>
 
