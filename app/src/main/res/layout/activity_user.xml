@@ -62,7 +62,7 @@
                     android:visibility="invisible"
                     android:textColor="@color/white"
                     android:layout_marginStart="15dp"
-                    android:background="@drawable/bg_transparent_curved_rectangle"
+                    android:background="@drawable/bg_transparent_curved_circle"
                     android:backgroundTint="?attr/colorPrimary"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

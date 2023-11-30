@@ -21,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.hemerick.buymate.Database.Firebase;
 import com.hemerick.buymate.Database.ShopDatabase;
 import com.hemerick.buymate.Database.UserSettings;
 import com.hemerick.buymate.HomeActivity;
@@ -35,6 +36,7 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.MyView
     private final Context context;
     private final OnNoteListener onNoteListener;
     ShopDatabase db;
+    Firebase firebase;
     String category;
     boolean isEnable = false;
     boolean isSelectAll = false;
@@ -52,6 +54,7 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.MyView
         this.itemActivity = itemActivity;
         this.settings = settings;
         db = new ShopDatabase(context.getApplicationContext());
+        firebase = new Firebase(context);
     }
 
     public static String formatNumber(double number, String unit) {
@@ -129,6 +132,14 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.MyView
                 holder.quantityBox.setText(formatNumber(Double.parseDouble(qty), unit));
             }
             holder.favourites.setImageResource(checkFavourites(category, shop_id.get(position)));
+
+            if(settings.getIsPriceDisabled().equals(UserSettings.YES_PRICE_DISABLED)){
+                holder.priceBox.setVisibility(View.GONE);
+                holder.currencyBox.setVisibility(View.GONE);
+            }else{
+                holder.priceBox.setVisibility(View.VISIBLE);
+                holder.currencyBox.setVisibility(View.VISIBLE);
+            }
 
 
         }
@@ -313,11 +324,13 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.MyView
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
                         db.updateStatus(category, textBox.getText().toString(), 1);
+                        firebase.updateStatus(category, textBox.getText().toString(), 1);
                         if (settings.getIsCrossDisabled().equals(UserSettings.NO_CROSS_NOT_DISABLED)) {
                             textBox.setPaintFlags(textBox.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                         }
                     } else {
                         db.updateStatus(category, textBox.getText().toString(), 0);
+                        firebase.updateStatus(category, textBox.getText().toString(), 0);
                         if (settings.getIsCrossDisabled().equals(UserSettings.NO_CROSS_NOT_DISABLED)) {
                             textBox.setPaintFlags(textBox.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
                         }

@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.hemerick.buymate.Database.Firebase;
 import com.hemerick.buymate.Database.UserSettings;
 
 
@@ -28,6 +29,8 @@ public class MoreFragment extends Fragment {
     ImageView account_icon;
     UserSettings settings;
 
+    Firebase firebase;
+
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     @Override
@@ -36,6 +39,7 @@ public class MoreFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_more, container, false);
         settings = new UserSettings();
+        firebase = new Firebase(getContext());
 
         premium_text = rootView.findViewById(R.id.premiumText);
         premium_text2 = rootView.findViewById(R.id.premiumText2);
@@ -66,7 +70,7 @@ public class MoreFragment extends Fragment {
         message_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                firebase.getAllList();
             }
         });
 
@@ -74,7 +78,7 @@ public class MoreFragment extends Fragment {
         backup_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                firebase.getAllNotes();
             }
         });
 

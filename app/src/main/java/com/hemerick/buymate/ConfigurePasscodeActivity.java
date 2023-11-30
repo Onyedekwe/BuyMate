@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -43,7 +44,8 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
     private PowerManager.WakeLock wakeLock;
     Toolbar toolbar;
 
-    boolean isSet = false;
+    boolean allowUncheckMethod = false;
+    boolean allowCheckMethod = false;
 
     ConstraintLayout passwordLayout, removePasswordLayout;
     Switch fingerprintSwitcher;
@@ -102,10 +104,15 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
             }
         });
 
-        fingerprintSwitcher.setOnClickListener(new View.OnClickListener() {
+
+
+
+        fingerprintSwitcher.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (fingerprintSwitcher.isChecked()) {
+                    if(allowCheckMethod){
+
                     if (settings.getPassword().equals(UserSettings.NOT_SET_PASSWORD)) {
                         input_fingerSet_passcode_Dialog();
                     } else {
@@ -114,16 +121,19 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
                         switch (biometricManager.canAuthenticate()) {
                             case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
                                 StyleableToast.makeText(ConfigurePasscodeActivity.this, "Device Not Supported", R.style.custom_toast).show();
+                                allowUncheckMethod = false;
                                 fingerprintSwitcher.setChecked(false);
                                 break;
 
                             case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
                                 StyleableToast.makeText(ConfigurePasscodeActivity.this, "Hardware Unavailable", R.style.custom_toast).show();
+                                allowUncheckMethod = false;
                                 fingerprintSwitcher.setChecked(false);
                                 break;
 
                             case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
                                 StyleableToast.makeText(ConfigurePasscodeActivity.this, "Fingerprint not set for this device", R.style.custom_toast).show();
+                                allowUncheckMethod = false;
                                 fingerprintSwitcher.setChecked(false);
                                 break;
 
@@ -138,6 +148,7 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
                             @Override
                             public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
                                 super.onAuthenticationError(errorCode, errString);
+                                allowUncheckMethod = false;
                                 fingerprintSwitcher.setChecked(false);
                             }
 
@@ -148,13 +159,16 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
                                 SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
                                 editor.putString(UserSettings.IS_FINGERPRINT_DISABLED, settings.getIsFingerPrintDisabled());
                                 editor.apply();
-                                fingerprintSwitcher.setChecked(true);
+                                allowUncheckMethod = true;
+                                allowCheckMethod = false;
                             }
 
                             @Override
                             public void onAuthenticationFailed() {
                                 super.onAuthenticationFailed();
+                                allowUncheckMethod = false;
                                 fingerprintSwitcher.setChecked(false);
+
                             }
                         });
 
@@ -164,24 +178,35 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
                                 .build();
                         biometricPrompt.authenticate(promptInfo);
                     }
+
+                    }
+
                 } else {
 
-                    BiometricManager biometricManager = BiometricManager.from(ConfigurePasscodeActivity.this);
+                    if(allowUncheckMethod == true){
+
+                        BiometricManager biometricManager = BiometricManager.from(ConfigurePasscodeActivity.this);
 
                     switch (biometricManager.canAuthenticate()) {
                         case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
                             StyleableToast.makeText(ConfigurePasscodeActivity.this, "Device Not Supported", R.style.custom_toast).show();
+                            allowUncheckMethod = false;
                             fingerprintSwitcher.setChecked(false);
+                            allowUncheckMethod = true;
                             break;
 
                         case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
                             StyleableToast.makeText(ConfigurePasscodeActivity.this, "Hardware Unavailable", R.style.custom_toast).show();
+                            allowUncheckMethod = false;
                             fingerprintSwitcher.setChecked(false);
+                            allowUncheckMethod = true;
                             break;
 
                         case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
                             StyleableToast.makeText(ConfigurePasscodeActivity.this, "Fingerprint not set for this device", R.style.custom_toast).show();
+                            allowUncheckMethod = false;
                             fingerprintSwitcher.setChecked(false);
+                            allowUncheckMethod = true;
                             break;
 
                         case BiometricManager.BIOMETRIC_SUCCESS:
@@ -195,7 +220,9 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
                         @Override
                         public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
                             super.onAuthenticationError(errorCode, errString);
+                            allowUncheckMethod = false;
                             fingerprintSwitcher.setChecked(true);
+                            allowUncheckMethod = true;
 
                         }
 
@@ -212,7 +239,9 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
                         @Override
                         public void onAuthenticationFailed() {
                             super.onAuthenticationFailed();
+                            allowUncheckMethod = false;
                             fingerprintSwitcher.setChecked(true);
+                            allowUncheckMethod = true;
                         }
                     });
 
@@ -222,11 +251,19 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
                             .build();
                     biometricPrompt.authenticate(promptInfo);
                 }
+
+                }
             }
         });
 
 
         loadSharedPreferences();
+
+        if(fingerprintSwitcher.isChecked()){
+            allowUncheckMethod = true;
+        }else{
+            allowCheckMethod = true;
+        }
     }
 
 
@@ -810,7 +847,12 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
             passwordText.setText("Change password");
         }
 
-        fingerprintSwitcher.setChecked(!settings.getIsFingerPrintDisabled().equals(UserSettings.YES_FINGERPRINT_DISABLED));
+        if(settings.getIsFingerPrintDisabled().equals(UserSettings.NO_FINGERPRINT_NOT_DISABLED)){
+            fingerprintSwitcher.setChecked(true);
+        }else{
+            fingerprintSwitcher.setChecked(false);
+        }
+
 
     }
 

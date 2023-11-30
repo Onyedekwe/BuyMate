@@ -102,6 +102,10 @@ public class UserSettings extends Application {
     private String isFingerPrintDisabled;
 
 
+    public static final String IS_PRICE_DISABLED = "isPriceDisabled";
+    public static final String YES_PRICE_DISABLED = "yesPriceDisabled";
+    public static final String NO_PRICE_NOT_DISABLED = "noPriceNotDisabled";
+    private String isPriceDisabled;
 
     public static final String IS_AUTHENTICATED = "isFingerPrintDisabled";
     public static final String YES_AUTHENTICATED = "yesAuthenticated";
@@ -333,7 +337,13 @@ public class UserSettings extends Application {
         this.isFingerPrintDisabled = isFingerPrintDisabled;
     }
 
+    public String getIsPriceDisabled() {
+        return isPriceDisabled;
+    }
 
+    public void setIsPriceDisabled(String isPriceDisabled) {
+        this.isPriceDisabled = isPriceDisabled;
+    }
 
     public String getUsername() {
         return username;

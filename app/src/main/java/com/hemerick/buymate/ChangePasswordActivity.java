@@ -128,6 +128,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                                                                         if (task.isSuccessful()) {
                                                                             progressBar.setVisibility(View.INVISIBLE);
                                                                             StyleableToast.makeText(ChangePasswordActivity.this, "Password updated", R.style.custom_toast).show();
+                                                                            ChangePasswordActivity.super.onBackPressed();
 
                                                                         } else {
                                                                             progressBar.setVisibility(View.INVISIBLE);

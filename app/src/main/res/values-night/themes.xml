@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.ShoppingList" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
@@ -34,13 +34,12 @@
 
     <style name="TimePickerTheme">
         <item name="android:windowBackground">?attr/color</item>
-        <item name="android:textColorPrimary">?attr/colorPrimary</item>
+        <item name="android:textColorPrimary">@color/white</item>
         <item name="android:colorAccent">?attr/colorPrimary</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:colorControlActivated">?attr/colorPrimary</item>
-
-
+        <item name="android:windowElevation">100dp</item>
     </style>
 
     <style name="DialogAnimations">

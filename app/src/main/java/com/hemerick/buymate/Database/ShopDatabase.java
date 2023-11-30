@@ -10,7 +10,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class ShopDatabase extends SQLiteOpenHelper {
     private final UserSettings settings = new UserSettings();
-
     public ShopDatabase(Context context) {
         super(context, "ShopDatabase", null, 1);
     }
@@ -30,6 +29,7 @@ public class ShopDatabase extends SQLiteOpenHelper {
 
     public void insertItem(String category, String description, int status, String price, String month, String year, String day, String time, String quantity, String unit) {
         SQLiteDatabase db = this.getWritableDatabase();
+
         ContentValues contentValues = new ContentValues();
         contentValues.put("category", category);
         contentValues.put("description", description);
@@ -54,20 +54,23 @@ public class ShopDatabase extends SQLiteOpenHelper {
         contentValues.put("date", date);
         long result = db.insert("NoteTable", null, contentValues);
         return result != -1;
+
+
     }
 
 
     public boolean updateItem(String category, String description, String temp_description) {
         SQLiteDatabase db = this.getWritableDatabase();
+
         ContentValues contentValues = new ContentValues();
         contentValues.put("description", description);
         Cursor cursor = db.rawQuery("select * from ShopTable where category = ? AND description = ? ", new String[]{category, temp_description});
         if (cursor.getCount() > 0) {
             long result = db.update("ShopTable", contentValues, "category = ? AND description = ? ", new String[]{category, temp_description});
             return result != -1;
+
         } else {
             return false;
-
         }
     }
 
@@ -150,10 +153,11 @@ public class ShopDatabase extends SQLiteOpenHelper {
     }
 
 
-    public boolean updateQuantity(String category, String description, String quantity) {
+    public boolean updateQuantity(String category, String description, String quantity, String unit) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("quantity", quantity);
+        contentValues.put("unit", unit);
         Cursor cursor = db.rawQuery("select * from ShopTable where category = ? AND description = ? ", new String[]{category, description});
         if (cursor.getCount() > 0) {
             long result = db.update("ShopTable", contentValues, "category = ? AND description = ? ", new String[]{category, description});
@@ -208,7 +212,6 @@ public class ShopDatabase extends SQLiteOpenHelper {
         } else if (settings.getCustomCategorySort().equals(UserSettings.PRICE_DESCENDING)) {
             res = db.rawQuery("SELECT * FROM ShopTable ", null);
         }
-
         return res;
     }
 

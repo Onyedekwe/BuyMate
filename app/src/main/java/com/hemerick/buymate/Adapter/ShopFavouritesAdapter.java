@@ -124,6 +124,15 @@ public class ShopFavouritesAdapter extends RecyclerView.Adapter<ShopFavouritesAd
             holder.favourites.setImageResource(checkFavourites(String.valueOf(shop_id.get(position)), String.valueOf(item_id.get(position))));
 
 
+            if(settings.getIsPriceDisabled().equals(UserSettings.YES_PRICE_DISABLED)){
+                holder.priceBox.setVisibility(View.GONE);
+                holder.currencyBox.setVisibility(View.GONE);
+            }else{
+                holder.priceBox.setVisibility(View.VISIBLE);
+                holder.currencyBox.setVisibility(View.VISIBLE);
+            }
+
+
         }
         res.close();
 

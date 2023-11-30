@@ -59,6 +59,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.hemerick.buymate.Adapter.ShopCategoryAdapter;
+import com.hemerick.buymate.Database.Firebase;
 import com.hemerick.buymate.Database.ShopDatabase;
 import com.hemerick.buymate.Database.UserSettings;
 
@@ -78,6 +79,7 @@ import io.github.muddz.styleabletoast.StyleableToast;
 public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNoteListener {
     Context context = getContext();
     ShopDatabase db;
+    Firebase firebase;
     ArrayList<String> category_list;
     ArrayList<String> itemCheck;
     ArrayList<String> priceCheck;
@@ -265,6 +267,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
             }
         });
         db = new ShopDatabase(context);
+        firebase = new Firebase(context);
         category_list = new ArrayList<>();
         itemCheck = new ArrayList<>();
         priceCheck = new ArrayList<>();
@@ -1463,6 +1466,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         String finalQuantity = formatNumberV2(quantity);
 
         db.insertItem(category, description, status, finalPrice, month, year, day, time, finalQuantity, unit);
+        firebase.insertNewData(category, description, status, finalPrice, month, year, day, time, finalQuantity, unit);
 
         UserSettings settings = (UserSettings) getActivity().getApplication();
         settings.setFirstStart(false);

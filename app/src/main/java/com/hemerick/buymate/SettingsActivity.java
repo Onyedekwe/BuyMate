@@ -33,13 +33,13 @@ public class SettingsActivity extends AppCompatActivity {
     TextView generalText, securityText, notificationText,
             darkModeText, keepScreenBrightText,
             textSizeText, lockAppText, swipeActionText, swipeActionSubText1, swipeActionSubText2,
-            detailedListShareText, detailedListShareSubText, multiplyText, strikeText,
+            detailedListShareText, detailedListShareSubText, disablePriceText, multiplyText, strikeText,
             currencyText, currencySubText;
     Toolbar toolbar;
     SharedPreferences sharedPreferences;
-    private SwitchCompat darkModeSwitch, keepScreenBrightSwitch, multiplySwitch;
+    private SwitchCompat darkModeSwitch, keepScreenBrightSwitch, disablePriceSwitch, multiplySwitch;
     private ConstraintLayout NotificationLayout, TextSizeLayout, SwipeActionLayout,
-            DetailedSharingLayout, MultiplyLayout, StrikeLayout, CurrencyLayout,
+            DetailedSharingLayout, DisablePriceLayout, MultiplyLayout, StrikeLayout, CurrencyLayout,
             AppLockLayout;
     private UserSettings settings;
     private PowerManager.WakeLock wakeLock;
@@ -70,11 +70,15 @@ public class SettingsActivity extends AppCompatActivity {
         darkModeSwitch = findViewById(R.id.darkThemeSwitcher);
         keepScreenBrightSwitch = findViewById(R.id.keepScreenBrightSwitcher);
         multiplySwitch = findViewById(R.id.multiplySwitcher);
+        disablePriceSwitch = findViewById(R.id.disablePriceSwitcher);
         SwipeActionLayout = findViewById(R.id.swipeActionLayout);
         DetailedSharingLayout = findViewById(R.id.detailedListShareLayout);
         MultiplyLayout = findViewById(R.id.multiplyLayout);
         StrikeLayout = findViewById(R.id.StrikeLayout);
         multiplyText = findViewById(R.id.multiplyText);
+        disablePriceText = findViewById(R.id.disable_price_Text);
+        DisablePriceLayout = findViewById(R.id.disablePriceLayout);
+
         strikeText = findViewById(R.id.strikeText);
         currencyText = findViewById(R.id.currencyTextHeader);
         currencySubText = findViewById(R.id.currencySubText);
@@ -155,6 +159,20 @@ public class SettingsActivity extends AppCompatActivity {
                 }
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString(UserSettings.IS_MULTIPLY_DISABLED, settings.getIsMultiplyDisabled());
+                editor.apply();
+            }
+        });
+
+        disablePriceSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    settings.setIsPriceDisabled(UserSettings.NO_PRICE_NOT_DISABLED);
+                } else {
+                    settings.setIsPriceDisabled(UserSettings.YES_PRICE_DISABLED);
+                }
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString(UserSettings.IS_PRICE_DISABLED, settings.getIsPriceDisabled());
                 editor.apply();
             }
         });
@@ -389,6 +407,7 @@ public class SettingsActivity extends AppCompatActivity {
             securityText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             notificationText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             multiplyText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            disablePriceText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             strikeText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             darkModeText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             keepScreenBrightText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
@@ -408,6 +427,7 @@ public class SettingsActivity extends AppCompatActivity {
             securityText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             notificationText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             multiplyText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            disablePriceText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             strikeText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             darkModeText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             keepScreenBrightText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
@@ -428,6 +448,7 @@ public class SettingsActivity extends AppCompatActivity {
             securityText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             notificationText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             multiplyText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            disablePriceText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             strikeText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             darkModeText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             keepScreenBrightText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
@@ -519,6 +540,12 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         multiplySwitch.setChecked(settings.getIsMultiplyDisabled().equals(UserSettings.NO_MULTIPLY_NOT_DISABLED));
+
+        if(settings.getIsPriceDisabled().equals(UserSettings.YES_PRICE_DISABLED)){
+            disablePriceSwitch.setChecked(false);
+        }else{
+            disablePriceSwitch.setChecked(true);
+        }
     }
 
     private void loadSharedPreferences() {
@@ -555,6 +582,9 @@ public class SettingsActivity extends AppCompatActivity {
 
         String currency = sharedPreferences.getString(UserSettings.CURRENCY, UserSettings.CURRENCY_DOLLAR);
         settings.setCurrency(currency);
+
+        String disablePrice = sharedPreferences.getString(UserSettings.IS_PRICE_DISABLED, UserSettings.NO_PRICE_NOT_DISABLED);
+        settings.setIsPriceDisabled(disablePrice);
 
         updateView();
     }

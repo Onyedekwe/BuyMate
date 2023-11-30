@@ -123,20 +123,50 @@
                 android:contentDescription="@string/info_layout_minus_icon_content_description"
                 android:src="@drawable/final_minus_icon" />
 
-            <TextView
-                android:id="@+id/quantity"
+
+            <LinearLayout
+                android:id="@+id/quantity_parent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:layout_gravity="center"
-                android:gravity="center"
-                android:maxLength="7"
-                android:maxLines="1"
-                android:minWidth="25dp"
-                android:textSize="20sp"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/increase"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent" >
+
+                <TextView
+                    android:id="@+id/quantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:maxLength="7"
+                    android:maxLines="1"
+                    android:minWidth="25dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/increase"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/unit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:maxLength="7"
+                    android:maxLines="1"
+                    android:maxWidth="100dp"
+                    android:ellipsize="end"
+                    android:layout_marginStart="3dp"
+                    android:text="Piecemzdcxkjsclkaskcjsckncjkjzdkcz"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/increase"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </LinearLayout>
+
+
 
             <ImageView
                 android:id="@+id/increase"

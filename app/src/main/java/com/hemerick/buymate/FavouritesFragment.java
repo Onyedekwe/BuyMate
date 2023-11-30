@@ -797,7 +797,9 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
         TextView item_name = dialog.findViewById(R.id.item_name);
         TextView unit_price = dialog.findViewById(R.id.price_per_unit);
         TextView total_price = dialog.findViewById(R.id.total_price_item);
+        LinearLayout quantity_parent = dialog.findViewById(R.id.quantity_parent);
         TextView quantity = dialog.findViewById(R.id.quantity);
+        TextView unit = dialog.findViewById(R.id.unit);
         TextView date = dialog.findViewById(R.id.full_date);
         TextView time = dialog.findViewById(R.id.full_time);
         TextView quantityText = dialog.findViewById(R.id.quantity_text);
@@ -812,6 +814,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
             unit_price.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             total_price.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             quantity.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            unit.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             date.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             time.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             quantityText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
@@ -825,6 +828,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
             unit_price.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             total_price.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             quantity.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            unit.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             date.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
             time.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
             quantityText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
@@ -838,6 +842,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
             unit_price.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             total_price.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             quantity.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            unit.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             date.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             time.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             quantityText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
@@ -848,12 +853,18 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
 
         String temp = adapter.getItemName(position);
         item_name.setText(temp);
-
+        item_name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                showRenameDialog(temp, position);
+            }
+        });
 
         int temp_fav = 0;
         double temp_price = 0;
         double temp_quantity = 0;
-
+        String temp_unit = null;
 
         String temp_month = null;
         String temp_year = null;
@@ -865,6 +876,8 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
             temp_fav = res.getInt(10);
             temp_price = Double.parseDouble(res.getString(4));
             temp_quantity = Double.parseDouble(res.getString(9));
+            temp_unit = res.getString(11);
+
             temp_month = res.getString(5);
             temp_year = res.getString(6);
             temp_day = res.getString(7);
@@ -881,6 +894,8 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
 
         unit_price.setText(formatNumberV2(temp_price));
         quantity.setText(formatNumberV2(temp_quantity));
+        unit.setText(temp_unit.trim());
+
         date.setText(String.format("%s, %s %s", temp_day, temp_month, temp_year));
         time.setText(temp_time);
 
@@ -956,7 +971,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                     if (settings.getIsMultiplyDisabled().equals(UserSettings.NO_MULTIPLY_NOT_DISABLED)) {
                         double temp_item_total = temp_price * Double.parseDouble(quantity.getText().toString());
                         total_price.setText(formatNumber(temp_item_total));
-                        db.updateQuantity(category.get(position), temp, quantity.getText().toString());
+                        db.updateQuantity(category.get(position), temp, quantity.getText().toString(), unit.getText().toString().trim());
                     }
                     getSum();
                 }
@@ -964,7 +979,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
         });
 
 
-        quantity.setOnClickListener(new View.OnClickListener() {
+        quantity_parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
@@ -999,7 +1014,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
 
                 if (settings.getIsMultiplyDisabled().equals(UserSettings.NO_MULTIPLY_NOT_DISABLED)) {
                     total_price.setText(formatNumber(temp_item_sum));
-                    db.updateQuantity(category.get(position), temp, quantity.getText().toString());
+                    db.updateQuantity(category.get(position), temp, quantity.getText().toString(), unit.getText().toString().trim());
                 }
                 getSum();
 
@@ -1009,7 +1024,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                db.updateQuantity(category.get(position), temp, quantity.getText().toString());
+                db.updateQuantity(category.get(position), temp, quantity.getText().toString().trim(), unit.getText().toString().trim());
                 adapter.notifyDataSetChanged();
                 getSum();
             }
@@ -1338,10 +1353,19 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
         dialog.setContentView(R.layout.quantity_set_popup);
         TextView header = dialog.findViewById(R.id.header);
         EditText quantityValue = dialog.findViewById(R.id.quantity_name);
+
+        AutoCompleteTextView unitText = dialog.findViewById(R.id.unit_textView);
+        String[] unit_list = getResources().getStringArray(R.array.units);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context, R.layout.unit_drop_down_layout, unit_list);
+        unitText.setAdapter(arrayAdapter);
+
+
         double temp_quantity = 0;
+        String temp_unit = null;
         Cursor res = db.getQuantity(category.get(position), description);
         while (res.moveToNext()) {
             temp_quantity = res.getDouble(9);
+            temp_unit = res.getString(11);
         }
         res.close();
 
@@ -1349,29 +1373,36 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
             header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             quantityValue.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            unitText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
             header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             quantityValue.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            unitText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
             header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             quantityValue.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            unitText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
         }
 
         header.setText(description);
         quantityValue.setText(formatNumberV2(temp_quantity));
+        if(!temp_unit.trim().isEmpty()){
+            unitText.setText(temp_unit);
+        }
 
-        ImageButton quantitySaveBtn = dialog.findViewById(R.id.quantity_btnSave);
+        ExtendedFloatingActionButton quantitySaveBtn = dialog.findViewById(R.id.quantity_btnSave);
         quantitySaveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if (!quantityValue.getText().toString().trim().isEmpty()) {
                     String NewQuantity = quantityValue.getText().toString().trim();
-                    db.updateQuantity(category.get(position), description, NewQuantity);
+                    String NewUnit = unitText.getText().toString().trim();
+                    db.updateQuantity(category.get(position), description, NewQuantity, NewUnit);
                     Toast.makeText(context, getString(R.string.quantity_change_success), Toast.LENGTH_SHORT).show();
                     adapter.notifyItemChanged(position);
                     getSum();
@@ -1998,6 +2029,9 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
 
         String currency = sharedPreferences.getString(UserSettings.CURRENCY, UserSettings.CURRENCY_DOLLAR);
         settings.setCurrency(currency);
+
+        String disablePrice = sharedPreferences.getString(UserSettings.IS_PRICE_DISABLED, UserSettings.NO_PRICE_NOT_DISABLED);
+        settings.setIsPriceDisabled(disablePrice);
 
         updateView();
     }

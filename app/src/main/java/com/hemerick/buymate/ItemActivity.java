@@ -56,6 +56,7 @@ import com.hemerick.buymate.Adapter.RecyclerViewItemTouchHelper;
 import com.hemerick.buymate.Adapter.ShopCopyAdapter;
 import com.hemerick.buymate.Adapter.ShopItemAdapter;
 import com.hemerick.buymate.Adapter.ShopMoveAdapter;
+import com.hemerick.buymate.Database.Firebase;
 import com.hemerick.buymate.Database.ShopDatabase;
 import com.hemerick.buymate.Database.UserSettings;
 
@@ -84,6 +85,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
     ArrayList<String> Items_Prices_List;
     ArrayList<String> Items_Quantities_List;
     ShopDatabase db;
+    Firebase firebase;
     TextView Total_Summation_Textbox;
     TextView Items_list_size_textbox;
     TextView currency_textbox;
@@ -187,6 +189,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
         //configure other necessary items
         db = new ShopDatabase(this);
+        firebase = new Firebase(this);
 
         eyeView = findViewById(R.id.eyeView);
         eyeView.setOnClickListener(new View.OnClickListener() {
@@ -924,6 +927,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         String finalQuantity = formatNumberV2(quantity);
 
         db.insertItem(category, description, status, finalPrice, month, year, day, time, finalQuantity, unit);
+        firebase.insertNewData(category, description, status, finalPrice, month, year, day, time, finalQuantity, unit);
         Items.add(description);
         shopItemAdapter.notifyDataSetChanged();
         getsum();
@@ -1150,6 +1154,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                 if (!newName.isEmpty()) {
                     if (!Items_Check.contains(newName)) {
                         boolean checkEditData = db.updateItem(category, newName, prevName);
+                        firebase.updateItemName(category.trim(), newName.trim(), prevName.trim());
                         if (!checkEditData) {
                             Toast.makeText(shopItemAdapter.getContext(), getString(R.string.rename_fail), Toast.LENGTH_SHORT).show();
                         } else {
@@ -1225,6 +1230,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                 if (!priceValue.getText().toString().trim().isEmpty()) {
                     String NewPrice = priceValue.getText().toString().trim();
                     db.updatePrice(category, description, NewPrice);
+                    firebase.updatePrice(category, description, NewPrice);
                     Toast.makeText(ItemActivity.this, getString(R.string.price_change_success), Toast.LENGTH_SHORT).show();
                     shopItemAdapter.notifyItemChanged(position);
                     getsum();
@@ -1255,40 +1261,57 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         TextView header = dialog.findViewById(R.id.header);
         EditText quantityValue = dialog.findViewById(R.id.quantity_name);
 
+        AutoCompleteTextView unitText = dialog.findViewById(R.id.unit_textView);
+        String[] unit_list = getResources().getStringArray(R.array.units);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(ItemActivity.this, R.layout.unit_drop_down_layout, unit_list);
+        unitText.setAdapter(arrayAdapter);
+
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
             header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             quantityValue.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            unitText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
             header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             quantityValue.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            unitText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
             header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             quantityValue.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            unitText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
         }
 
 
         double temp_quantity = 0;
+        String temp_unit = null;
         Cursor res = db.getQuantity(category, description);
         while (res.moveToNext()) {
             temp_quantity = res.getDouble(9);
+            temp_unit = res.getString(11);
         }
         res.close();
 
         header.setText(description);
         quantityValue.setText(formatNumberV2(temp_quantity));
+        if(!temp_unit.trim().isEmpty()){
+            unitText.setText(temp_unit);
+        }
 
-        ImageButton quantitySaveBtn = dialog.findViewById(R.id.quantity_btnSave);
+
+
+        ExtendedFloatingActionButton quantitySaveBtn = dialog.findViewById(R.id.quantity_btnSave);
         quantitySaveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if (!quantityValue.getText().toString().trim().isEmpty()) {
                     String NewQuantity = quantityValue.getText().toString().trim();
-                    db.updateQuantity(category, description, NewQuantity);
+                    String NewUnit = unitText.getText().toString().trim();
+                    db.updateQuantity(category, description, NewQuantity, NewUnit);
+                    firebase.updateQuantity(category, description, NewQuantity, NewUnit);
                     Toast.makeText(ItemActivity.this, getString(R.string.quantity_change_success), Toast.LENGTH_SHORT).show();
                     shopItemAdapter.notifyItemChanged(position);
                     getsum();
@@ -1357,6 +1380,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                 String temp = shopItemAdapter.getItemName(position);
                 db = new ShopDatabase(ItemActivity.this);
                 db.deleteItem(category, temp);
+                firebase.deleteItem(category, temp);
                 shopItemAdapter.refreshRemoved(position);
                 shopItemAdapter.notifyItemRemoved(position);
                 shopItemAdapter.checkEmpty();
@@ -1395,7 +1419,9 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         TextView item_name = dialog.findViewById(R.id.item_name);
         TextView unit_price = dialog.findViewById(R.id.price_per_unit);
         TextView total_price = dialog.findViewById(R.id.total_price_item);
+        LinearLayout quantity_parent = dialog.findViewById(R.id.quantity_parent);
         TextView quantity = dialog.findViewById(R.id.quantity);
+        TextView unit = dialog.findViewById(R.id.unit);
         TextView date = dialog.findViewById(R.id.full_date);
         TextView time = dialog.findViewById(R.id.full_time);
         TextView quantityText = dialog.findViewById(R.id.quantity_text);
@@ -1411,6 +1437,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             unit_price.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             total_price.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             quantity.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            unit.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             date.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             time.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             quantityText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
@@ -1424,6 +1451,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             unit_price.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             total_price.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             quantity.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            unit.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             date.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
             time.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
             quantityText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
@@ -1437,6 +1465,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             unit_price.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             total_price.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             quantity.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            unit.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             date.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             time.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             quantityText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
@@ -1447,10 +1476,18 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
         String temp = shopItemAdapter.getItemName(position);
         item_name.setText(temp);
+        item_name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                showRenameDialog(temp, position);
+            }
+        });
 
         int temp_fav = 0;
         double temp_price = 0;
         double temp_quantity = 0;
+        String temp_unit = null;
 
 
         String temp_month = null;
@@ -1463,6 +1500,8 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             temp_fav = res.getInt(10);
             temp_price = Double.parseDouble(res.getString(4));
             temp_quantity = Double.parseDouble(res.getString(9));
+            temp_unit = res.getString(11);
+
             temp_month = res.getString(5);
             temp_year = res.getString(6);
             temp_day = res.getString(7);
@@ -1479,6 +1518,8 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
         unit_price.setText(formatNumberV2(temp_price));
         quantity.setText(formatNumberV2(temp_quantity));
+
+        unit.setText(temp_unit.trim());
         date.setText(String.format("%s, %s %s", temp_day, temp_month, temp_year));
         time.setText(temp_time);
 
@@ -1513,18 +1554,20 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                 if (temp_fav == 1) {
                     favouritesIcon.setImageResource(R.drawable.final_star_icon);
                     db.updateFavourites(category, temp, 0);
+                    firebase.updateFavourites(category, temp, 0);
                     Toast.makeText(getApplicationContext(), R.string.removed_from_starred, Toast.LENGTH_SHORT).show();
 
                 } else {
                     favouritesIcon.setImageResource(R.drawable.final_favourites_colored_icon);
                     db.updateFavourites(category, temp, 1);
+                    firebase.updateFavourites(category, temp, 1);
                     Toast.makeText(getApplicationContext(), R.string.added_to_starred, Toast.LENGTH_SHORT).show();
                 }
                 shopItemAdapter.notifyItemChanged(position);
             }
         });
 
-        quantity.setOnClickListener(new View.OnClickListener() {
+        quantity_parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
@@ -1560,7 +1603,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                     if (settings.getIsMultiplyDisabled().equals(UserSettings.NO_MULTIPLY_NOT_DISABLED)) {
                         double temp_item_total = temp_price * Double.parseDouble(quantity.getText().toString());
                         total_price.setText(formatNumber(temp_item_total));
-                        db.updateQuantity(category, temp, quantity.getText().toString());
+                        db.updateQuantity(category, temp, quantity.getText().toString(), unit.getText().toString());
                     }
                     getsum();
                 }
@@ -1592,7 +1635,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
                 if (settings.getIsMultiplyDisabled().equals(UserSettings.NO_MULTIPLY_NOT_DISABLED)) {
                     total_price.setText(formatNumber(temp_item_sum));
-                    db.updateQuantity(category, temp, quantity.getText().toString());
+                    db.updateQuantity(category, temp, quantity.getText().toString(), unit.getText().toString().trim());
                 }
 
 
@@ -1608,7 +1651,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                 searchView.setQuery("", false);
                 searchView.onActionViewCollapsed();
 
-                db.updateQuantity(category, temp, quantity.getText().toString());
+                db.updateQuantity(category, temp, quantity.getText().toString(), unit.getText().toString());
                 shopItemAdapter.notifyItemChanged(position);
                 getsum();
             }
@@ -1707,6 +1750,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                     if (!newName.isEmpty()) {
                         if (!Items_Check.contains(newName)) {
                             boolean checkEditData = db.updateCategory(newName, category);
+                            firebase.updateCategoryName(newName, category);
                             if (!checkEditData) {
                                 Toast.makeText(ItemActivity.this, R.string.rename_fail, Toast.LENGTH_SHORT).show();
                             } else {
@@ -2613,6 +2657,9 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
         String currency = sharedPreferences.getString(UserSettings.CURRENCY, UserSettings.CURRENCY_DOLLAR);
         settings.setCurrency(currency);
+
+        String disablePrice = sharedPreferences.getString(UserSettings.IS_PRICE_DISABLED, UserSettings.NO_PRICE_NOT_DISABLED);
+        settings.setIsPriceDisabled(disablePrice);
 
         updateView();
     }

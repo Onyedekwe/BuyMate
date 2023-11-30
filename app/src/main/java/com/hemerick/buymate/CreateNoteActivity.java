@@ -30,6 +30,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 
+import com.hemerick.buymate.Database.Firebase;
 import com.hemerick.buymate.Database.ShopDatabase;
 import com.hemerick.buymate.Database.UserSettings;
 
@@ -53,6 +54,8 @@ public class CreateNoteActivity extends AppCompatActivity {
     int count_init = 0;
     LinearLayout full_layout;
     ShopDatabase db = new ShopDatabase(CreateNoteActivity.this);
+
+    Firebase firebase = new Firebase(CreateNoteActivity.this);
     private UserSettings settings;
     private PowerManager.WakeLock wakeLock;
 
@@ -209,6 +212,7 @@ public class CreateNoteActivity extends AppCompatActivity {
                 }
                 if (!itemCheck.contains(new_heading)) {
                     boolean update = db.updateNote(prev_heading, new_heading, content_box.getText().toString(), date_box.getText().toString());
+                    firebase.updateNote(prev_heading, new_heading, content_box.getText().toString(), date_box.getText().toString());
                     prev_heading = new_heading;
                     prev_content = content_box.getText().toString();
                     MenuItem saveIcon = toolbar.getMenu().findItem(R.id.save);
@@ -274,6 +278,7 @@ public class CreateNoteActivity extends AppCompatActivity {
 
                 if (!itemCheck.contains(new_heading)) {
                     boolean insert = db.insertNote(new_heading, content_box.getText().toString(), date_box.getText().toString());
+                    firebase.insertNote(new_heading, content_box.getText().toString(), date_box.getText().toString());
                     prev_heading = new_heading;
                     prev_content = content_box.getText().toString();
                     MenuItem saveIcon = toolbar.getMenu().findItem(R.id.save);
@@ -348,6 +353,7 @@ public class CreateNoteActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     db.deleteNote(heading_box.getText().toString(), content_box.getText().toString());
+                    firebase.deleteNote(heading_box.getText().toString(), content_box.getText().toString());
                     CreateNoteActivity.super.onBackPressed();
                 }
             });

@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.hemerick.buymate.Database.Firebase;
 import com.hemerick.buymate.Database.ShopDatabase;
 import com.hemerick.buymate.Database.UserSettings;
 import com.hemerick.buymate.HomeActivity;
@@ -30,6 +31,7 @@ public class ShopMoveAdapter extends RecyclerView.Adapter<ShopMoveAdapter.MyMove
     ShopDatabase db;
     ItemActivity itemActivity;
     UserSettings settings;
+    Firebase firebase;
 
 
     public ShopMoveAdapter(Context context, UserSettings settings, ArrayList<String> items, String category, ItemActivity itemActivity) {
@@ -39,6 +41,7 @@ public class ShopMoveAdapter extends RecyclerView.Adapter<ShopMoveAdapter.MyMove
         this.itemActivity = itemActivity;
         this.settings = settings;
         db = new ShopDatabase(context.getApplicationContext());
+        firebase = new Firebase(context);
     }
 
     public void setFilterList(ArrayList<String> filterList) {
@@ -119,6 +122,7 @@ public class ShopMoveAdapter extends RecyclerView.Adapter<ShopMoveAdapter.MyMove
 
             } else {
                 db.moveItem(previousCategory, selectedCategory, currentItem);
+                firebase.moveItem(previousCategory, selectedCategory, currentItem);
                 itemActivity.removeItem(currentItem);
             }
         }

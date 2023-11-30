@@ -25,8 +25,14 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -52,6 +58,8 @@ public class UserActivity extends AppCompatActivity {
 
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
+
+    GoogleSignInClient googleSignInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,6 +140,16 @@ public class UserActivity extends AppCompatActivity {
                 showDeleteAccountDialog();
             }
         });
+
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                        .requestEmail()
+                                .build();
+
+         googleSignInClient = GoogleSignIn.getClient(UserActivity.this, gso);
+
+
         loadSharedPreferences();
     }
 
@@ -290,7 +308,15 @@ public class UserActivity extends AppCompatActivity {
                         progressBar.setVisibility(View.INVISIBLE);
                         UserActivity.super.onBackPressed();
                         firebaseAuth.signOut();
+                        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(UserActivity.this);
+                        if(account != null){
+                            googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
 
+                                }
+                            });
+                        }
 
                     }
                 }, 2000);
@@ -372,6 +398,16 @@ public class UserActivity extends AppCompatActivity {
                                 Intent intent = new Intent(UserActivity.this, SignUpActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);
+
+                                GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(UserActivity.this);
+                                if(account != null){
+                                    googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+
+                                        }
+                                    });
+                                }
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
