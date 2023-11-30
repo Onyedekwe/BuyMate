@@ -1,9 +1,5 @@
 package com.hemerick.buymate;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,16 +12,17 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.hemerick.buymate.Database.UserSettings;
 
@@ -72,7 +69,6 @@ public class ChangePasswordActivity extends AppCompatActivity {
         forgot_password_text = findViewById(R.id.change_password_description);
 
 
-
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,7 +106,6 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
                             progressBar.setVisibility(View.VISIBLE);
                             new Handler().postDelayed(new Runnable() {
-                                ;
 
                                 @Override
                                 public void run() {

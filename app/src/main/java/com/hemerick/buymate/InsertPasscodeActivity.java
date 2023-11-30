@@ -48,7 +48,6 @@ public class InsertPasscodeActivity extends AppCompatActivity {
     ImageView fingerPrintButton;
 
 
-
     PinView pinView;
 
 

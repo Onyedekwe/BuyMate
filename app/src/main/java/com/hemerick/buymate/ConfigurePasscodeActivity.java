@@ -105,17 +105,84 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
         });
 
 
-
-
         fingerprintSwitcher.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (fingerprintSwitcher.isChecked()) {
-                    if(allowCheckMethod){
+                    if (allowCheckMethod) {
 
-                    if (settings.getPassword().equals(UserSettings.NOT_SET_PASSWORD)) {
-                        input_fingerSet_passcode_Dialog();
-                    } else {
+                        if (settings.getPassword().equals(UserSettings.NOT_SET_PASSWORD)) {
+                            input_fingerSet_passcode_Dialog();
+                        } else {
+                            BiometricManager biometricManager = BiometricManager.from(ConfigurePasscodeActivity.this);
+
+                            switch (biometricManager.canAuthenticate()) {
+                                case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
+                                    StyleableToast.makeText(ConfigurePasscodeActivity.this, "Device Not Supported", R.style.custom_toast).show();
+                                    allowUncheckMethod = false;
+                                    fingerprintSwitcher.setChecked(false);
+                                    break;
+
+                                case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
+                                    StyleableToast.makeText(ConfigurePasscodeActivity.this, "Hardware Unavailable", R.style.custom_toast).show();
+                                    allowUncheckMethod = false;
+                                    fingerprintSwitcher.setChecked(false);
+                                    break;
+
+                                case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
+                                    StyleableToast.makeText(ConfigurePasscodeActivity.this, "Fingerprint not set for this device", R.style.custom_toast).show();
+                                    allowUncheckMethod = false;
+                                    fingerprintSwitcher.setChecked(false);
+                                    break;
+
+                                case BiometricManager.BIOMETRIC_SUCCESS:
+                                    break;
+
+                            }
+
+                            executor = ContextCompat.getMainExecutor(ConfigurePasscodeActivity.this);
+                            biometricPrompt = new BiometricPrompt(ConfigurePasscodeActivity.this, executor, new BiometricPrompt.AuthenticationCallback() {
+
+                                @Override
+                                public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+                                    super.onAuthenticationError(errorCode, errString);
+                                    allowUncheckMethod = false;
+                                    fingerprintSwitcher.setChecked(false);
+                                }
+
+                                @Override
+                                public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+                                    super.onAuthenticationSucceeded(result);
+                                    settings.setIsFingerPrintDisabled(UserSettings.NO_FINGERPRINT_NOT_DISABLED);
+                                    SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
+                                    editor.putString(UserSettings.IS_FINGERPRINT_DISABLED, settings.getIsFingerPrintDisabled());
+                                    editor.apply();
+                                    allowUncheckMethod = true;
+                                    allowCheckMethod = false;
+                                }
+
+                                @Override
+                                public void onAuthenticationFailed() {
+                                    super.onAuthenticationFailed();
+                                    allowUncheckMethod = false;
+                                    fingerprintSwitcher.setChecked(false);
+
+                                }
+                            });
+
+                            promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                                    .setTitle("Verify fingerprint")
+                                    .setNegativeButtonText("Use password")
+                                    .build();
+                            biometricPrompt.authenticate(promptInfo);
+                        }
+
+                    }
+
+                } else {
+
+                    if (allowUncheckMethod) {
+
                         BiometricManager biometricManager = BiometricManager.from(ConfigurePasscodeActivity.this);
 
                         switch (biometricManager.canAuthenticate()) {
@@ -123,18 +190,21 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
                                 StyleableToast.makeText(ConfigurePasscodeActivity.this, "Device Not Supported", R.style.custom_toast).show();
                                 allowUncheckMethod = false;
                                 fingerprintSwitcher.setChecked(false);
+                                allowUncheckMethod = true;
                                 break;
 
                             case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
                                 StyleableToast.makeText(ConfigurePasscodeActivity.this, "Hardware Unavailable", R.style.custom_toast).show();
                                 allowUncheckMethod = false;
                                 fingerprintSwitcher.setChecked(false);
+                                allowUncheckMethod = true;
                                 break;
 
                             case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
                                 StyleableToast.makeText(ConfigurePasscodeActivity.this, "Fingerprint not set for this device", R.style.custom_toast).show();
                                 allowUncheckMethod = false;
                                 fingerprintSwitcher.setChecked(false);
+                                allowUncheckMethod = true;
                                 break;
 
                             case BiometricManager.BIOMETRIC_SUCCESS:
@@ -149,26 +219,27 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
                             public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
                                 super.onAuthenticationError(errorCode, errString);
                                 allowUncheckMethod = false;
-                                fingerprintSwitcher.setChecked(false);
+                                fingerprintSwitcher.setChecked(true);
+                                allowUncheckMethod = true;
+
                             }
 
                             @Override
                             public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                                 super.onAuthenticationSucceeded(result);
-                                settings.setIsFingerPrintDisabled(UserSettings.NO_FINGERPRINT_NOT_DISABLED);
+                                settings.setIsFingerPrintDisabled(UserSettings.YES_FINGERPRINT_DISABLED);
                                 SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
                                 editor.putString(UserSettings.IS_FINGERPRINT_DISABLED, settings.getIsFingerPrintDisabled());
                                 editor.apply();
-                                allowUncheckMethod = true;
-                                allowCheckMethod = false;
+                                fingerprintSwitcher.setChecked(false);
                             }
 
                             @Override
                             public void onAuthenticationFailed() {
                                 super.onAuthenticationFailed();
                                 allowUncheckMethod = false;
-                                fingerprintSwitcher.setChecked(false);
-
+                                fingerprintSwitcher.setChecked(true);
+                                allowUncheckMethod = true;
                             }
                         });
 
@@ -179,79 +250,6 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
                         biometricPrompt.authenticate(promptInfo);
                     }
 
-                    }
-
-                } else {
-
-                    if(allowUncheckMethod == true){
-
-                        BiometricManager biometricManager = BiometricManager.from(ConfigurePasscodeActivity.this);
-
-                    switch (biometricManager.canAuthenticate()) {
-                        case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
-                            StyleableToast.makeText(ConfigurePasscodeActivity.this, "Device Not Supported", R.style.custom_toast).show();
-                            allowUncheckMethod = false;
-                            fingerprintSwitcher.setChecked(false);
-                            allowUncheckMethod = true;
-                            break;
-
-                        case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
-                            StyleableToast.makeText(ConfigurePasscodeActivity.this, "Hardware Unavailable", R.style.custom_toast).show();
-                            allowUncheckMethod = false;
-                            fingerprintSwitcher.setChecked(false);
-                            allowUncheckMethod = true;
-                            break;
-
-                        case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
-                            StyleableToast.makeText(ConfigurePasscodeActivity.this, "Fingerprint not set for this device", R.style.custom_toast).show();
-                            allowUncheckMethod = false;
-                            fingerprintSwitcher.setChecked(false);
-                            allowUncheckMethod = true;
-                            break;
-
-                        case BiometricManager.BIOMETRIC_SUCCESS:
-                            break;
-
-                    }
-
-                    executor = ContextCompat.getMainExecutor(ConfigurePasscodeActivity.this);
-                    biometricPrompt = new BiometricPrompt(ConfigurePasscodeActivity.this, executor, new BiometricPrompt.AuthenticationCallback() {
-
-                        @Override
-                        public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
-                            super.onAuthenticationError(errorCode, errString);
-                            allowUncheckMethod = false;
-                            fingerprintSwitcher.setChecked(true);
-                            allowUncheckMethod = true;
-
-                        }
-
-                        @Override
-                        public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
-                            super.onAuthenticationSucceeded(result);
-                            settings.setIsFingerPrintDisabled(UserSettings.YES_FINGERPRINT_DISABLED);
-                            SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
-                            editor.putString(UserSettings.IS_FINGERPRINT_DISABLED, settings.getIsFingerPrintDisabled());
-                            editor.apply();
-                            fingerprintSwitcher.setChecked(false);
-                        }
-
-                        @Override
-                        public void onAuthenticationFailed() {
-                            super.onAuthenticationFailed();
-                            allowUncheckMethod = false;
-                            fingerprintSwitcher.setChecked(true);
-                            allowUncheckMethod = true;
-                        }
-                    });
-
-                    promptInfo = new BiometricPrompt.PromptInfo.Builder()
-                            .setTitle("Verify fingerprint")
-                            .setNegativeButtonText("Use password")
-                            .build();
-                    biometricPrompt.authenticate(promptInfo);
-                }
-
                 }
             }
         });
@@ -259,9 +257,9 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
 
         loadSharedPreferences();
 
-        if(fingerprintSwitcher.isChecked()){
+        if (fingerprintSwitcher.isChecked()) {
             allowUncheckMethod = true;
-        }else{
+        } else {
             allowCheckMethod = true;
         }
     }
@@ -847,11 +845,7 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
             passwordText.setText("Change password");
         }
 
-        if(settings.getIsFingerPrintDisabled().equals(UserSettings.NO_FINGERPRINT_NOT_DISABLED)){
-            fingerprintSwitcher.setChecked(true);
-        }else{
-            fingerprintSwitcher.setChecked(false);
-        }
+        fingerprintSwitcher.setChecked(settings.getIsFingerPrintDisabled().equals(UserSettings.NO_FINGERPRINT_NOT_DISABLED));
 
 
     }

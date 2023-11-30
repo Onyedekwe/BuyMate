@@ -1,11 +1,5 @@
 package com.hemerick.buymate;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.cardview.widget.CardView;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,11 +12,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.auth.api.identity.BeginSignInRequest;
-import com.google.android.gms.auth.api.identity.Identity;
-import com.google.android.gms.auth.api.identity.SignInClient;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.cardview.widget.CardView;
+
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -30,7 +26,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -147,58 +142,57 @@ public class SignUpActivity extends AppCompatActivity {
                 if (!passwordText.isEmpty()) {
                     if (!confirm_passwordText.isEmpty()) {
                         if (isValidEmail(emailText)) {
-                            if(passwordText.length() >= 6){
+                            if (passwordText.length() >= 6) {
                                 if (passwordText.equals(confirm_passwordText)) {
-                                progressBar.setVisibility(View.VISIBLE);
-                                new Handler().postDelayed(new Runnable() {
-                                    ;
+                                    progressBar.setVisibility(View.VISIBLE);
+                                    new Handler().postDelayed(new Runnable() {
 
-                                    @Override
-                                    public void run() {
+                                        @Override
+                                        public void run() {
 
-                                        firebaseAuth.createUserWithEmailAndPassword(emailText, passwordText).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                            firebaseAuth.createUserWithEmailAndPassword(emailText, passwordText).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<AuthResult> task) {
 
-                                                if (task.isSuccessful()) {
-                                                    StyleableToast.makeText(SignUpActivity.this, "Sign up successful", R.style.custom_toast).show();
+                                                    if (task.isSuccessful()) {
+                                                        StyleableToast.makeText(SignUpActivity.this, "Sign up successful", R.style.custom_toast).show();
 
-                                                    settings.setIsAuthenticated(UserSettings.IS_AUTHENTICATED);
-                                                    settings.setUsername(fullnameText);
+                                                        settings.setIsAuthenticated(UserSettings.IS_AUTHENTICATED);
+                                                        settings.setUsername(fullnameText);
 
-                                                    SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
-                                                    editor.putString(UserSettings.IS_AUTHENTICATED, settings.getIsAuthenticated());
-                                                    editor.putString(UserSettings.USER_NAME, settings.getUsername());
-                                                    editor.apply();
+                                                        SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
+                                                        editor.putString(UserSettings.IS_AUTHENTICATED, settings.getIsAuthenticated());
+                                                        editor.putString(UserSettings.USER_NAME, settings.getUsername());
+                                                        editor.apply();
 
-                                                    progressBar.setVisibility(View.INVISIBLE);
+                                                        progressBar.setVisibility(View.INVISIBLE);
 
-                                                    Intent intent = new Intent(SignUpActivity.this, HomeActivity.class);
-                                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                    startActivity(intent);
-                                                } else {
-                                                    StyleableToast.makeText(SignUpActivity.this, "Sign up failed", R.style.custom_toast).show();
+                                                        Intent intent = new Intent(SignUpActivity.this, HomeActivity.class);
+                                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                        startActivity(intent);
+                                                    } else {
+                                                        StyleableToast.makeText(SignUpActivity.this, "Sign up failed", R.style.custom_toast).show();
+                                                    }
                                                 }
-                                            }
-                                        }).addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                if (e instanceof FirebaseAuthUserCollisionException) {
-                                                    progressBar.setVisibility(View.INVISIBLE);
-                                                    emailLayout.setError("Email already registered");
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    if (e instanceof FirebaseAuthUserCollisionException) {
+                                                        progressBar.setVisibility(View.INVISIBLE);
+                                                        emailLayout.setError("Email already registered");
+                                                    }
                                                 }
-                                            }
-                                        });
+                                            });
 
-                                    }
-                                }, 2000);
+                                        }
+                                    }, 2000);
 
+
+                                } else {
+                                    confirmPasswordLayout.setError("Password does not match");
+                                }
 
                             } else {
-                                confirmPasswordLayout.setError("Password does not match");
-                            }
-
-                            }else{
                                 passwordLayout.setError("Password must be at least 6 characters long");
                             }
 
@@ -252,7 +246,6 @@ public class SignUpActivity extends AppCompatActivity {
 
         progressBar.setVisibility(View.VISIBLE);
         new Handler().postDelayed(new Runnable() {
-            ;
 
             @Override
             public void run() {

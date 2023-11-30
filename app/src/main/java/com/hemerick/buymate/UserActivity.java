@@ -49,7 +49,7 @@ public class UserActivity extends AppCompatActivity {
     private PowerManager.WakeLock wakeLock;
 
     TextView userNameText, emailText, editNameText, changePasswordText, logoutText, deleteAccountText;
-    ConstraintLayout editNameLayout,  changePasswordLayout, logOutLayout, deleteAccountLayout;
+    ConstraintLayout editNameLayout, changePasswordLayout, logOutLayout, deleteAccountLayout;
 
     ImageView profileImage;
     SharedPreferences sharedPreferences;
@@ -79,7 +79,6 @@ public class UserActivity extends AppCompatActivity {
         firebaseUser = firebaseAuth.getCurrentUser();
 
 
-
         userNameText = findViewById(R.id.userNameText);
         emailText = findViewById(R.id.emailText);
         editNameText = findViewById(R.id.edit_nameText);
@@ -91,15 +90,15 @@ public class UserActivity extends AppCompatActivity {
 
 
         Uri photoUrl = firebaseUser.getPhotoUrl();
-        if(photoUrl != null){
+        if (photoUrl != null) {
             Picasso.get().load(photoUrl.toString()).into(profileImage);
-        }else{
-            String email = firebaseUser.getEmail().toString().trim();
+        } else {
+            String email = firebaseUser.getEmail().trim();
             String pref = String.valueOf(email.charAt(0)).toUpperCase();
             prefix_text = findViewById(R.id.email_prefix);
-           prefix_text.setVisibility(View.VISIBLE);
-           profileImage.setVisibility(View.INVISIBLE);
-           prefix_text.setText(pref);
+            prefix_text.setVisibility(View.VISIBLE);
+            profileImage.setVisibility(View.INVISIBLE);
+            prefix_text.setText(pref);
 
         }
 
@@ -144,10 +143,10 @@ public class UserActivity extends AppCompatActivity {
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
-                        .requestEmail()
-                                .build();
+                .requestEmail()
+                .build();
 
-         googleSignInClient = GoogleSignIn.getClient(UserActivity.this, gso);
+        googleSignInClient = GoogleSignIn.getClient(UserActivity.this, gso);
 
 
         loadSharedPreferences();
@@ -300,7 +299,7 @@ public class UserActivity extends AppCompatActivity {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               progressBar.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -309,7 +308,7 @@ public class UserActivity extends AppCompatActivity {
                         UserActivity.super.onBackPressed();
                         firebaseAuth.signOut();
                         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(UserActivity.this);
-                        if(account != null){
+                        if (account != null) {
                             googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
@@ -361,8 +360,8 @@ public class UserActivity extends AppCompatActivity {
             deleteBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
         }
 
-        String current_email = firebaseUser.getEmail().toString().trim();
-        delete_account_alert_text.setText("All list and other data for "+  current_email +" will be removed from the cloud permanently." );
+        String current_email = firebaseUser.getEmail().trim();
+        delete_account_alert_text.setText("All list and other data for " + current_email + " will be removed from the cloud permanently.");
 
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -400,7 +399,7 @@ public class UserActivity extends AppCompatActivity {
                                 startActivity(intent);
 
                                 GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(UserActivity.this);
-                                if(account != null){
+                                if (account != null) {
                                     googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {

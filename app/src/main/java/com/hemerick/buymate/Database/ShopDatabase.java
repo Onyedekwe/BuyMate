@@ -16,7 +16,7 @@ public class ShopDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create Table ShopTable(_id INTEGER primary key autoincrement,category TEXT, description TEXT, status INTEGER, price TEXT, month TEXT, year TEXT, day TEXT, time TEXT, quantity TEXT, favourites INTEGER, unit TEXT)");
+        db.execSQL("create Table ShopTable(_id INTEGER primary key autoincrement,category TEXT, description TEXT, status INTEGER, price TEXT, month TEXT, year TEXT, day TEXT, time TEXT, quantity TEXT, favourites INTEGER, unit TEXT, photourl TEXT)");
         db.execSQL("create Table NoteTable(_id INTEGER primary key autoincrement,heading TEXT, content TEXT, date TEXT)");
 
     }
@@ -41,6 +41,7 @@ public class ShopDatabase extends SQLiteOpenHelper {
         contentValues.put("time", time);
         contentValues.put("quantity", quantity);
         contentValues.put("unit", unit);
+        contentValues.put("photourl", " ");
         long result = db.insert("ShopTable", null, contentValues);
 
     }
@@ -132,6 +133,17 @@ public class ShopDatabase extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("favourites", favourites);
+        Cursor cursor = db.rawQuery("select * from ShopTable where category = ? AND description = ? ", new String[]{category, description});
+        if (cursor.getCount() > 0) {
+            long result = db.update("ShopTable", contentValues, "category = ? AND description = ? ", new String[]{category, description});
+        } else {
+        }
+    }
+
+    public void updatePhoto(String category, String description, String photourl) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("photourl", photourl);
         Cursor cursor = db.rawQuery("select * from ShopTable where category = ? AND description = ? ", new String[]{category, description});
         if (cursor.getCount() > 0) {
             long result = db.update("ShopTable", contentValues, "category = ? AND description = ? ", new String[]{category, description});
@@ -298,6 +310,12 @@ public class ShopDatabase extends SQLiteOpenHelper {
     }
 
     public Cursor getFavourites(String category, String description) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("select * from ShopTable where category = ? AND description = ?", new String[]{category, description});
+        return cursor;
+    }
+
+    public Cursor getPhotourl(String category, String description) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery("select * from ShopTable where category = ? AND description = ?", new String[]{category, description});
         return cursor;

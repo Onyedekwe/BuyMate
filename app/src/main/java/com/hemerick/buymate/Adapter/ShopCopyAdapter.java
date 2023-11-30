@@ -96,6 +96,7 @@ public class ShopCopyAdapter extends RecyclerView.Adapter<ShopCopyAdapter.MyCopy
                 String temp_day = null;
                 String temp_time = null;
                 String unit = null;
+                String temp_photourl = null;
 
                 Cursor res2 = db.getPrice(previousCategory, currentItem);
                 while (res2.moveToNext()) {
@@ -108,11 +109,13 @@ public class ShopCopyAdapter extends RecyclerView.Adapter<ShopCopyAdapter.MyCopy
                     temp_day = res2.getString(7);
                     temp_time = res2.getString(8);
                     unit = res2.getString(11);
+                    temp_photourl = res2.getString(12);
                 }
                 res2.close();
 
                 db.insertItem(selectedCategory, newItem, status, temp_price, temp_month, temp_year, temp_day, temp_time, temp_quantity, unit);
                 db.updateFavourites(selectedCategory, newItem, temp_fav);
+                db.updatePhoto(selectedCategory, newItem, temp_photourl);
 
 
             } else {
@@ -126,6 +129,7 @@ public class ShopCopyAdapter extends RecyclerView.Adapter<ShopCopyAdapter.MyCopy
                 String temp_day = null;
                 String temp_time = null;
                 String unit = null;
+                String temp_photourl = null;
 
                 Cursor res2 = db.getPrice(previousCategory, currentItem);
                 while (res2.moveToNext()) {
@@ -138,11 +142,13 @@ public class ShopCopyAdapter extends RecyclerView.Adapter<ShopCopyAdapter.MyCopy
                     temp_day = res2.getString(7);
                     temp_time = res2.getString(8);
                     unit = res2.getString(11);
+                    temp_photourl = res2.getString(12);
                 }
                 res2.close();
 
                 db.insertItem(selectedCategory, currentItem, status, temp_price, temp_month, temp_year, temp_day, temp_time, temp_quantity, unit);
                 db.updateFavourites(selectedCategory, currentItem, temp_fav);
+                db.updatePhoto(selectedCategory, currentItem, temp_photourl);
             }
         }
 

@@ -1,9 +1,5 @@
 package com.hemerick.buymate;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,6 +11,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -71,55 +71,54 @@ public class RecoverPasswordActivity extends AppCompatActivity {
         loadSharedPreferences();
     }
 
-    public void recoverPassword(){
+    public void recoverPassword() {
         String email = emailbox.getText().toString().trim();
-        if(!email.isEmpty()){
-            if(isValidEmail(email)){
+        if (!email.isEmpty()) {
+            if (isValidEmail(email)) {
                 progressBar.setVisibility(View.VISIBLE);
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
 
                         firebaseAuth.fetchSignInMethodsForEmail(email)
-                                        .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
-                                                if(task.isSuccessful()){
-                                                    if(task.getResult().getSignInMethods().isEmpty()){
+                                .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+                                        if (task.isSuccessful()) {
+                                            if (task.getResult().getSignInMethods().isEmpty()) {
+                                                progressBar.setVisibility(View.INVISIBLE);
+                                                StyleableToast.makeText(RecoverPasswordActivity.this, "Email not registered. Please sign up.", R.style.custom_toast).show();
+                                            } else {
+                                                firebaseAuth.sendPasswordResetEmail(email).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void unused) {
                                                         progressBar.setVisibility(View.INVISIBLE);
-                                                        StyleableToast.makeText(RecoverPasswordActivity.this, "Email not registered. Please sign up." , R.style.custom_toast).show();
+                                                        StyleableToast.makeText(RecoverPasswordActivity.this, "Reset link sent to email", R.style.custom_toast).show();
+                                                        RecoverPasswordActivity.super.onBackPressed();
                                                     }
-                                                    else{
-                                                        firebaseAuth.sendPasswordResetEmail(email).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                            @Override
-                                                            public void onSuccess(Void unused) {
-                                                                progressBar.setVisibility(View.INVISIBLE);
-                                                                StyleableToast.makeText(RecoverPasswordActivity.this, "Reset link sent to email", R.style.custom_toast).show();
-                                                                RecoverPasswordActivity.super.onBackPressed();
-                                                            }
-                                                        }).addOnFailureListener(new OnFailureListener() {
-                                                            @Override
-                                                            public void onFailure(@NonNull Exception e) {
-                                                                progressBar.setVisibility(View.INVISIBLE);
-                                                                StyleableToast.makeText(RecoverPasswordActivity.this, "Error: " + e.getMessage(), R.style.custom_toast).show();
-                                                            }
-                                                        });
+                                                }).addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        progressBar.setVisibility(View.INVISIBLE);
+                                                        StyleableToast.makeText(RecoverPasswordActivity.this, "Error: " + e.getMessage(), R.style.custom_toast).show();
                                                     }
-                                                }else{
-                                                    progressBar.setVisibility(View.INVISIBLE);
-                                                    StyleableToast.makeText(RecoverPasswordActivity.this, "Error: " + task.getException(), R.style.custom_toast).show();
-
-                                                }
+                                                });
                                             }
-                                        });
+                                        } else {
+                                            progressBar.setVisibility(View.INVISIBLE);
+                                            StyleableToast.makeText(RecoverPasswordActivity.this, "Error: " + task.getException(), R.style.custom_toast).show();
+
+                                        }
+                                    }
+                                });
 
 
                     }
                 }, 3000);
-            }else{
+            } else {
                 emailLayout.setError("Not a valid email address");
             }
-        }else{
+        } else {
             emailLayout.setError("Enter your recovery email");
         }
     }
@@ -127,6 +126,7 @@ public class RecoverPasswordActivity extends AppCompatActivity {
     private boolean isValidEmail(String email) {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
+
     private void updateView() {
         if (settings.getCustomTheme().equals(UserSettings.LIGHT_THEME)) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);

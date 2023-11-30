@@ -133,10 +133,10 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.MyView
             }
             holder.favourites.setImageResource(checkFavourites(category, shop_id.get(position)));
 
-            if(settings.getIsPriceDisabled().equals(UserSettings.YES_PRICE_DISABLED)){
+            if (settings.getIsPriceDisabled().equals(UserSettings.YES_PRICE_DISABLED)) {
                 holder.priceBox.setVisibility(View.GONE);
                 holder.currencyBox.setVisibility(View.GONE);
-            }else{
+            } else {
                 holder.priceBox.setVisibility(View.VISIBLE);
                 holder.currencyBox.setVisibility(View.VISIBLE);
             }

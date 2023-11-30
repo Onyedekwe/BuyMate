@@ -219,12 +219,12 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                         collapsingToolbarLayout.setTitle(getString(R.string.app_name));
                     } else {
                         String first_name;
-                        if(settings.getUsername().equals(UserSettings.USER_NAME_NOT_SET)){
+                        if (settings.getUsername().equals(UserSettings.USER_NAME_NOT_SET)) {
                             first_name = "User";
-                        }else{
+                        } else {
                             first_name = settings.getUsername().trim();
                         }
-                        collapsingToolbarLayout.setTitle("Hi, " + first_name+"!");
+                        collapsingToolbarLayout.setTitle("Hi, " + first_name + "!");
                     }
                 }
             }

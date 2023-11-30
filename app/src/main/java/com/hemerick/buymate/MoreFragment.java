@@ -97,9 +97,9 @@ public class MoreFragment extends Fragment {
         account_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(firebaseUser == null){
+                if (firebaseUser == null) {
                     startActivity(new Intent(getContext(), LogInActivity.class));
-                }else{
+                } else {
                     startActivity(new Intent(getContext(), UserActivity.class));
                 }
 
@@ -108,12 +108,11 @@ public class MoreFragment extends Fragment {
         });
 
 
-
-        if(firebaseUser == null){
+        if (firebaseUser == null) {
             account_text.setText("LOG IN");
             login_subtext.setVisibility(View.VISIBLE);
             account_icon.setImageResource(R.drawable.final_log_out_icon);
-        }else{
+        } else {
             account_text.setText("Account");
             login_subtext.setVisibility(View.GONE);
             account_icon.setImageResource(R.drawable.final_account_icon);
@@ -201,11 +200,11 @@ public class MoreFragment extends Fragment {
         super.onResume();
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
-        if(firebaseUser == null){
+        if (firebaseUser == null) {
             account_text.setText("LOG IN");
             login_subtext.setVisibility(View.VISIBLE);
             account_icon.setImageResource(R.drawable.final_log_out_icon);
-        }else{
+        } else {
             account_text.setText("Account");
             login_subtext.setVisibility(View.GONE);
             account_icon.setImageResource(R.drawable.final_account_icon);

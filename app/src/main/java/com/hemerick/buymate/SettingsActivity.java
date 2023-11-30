@@ -352,7 +352,6 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
 
-
         String[] currency_list = getResources().getStringArray(R.array.currency);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(SettingsActivity.this, R.layout.unit_drop_down_layout, currency_list);
         descCurrency.setAdapter(adapter);
@@ -541,11 +540,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         multiplySwitch.setChecked(settings.getIsMultiplyDisabled().equals(UserSettings.NO_MULTIPLY_NOT_DISABLED));
 
-        if(settings.getIsPriceDisabled().equals(UserSettings.YES_PRICE_DISABLED)){
-            disablePriceSwitch.setChecked(false);
-        }else{
-            disablePriceSwitch.setChecked(true);
-        }
+        disablePriceSwitch.setChecked(!settings.getIsPriceDisabled().equals(UserSettings.YES_PRICE_DISABLED));
     }
 
     private void loadSharedPreferences() {
