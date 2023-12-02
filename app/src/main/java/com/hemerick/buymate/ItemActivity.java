@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -39,6 +40,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -60,6 +62,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -72,6 +75,7 @@ import com.hemerick.buymate.Database.ShopDatabase;
 import com.hemerick.buymate.Database.UserSettings;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -325,9 +329,9 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                                 db.deleteItem(category, s);
                                 Items.remove(s);
                             }
-
                             if (Items.size() == 0) {
-                                shopItemAdapter.checkEmpty();
+                                Intent intent = new Intent(ItemActivity.this, HomeActivity.class);
+                                startActivity(intent);
                             }
                             shopItemAdapter.disableSelection();
                             getsum();
@@ -1201,7 +1205,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
             String email = firebaseUser.getEmail().trim();
             getDateNdTime();
-            String path = email + "#" + day + "#" + month + "#" + year + "#" + fullTimeWithSeconds;
+            String path = email+day+month+year+fullTimeWithSeconds+".jpg";
 
             StorageReference imageRef = storageReference.child(path);
 
@@ -1214,8 +1218,26 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    String url = taskSnapshot.getStorage().getDownloadUrl().toString();
-                    db.updatePhoto(category, temp_item, url);
+                    String old_url = null;
+                    Cursor res = db.getPhotourl(category, temp_item);
+                    while (res.moveToNext()){
+                      old_url = res.getString(12);
+                    }
+
+                    db.updatePhoto(category, temp_item, path);
+
+                    ArrayList<String> total_url = new ArrayList<>();
+
+                    res = db.getCategory(ItemActivity.this);
+                    while (res.moveToNext()){
+                        total_url.add(res.getString(12));
+                    }res.close();
+
+                    if(!total_url.contains(old_url)){
+                        FirebaseStorage storage = FirebaseStorage.getInstance();
+                        StorageReference storageReference =  storage.getReference().child(old_url);
+                        storageReference.delete();
+                    }
                 }
             });
 
@@ -1530,6 +1552,10 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         dialog.setContentView(R.layout.info_item_layout);
 
         ImageView favouritesIcon = dialog.findViewById(R.id.favouritesIcon);
+
+        ImageView itemImage = dialog.findViewById(R.id.item_image);
+        ProgressBar progressBar = dialog.findViewById(R.id.progress_bar);
+
         ImageView reduce = dialog.findViewById(R.id.reduce);
         ImageView increase = dialog.findViewById(R.id.increase);
 
@@ -1539,6 +1565,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         LinearLayout quantity_parent = dialog.findViewById(R.id.quantity_parent);
         TextView quantity = dialog.findViewById(R.id.quantity);
         TextView unit = dialog.findViewById(R.id.unit);
+        TextView day = dialog.findViewById(R.id.full_day);
         TextView date = dialog.findViewById(R.id.full_date);
         TextView time = dialog.findViewById(R.id.full_time);
         TextView quantityText = dialog.findViewById(R.id.quantity_text);
@@ -1555,6 +1582,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             total_price.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             quantity.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             unit.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            day.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             date.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             time.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             quantityText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
@@ -1569,6 +1597,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             total_price.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             quantity.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             unit.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            day.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
             date.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
             time.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
             quantityText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
@@ -1583,6 +1612,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             total_price.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             quantity.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             unit.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            day.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             date.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             time.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             quantityText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
@@ -1612,6 +1642,8 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         String temp_day = null;
         String temp_time = null;
 
+        String photourl = null;
+
         Cursor res = db.getPrice(category, temp);
         while (res.moveToNext()) {
             temp_fav = res.getInt(10);
@@ -1623,6 +1655,9 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             temp_year = res.getString(6);
             temp_day = res.getString(7);
             temp_time = res.getString(8);
+
+            photourl = res.getString(12);
+
         }
         res.close();
 
@@ -1632,12 +1667,58 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             favouritesIcon.setImageResource(R.drawable.final_star_icon);
         }
 
+        String finalPhotourl = photourl;
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                if(!finalPhotourl.trim().isEmpty()){
+
+                    progressBar.setVisibility(View.VISIBLE);
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            FirebaseStorage storage = FirebaseStorage.getInstance();
+                            StorageReference storageReference = storage.getReference();
+                            StorageReference imageRef = storageReference.child(finalPhotourl);
+                            try{
+                                final File localFile = File.createTempFile(finalPhotourl, "jpg");
+                                imageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                        Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                                        itemImage.setImageBitmap(bitmap);
+                                        itemImage.setVisibility(View.VISIBLE);
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(ItemActivity.this, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        itemImage.setImageResource(R.drawable.final_image_not_found_icon);
+                                    }
+                                });
+                            }catch (Exception ex){
+                                Toast.makeText(ItemActivity.this, "Error: "+ex.getMessage(), Toast.LENGTH_SHORT).show();
+                                itemImage.setImageResource(R.drawable.final_image_not_found_icon);
+                            }
+                            progressBar.setVisibility(View.INVISIBLE);
+                        }
+                    }, 1500);
+
+                }
+            }
+        });
+
+
+
 
         unit_price.setText(formatNumberV2(temp_price));
         quantity.setText(formatNumberV2(temp_quantity));
 
         unit.setText(temp_unit.trim());
-        date.setText(String.format("%s, %s %s", temp_day, temp_month, temp_year));
+        day.setText(temp_day);
+        date.setText(temp_month +", "+ temp_year);
         time.setText(temp_time);
 
         if (settings.getIsMultiplyDisabled().equals(UserSettings.NO_MULTIPLY_NOT_DISABLED)) {

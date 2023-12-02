@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -36,6 +37,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,6 +59,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -66,6 +69,7 @@ import com.hemerick.buymate.Database.ShopDatabase;
 import com.hemerick.buymate.Database.UserSettings;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -824,12 +828,16 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
         ImageView reduce = dialog.findViewById(R.id.reduce);
         ImageView increase = dialog.findViewById(R.id.increase);
 
+        ImageView itemImage = dialog.findViewById(R.id.item_image);
+        ProgressBar progressBar = dialog.findViewById(R.id.progress_bar);
+
         TextView item_name = dialog.findViewById(R.id.item_name);
         TextView unit_price = dialog.findViewById(R.id.price_per_unit);
         TextView total_price = dialog.findViewById(R.id.total_price_item);
         LinearLayout quantity_parent = dialog.findViewById(R.id.quantity_parent);
         TextView quantity = dialog.findViewById(R.id.quantity);
         TextView unit = dialog.findViewById(R.id.unit);
+        TextView day = dialog.findViewById(R.id.full_day);
         TextView date = dialog.findViewById(R.id.full_date);
         TextView time = dialog.findViewById(R.id.full_time);
         TextView quantityText = dialog.findViewById(R.id.quantity_text);
@@ -845,6 +853,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
             total_price.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             quantity.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             unit.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            day.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             date.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             time.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             quantityText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
@@ -859,6 +868,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
             total_price.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             quantity.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             unit.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            day.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
             date.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
             time.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
             quantityText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
@@ -873,6 +883,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
             total_price.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             quantity.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             unit.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            day.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             date.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             time.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             quantityText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
@@ -901,6 +912,8 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
         String temp_day = null;
         String temp_time = null;
 
+        String photourl = null;
+
         Cursor res = db.getPrice(category.get(position), temp);
         while (res.moveToNext()) {
             temp_fav = res.getInt(10);
@@ -912,6 +925,8 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
             temp_year = res.getString(6);
             temp_day = res.getString(7);
             temp_time = res.getString(8);
+
+            photourl = res.getString(12);
         }
         res.close();
 
@@ -921,12 +936,53 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
             favouritesIcon.setImageResource(R.drawable.final_star_icon);
         }
 
+        String finalPhotourl = photourl;
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                if(!finalPhotourl.trim().isEmpty()){
+
+                    progressBar.setVisibility(View.VISIBLE);
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            FirebaseStorage storage = FirebaseStorage.getInstance();
+                            StorageReference storageReference = storage.getReference();
+                            StorageReference imageRef = storageReference.child(finalPhotourl);
+                            try{
+                                final File localFile = File.createTempFile(finalPhotourl, "jpg");
+                                imageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                        Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                                        itemImage.setImageBitmap(bitmap);
+                                        itemImage.setVisibility(View.VISIBLE);
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(context, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        itemImage.setImageResource(R.drawable.final_image_not_found_icon);
+                                    }
+                                });
+                            }catch (Exception ex){
+                                Toast.makeText(context, "Error: "+ex.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                            progressBar.setVisibility(View.INVISIBLE);
+                        }
+                    }, 1500);
+
+                }
+            }
+        });
 
         unit_price.setText(formatNumberV2(temp_price));
         quantity.setText(formatNumberV2(temp_quantity));
         unit.setText(temp_unit.trim());
-
-        date.setText(String.format("%s, %s %s", temp_day, temp_month, temp_year));
+        day.setText(temp_day);
+        date.setText(temp_month +", "+ temp_year);
         time.setText(temp_time);
 
 
@@ -1313,7 +1369,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
             FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
             String email = firebaseUser.getEmail().trim();
             getDateNdTime();
-            String path = email + "#" + day + "#" + month + "#" + year + "#" + fullTimeWithSeconds;
+            String path = email+day+month+year+fullTimeWithSeconds+".jpg";
 
             StorageReference imageRef = storageReference.child(path);
 
@@ -1326,8 +1382,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    String url = taskSnapshot.getStorage().getDownloadUrl().toString();
-                    db.updatePhoto(temp_category, temp_item, url);
+                    db.updatePhoto(temp_category, temp_item, path);
                 }
             });
 
