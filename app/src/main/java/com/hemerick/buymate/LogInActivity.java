@@ -16,7 +16,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.cardview.widget.CardView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -251,15 +250,6 @@ public class LogInActivity extends AppCompatActivity {
     }
 
     private void updateView() {
-        if (settings.getCustomTheme().equals(UserSettings.LIGHT_THEME)) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-
-        }
-
-        if (settings.getCustomTheme().equals(UserSettings.DARK_THEME)) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-
-        }
 
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
@@ -309,8 +299,6 @@ public class LogInActivity extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
 
-        String theme = sharedPreferences.getString(UserSettings.CUSTOM_THEME, UserSettings.LIGHT_THEME);
-        settings.setCustomTheme(theme);
 
         String textSize = sharedPreferences.getString(UserSettings.CUSTOM_TEXT_SIZE, UserSettings.TEXT_MEDIUM);
         settings.setCustomTextSize(textSize);

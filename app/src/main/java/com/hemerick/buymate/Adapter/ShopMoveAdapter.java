@@ -14,7 +14,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.hemerick.buymate.Database.Firebase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.hemerick.buymate.Database.ShopDatabase;
 import com.hemerick.buymate.Database.UserSettings;
 import com.hemerick.buymate.HomeActivity;
@@ -31,7 +32,6 @@ public class ShopMoveAdapter extends RecyclerView.Adapter<ShopMoveAdapter.MyMove
     ShopDatabase db;
     ItemActivity itemActivity;
     UserSettings settings;
-    Firebase firebase;
 
 
     public ShopMoveAdapter(Context context, UserSettings settings, ArrayList<String> items, String category, ItemActivity itemActivity) {
@@ -41,7 +41,6 @@ public class ShopMoveAdapter extends RecyclerView.Adapter<ShopMoveAdapter.MyMove
         this.itemActivity = itemActivity;
         this.settings = settings;
         db = new ShopDatabase(context.getApplicationContext());
-        firebase = new Firebase(context);
     }
 
     public void setFilterList(ArrayList<String> filterList) {
@@ -117,6 +116,31 @@ public class ShopMoveAdapter extends RecyclerView.Adapter<ShopMoveAdapter.MyMove
                 }
                 res2.close();
 
+                String photo_url = null;
+                res = db.getPhotourl(previousCategory, currentItem);
+                while (res.moveToNext()) {
+                    photo_url = res.getString(12);
+                }
+                res.close();
+
+                if (!photo_url.trim().isEmpty()) {
+
+                    db.updatePhoto(previousCategory, currentItem, " ");
+
+                    ArrayList<String> total_url = new ArrayList<>();
+                    res = db.getCategory(context);
+                    while (res.moveToNext()) {
+                        total_url.add(res.getString(12));
+                    }
+                    res.close();
+
+                    if (!total_url.contains(photo_url)) {
+                        FirebaseStorage storage = FirebaseStorage.getInstance();
+                        StorageReference storageReference = storage.getReference().child(photo_url);
+                        storageReference.delete();
+                    }
+                }
+
                 db.deleteItem(previousCategory, currentItem);
                 db.insertItem(selectedCategory, newItem, status, temp_price, temp_month, temp_year, temp_day, temp_time, temp_quantity, unit);
                 db.updateFavourites(selectedCategory, newItem, temp_fav);
@@ -125,7 +149,6 @@ public class ShopMoveAdapter extends RecyclerView.Adapter<ShopMoveAdapter.MyMove
 
             } else {
                 db.moveItem(previousCategory, selectedCategory, currentItem);
-                firebase.moveItem(previousCategory, selectedCategory, currentItem);
                 itemActivity.removeItem(currentItem);
             }
         }

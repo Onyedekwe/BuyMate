@@ -29,7 +29,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 
-import com.hemerick.buymate.Database.Firebase;
 import com.hemerick.buymate.Database.ShopDatabase;
 import com.hemerick.buymate.Database.UserSettings;
 
@@ -53,7 +52,7 @@ public class UpdateNoteActivity extends AppCompatActivity {
     ArrayList<String> itemCheck;
     LinearLayout full_layout;
     ShopDatabase db;
-    Firebase firebase;
+
     private UserSettings settings;
     private PowerManager.WakeLock wakeLock;
 
@@ -77,7 +76,6 @@ public class UpdateNoteActivity extends AppCompatActivity {
         itemCheck = new ArrayList<>();
 
         db = new ShopDatabase(UpdateNoteActivity.this);
-        firebase = new Firebase(UpdateNoteActivity.this);
 
         Bundle extras = getIntent().getExtras();
         if (extras == null) {
@@ -316,7 +314,6 @@ public class UpdateNoteActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     db.deleteNote(heading_box.getText().toString(), content_box.getText().toString());
-                    firebase.deleteNote(heading_box.getText().toString(), content_box.getText().toString());
                     UpdateNoteActivity.super.onBackPressed();
                 }
             });

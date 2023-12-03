@@ -115,6 +115,7 @@ public class UserSettings extends Application {
     public String getIsAuthenticated() {
         return isAuthenticated;
     }
+
     public void setIsAuthenticated(String isAuthenticated) {
         this.isAuthenticated = isAuthenticated;
     }
@@ -122,7 +123,6 @@ public class UserSettings extends Application {
     public static final String USER_NAME = "userName";
     public static final String USER_NAME_NOT_SET = "userNameNotSet";
     private String username;
-
 
 
     private Boolean isFirstStart = true;
@@ -151,10 +151,6 @@ public class UserSettings extends Application {
 
     private String currency;
     private String password;
-
-
-
-
 
 
     public static void setGridLayoutEnabled(Context context, boolean enabled) {

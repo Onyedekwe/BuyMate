@@ -24,11 +24,11 @@
         <item name="colorSurface">@color/white</item>
         <item name="trackColor">#EFEDED</item>
         <item name="colorError">@color/light_red</item>
-        <item name="textFillColor">#52616E</item>
+        <item name="textFillColor">#37414A</item>
         <item name="android:shadowColor">#E8F1F5</item>
         <item name="color">#F6F9F9</item>
         <item name="colorControlHighlight">#A2D1E6</item>
-        <item name="iconTint">#868B8F</item>
+        <item name="iconTint">#787C80</item>
         <item name="buttonTint">?attr/colorPrimary</item>
         <item name="itemTextAppearanceInactive">@color/inactive_text_color_dark</item>
     </style>

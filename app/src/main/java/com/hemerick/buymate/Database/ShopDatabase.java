@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class ShopDatabase extends SQLiteOpenHelper {
     private final UserSettings settings = new UserSettings();
+
     public ShopDatabase(Context context) {
         super(context, "ShopDatabase", null, 1);
     }

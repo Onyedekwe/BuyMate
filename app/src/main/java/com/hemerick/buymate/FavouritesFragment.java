@@ -107,7 +107,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
     TextView currency_textbox;
 
     ItemTouchHelper itemTouchHelper;
-    ExtendedFloatingActionButton fab;
+    Button fab;
 
     Calendar calendar;
     Date date;
@@ -132,6 +132,8 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
 
     ArrayList<String> selectList;
     ArrayList<String> selectListCategory;
+
+    ProgressBar main_progress_bar;
 
     FirebaseAuth firebaseAuth;
     FirebaseStorage firebaseStorage;
@@ -198,6 +200,8 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
         adapter = new ShopFavouritesAdapter(context, settings, category, itemFavourites, this, FavouritesFragment.this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
+
+        main_progress_bar = rootView.findViewById(R.id.progress_bar);
 
         empty_text1 = rootView.findViewById(R.id.empty_text1);
         empty_text2 = rootView.findViewById(R.id.empty_text2);
@@ -511,7 +515,31 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                                     itemFavourites.remove(finalSelectList.get(i));
                                     category.remove(finalSelectListCategory.get(i));
                                     adapter.notifyDataSetChanged();
+
+                                    String photo_url = null;
+                                    Cursor res = db.getPhotourl(selectListCategory.get(i), selectList.get(i));
+                                    while (res.moveToNext()) {
+                                        photo_url = res.getString(12);
+                                    }
+
+                                    if (!photo_url.trim().isEmpty()) {
+                                        db.updatePhoto(selectListCategory.get(i), selectList.get(i), " ");
+
+                                        ArrayList<String> total_url = new ArrayList<>();
+                                        res = db.getCategory(context);
+                                        while (res.moveToNext()) {
+                                            total_url.add(res.getString(12));
+                                        }
+                                        res.close();
+
+                                        if (!total_url.contains(photo_url)) {
+                                            FirebaseStorage storage = FirebaseStorage.getInstance();
+                                            StorageReference storageReference = storage.getReference().child(photo_url);
+                                            storageReference.delete();
+                                        }
+                                    }
                                     db.deleteItem(selectListCategory.get(i), selectList.get(i));
+
                                     getSum();
                                 }
 
@@ -940,39 +968,38 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
-                if(!finalPhotourl.trim().isEmpty()){
+                if (!finalPhotourl.trim().isEmpty()) {
 
                     progressBar.setVisibility(View.VISIBLE);
 
+                    FirebaseStorage storage = FirebaseStorage.getInstance();
+                    StorageReference storageReference = storage.getReference();
+                    StorageReference imageRef = storageReference.child(finalPhotourl);
+                    try {
+                        final File localFile = File.createTempFile(finalPhotourl, "jpg");
+                        imageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                                itemImage.setImageBitmap(bitmap);
+                                itemImage.setVisibility(View.VISIBLE);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(context, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                itemImage.setImageResource(R.drawable.final_image_not_found_icon);
+                            }
+                        });
+                    } catch (Exception ex) {
+                        Toast.makeText(context, "Error: " + ex.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-
-                            FirebaseStorage storage = FirebaseStorage.getInstance();
-                            StorageReference storageReference = storage.getReference();
-                            StorageReference imageRef = storageReference.child(finalPhotourl);
-                            try{
-                                final File localFile = File.createTempFile(finalPhotourl, "jpg");
-                                imageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                                    @Override
-                                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                        Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-                                        itemImage.setImageBitmap(bitmap);
-                                        itemImage.setVisibility(View.VISIBLE);
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(context, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
-                                        itemImage.setImageResource(R.drawable.final_image_not_found_icon);
-                                    }
-                                });
-                            }catch (Exception ex){
-                                Toast.makeText(context, "Error: "+ex.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
                             progressBar.setVisibility(View.INVISIBLE);
                         }
-                    }, 1500);
+                    }, 3000);
 
                 }
             }
@@ -982,7 +1009,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
         quantity.setText(formatNumberV2(temp_quantity));
         unit.setText(temp_unit.trim());
         day.setText(temp_day);
-        date.setText(temp_month +", "+ temp_year);
+        date.setText(temp_month + ", " + temp_year);
         time.setText(temp_time);
 
 
@@ -1358,33 +1385,65 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if ((requestCode == CAMERA_REQUEST) && (resultCode == Activity.RESULT_OK)) {
+            recyclerView.setClickable(false);
+            main_progress_bar.setVisibility(View.VISIBLE);
 
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-            byte[] imageData = stream.toByteArray();
-
-
-            FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-            String email = firebaseUser.getEmail().trim();
-            getDateNdTime();
-            String path = email+day+month+year+fullTimeWithSeconds+".jpg";
-
-            StorageReference imageRef = storageReference.child(path);
-
-            UploadTask uploadTask = imageRef.putBytes(imageData);
-            uploadTask.addOnFailureListener(new OnFailureListener() {
+            new Handler().postDelayed(new Runnable() {
                 @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(context, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                public void run() {
+                    Bundle extras = data.getExtras();
+                    Bitmap imageBitmap = (Bitmap) extras.get("data");
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                    byte[] imageData = stream.toByteArray();
+
+
+                    FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                    String email = firebaseUser.getEmail().trim();
+                    getDateNdTime();
+                    String path = email + day + month + year + fullTimeWithSeconds + ".jpg";
+
+                    StorageReference imageRef = storageReference.child(path);
+
+                    UploadTask uploadTask = imageRef.putBytes(imageData);
+                    uploadTask.addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(context, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                            String old_url = null;
+                            Cursor res = db.getPhotourl(temp_category, temp_item);
+                            while (res.moveToNext()) {
+                                old_url = res.getString(12);
+                            }
+
+                            db.updatePhoto(temp_category, temp_item, path);
+
+                            ArrayList<String> total_url = new ArrayList<>();
+
+                            res = db.getCategory(context);
+                            while (res.moveToNext()) {
+                                total_url.add(res.getString(12));
+                            }
+                            res.close();
+
+                            if (!total_url.contains(old_url)) {
+                                FirebaseStorage storage = FirebaseStorage.getInstance();
+                                StorageReference storageReference = storage.getReference().child(old_url);
+                                storageReference.delete();
+                            }
+                            recyclerView.setClickable(true);
+                            main_progress_bar.setVisibility(View.INVISIBLE);
+
+                        }
+                    });
                 }
-            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    db.updatePhoto(temp_category, temp_item, path);
-                }
-            });
+            }, 3000);
+
 
         }
 
@@ -2084,6 +2143,30 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
             @Override
             public void onClick(View v) {
                 db = new ShopDatabase(adapter.getContext());
+
+                String photo_url = null;
+                Cursor res = db.getPhotourl(adapter.getCateName(position), itemFavourites.get(position));
+                while (res.moveToNext()) {
+                    photo_url = res.getString(12);
+                }
+
+                if (!photo_url.trim().isEmpty()) {
+                    db.updatePhoto(adapter.getCateName(position), itemFavourites.get(position), " ");
+
+                    ArrayList<String> total_url = new ArrayList<>();
+                    res = db.getCategory(context);
+                    while (res.moveToNext()) {
+                        total_url.add(res.getString(12));
+                    }
+                    res.close();
+
+                    if (!total_url.contains(photo_url)) {
+                        FirebaseStorage storage = FirebaseStorage.getInstance();
+                        StorageReference storageReference = storage.getReference().child(photo_url);
+                        storageReference.delete();
+                    }
+                }
+
                 db.deleteItem(adapter.getCateName(position), itemFavourites.get(position));
                 category.remove(position);
                 itemFavourites.remove(position);

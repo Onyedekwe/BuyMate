@@ -58,8 +58,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.hemerick.buymate.Adapter.ShopCategoryAdapter;
-import com.hemerick.buymate.Database.Firebase;
 import com.hemerick.buymate.Database.ShopDatabase;
 import com.hemerick.buymate.Database.UserSettings;
 
@@ -79,7 +80,6 @@ import io.github.muddz.styleabletoast.StyleableToast;
 public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNoteListener {
     Context context = getContext();
     ShopDatabase db;
-    Firebase firebase;
     ArrayList<String> category_list;
     ArrayList<String> itemCheck;
     ArrayList<String> priceCheck;
@@ -267,7 +267,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
             }
         });
         db = new ShopDatabase(context);
-        firebase = new Firebase(context);
+
         category_list = new ArrayList<>();
         itemCheck = new ArrayList<>();
         priceCheck = new ArrayList<>();
@@ -499,8 +499,41 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                         @Override
                         public void onClick(View v) {
                             for (int i = 0; i < finalSelectList.size(); i++) {
+
+                                ArrayList<String> total_items = new ArrayList<>();
+                                Cursor res = db.getItems(finalSelectList.get(i), context);
+                                while (res.moveToNext()) {
+                                    total_items.add(res.getString(2));
+                                }
+
+                                String old_url = null;
+                                for (int j = 0; j < total_items.size(); j++) {
+
+                                    res = db.getPhotourl(finalSelectList.get(i), total_items.get(j));
+                                    while (res.moveToNext()) {
+                                        old_url = res.getString(12);
+                                    }
+                                    db.updatePhoto(finalSelectList.get(i), total_items.get(j), " ");
+
+
+                                    ArrayList<String> total_url = new ArrayList<>();
+                                    res = db.getCategory(context);
+                                    while (res.moveToNext()) {
+                                        total_url.add(res.getString(12));
+                                    }
+                                    res.close();
+
+                                    if (!total_url.contains(old_url)) {
+                                        FirebaseStorage storage = FirebaseStorage.getInstance();
+                                        StorageReference storageReference = storage.getReference().child(old_url);
+                                        storageReference.delete();
+                                    }
+
+
+                                }
+
                                 category_list.remove(finalSelectList.get(i));
-                                db.deleteCategory(selectList.get(i));
+                                db.deleteCategory(finalSelectList.get(i));
                                 StyleableToast.makeText(context, "List Deleted", R.style.custom_toast).show();
                             }
                             adapter.disableSelection();
@@ -917,6 +950,44 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
             public void onClick(View v) {
                 String temp = adapter.getItemName(position);
                 db = new ShopDatabase(context);
+
+
+                ArrayList<String> total_items = new ArrayList<>();
+                Cursor res = db.getItems(temp, context);
+                while (res.moveToNext()) {
+                    total_items.add(res.getString(2));
+                }
+
+                String old_url = null;
+                for (int j = 0; j < total_items.size(); j++) {
+
+                    res = db.getPhotourl(temp, total_items.get(j));
+                    while (res.moveToNext()) {
+                        old_url = res.getString(12);
+                    }
+                    db.updatePhoto(temp, total_items.get(j), " ");
+
+
+                    ArrayList<String> total_url = new ArrayList<>();
+                    res = db.getCategory(context);
+                    while (res.moveToNext()) {
+                        total_url.add(res.getString(12));
+                    }
+                    res.close();
+
+                    if (!total_url.contains(old_url)) {
+                        FirebaseStorage storage = FirebaseStorage.getInstance();
+                        StorageReference storageReference = storage.getReference().child(old_url);
+                        storageReference.delete();
+                    }
+
+
+                }
+
+                category_list.remove(temp);
+                db.deleteCategory(temp);
+
+
                 db.deleteCategory(temp);
                 adapter.refreshRemoved(position);
                 adapter.notifyItemRemoved(position);
@@ -1466,7 +1537,6 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         String finalQuantity = formatNumberV2(quantity);
 
         db.insertItem(category, description, status, finalPrice, month, year, day, time, finalQuantity, unit);
-        firebase.insertNewData(category, description, status, finalPrice, month, year, day, time, finalQuantity, unit);
 
         UserSettings settings = (UserSettings) getActivity().getApplication();
         settings.setFirstStart(false);

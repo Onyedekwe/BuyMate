@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.ShoppingList" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#00A8E6</item>
+        <item name="colorPrimary">#00A8FA</item>
         <item name="colorPrimaryVariant">#0096CC</item>
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorAccent">?attr/colorPrimary</item>
@@ -23,11 +23,11 @@
         <item name="colorSurface">#424D52</item>
         <item name="trackColor">#6E7780</item>
         <item name="colorError">@color/light_red</item>
-        <item name="textFillColor">#f5f5f5</item>
+        <item name="textFillColor">#FFFFFF</item>
         <item name="android:shadowColor">#3A4447</item>
         <item name="color">#3C464A</item>
         <item name="colorControlHighlight">#6B8A99</item>
-        <item name="iconTint">#f5f5f5</item>
+        <item name="iconTint">#FFFFFF</item>
         <item name="buttonTint">?attr/colorPrimary</item>
         <item name="itemTextAppearanceInactive">@color/inactive_text_color</item>
     </style>

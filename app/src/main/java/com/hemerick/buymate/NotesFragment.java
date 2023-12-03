@@ -20,7 +20,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -307,15 +306,6 @@ public class NotesFragment extends Fragment implements ShopNotesAdapter.OnNoteLi
     }
 
     private void updateView() {
-        if (settings.getCustomTheme().equals(UserSettings.LIGHT_THEME)) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-
-        }
-
-        if (settings.getCustomTheme().equals(UserSettings.DARK_THEME)) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-
-        }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
             searchEditText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));

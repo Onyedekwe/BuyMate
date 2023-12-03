@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -88,15 +87,6 @@ public class HomeActivity extends AppCompatActivity {
 
     @SuppressLint("ResourceType")
     private void updateView() {
-        if (settings.getCustomTheme().equals(UserSettings.LIGHT_THEME)) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-
-        }
-
-        if (settings.getCustomTheme().equals(UserSettings.DARK_THEME)) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-
-        }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
             bottomNavigationView.setItemTextAppearanceActive(androidx.appcompat.R.style.Base_TextAppearance_AppCompat_Caption);

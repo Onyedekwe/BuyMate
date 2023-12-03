@@ -120,6 +120,7 @@
           android:textColor="?attr/colorOnSurface"
           app:endIconMode="password_toggle"
           app:endIconTint="?attr/iconTint"
+          app:endIconDrawable="@drawable/bg_eye_icon"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@id/email_box_parent">
@@ -145,6 +146,7 @@
           android:textColor="?attr/colorOnSurface"
           app:endIconMode="password_toggle"
           app:endIconTint="?attr/iconTint"
+          app:endIconDrawable="@drawable/bg_eye_icon"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@id/password_box_parent">

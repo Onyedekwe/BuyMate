@@ -48,7 +48,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -70,7 +69,6 @@ import com.hemerick.buymate.Adapter.RecyclerViewItemTouchHelper;
 import com.hemerick.buymate.Adapter.ShopCopyAdapter;
 import com.hemerick.buymate.Adapter.ShopItemAdapter;
 import com.hemerick.buymate.Adapter.ShopMoveAdapter;
-import com.hemerick.buymate.Database.Firebase;
 import com.hemerick.buymate.Database.ShopDatabase;
 import com.hemerick.buymate.Database.UserSettings;
 
@@ -98,12 +96,11 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
     ShopItemAdapter shopItemAdapter;
     ShopMoveAdapter shopMoveAdapter;
     ShopCopyAdapter shopCopyAdapter;
-    ExtendedFloatingActionButton fab;
+    Button fab;
     ItemTouchHelper itemTouchHelper;
     ArrayList<String> Items_Prices_List;
     ArrayList<String> Items_Quantities_List;
     ShopDatabase db;
-    Firebase firebase;
     TextView Total_Summation_Textbox;
     TextView Items_list_size_textbox;
     TextView currency_textbox;
@@ -130,6 +127,8 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
     ArrayList<String> filter;
     private UserSettings settings;
     private PowerManager.WakeLock wakeLock;
+
+    ProgressBar main_progress_bar;
 
     FirebaseAuth firebaseAuth;
     FirebaseStorage firebaseStorage;
@@ -177,6 +176,8 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
         currency_textbox = findViewById(R.id.currency_box);
 
+        main_progress_bar = findViewById(R.id.progress_bar);
+
         //configure the recyclerview
         recyclerView = findViewById(R.id.items_recyclerView);
         shopItemAdapter = new ShopItemAdapter(this, settings, Items, this, category, ItemActivity.this);
@@ -203,7 +204,6 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
         //configure other necessary items
         db = new ShopDatabase(this);
-        firebase = new Firebase(this);
 
         eyeView = findViewById(R.id.eyeView);
         eyeView.setOnClickListener(new View.OnClickListener() {
@@ -326,6 +326,31 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                         @Override
                         public void onClick(View v) {
                             for (String s : finalSelectList) {
+
+                                String photo_url = null;
+                                Cursor res = db.getPhotourl(category, s);
+                                while (res.moveToNext()) {
+                                    photo_url = res.getString(12);
+                                }
+                                res.close();
+
+                                if (!photo_url.trim().isEmpty()) {
+                                    db.updatePhoto(category, s, " ");
+
+                                    ArrayList<String> total_url = new ArrayList<>();
+                                    res = db.getCategory(ItemActivity.this);
+                                    while (res.moveToNext()) {
+                                        total_url.add(res.getString(12));
+                                    }
+                                    res.close();
+
+                                    if (!total_url.contains(photo_url)) {
+                                        FirebaseStorage storage = FirebaseStorage.getInstance();
+                                        StorageReference storageReference = storage.getReference().child(photo_url);
+                                        storageReference.delete();
+                                    }
+                                }
+
                                 db.deleteItem(category, s);
                                 Items.remove(s);
                             }
@@ -942,7 +967,6 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         String finalQuantity = formatNumberV2(quantity);
 
         db.insertItem(category, description, status, finalPrice, month, year, day, time, finalQuantity, unit);
-        firebase.insertNewData(category, description, status, finalPrice, month, year, day, time, finalQuantity, unit);
         Items.add(description);
         shopItemAdapter.notifyDataSetChanged();
         getsum();
@@ -1194,52 +1218,63 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if ((requestCode == CAMERA_REQUEST) && (resultCode == Activity.RESULT_OK)) {
+            recyclerView.setClickable(false);
+            main_progress_bar.setVisibility(View.VISIBLE);
 
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-            byte[] imageData = stream.toByteArray();
-
-
-            FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-            String email = firebaseUser.getEmail().trim();
-            getDateNdTime();
-            String path = email+day+month+year+fullTimeWithSeconds+".jpg";
-
-            StorageReference imageRef = storageReference.child(path);
-
-            UploadTask uploadTask = imageRef.putBytes(imageData);
-            uploadTask.addOnFailureListener(new OnFailureListener() {
+            new Handler().postDelayed(new Runnable() {
                 @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(ItemActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                public void run() {
+                    Bundle extras = data.getExtras();
+                    Bitmap imageBitmap = (Bitmap) extras.get("data");
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                    byte[] imageData = stream.toByteArray();
+
+
+                    FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                    String email = firebaseUser.getEmail().trim();
+                    getDateNdTime();
+                    String path = email + day + month + year + fullTimeWithSeconds + ".jpg";
+
+                    StorageReference imageRef = storageReference.child(path);
+
+                    UploadTask uploadTask = imageRef.putBytes(imageData);
+                    uploadTask.addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(ItemActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            String old_url = null;
+                            Cursor res = db.getPhotourl(category, temp_item);
+                            while (res.moveToNext()) {
+                                old_url = res.getString(12);
+                            }
+
+                            db.updatePhoto(category, temp_item, path);
+
+                            ArrayList<String> total_url = new ArrayList<>();
+
+                            res = db.getCategory(ItemActivity.this);
+                            while (res.moveToNext()) {
+                                total_url.add(res.getString(12));
+                            }
+                            res.close();
+
+                            if (!total_url.contains(old_url)) {
+                                FirebaseStorage storage = FirebaseStorage.getInstance();
+                                StorageReference storageReference = storage.getReference().child(old_url);
+                                storageReference.delete();
+                            }
+                            recyclerView.setClickable(true);
+                            main_progress_bar.setVisibility(View.GONE);
+                        }
+                    });
                 }
-            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    String old_url = null;
-                    Cursor res = db.getPhotourl(category, temp_item);
-                    while (res.moveToNext()){
-                      old_url = res.getString(12);
-                    }
+            }, 3000);
 
-                    db.updatePhoto(category, temp_item, path);
-
-                    ArrayList<String> total_url = new ArrayList<>();
-
-                    res = db.getCategory(ItemActivity.this);
-                    while (res.moveToNext()){
-                        total_url.add(res.getString(12));
-                    }res.close();
-
-                    if(!total_url.contains(old_url)){
-                        FirebaseStorage storage = FirebaseStorage.getInstance();
-                        StorageReference storageReference =  storage.getReference().child(old_url);
-                        storageReference.delete();
-                    }
-                }
-            });
 
         }
 
@@ -1294,7 +1329,6 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                 if (!newName.isEmpty()) {
                     if (!Items_Check.contains(newName)) {
                         boolean checkEditData = db.updateItem(category, newName, prevName);
-                        firebase.updateItemName(category.trim(), newName.trim(), prevName.trim());
                         if (!checkEditData) {
                             Toast.makeText(shopItemAdapter.getContext(), getString(R.string.rename_fail), Toast.LENGTH_SHORT).show();
                         } else {
@@ -1370,7 +1404,6 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                 if (!priceValue.getText().toString().trim().isEmpty()) {
                     String NewPrice = priceValue.getText().toString().trim();
                     db.updatePrice(category, description, NewPrice);
-                    firebase.updatePrice(category, description, NewPrice);
                     Toast.makeText(ItemActivity.this, getString(R.string.price_change_success), Toast.LENGTH_SHORT).show();
                     shopItemAdapter.notifyItemChanged(position);
                     getsum();
@@ -1450,7 +1483,6 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                     String NewQuantity = quantityValue.getText().toString().trim();
                     String NewUnit = unitText.getText().toString().trim();
                     db.updateQuantity(category, description, NewQuantity, NewUnit);
-                    firebase.updateQuantity(category, description, NewQuantity, NewUnit);
                     Toast.makeText(ItemActivity.this, getString(R.string.quantity_change_success), Toast.LENGTH_SHORT).show();
                     shopItemAdapter.notifyItemChanged(position);
                     getsum();
@@ -1518,8 +1550,32 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             public void onClick(View v) {
                 String temp = shopItemAdapter.getItemName(position);
                 db = new ShopDatabase(ItemActivity.this);
+
+                String photo_url = null;
+                Cursor res = db.getPhotourl(category, temp);
+                while (res.moveToNext()) {
+                    photo_url = res.getString(12);
+                }
+                res.close();
+
+                if (!photo_url.trim().isEmpty()) {
+                    db.updatePhoto(category, temp, " ");
+
+                    ArrayList<String> total_url = new ArrayList<>();
+                    res = db.getCategory(ItemActivity.this);
+                    while (res.moveToNext()) {
+                        total_url.add(res.getString(12));
+                    }
+                    res.close();
+
+                    if (!total_url.contains(photo_url)) {
+                        FirebaseStorage storage = FirebaseStorage.getInstance();
+                        StorageReference storageReference = storage.getReference().child(photo_url);
+                        storageReference.delete();
+                    }
+                }
+
                 db.deleteItem(category, temp);
-                firebase.deleteItem(category, temp);
                 shopItemAdapter.refreshRemoved(position);
                 shopItemAdapter.notifyItemRemoved(position);
                 shopItemAdapter.checkEmpty();
@@ -1671,46 +1727,44 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
-                if(!finalPhotourl.trim().isEmpty()){
+                if (!finalPhotourl.trim().isEmpty()) {
 
                     progressBar.setVisibility(View.VISIBLE);
+
+                    FirebaseStorage storage = FirebaseStorage.getInstance();
+                    StorageReference storageReference = storage.getReference();
+                    StorageReference imageRef = storageReference.child(finalPhotourl);
+                    try {
+                        final File localFile = File.createTempFile(finalPhotourl, "jpg");
+                        imageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                                itemImage.setImageBitmap(bitmap);
+                                itemImage.setVisibility(View.VISIBLE);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(ItemActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                itemImage.setImageResource(R.drawable.final_image_not_found_icon);
+                            }
+                        });
+                    } catch (Exception ex) {
+                        Toast.makeText(ItemActivity.this, "Error: " + ex.getMessage(), Toast.LENGTH_SHORT).show();
+                        itemImage.setImageResource(R.drawable.final_image_not_found_icon);
+                    }
 
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-
-                            FirebaseStorage storage = FirebaseStorage.getInstance();
-                            StorageReference storageReference = storage.getReference();
-                            StorageReference imageRef = storageReference.child(finalPhotourl);
-                            try{
-                                final File localFile = File.createTempFile(finalPhotourl, "jpg");
-                                imageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                                    @Override
-                                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                        Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-                                        itemImage.setImageBitmap(bitmap);
-                                        itemImage.setVisibility(View.VISIBLE);
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(ItemActivity.this, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
-                                        itemImage.setImageResource(R.drawable.final_image_not_found_icon);
-                                    }
-                                });
-                            }catch (Exception ex){
-                                Toast.makeText(ItemActivity.this, "Error: "+ex.getMessage(), Toast.LENGTH_SHORT).show();
-                                itemImage.setImageResource(R.drawable.final_image_not_found_icon);
-                            }
                             progressBar.setVisibility(View.INVISIBLE);
                         }
-                    }, 1500);
+                    }, 3000);
 
                 }
             }
         });
-
-
 
 
         unit_price.setText(formatNumberV2(temp_price));
@@ -1718,7 +1772,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
         unit.setText(temp_unit.trim());
         day.setText(temp_day);
-        date.setText(temp_month +", "+ temp_year);
+        date.setText(temp_month + ", " + temp_year);
         time.setText(temp_time);
 
         if (settings.getIsMultiplyDisabled().equals(UserSettings.NO_MULTIPLY_NOT_DISABLED)) {
@@ -1752,13 +1806,11 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                 if (temp_fav == 1) {
                     favouritesIcon.setImageResource(R.drawable.final_star_icon);
                     db.updateFavourites(category, temp, 0);
-                    firebase.updateFavourites(category, temp, 0);
                     Toast.makeText(getApplicationContext(), R.string.removed_from_starred, Toast.LENGTH_SHORT).show();
 
                 } else {
                     favouritesIcon.setImageResource(R.drawable.final_favourites_colored_icon);
                     db.updateFavourites(category, temp, 1);
-                    firebase.updateFavourites(category, temp, 1);
                     Toast.makeText(getApplicationContext(), R.string.added_to_starred, Toast.LENGTH_SHORT).show();
                 }
                 shopItemAdapter.notifyItemChanged(position);
@@ -1948,7 +2000,6 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                     if (!newName.isEmpty()) {
                         if (!Items_Check.contains(newName)) {
                             boolean checkEditData = db.updateCategory(newName, category);
-                            firebase.updateCategoryName(newName, category);
                             if (!checkEditData) {
                                 Toast.makeText(ItemActivity.this, R.string.rename_fail, Toast.LENGTH_SHORT).show();
                             } else {
@@ -2786,15 +2837,6 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
     }
 
     private void updateView() {
-        if (settings.getCustomTheme().equals(UserSettings.LIGHT_THEME)) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-
-        }
-
-        if (settings.getCustomTheme().equals(UserSettings.DARK_THEME)) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-
-        }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
             Total_Summation_Textbox.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
@@ -2842,8 +2884,6 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
         SharedPreferences sharedPreferences = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
 
-        String theme = sharedPreferences.getString(UserSettings.CUSTOM_THEME, UserSettings.LIGHT_THEME);
-        settings.setCustomTheme(theme);
 
         String textSize = sharedPreferences.getString(UserSettings.CUSTOM_TEXT_SIZE, UserSettings.TEXT_MEDIUM);
         settings.setCustomTextSize(textSize);
