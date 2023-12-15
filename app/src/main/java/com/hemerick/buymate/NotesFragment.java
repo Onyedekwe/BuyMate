@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -33,6 +34,8 @@ import com.hemerick.buymate.Database.ShopDatabase;
 import com.hemerick.buymate.Database.UserSettings;
 
 import java.util.ArrayList;
+
+import io.github.muddz.styleabletoast.StyleableToast;
 
 public class NotesFragment extends Fragment implements ShopNotesAdapter.OnNoteListener {
     Context context;
@@ -54,6 +57,7 @@ public class NotesFragment extends Fragment implements ShopNotesAdapter.OnNoteLi
     EditText searchEditText;
     ShopNotesAdapter shopNotesAdapter;
 
+    ImageView emptyImageView;
     TextView emptyTEXT1;
     TextView emptyTEXT2;
     TextView emptyTEXT3;
@@ -80,6 +84,7 @@ public class NotesFragment extends Fragment implements ShopNotesAdapter.OnNoteLi
         searchView = rootView.findViewById(R.id.search_View);
         searchEditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
 
+        emptyImageView = rootView.findViewById(R.id.empty);
         emptyTEXT1 = rootView.findViewById(R.id.emptyTEXT1);
         emptyTEXT2 = rootView.findViewById(R.id.emptyTEXT2);
         emptyTEXT3 = rootView.findViewById(R.id.emptyTEXT3);
@@ -186,7 +191,9 @@ public class NotesFragment extends Fragment implements ShopNotesAdapter.OnNoteLi
                                     emptyNotesLayout.setVisibility(View.VISIBLE);
                                 }
                             }
+                            StyleableToast.makeText(context, "Note Deleted", R.style.custom_toast).show();
                             shopNotesAdapter.disableSelection();
+                            searchEditText.setText("");
                             dialog.dismiss();
                         }
                     });
@@ -273,6 +280,7 @@ public class NotesFragment extends Fragment implements ShopNotesAdapter.OnNoteLi
     }
 
     private void filterList(String text) {
+
         ArrayList<String> filterList = new ArrayList<>();
         ArrayList<String> filterList2 = new ArrayList<>();
         ArrayList<String> filterList3 = new ArrayList<>();
@@ -296,6 +304,26 @@ public class NotesFragment extends Fragment implements ShopNotesAdapter.OnNoteLi
 
         }
         shopNotesAdapter.setFilterList(filterList, filterList2, filterList3);
+        emptyNotesLayout.setVisibility(View.GONE);
+        emptyTEXT1.setVisibility(View.GONE);
+        emptyTEXT2.setVisibility(View.GONE);
+        emptyTEXT3.setVisibility(View.GONE);
+        emptyTEXT1.setText("No note found");
+
+        if (filterList.isEmpty()) {
+            emptyImageView.setImageResource(R.drawable.illustration_no_search_data);
+            ViewGroup.LayoutParams params = emptyImageView.getLayoutParams();
+            params.width = 200;
+            params.height = 200;
+            emptyImageView.setLayoutParams(params);
+            emptyNotesLayout.setVisibility(View.VISIBLE);
+            emptyTEXT1.setVisibility(View.VISIBLE);
+            emptyTEXT2.setVisibility(View.GONE);
+            emptyTEXT3.setVisibility(View.GONE);
+            emptyTEXT1.setText("No note found");
+
+        }
+
     }
 
 
@@ -333,8 +361,6 @@ public class NotesFragment extends Fragment implements ShopNotesAdapter.OnNoteLi
     private void loadSharedPreferences() {
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
 
-        String theme = sharedPreferences.getString(UserSettings.CUSTOM_THEME, UserSettings.LIGHT_THEME);
-        settings.setCustomTheme(theme);
 
         String textSize = sharedPreferences.getString(UserSettings.CUSTOM_TEXT_SIZE, UserSettings.TEXT_MEDIUM);
         settings.setCustomTextSize(textSize);
@@ -342,4 +368,9 @@ public class NotesFragment extends Fragment implements ShopNotesAdapter.OnNoteLi
         updateView();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        db.close();
+    }
 }

@@ -14,10 +14,9 @@
 
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/backgroundColor</item>
-        <item name="android:navigationBarColor">#FCFAFA</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
-        <item name="android:fontFamily">@font/lexend</item>
 
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="fontFamily">@font/lexend</item>
 
         <!-- Customize your theme here. -->
         <item name="backgroundColor">#F1F5F5</item>
@@ -90,5 +89,6 @@
         top or center
         <item name="stRadius">25dp</item>
     </style>
+
 
 </resources>

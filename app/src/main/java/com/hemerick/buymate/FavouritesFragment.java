@@ -44,7 +44,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -790,7 +789,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
             for (int j = 0; j < category.size(); j++) {
                 Cursor res = db.getPrice(category.get(j), itemFavourites.get(j));
                 while (res.moveToNext()) {
-                    price = Integer.parseInt(res.getString(4));
+                    price = Double.parseDouble(res.getString(4));
                     sum.add(price);
                 }
             }
@@ -932,6 +931,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
 
         int temp_fav = 0;
         double temp_price = 0;
+        double unit_temp_price = 0;
         double temp_quantity = 0;
         String temp_unit = null;
 
@@ -1005,7 +1005,8 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
             }
         });
 
-        unit_price.setText(formatNumberV2(temp_price));
+        unit_price.setText(formatNumber(temp_price));
+        unit_temp_price = temp_price;
         quantity.setText(formatNumberV2(temp_quantity));
         unit.setText(temp_unit.trim());
         day.setText(temp_day);
@@ -1056,6 +1057,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
             }
         });
 
+        double finalUnit_temp_price = unit_temp_price;
         reduce.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1065,10 +1067,10 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
 
                 double check_quantity = Double.parseDouble(quantity.getText().toString());
                 if (check_quantity > 0) {
-                    if (unit_price.getText().toString().equals("")) {
+                    if (finalUnit_temp_price == 0.0) {
                         temp_price = 0;
                     } else {
-                        temp_price = Double.parseDouble(unit_price.getText().toString());
+                        temp_price = finalUnit_temp_price;
                     }
                     temp_quantity = check_quantity;
 
@@ -1107,12 +1109,10 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                 double temp_price;
                 double check_quantity = Double.parseDouble(quantity.getText().toString());
 
-
-                if (unit_price.getText().toString().equals("")) {
+                if (finalUnit_temp_price == 0.0) {
                     temp_price = 0;
-
                 } else {
-                    temp_price = Double.parseDouble(unit_price.getText().toString());
+                    temp_price = finalUnit_temp_price;
                 }
 
 
@@ -2016,6 +2016,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
         ArrayList<String> temp_favourites = new ArrayList<>();
         ArrayList<String> temp_price_list = new ArrayList<>();
         ArrayList<String> temp_quantity_list = new ArrayList<>();
+        ArrayList<String> unitCheck = new ArrayList<>();
 
         temp_category.addAll(category);
         temp_favourites.addAll(itemFavourites);
@@ -2026,27 +2027,41 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
             while (res.moveToNext()) {
                 temp_price_list.add(res.getString(4).trim());
                 temp_quantity_list.add(res.getString(9).trim());
+                unitCheck.add(" " + res.getString(11));
+
             }
             res.close();
         }
 
         double total = 0;
+        double PriceQuantityIndex;
         for (int i = 0; i < itemFavourites.size(); i++) {
             double priceIndex = Double.parseDouble(temp_price_list.get(i));
             double quantityIndex = Double.parseDouble(temp_quantity_list.get(i));
-            double PriceQuantityIndex = priceIndex * quantityIndex;
+            if (settings.getIsMultiplyDisabled().equals(UserSettings.NO_MULTIPLY_NOT_DISABLED)) {
+                PriceQuantityIndex = priceIndex * quantityIndex;
+            } else {
+                PriceQuantityIndex = priceIndex;
+            }
             total += PriceQuantityIndex;
 
+
+            result.append("\u25CF");
+            result.append(" " + itemFavourites.get(i));
+
             if (settings.getIsShareQuantityDisabled().equals(UserSettings.NO_SHARE_QUANTITY_NOT_DISABLED)) {
-                result.append(temp_quantity_list.get(i));
-            } else {
-                result.append("\u25CF");
+                if (Integer.parseInt(temp_quantity_list.get(i)) != 1) {
+                    if (!unitCheck.get(i).trim().isEmpty()) {
+                        result.append(" " + "[" + temp_quantity_list.get(i) + " " + unitCheck.get(i).trim() + "]");
+                    } else {
+                        result.append(" " + "[" + temp_quantity_list.get(i) + unitCheck.get(i).trim() + "]");
+                    }
+                }
             }
 
-            result.append("   " + itemFavourites.get(i));
 
             if (settings.getIsSharePriceDisabled().equals(UserSettings.NO_SHARE_PRICE_NOT_DISABLED)) {
-                result.append("   ").append(PriceQuantityIndex);
+                result.append("   ").append(formatNumber(PriceQuantityIndex));
             }
 
             result.append("\n\n");
@@ -2054,7 +2069,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
         }
 
         if (settings.getIsShareTotalDisabled().equals(UserSettings.NO_SHARE_TOTAL_NOT_DISABLED)) {
-            result.append("\n").append(getString(R.string.share_list_total)).append("       ").append(formatNumberV2(total));
+            result.append("\n").append(getString(R.string.share_list_total)).append("       ").append(formatNumber(total));
         }
 
         String items = result.toString();
@@ -2218,15 +2233,6 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
     }
 
     private void updateView() {
-        if (settings.getCustomTheme().equals(UserSettings.LIGHT_THEME)) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-
-        }
-
-        if (settings.getCustomTheme().equals(UserSettings.DARK_THEME)) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-
-        }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
             totalItems.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
@@ -2272,8 +2278,6 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
 
         SharedPreferences sharedPreferences = context.getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
 
-        String theme = sharedPreferences.getString(UserSettings.CUSTOM_THEME, UserSettings.LIGHT_THEME);
-        settings.setCustomTheme(theme);
 
         String textSize = sharedPreferences.getString(UserSettings.CUSTOM_TEXT_SIZE, UserSettings.TEXT_MEDIUM);
         settings.setCustomTextSize(textSize);
@@ -2306,5 +2310,11 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
         settings.setIsPriceDisabled(disablePrice);
 
         updateView();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        db.close();
     }
 }

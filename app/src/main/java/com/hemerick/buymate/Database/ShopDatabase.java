@@ -185,6 +185,7 @@ public class ShopDatabase extends SQLiteOpenHelper {
         @SuppressLint("Recycle") Cursor cursor = db.rawQuery("select * from ShopTable where category = ? AND description = ?", new String[]{category, description});
         if (cursor.getCount() > 0) {
             long result = db.delete("ShopTable", "category = ? AND description = ?", new String[]{category, description});
+            db.close();
         }
     }
 
@@ -193,14 +194,29 @@ public class ShopDatabase extends SQLiteOpenHelper {
         @SuppressLint("Recycle") Cursor cursor = db.rawQuery("select * from ShopTable where category = ?", new String[]{category});
         if (cursor.getCount() > 0) {
             long result = db.delete("ShopTable", "category = ?", new String[]{category});
+            db.close();
         }
     }
+
+    public void deleteAllList() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete("ShopTable", null, null);
+        db.close();
+    }
+
+    public void deleteAllNote() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete("NoteTable", null, null);
+        db.close();
+    }
+
 
     public void deleteNote(String heading, String content) {
         SQLiteDatabase db = this.getWritableDatabase();
         @SuppressLint("Recycle") Cursor cursor = db.rawQuery("select * from NoteTable where heading = ? AND content = ?", new String[]{heading, content});
         if (cursor.getCount() > 0) {
             long result = db.delete("NoteTable", "heading = ? AND content = ?", new String[]{heading, content});
+            db.close();
         }
     }
 

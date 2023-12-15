@@ -1,5 +1,6 @@
 <resources>
-    <string name="app_name">BuyMate</string>
+    <string name="app_name">Buymate</string>
+    <string name="app_version">1.0.1</string>
     <string name="default_web_client_id" translatable="false">401382920363-u289nhkse3o3fi2tevrq68m7oic9vaj6.apps.googleusercontent.com</string>
 
 
@@ -14,7 +15,7 @@
 
     //SettingsActivity
     <string name="settingsToolbar">Settings</string>
-    <string name="adsPaneText_1">Try BuyMate Premium</string>
+    <string name="adsPaneText_1">Try Buymate Premium</string>
     <string name="adsPaneText_2">Remove ads and enjoy more features</string>
     <string name="premium_icon_content_description">Premium Icon </string>
     <string name="header_1">GENERAL</string>

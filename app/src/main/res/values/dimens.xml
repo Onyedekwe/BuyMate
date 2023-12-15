@@ -9,4 +9,5 @@
     <dimen name="maxi_text">15sp</dimen>
     <dimen name="max_max_text">18sp</dimen>
     <dimen name="max_max_max_text">20sp</dimen>
+    <dimen name="max_max_max_max_text">25sp</dimen>
 </resources>

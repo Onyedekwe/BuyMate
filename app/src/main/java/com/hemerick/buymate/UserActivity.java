@@ -4,16 +4,21 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -35,8 +40,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.hemerick.buymate.Database.Firebase;
+import com.hemerick.buymate.Database.ShopDatabase;
 import com.hemerick.buymate.Database.UserSettings;
+import com.hemerick.buymate.NetworkUtils.Network;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 import io.github.muddz.styleabletoast.StyleableToast;
 
@@ -54,6 +66,10 @@ public class UserActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
 
     TextView prefix_text;
+
+    ShopDatabase db;
+
+    Firebase firebase;
 
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
@@ -74,6 +90,8 @@ public class UserActivity extends AppCompatActivity {
         });
 
         settings = new UserSettings();
+        db = new ShopDatabase(this);
+
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
 
@@ -117,7 +135,7 @@ public class UserActivity extends AppCompatActivity {
         logOutLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showLogoutDialog();
+                showLogoutWarningDialog();
             }
         });
 
@@ -254,6 +272,61 @@ public class UserActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    public void showLogoutWarningDialog() {
+        Dialog dialog = new Dialog(UserActivity.this);
+        dialog.setContentView(R.layout.custom_logout_warning_dialog);
+        dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        TextView header = dialog.findViewById(R.id.header);
+        TextView alertText = dialog.findViewById(R.id.alert_text);
+        Button backup = dialog.findViewById(R.id.backup);
+        TextView okBtn = dialog.findViewById(R.id.okBtn);
+
+        alertText.setText("Be sure to back up your data before you log out.");
+
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
+            header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            alertText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            backup.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            okBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+        }
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
+            header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            alertText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            backup.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            okBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+        }
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
+            header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            alertText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            backup.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            okBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+        }
+
+        backup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                Intent intent = new Intent(UserActivity.this, BackupActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        okBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                showLogoutDialog();
+            }
+        });
+
+        dialog.show();
+    }
+
     public void showLogoutDialog() {
         Dialog dialog = new Dialog(UserActivity.this);
         dialog.setContentView(R.layout.custom_alert_logout_dialog);
@@ -372,57 +445,133 @@ public class UserActivity extends AppCompatActivity {
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                progressBar.setVisibility(View.VISIBLE);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
 
-                        firebaseUser.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                StyleableToast.makeText(UserActivity.this, "Account deleted", R.style.custom_toast).show();
 
-                                settings.setIsAuthenticated(UserSettings.NOT_AUTHENTICATED);
-                                settings.setUsername("User");
+                if (Network.isNetworkAvailable(UserActivity.this)) {
+                    FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                    progressBar.setVisibility(View.VISIBLE);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
 
-                                SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
-                                editor.putString(UserSettings.IS_AUTHENTICATED, settings.getIsAuthenticated());
-                                editor.putString(UserSettings.USER_NAME, settings.getUsername());
-                                editor.apply();
+                            ArrayList<String> total_url = new ArrayList<>();
 
-                                progressBar.setVisibility(View.INVISIBLE);
+                            Cursor res = db.getCategory(UserActivity.this);
+                            while (res.moveToNext()) {
+                                total_url.add(res.getString(12));
+                            }
+                            res.close();
 
-                                Intent intent = new Intent(UserActivity.this, SignUpActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-
-                                GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(UserActivity.this);
-                                if (account != null) {
-                                    googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-
-                                        }
-                                    });
+                            for (String check : total_url) {
+                                if (!check.trim().isEmpty()) {
+                                    FirebaseStorage storage = FirebaseStorage.getInstance();
+                                    StorageReference storageReference = storage.getReference().child(check);
+                                    storageReference.delete();
                                 }
                             }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                progressBar.setVisibility(View.INVISIBLE);
-                                StyleableToast.makeText(UserActivity.this, "Error: " + e.getMessage(), R.style.custom_toast).show();
-                            }
-                        });
+                            firebase = new Firebase(UserActivity.this);
+                            firebase.deleteData();
 
-                    }
-                }, 2000);
+                            firebaseUser.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    StyleableToast.makeText(UserActivity.this, "Account deleted", R.style.custom_toast).show();
+
+                                    settings.setIsAuthenticated(UserSettings.NOT_AUTHENTICATED);
+                                    settings.setUsername("User");
+
+                                    SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
+                                    editor.putString(UserSettings.IS_AUTHENTICATED, settings.getIsAuthenticated());
+                                    editor.putString(UserSettings.USER_NAME, settings.getUsername());
+                                    editor.apply();
+
+                                    progressBar.setVisibility(View.INVISIBLE);
+
+                                    Intent intent = new Intent(UserActivity.this, SignUpActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intent);
+
+                                    GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(UserActivity.this);
+                                    if (account != null) {
+                                        googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+
+                                            }
+                                        });
+                                    }
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    progressBar.setVisibility(View.INVISIBLE);
+                                    StyleableToast.makeText(UserActivity.this, "Error: " + e.getMessage(), R.style.custom_toast).show();
+                                }
+                            });
+
+                        }
+                    }, 2000);
+                } else {
+                    showNoNetworkDialog();
+                }
 
             }
         });
 
 
         dialog.show();
+    }
+
+
+    public void showNoNetworkDialog() {
+        final Dialog dialog = new Dialog(UserActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.no_connection_layout);
+
+        TextView no_connection_Text1 = dialog.findViewById(R.id.no_connection_text_1);
+        TextView no_connection_Text2 = dialog.findViewById(R.id.no_connection_text_2);
+        TextView no_connection_Text3 = dialog.findViewById(R.id.no_connection_text_3);
+        Button try_again_btn = dialog.findViewById(R.id.try_again);
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
+
+            no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+
+        }
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
+
+            no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+        }
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
+
+            no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+
+        }
+
+
+        try_again_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
     private void updateView() {
@@ -492,5 +641,6 @@ public class UserActivity extends AppCompatActivity {
 
         updateView();
     }
+
 
 }

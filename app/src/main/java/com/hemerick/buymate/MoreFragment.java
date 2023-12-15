@@ -1,16 +1,20 @@
 package com.hemerick.buymate;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
@@ -21,8 +25,8 @@ import com.hemerick.buymate.Database.UserSettings;
 
 
 public class MoreFragment extends Fragment {
-    ConstraintLayout account_layout, message_layout, share_layout, rate_layout, about_layout, settings_layout, backup_layout;
-    TextView premium_text, premium_text2, account_text, login_subtext, message_text, share_text, rate_text, rate_text2, about_text, settings_text, backup_text;
+    ConstraintLayout account_layout, message_layout, share_layout, rate_layout, about_layout, premium_layout, settings_layout, backup_layout;
+    TextView premium_text, premium_text2, account_text, message_text, share_text, rate_text, rate_text2, premium_text_2, about_text, settings_text, backup_text;
 
     ImageView account_icon;
     UserSettings settings;
@@ -40,8 +44,8 @@ public class MoreFragment extends Fragment {
 
         premium_text = rootView.findViewById(R.id.premiumText);
         premium_text2 = rootView.findViewById(R.id.premiumText2);
+        premium_text_2 = rootView.findViewById(R.id.premiumText_2);
         account_text = rootView.findViewById(R.id.accountText);
-        login_subtext = rootView.findViewById(R.id.login_sub_text);
         message_text = rootView.findViewById(R.id.messageText);
         share_text = rootView.findViewById(R.id.shareText);
         rate_text = rootView.findViewById(R.id.RateText);
@@ -51,6 +55,29 @@ public class MoreFragment extends Fragment {
         backup_text = rootView.findViewById(R.id.backupText);
 
         account_icon = rootView.findViewById(R.id.account_icon);
+
+        share_layout = rootView.findViewById(R.id.shareLayout);
+        share_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String shareMessage = "Check out this awesome shopping app! I highly recommend it.\nDownload it on Google Play.";
+                String appLink = "https://play.google.com/store/apps/details?id=" + getContext().getPackageName();
+
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage + "\n" + appLink);
+                startActivity(Intent.createChooser(shareIntent, "Share via:"));
+            }
+        });
+        premium_layout = rootView.findViewById(R.id.premiumLayout);
+
+        premium_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), PremiumActivity.class);
+                startActivity(intent);
+            }
+        });
 
         rate_layout = rootView.findViewById(R.id.RateLayout);
         rate_layout.setOnClickListener(new View.OnClickListener() {
@@ -68,6 +95,41 @@ public class MoreFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+                if (firebaseAuth.getCurrentUser() != null) {
+                    FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+
+
+                    String[] app_email = new String[]{"hemerickservices@gmail.com"};
+
+                    String asterics = "*******";
+                    String subject = getString(R.string.app_name) + " Feedback";
+                    String email = firebaseUser.getEmail();
+                    String app_version = getString(R.string.app_version);
+
+                    String deviceInfo = asterics + "\n" +
+                            "Account Email: " + email + "\n" +
+                            "App Version: " + app_version + "\n" +
+                            "Device: " + Build.DEVICE + "\n" +
+                            "Model: " + Build.MODEL + "\n" +
+                            "Brand: " + Build.BRAND + "\n" +
+                            "OS Version: " + Build.VERSION.RELEASE + "\n" +
+                            "SDK Version: " + Build.VERSION.SDK_INT + "\n" +
+                            asterics + "\n";
+
+
+                    Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+                    emailIntent.setData(Uri.parse("mailto:"));
+                    emailIntent.putExtra(Intent.EXTRA_EMAIL, app_email);
+                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
+                    emailIntent.putExtra(Intent.EXTRA_TEXT, deviceInfo);
+                    if (emailIntent.resolveActivity(getContext().getPackageManager()) != null) {
+                        startActivity(emailIntent);
+                    } else {
+                        Toast.makeText(getContext(), "No email client found", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    showLogInWarningDialog();
+                }
             }
         });
 
@@ -75,6 +137,8 @@ public class MoreFragment extends Fragment {
         backup_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(getContext(), BackupActivity.class);
+                startActivity(intent);
 
             }
         });
@@ -106,17 +170,70 @@ public class MoreFragment extends Fragment {
 
 
         if (firebaseUser == null) {
-            account_text.setText("LOG IN");
-            login_subtext.setVisibility(View.VISIBLE);
-            account_icon.setImageResource(R.drawable.final_log_out_icon);
+            account_text.setText("Sign in");
+            account_icon.setImageResource(R.drawable.final_log_in_icon);
         } else {
             account_text.setText("Account");
-            login_subtext.setVisibility(View.GONE);
             account_icon.setImageResource(R.drawable.final_account_icon);
         }
 
         loadSharedPreferences();
         return rootView;
+    }
+
+    public void showLogInWarningDialog() {
+        Dialog dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.custom_logout_warning_dialog);
+        dialog.getWindow().setBackgroundDrawable(getContext().getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        TextView header = dialog.findViewById(R.id.header);
+        TextView alertText = dialog.findViewById(R.id.alert_text);
+        Button backup = dialog.findViewById(R.id.backup);
+        TextView okBtn = dialog.findViewById(R.id.okBtn);
+
+        alertText.setText("Please login to Buymate to be able to message us.");
+        backup.setText("Login");
+
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
+            header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            alertText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            backup.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            okBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+        }
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
+            header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            alertText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            backup.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            okBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+        }
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
+            header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            alertText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            backup.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            okBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+        }
+
+        backup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                Intent intent = new Intent(getContext(), LogInActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        okBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 
     public boolean onBackPressed() {
@@ -131,8 +248,8 @@ public class MoreFragment extends Fragment {
 
             premium_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             premium_text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            premium_text_2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             account_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-            login_subtext.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             message_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             share_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             rate_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
@@ -145,8 +262,8 @@ public class MoreFragment extends Fragment {
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
             premium_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             premium_text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
+            premium_text_2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             account_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-            login_subtext.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
             message_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             share_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             rate_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
@@ -159,8 +276,8 @@ public class MoreFragment extends Fragment {
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
             premium_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             premium_text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            premium_text_2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             account_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-            login_subtext.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             message_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             share_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             rate_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
@@ -174,8 +291,6 @@ public class MoreFragment extends Fragment {
     private void loadSharedPreferences() {
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
 
-        String theme = sharedPreferences.getString(UserSettings.CUSTOM_THEME, UserSettings.LIGHT_THEME);
-        settings.setCustomTheme(theme);
 
         String textSize = sharedPreferences.getString(UserSettings.CUSTOM_TEXT_SIZE, UserSettings.TEXT_MEDIUM);
         settings.setCustomTextSize(textSize);
@@ -189,12 +304,10 @@ public class MoreFragment extends Fragment {
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
         if (firebaseUser == null) {
-            account_text.setText("LOG IN");
-            login_subtext.setVisibility(View.VISIBLE);
-            account_icon.setImageResource(R.drawable.final_log_out_icon);
+            account_text.setText("Sign in");
+            account_icon.setImageResource(R.drawable.final_log_in_icon);
         } else {
             account_text.setText("Account");
-            login_subtext.setVisibility(View.GONE);
             account_icon.setImageResource(R.drawable.final_account_icon);
         }
 

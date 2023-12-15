@@ -57,4 +57,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <LinearLayout
+        android:id="@+id/emptyNotesLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/backgroundColor"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/empty"
+            android:layout_width="130dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/illustration_no_search_data" />
+
+        <TextView
+            android:id="@+id/emptyTEXT1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="No item"
+            android:textColor="?attr/textFillColor"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
 </LinearLayout>

@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.AlarmClock;
@@ -38,7 +39,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -58,6 +58,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.hemerick.buymate.Adapter.ShopCategoryAdapter;
@@ -84,6 +86,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
     ArrayList<String> itemCheck;
     ArrayList<String> priceCheck;
     ArrayList<String> quantityCheck;
+    ArrayList<String> unitCheck;
     ArrayList<String> selectList;
     Toolbar toolbar;
     RecyclerView recyclerView;
@@ -127,14 +130,8 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
     int currentMinutes;
     private UserSettings settings;
 
-    public static String formatNumberV2(double number) {
-        if (number == (long) number) {
-            return String.format("%.0f", number);
-        } else {
-            DecimalFormat decimalFormat = new DecimalFormat("0.00");
-            return decimalFormat.format(number);
-        }
-    }
+
+    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -164,15 +161,21 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                 if (itemId == R.id.nav_home) {
                     drawerLayout.closeDrawer(GravityCompat.START);
                 } else if (itemId == R.id.nav_premium) {
-                    StyleableToast.makeText(context, "Premium Clicked", R.style.custom_toast).show();
+                    navigationView.getCheckedItem().setChecked(false);
+                    item.setChecked(true);
+                    Intent intent = new Intent(getContext(), PremiumActivity.class);
+                    startActivity(intent);
                 } else if (itemId == R.id.nav_reminder) {
+                    navigationView.getCheckedItem().setChecked(false);
+                    item.setChecked(true);
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             drawerLayout.closeDrawer(GravityCompat.START);
                         }
-                    }, 300);
+                    }, 500);
                     showAlarmDialog("");
+
                 } else if (itemId == R.id.nav_setting) {
                     navigationView.getCheckedItem().setChecked(false);
                     item.setChecked(true);
@@ -183,7 +186,41 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                     Intent intent1 = new Intent(Intent.ACTION_VIEW, uri);
                     startActivity(intent1);
                 } else if (itemId == R.id.nav_message) {
-                    StyleableToast.makeText(context, "Message Clicked", R.style.custom_toast).show();
+                    if (firebaseAuth.getCurrentUser() != null) {
+                        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+
+
+                        String[] app_email = new String[]{"hemerickservices@gmail.com"};
+
+                        String asterics = "*******";
+                        String subject = getString(R.string.app_name) + " Feedback";
+                        String email = firebaseUser.getEmail();
+                        String app_version = getString(R.string.app_version);
+
+                        String deviceInfo = asterics + "\n" +
+                                "Account Email: " + email + "\n" +
+                                "App Version: " + app_version + "\n" +
+                                "Device: " + Build.DEVICE + "\n" +
+                                "Model: " + Build.MODEL + "\n" +
+                                "Brand: " + Build.BRAND + "\n" +
+                                "OS Version: " + Build.VERSION.RELEASE + "\n" +
+                                "SDK Version: " + Build.VERSION.SDK_INT + "\n" +
+                                asterics + "\n";
+
+
+                        Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+                        emailIntent.setData(Uri.parse("mailto:"));
+                        emailIntent.putExtra(Intent.EXTRA_EMAIL, app_email);
+                        emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
+                        emailIntent.putExtra(Intent.EXTRA_TEXT, deviceInfo);
+                        if (emailIntent.resolveActivity(getContext().getPackageManager()) != null) {
+                            startActivity(emailIntent);
+                        } else {
+                            Toast.makeText(getContext(), "No email client found", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        showLogInWarningDialog();
+                    }
                 }
 
                 return true;
@@ -272,6 +309,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         itemCheck = new ArrayList<>();
         priceCheck = new ArrayList<>();
         quantityCheck = new ArrayList<>();
+        unitCheck = new ArrayList<>();
         recyclerView = rootView.findViewById(R.id.todo_list);
 
 
@@ -534,9 +572,12 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
 
                                 category_list.remove(finalSelectList.get(i));
                                 db.deleteCategory(finalSelectList.get(i));
-                                StyleableToast.makeText(context, "List Deleted", R.style.custom_toast).show();
+
                             }
+                            StyleableToast.makeText(context, "List Deleted", R.style.custom_toast).show();
                             adapter.disableSelection();
+                            searchEditText.setText("");
+
                             if (category_list.size() == 0) {
                                 adapter.checkEmpty();
                             } else {
@@ -566,7 +607,31 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
             });
         } else {
             collapsingToolbarLayout.setTitle(getString(R.string.app_name));
-            inflater.inflate(R.menu.category_toolbar_menu, menu);
+            if (settings.getIsPremiumSubscribed().equals(UserSettings.NOT_SUBSCRIBED)) {
+                inflater.inflate(R.menu.category_toolbar_menu, menu);
+                menu.findItem(R.id.ads).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(@NonNull MenuItem item) {
+                        Intent intent = new Intent(context, PremiumActivity.class);
+                        startActivity(intent);
+                        return true;
+                    }
+                });
+
+            } else {
+                inflater.inflate(R.menu.category_toolbar_subscribed_menu, menu);
+
+
+                menu.findItem(R.id.setting).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(@NonNull MenuItem item) {
+                        Intent intent = new Intent(context, SettingsActivity.class);
+                        startActivity(intent);
+                        return true;
+                    }
+                });
+            }
+
         }
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -984,15 +1049,15 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
 
                 }
 
+
                 category_list.remove(temp);
-                db.deleteCategory(temp);
-
 
                 db.deleteCategory(temp);
-                adapter.refreshRemoved(position);
                 adapter.notifyItemRemoved(position);
-                StyleableToast.makeText(context, getString(R.string.removed), R.style.custom_toast_2).show();
                 adapter.checkEmpty();
+                dialog.dismiss();
+                StyleableToast.makeText(context, getString(R.string.removed), R.style.custom_toast_2).show();
+                searchEditText.setText("");
 
             }
         });
@@ -1001,6 +1066,61 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
             @Override
             public void onClick(View v) {
                 adapter.notifyItemChanged(position);
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
+    public void showLogInWarningDialog() {
+        Dialog dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.custom_logout_warning_dialog);
+        dialog.getWindow().setBackgroundDrawable(getContext().getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        TextView header = dialog.findViewById(R.id.header);
+        TextView alertText = dialog.findViewById(R.id.alert_text);
+        Button backup = dialog.findViewById(R.id.backup);
+        TextView okBtn = dialog.findViewById(R.id.okBtn);
+
+        alertText.setText("Please login to Buymate to be able to message us.");
+        backup.setText("Login");
+
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
+            header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            alertText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            backup.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            okBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+        }
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
+            header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            alertText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            backup.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            okBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+        }
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
+            header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            alertText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            backup.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            okBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+        }
+
+        backup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                Intent intent = new Intent(getContext(), LogInActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        okBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 dialog.dismiss();
             }
         });
@@ -1072,6 +1192,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
             public void onClick(View v) {
                 dialog.dismiss();
                 showAlarmDialog(prevTask);
+
             }
         });
 
@@ -1352,34 +1473,50 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
             itemCheck.add(res.getString(2).trim());
             priceCheck.add(res.getString(4).trim());
             quantityCheck.add(res.getString(9).trim());
+            unitCheck.add(" " + res.getString(11));
+
         }
         res.close();
 
 
         double total = 0;
+        double PriceQuantityIndex;
         for (int i = 0; i < itemCheck.size(); i++) {
             double priceIndex = Double.parseDouble(priceCheck.get(i));
             double quantityIndex = Double.parseDouble(quantityCheck.get(i));
-            double PriceQuantityIndex = priceIndex * quantityIndex;
-            total += PriceQuantityIndex;
 
-            if (settings.getIsShareQuantityDisabled().equals(UserSettings.NO_SHARE_QUANTITY_NOT_DISABLED)) {
-                result.append(quantityCheck.get(i));
+            if (settings.getIsMultiplyDisabled().equals(UserSettings.NO_MULTIPLY_NOT_DISABLED)) {
+                PriceQuantityIndex = priceIndex * quantityIndex;
             } else {
-                result.append("\u25CF");
+                PriceQuantityIndex = priceIndex;
             }
 
-            result.append("   " + itemCheck.get(i));
+            total += PriceQuantityIndex;
+
+
+            result.append("\u25CF");
+            result.append(" " + itemCheck.get(i));
+
+            if (settings.getIsShareQuantityDisabled().equals(UserSettings.NO_SHARE_QUANTITY_NOT_DISABLED)) {
+                if (Integer.parseInt(quantityCheck.get(i)) != 1) {
+                    if (!unitCheck.get(i).trim().isEmpty()) {
+                        result.append(" " + "[" + quantityCheck.get(i) + " " + unitCheck.get(i).trim() + "]");
+                    } else {
+                        result.append(" " + "[" + quantityCheck.get(i) + unitCheck.get(i).trim() + "]");
+                    }
+                }
+            }
 
             if (settings.getIsSharePriceDisabled().equals(UserSettings.NO_SHARE_PRICE_NOT_DISABLED)) {
-                result.append("   ").append(PriceQuantityIndex);
+                result.append("   ").append(formatNumber(PriceQuantityIndex));
             }
 
             result.append("\n\n");
         }
 
         if (settings.getIsShareTotalDisabled().equals(UserSettings.NO_SHARE_TOTAL_NOT_DISABLED)) {
-            result.append("\n").append(getString(R.string.share_list_total)).append("       ").append(formatNumberV2(total));
+            result.append("\n").append(getString(R.string.share_list_total)).append("       ").append(formatNumber(total));
+
         }
 
         String items = result.toString();
@@ -1523,9 +1660,17 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         params.width = WindowManager.LayoutParams.WRAP_CONTENT;
         params.height = WindowManager.LayoutParams.WRAP_CONTENT;
 
+
         timePickerDialog.getWindow().setAttributes(params);
         timePickerDialog.getWindow().setBackgroundDrawable(context.getDrawable(R.drawable.bg_time_picker));
         timePickerDialog.show();
+
+        timePickerDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                navigationView.getMenu().getItem(0).setChecked(true);
+            }
+        });
     }
 
 
@@ -1575,6 +1720,19 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
 
     }
 
+    public static String formatNumber(double number) {
+        return String.format("%,.2f", number);
+    }
+
+    public static String formatNumberV2(double number) {
+        if (number == (long) number) {
+            return String.format("%.0f", number);
+        } else {
+            DecimalFormat decimalFormat = new DecimalFormat("0.00");
+            return decimalFormat.format(number);
+        }
+    }
+
     public void getDateNdTime() {
         Calendar calendar = Calendar.getInstance();
         Date date = calendar.getTime();
@@ -1612,10 +1770,31 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
             if (item.toLowerCase().contains(text.toLowerCase())) {
                 filterList.add(item);
             }
-
         }
         adapter.setFilterList(filterList);
 
+        emptyView.setVisibility(View.GONE);
+        emptyTextLayout.setVisibility(View.GONE);
+        emptyText1.setVisibility(View.GONE);
+        emptyText2.setVisibility(View.GONE);
+        emptyText3.setVisibility(View.GONE);
+        empty_create_btn.setVisibility(View.GONE);
+
+        if (filterList.isEmpty()) {
+            emptyView.setImageResource(R.drawable.illustration_no_search_data);
+            ViewGroup.LayoutParams params = emptyView.getLayoutParams();
+            params.width = 200;
+            params.height = 200;
+            emptyView.setLayoutParams(params);
+            emptyView.setVisibility(View.VISIBLE);
+            emptyTextLayout.setVisibility(View.VISIBLE);
+            emptyText1.setVisibility(View.VISIBLE);
+            emptyText2.setVisibility(View.GONE);
+            emptyText3.setVisibility(View.GONE);
+            empty_create_btn.setVisibility(View.GONE);
+            emptyText1.setText("No list found");
+
+        }
     }
 
     private void updateRecyclerView() {
@@ -1700,13 +1879,6 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
 
     private void updateView() {
 
-        if (settings.getCustomTheme().equals(UserSettings.LIGHT_THEME)) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }
-
-        if (settings.getCustomTheme().equals(UserSettings.DARK_THEME)) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
             searchEditText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
@@ -1748,8 +1920,6 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
 
         SharedPreferences sharedPreferences = context.getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
 
-        String theme = sharedPreferences.getString(UserSettings.CUSTOM_THEME, UserSettings.LIGHT_THEME);
-        settings.setCustomTheme(theme);
 
         String textSize = sharedPreferences.getString(UserSettings.CUSTOM_TEXT_SIZE, UserSettings.TEXT_MEDIUM);
         settings.setCustomTextSize(textSize);
@@ -1769,6 +1939,18 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         String firstname = sharedPreferences.getString(UserSettings.USER_NAME, UserSettings.USER_NAME_NOT_SET);
         settings.setUsername(firstname);
 
+        String premium_subscribed = sharedPreferences.getString(UserSettings.IS_PREMIUM_SUBSCRIBED, UserSettings.NOT_SUBSCRIBED);
+        settings.setIsPremiumSubscribed(premium_subscribed);
+
+        String multiply_disabled = sharedPreferences.getString(UserSettings.IS_MULTIPLY_DISABLED, UserSettings.NO_MULTIPLY_NOT_DISABLED);
+        settings.setIsMultiplyDisabled(multiply_disabled);
+
         updateView();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        db.close();
     }
 }

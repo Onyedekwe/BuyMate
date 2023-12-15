@@ -34,6 +34,7 @@
             android:layout_height="60dp"
             android:text="@string/app_name"
             android:gravity="center"
+            android:fontFamily="@font/lexend"
             android:layout_marginStart="5dp"
             android:textColor="@color/white"
             android:textSize="30sp"

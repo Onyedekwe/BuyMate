@@ -9,6 +9,7 @@ public class UserSettings extends Application {
 
     //theme
     public static final String CUSTOM_THEME = "customTheme";
+    public static final String DEFAULT_THEME = "defaultTheme";
     public static final String LIGHT_THEME = "lightTheme";
     public static final String DARK_THEME = "darkTheme";
     private String customTheme;
@@ -107,10 +108,27 @@ public class UserSettings extends Application {
     public static final String NO_PRICE_NOT_DISABLED = "noPriceNotDisabled";
     private String isPriceDisabled;
 
+    public static final String IS_PREMIUM_SUBSCRIBED = "isPremiumSubscribed";
+    public static final String YES_SUBSCRIBED = "yesSubscribed";
+    public static final String NOT_SUBSCRIBED = "notSubscribed";
+    private String isPremiumSubscribed;
+
+    public String getIsPremiumSubscribed() {
+        return isPremiumSubscribed;
+    }
+
+    public void setIsPremiumSubscribed(String isPremiumSubscribed) {
+        this.isPremiumSubscribed = isPremiumSubscribed;
+    }
+
     public static final String IS_AUTHENTICATED = "isFingerPrintDisabled";
     public static final String YES_AUTHENTICATED = "yesAuthenticated";
     public static final String NOT_AUTHENTICATED = "notAuthenticated";
     private String isAuthenticated;
+
+
+
+
 
     public String getIsAuthenticated() {
         return isAuthenticated;
@@ -119,6 +137,8 @@ public class UserSettings extends Application {
     public void setIsAuthenticated(String isAuthenticated) {
         this.isAuthenticated = isAuthenticated;
     }
+
+
 
     public static final String USER_NAME = "userName";
     public static final String USER_NAME_NOT_SET = "userNameNotSet";

@@ -50,6 +50,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -87,9 +88,12 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
     String category;
 
+    ConstraintLayout favSumLayout;
+
     String temp_item;
     Toolbar itemToolbar;
     SearchView searchView;
+    EditText searchEditText;
     ArrayList<String> Items;
     ArrayList<String> categoryList;
     RecyclerView recyclerView;
@@ -100,6 +104,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
     ItemTouchHelper itemTouchHelper;
     ArrayList<String> Items_Prices_List;
     ArrayList<String> Items_Quantities_List;
+    ArrayList<String> unitCheck;
     ShopDatabase db;
     TextView Total_Summation_Textbox;
     TextView Items_list_size_textbox;
@@ -135,6 +140,9 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
     StorageReference storageReference;
 
     int CAMERA_REQUEST = 2468;
+
+    LinearLayout emptyNotesLayout;
+    TextView emptyText1;
 
 
     @Override
@@ -186,6 +194,10 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         recyclerView.setAdapter(shopItemAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        favSumLayout = findViewById(R.id.favSumLayout);
+        emptyNotesLayout = findViewById(R.id.emptyNotesLayout);
+        emptyText1 = findViewById(R.id.emptyTEXT1);
+
         //configure the left and right swipe
 
 
@@ -204,6 +216,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
         //configure other necessary items
         db = new ShopDatabase(this);
+
 
         eyeView = findViewById(R.id.eyeView);
         eyeView.setOnClickListener(new View.OnClickListener() {
@@ -240,6 +253,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         filter = new ArrayList<>();
         Items_Prices_List = new ArrayList<>();
         Items_Quantities_List = new ArrayList<>();
+        unitCheck = new ArrayList<>();
 
         loadSharedPreferences();
 
@@ -359,7 +373,8 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                                 startActivity(intent);
                             }
                             shopItemAdapter.disableSelection();
-                            getsum();
+                            recreate();
+
                             shopItemAdapter.notifyDataSetChanged();
                             dialog.dismiss();
                         }
@@ -384,10 +399,37 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                     final Dialog dialog = new Dialog(shopItemAdapter.getContext());
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.setContentView(R.layout.movebottomlayout);
+
+                    TextView emptyTEXT1 = dialog.findViewById(R.id.emptyTEXT1);
+                    LinearLayout emptyNotesLayout = dialog.findViewById(R.id.emptyNotesLayout);
                     TextView textView = dialog.findViewById(R.id.item_move_title);
                     textView.setText(getString(R.string.move_to));
                     SearchView searchView = dialog.findViewById(R.id.search_bar);
+                    EditText searchEditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
                     Button button = dialog.findViewById(R.id.create_new_list);
+
+                    if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
+                        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                        searchEditText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                        button.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                        emptyTEXT1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                    }
+
+                    if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
+                        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                        searchEditText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                        button.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                        emptyTEXT1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                    }
+
+                    if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
+                        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                        searchEditText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                        button.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                        button.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                    }
+
+
                     displayCategoryData();
                     shopMoveAdapter.setFilterList(categoryList);
                     RecyclerView moveRecyclerView = dialog.findViewById(R.id.moveRecyclerView);
@@ -403,7 +445,21 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
                         @Override
                         public boolean onQueryTextChange(String newText) {
-                            filterList2(newText);
+
+                            ArrayList<String> filterList = new ArrayList<>();
+
+                            for (String item : categoryList) {
+                                if (item.toLowerCase().contains(newText.toLowerCase())) {
+                                    filterList.add(item);
+                                }
+
+                            }
+                            shopCopyAdapter.setFilterList(filterList);
+                            shopMoveAdapter.setFilterList(filterList);
+                            emptyNotesLayout.setVisibility(View.GONE);
+                            if (filterList.isEmpty()) {
+                                emptyNotesLayout.setVisibility(View.VISIBLE);
+                            }
                             return true;
                         }
                     });
@@ -430,10 +486,39 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                     final Dialog dialog = new Dialog(shopItemAdapter.getContext());
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.setContentView(R.layout.movebottomlayout);
+
+
+                    LinearLayout emptyNotesLayout = dialog.findViewById(R.id.emptyNotesLayout);
+                    TextView emptyTEXT1 = dialog.findViewById(R.id.emptyTEXT1);
                     TextView textView = dialog.findViewById(R.id.item_move_title);
                     textView.setText(getString(R.string.copy_to));
                     SearchView searchView = dialog.findViewById(R.id.search_bar);
+                    EditText searchEditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
                     Button button = dialog.findViewById(R.id.create_new_list);
+
+
+                    if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
+                        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                        searchEditText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                        button.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                        emptyTEXT1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                    }
+
+                    if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
+                        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                        searchEditText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                        button.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                        emptyTEXT1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                    }
+
+                    if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
+                        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                        searchEditText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                        button.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                        button.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                    }
+
+
                     displayCategoryData();
                     shopCopyAdapter.setFilterList(categoryList);
                     RecyclerView copyRecyclerView = dialog.findViewById(R.id.moveRecyclerView);
@@ -448,7 +533,20 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
                         @Override
                         public boolean onQueryTextChange(String newText) {
-                            filterList2(newText);
+                            ArrayList<String> filterList = new ArrayList<>();
+
+                            for (String item : categoryList) {
+                                if (item.toLowerCase().contains(newText.toLowerCase())) {
+                                    filterList.add(item);
+                                }
+
+                            }
+                            shopCopyAdapter.setFilterList(filterList);
+                            shopMoveAdapter.setFilterList(filterList);
+                            emptyNotesLayout.setVisibility(View.GONE);
+                            if (filterList.isEmpty()) {
+                                emptyNotesLayout.setVisibility(View.VISIBLE);
+                            }
                             return true;
                         }
                     });
@@ -597,6 +695,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
             menu.findItem(R.id.search).setOnActionExpandListener(onActionExpandListener);
             searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+            searchEditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
             searchView.setQueryHint(getString(R.string.item_search_hint));
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
@@ -739,7 +838,6 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             Items_Prices_List.add(res.getString(4));
             Items_Quantities_List.add(res.getString(9));
         }
-        res.close();
 
 
         double temp_sum = 0;
@@ -1689,6 +1787,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
         int temp_fav = 0;
         double temp_price = 0;
+        double unit_temp_price = 0;
         double temp_quantity = 0;
         String temp_unit = null;
 
@@ -1767,7 +1866,8 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         });
 
 
-        unit_price.setText(formatNumberV2(temp_price));
+        unit_price.setText(formatNumber(temp_price));
+        unit_temp_price = temp_price;
         quantity.setText(formatNumberV2(temp_quantity));
 
         unit.setText(temp_unit.trim());
@@ -1825,6 +1925,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             }
         });
 
+        double finalUnit_temp_price = unit_temp_price;
         reduce.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1834,13 +1935,13 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
                 double check_quantity = Double.parseDouble(quantity.getText().toString());
                 if (check_quantity > 0) {
-                    if (unit_price.getText().toString().equals("")) {
+                    if (finalUnit_temp_price == 0.0) {
                         temp_price = 0;
                     } else {
-                        temp_price = Double.parseDouble(unit_price.getText().toString());
+                        temp_price = finalUnit_temp_price;
                     }
-                    temp_quantity = check_quantity;
 
+                    temp_quantity = check_quantity;
 
                     double newQuanity = temp_quantity - 1;
                     if (newQuanity >= 0.0) {
@@ -1860,7 +1961,6 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             }
         });
 
-
         increase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1868,10 +1968,10 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                 double temp_price;
                 double check_quantity = Double.parseDouble(quantity.getText().toString());
 
-                if (unit_price.getText().toString().equals("")) {
+                if (finalUnit_temp_price == 0.0) {
                     temp_price = 0;
                 } else {
-                    temp_price = Double.parseDouble(unit_price.getText().toString());
+                    temp_price = finalUnit_temp_price;
                 }
 
                 double temp_quantity = check_quantity + 1;
@@ -2057,28 +2157,38 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             Items_Check.add(res.getString(2).trim());
             Items_Prices_List.add(res.getString(4).trim());
             Items_Quantities_List.add(res.getString(9).trim());
+            unitCheck.add(" " + res.getString(11));
         }
         res.close();
 
 
         double total = 0;
+        double PriceQuantityIndex;
         for (int i = 0; i < Items_Check.size(); i++) {
             double priceIndex = Double.parseDouble(Items_Prices_List.get(i));
             double quantityIndex = Double.parseDouble(Items_Quantities_List.get(i));
-            double PriceQuantityIndex = priceIndex * quantityIndex;
+            if (settings.getIsMultiplyDisabled().equals(UserSettings.NO_MULTIPLY_NOT_DISABLED)) {
+                PriceQuantityIndex = priceIndex * quantityIndex;
+            } else {
+                PriceQuantityIndex = priceIndex;
+            }
             total += PriceQuantityIndex;
 
+            result.append("\u25CF");
+            result.append(" " + Items_Check.get(i));
 
             if (settings.getIsShareQuantityDisabled().equals(UserSettings.NO_SHARE_QUANTITY_NOT_DISABLED)) {
-                result.append(Items_Quantities_List.get(i));
-            } else {
-                result.append("\u25CF");
+                if (Integer.parseInt(Items_Quantities_List.get(i)) != 1) {
+                    if (!unitCheck.get(i).trim().isEmpty()) {
+                        result.append(" " + "[" + Items_Quantities_List.get(i) + " " + unitCheck.get(i).trim() + "]");
+                    } else {
+                        result.append(" " + "[" + Items_Quantities_List.get(i) + unitCheck.get(i).trim() + "]");
+                    }
+                }
             }
 
-            result.append("   " + Items_Check.get(i));
-
             if (settings.getIsSharePriceDisabled().equals(UserSettings.NO_SHARE_PRICE_NOT_DISABLED)) {
-                result.append("   ").append(PriceQuantityIndex);
+                result.append("   ").append(formatNumber(PriceQuantityIndex));
             }
 
             result.append("\n\n");
@@ -2087,7 +2197,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         }
 
         if (settings.getIsShareTotalDisabled().equals(UserSettings.NO_SHARE_TOTAL_NOT_DISABLED)) {
-            result.append("\n").append(getString(R.string.share_list_total)).append("       ").append(formatNumberV2(total));
+            result.append("\n").append(getString(R.string.share_list_total)).append("       ").append(formatNumber(total));
         }
 
         String items = result.toString();
@@ -2109,6 +2219,8 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         single_selected_item = itemName;
 
         TextView textView = dialog.findViewById(R.id.item_move_title);
+        TextView emptyTEXT1 = dialog.findViewById(R.id.emptyTEXT1);
+        LinearLayout emptyNotesLayout = dialog.findViewById(R.id.emptyNotesLayout);
         textView.setText(getString(R.string.copy_to));
         SearchView searchView = dialog.findViewById(R.id.search_bar);
         EditText searchEditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
@@ -2119,18 +2231,22 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             searchEditText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             button.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            emptyTEXT1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
             textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             searchEditText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             button.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            emptyTEXT1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
             textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             searchEditText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             button.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            emptyTEXT1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
         }
 
         displayCategoryData();
@@ -2150,7 +2266,20 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                filterList2(newText);
+                ArrayList<String> filterList = new ArrayList<>();
+
+                for (String item : categoryList) {
+                    if (item.toLowerCase().contains(newText.toLowerCase())) {
+                        filterList.add(item);
+                    }
+
+                }
+                shopCopyAdapter.setFilterList(filterList);
+                shopMoveAdapter.setFilterList(filterList);
+                emptyNotesLayout.setVisibility(View.GONE);
+                if (filterList.isEmpty()) {
+                    emptyNotesLayout.setVisibility(View.VISIBLE);
+                }
                 return true;
             }
         });
@@ -2513,6 +2642,8 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         single_selected_item = itemName;
 
         TextView textView = dialog.findViewById(R.id.item_move_title);
+        TextView emptyTEXT1 = dialog.findViewById(R.id.emptyTEXT1);
+        LinearLayout emptyNotesLayout = dialog.findViewById(R.id.emptyNotesLayout);
         SearchView searchView = dialog.findViewById(R.id.search_bar);
         EditText searchEditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
         Button button = dialog.findViewById(R.id.create_new_list);
@@ -2521,18 +2652,21 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             searchEditText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             button.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            emptyTEXT1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
             textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             searchEditText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             button.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            emptyTEXT1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
             textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             searchEditText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             button.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            emptyTEXT1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
         }
 
 
@@ -2557,7 +2691,20 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                filterList2(newText);
+                ArrayList<String> filterList = new ArrayList<>();
+
+                for (String item : categoryList) {
+                    if (item.toLowerCase().contains(newText.toLowerCase())) {
+                        filterList.add(item);
+                    }
+
+                }
+                shopCopyAdapter.setFilterList(filterList);
+                shopMoveAdapter.setFilterList(filterList);
+                emptyNotesLayout.setVisibility(View.GONE);
+                if (filterList.isEmpty()) {
+                    emptyNotesLayout.setVisibility(View.VISIBLE);
+                }
                 return true;
             }
         });
@@ -2844,6 +2991,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             Total_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             fab.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             currency_textbox.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            emptyText1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
 
         }
 
@@ -2851,6 +2999,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             Total_Summation_Textbox.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             Items_list_size_textbox.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
             Total_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
+            emptyText1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
             fab.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             currency_textbox.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
         }
@@ -2859,6 +3008,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             Total_Summation_Textbox.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             Items_list_size_textbox.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             Total_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            emptyText1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             fab.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             currency_textbox.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
         }
@@ -2954,20 +3104,14 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             }
         }
         shopItemAdapter.setFilterList(filterList);
-    }
-
-    private void filterList2(String text) {
-        ArrayList<String> filterList = new ArrayList<>();
-
-        for (String item : categoryList) {
-            if (item.toLowerCase().contains(text.toLowerCase())) {
-                filterList.add(item);
-            }
-
+        emptyNotesLayout.setVisibility(View.GONE);
+        favSumLayout.setVisibility(View.VISIBLE);
+        if (filterList.isEmpty()) {
+            emptyNotesLayout.setVisibility(View.VISIBLE);
+            favSumLayout.setVisibility(View.INVISIBLE);
         }
-        shopCopyAdapter.setFilterList(filterList);
-        shopMoveAdapter.setFilterList(filterList);
     }
+
 
     boolean check_if_one_checked() {
         ArrayList<Integer> checkList = new ArrayList<>();
@@ -3049,8 +3193,9 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
     @Override
     protected void onDestroy() {
-        db.close();
         super.onDestroy();
+        db.close();
     }
+
 
 }

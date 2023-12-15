@@ -85,6 +85,10 @@ public class ShopFavouritesAdapter extends RecyclerView.Adapter<ShopFavouritesAd
 
         }
     }
+    public static String formatNumberV3(double number) {
+        return String.format("%,.2f", number);
+    }
+
 
     @NonNull
     @Override
@@ -111,11 +115,11 @@ public class ShopFavouritesAdapter extends RecyclerView.Adapter<ShopFavouritesAd
                 String temp_quantity = res.getString(9);
                 String unit = res.getString(11);
                 String temp_sum = String.valueOf(Double.parseDouble(temp_price) * Double.parseDouble(temp_quantity));
-                holder.priceBox.setText(formatNumberV2(Double.parseDouble(temp_sum)));
+                holder.priceBox.setText(formatNumberV3(Double.parseDouble(temp_sum)));
                 holder.quantityBox.setText(formatNumber(Double.parseDouble(temp_quantity), unit));
 
             } else {
-                holder.priceBox.setText(formatNumberV2(Double.parseDouble(res.getString(4))));
+                holder.priceBox.setText(formatNumberV3(Double.parseDouble(res.getString(4))));
                 String qty = res.getString(9);
                 String unit = res.getString(11);
                 holder.quantityBox.setText(formatNumber(Double.parseDouble(qty), unit));

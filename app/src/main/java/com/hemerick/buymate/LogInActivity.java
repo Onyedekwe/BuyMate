@@ -1,14 +1,20 @@
 package com.hemerick.buymate;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.util.Patterns;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -35,6 +41,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.hemerick.buymate.Database.UserSettings;
+import com.hemerick.buymate.NetworkUtils.Network;
 
 import io.github.muddz.styleabletoast.StyleableToast;
 
@@ -136,8 +143,60 @@ public class LogInActivity extends AppCompatActivity {
 
 
     public void loginUserGoogle() {
-        Intent intent = googleSignInClient.getSignInIntent();
-        startActivityForResult(intent, RC_SIGN_IN);
+        if (Network.isNetworkAvailable(LogInActivity.this)) {
+            Intent intent = googleSignInClient.getSignInIntent();
+            startActivityForResult(intent, RC_SIGN_IN);
+        } else {
+            final Dialog dialog = new Dialog(LogInActivity.this);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.no_connection_layout);
+
+            TextView no_connection_Text1 = dialog.findViewById(R.id.no_connection_text_1);
+            TextView no_connection_Text2 = dialog.findViewById(R.id.no_connection_text_2);
+            TextView no_connection_Text3 = dialog.findViewById(R.id.no_connection_text_3);
+            Button try_again_btn = dialog.findViewById(R.id.try_again);
+
+            if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
+
+                no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+
+            }
+
+            if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
+
+                no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            }
+
+            if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
+
+                no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+
+            }
+
+
+            try_again_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+
+            dialog.show();
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
+            dialog.getWindow().setGravity(Gravity.BOTTOM);
+        }
+
     }
 
     @Override
@@ -173,6 +232,7 @@ public class LogInActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
 
+
                                     FirebaseUser user = firebaseAuth.getCurrentUser();
 
 
@@ -186,11 +246,12 @@ public class LogInActivity extends AppCompatActivity {
                                     editor.putString(UserSettings.USER_NAME, settings.getUsername());
                                     editor.apply();
 
-                                    progressBar.setVisibility(View.INVISIBLE);
 
                                     Intent intent = new Intent(LogInActivity.this, HomeActivity.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    progressBar.setVisibility(View.INVISIBLE);
                                     startActivity(intent);
+
                                 }
                             }
                         });
@@ -202,52 +263,114 @@ public class LogInActivity extends AppCompatActivity {
 
     public void loginUser() {
 
-        String emailText = emailbox.getText().toString().trim();
-        String passwordText = passwordbox.getText().toString().trim();
+        if (Network.isNetworkAvailable(LogInActivity.this)) {
+            String emailText = emailbox.getText().toString().trim();
+            String passwordText = passwordbox.getText().toString().trim();
 
-        if (!emailText.isEmpty()) {
-            if (!passwordText.isEmpty()) {
-                if (isValidEmail(emailText)) {
+            if (!emailText.isEmpty()) {
+                if (!passwordText.isEmpty()) {
+                    if (isValidEmail(emailText)) {
 
-                    firebaseAuth.signInWithEmailAndPassword(emailText, passwordText)
-                            .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                                @Override
-                                public void onSuccess(AuthResult authResult) {
-                                    StyleableToast.makeText(LogInActivity.this, "Log in successful", R.style.custom_toast).show();
+                        firebaseAuth.signInWithEmailAndPassword(emailText, passwordText)
+                                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                                    @Override
+                                    public void onSuccess(AuthResult authResult) {
+                                        progressBar.setVisibility(View.VISIBLE);
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                StyleableToast.makeText(LogInActivity.this, "Log in successful", R.style.custom_toast).show();
 
-                                    settings.setIsAuthenticated(UserSettings.IS_AUTHENTICATED);
-                                    SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
-                                    editor.putString(UserSettings.IS_AUTHENTICATED, settings.getIsAuthenticated());
-                                    editor.apply();
+                                                settings.setIsAuthenticated(UserSettings.IS_AUTHENTICATED);
+                                                SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
+                                                editor.putString(UserSettings.IS_AUTHENTICATED, settings.getIsAuthenticated());
+                                                editor.apply();
 
-                                    Intent intent = new Intent(LogInActivity.this, HomeActivity.class);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    startActivity(intent);
 
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    StyleableToast.makeText(LogInActivity.this, "Error: " + e.getMessage(), R.style.custom_toast).show();
+                                                Intent intent = new Intent(LogInActivity.this, HomeActivity.class);
+                                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                progressBar.setVisibility(View.INVISIBLE);
+                                                startActivity(intent);
+                                            }
+                                        }, 2000);
 
-                                }
-                            });
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        StyleableToast.makeText(LogInActivity.this, "Error: " + e.getMessage(), R.style.custom_toast).show();
 
+                                    }
+                                });
+
+                    } else {
+                        emailLayout.setError("Not a valid email address");
+                    }
                 } else {
-                    emailLayout.setError("Not a valid email address");
+                    passwordLayout.setError("Insert password");
                 }
             } else {
-                passwordLayout.setError("Insert password");
+                emailLayout.setError("Enter email address");
             }
         } else {
-            emailLayout.setError("Enter email address");
+            final Dialog dialog = new Dialog(LogInActivity.this);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.no_connection_layout);
+
+            TextView no_connection_Text1 = dialog.findViewById(R.id.no_connection_text_1);
+            TextView no_connection_Text2 = dialog.findViewById(R.id.no_connection_text_2);
+            TextView no_connection_Text3 = dialog.findViewById(R.id.no_connection_text_3);
+            Button try_again_btn = dialog.findViewById(R.id.try_again);
+
+            if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
+
+                no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+
+            }
+
+            if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
+
+                no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            }
+
+            if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
+
+                no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+
+            }
+
+
+            try_again_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+
+            dialog.show();
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
+            dialog.getWindow().setGravity(Gravity.BOTTOM);
         }
+
+
     }
 
     private boolean isValidEmail(String email) {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
+
 
     private void updateView() {
 
@@ -263,7 +386,6 @@ public class LogInActivity extends AppCompatActivity {
             passwordbox.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             loginBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
 
-
         } else if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
             sub_header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             or_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
@@ -274,6 +396,7 @@ public class LogInActivity extends AppCompatActivity {
             emailbox.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             passwordbox.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             loginBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+
         } else if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
             sub_header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             or_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
@@ -285,7 +408,6 @@ public class LogInActivity extends AppCompatActivity {
             passwordbox.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             loginBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
         }
-
     }
 
     private void loadSharedPreferences() {

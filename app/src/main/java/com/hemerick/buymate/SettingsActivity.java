@@ -30,15 +30,15 @@ import com.hemerick.buymate.Database.UserSettings;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    TextView generalText, securityText, notificationText,
+    TextView generalText, advancedText, securityText, removeAdsText, removeAdsSubText,
             darkModeText, keepScreenBrightText,
             textSizeText, lockAppText, swipeActionText, swipeActionSubText1, swipeActionSubText2,
-            detailedListShareText, detailedListShareSubText, disablePriceText, multiplyText, strikeText,
+            detailedListShareText, detailedListShareSubText, disablePriceText, multiplyText, multiplySubText, strikeText,
             currencyText, currencySubText;
     Toolbar toolbar;
     SharedPreferences sharedPreferences;
-    private SwitchCompat darkModeSwitch, keepScreenBrightSwitch, disablePriceSwitch, multiplySwitch;
-    private ConstraintLayout NotificationLayout, TextSizeLayout, SwipeActionLayout,
+    private SwitchCompat keepScreenBrightSwitch, disablePriceSwitch, multiplySwitch;
+    private ConstraintLayout DarkModeLayout, RemoveAdsLayout, TextSizeLayout, SwipeActionLayout,
             DetailedSharingLayout, DisablePriceLayout, MultiplyLayout, StrikeLayout, CurrencyLayout,
             AppLockLayout;
     private UserSettings settings;
@@ -53,11 +53,15 @@ public class SettingsActivity extends AppCompatActivity {
 
         toolbar = findViewById(R.id.settingToolbar);
 
-        NotificationLayout = findViewById(R.id.NotificationLayout);
+
+        DarkModeLayout = findViewById(R.id.themeLayout);
+        RemoveAdsLayout = findViewById(R.id.RemoveAdsLayout);
         TextSizeLayout = findViewById(R.id.textSizeLayout);
         generalText = findViewById(R.id.generalHeaderText);
+        advancedText = findViewById(R.id.advancedHeaderText);
         securityText = findViewById(R.id.securityHeaderText);
-        notificationText = findViewById(R.id.notificationText);
+        removeAdsText = findViewById(R.id.removeAdsText);
+        removeAdsSubText = findViewById(R.id.removeAdsSubText);
         darkModeText = findViewById(R.id.themeText);
         keepScreenBrightText = findViewById(R.id.screenText);
         detailedListShareText = findViewById(R.id.detailedListShareTextHeader);
@@ -67,7 +71,6 @@ public class SettingsActivity extends AppCompatActivity {
         swipeActionText = findViewById(R.id.swipeActionText);
         swipeActionSubText1 = findViewById(R.id.swipeActionSubText1);
         swipeActionSubText2 = findViewById(R.id.swipeActionSubText2);
-        darkModeSwitch = findViewById(R.id.darkThemeSwitcher);
         keepScreenBrightSwitch = findViewById(R.id.keepScreenBrightSwitcher);
         multiplySwitch = findViewById(R.id.multiplySwitcher);
         disablePriceSwitch = findViewById(R.id.disablePriceSwitcher);
@@ -76,6 +79,7 @@ public class SettingsActivity extends AppCompatActivity {
         MultiplyLayout = findViewById(R.id.multiplyLayout);
         StrikeLayout = findViewById(R.id.StrikeLayout);
         multiplyText = findViewById(R.id.multiplyText);
+        multiplySubText = findViewById(R.id.multiplySubText);
         disablePriceText = findViewById(R.id.disable_price_Text);
         DisablePriceLayout = findViewById(R.id.disablePriceLayout);
 
@@ -94,30 +98,22 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
 
-        NotificationLayout.setOnClickListener(new View.OnClickListener() {
+        RemoveAdsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(SettingsActivity.this, PremiumActivity.class);
+                startActivity(intent);
             }
         });
 
 
-        darkModeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        DarkModeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                if (isChecked) {
-                    settings.setCustomTheme(UserSettings.DARK_THEME);
-                } else {
-                    settings.setCustomTheme(UserSettings.LIGHT_THEME);
-                }
-
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString(UserSettings.CUSTOM_THEME, settings.getCustomTheme());
-                editor.apply();
-                updateView();
+            public void onClick(View v) {
+                showDarkThemeDialog();
             }
         });
+
 
         keepScreenBrightSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -313,6 +309,94 @@ public class SettingsActivity extends AppCompatActivity {
         dialog.show();
     }
 
+
+    public void showDarkThemeDialog() {
+        Dialog dialog = new Dialog(SettingsActivity.this);
+        dialog.setContentView(R.layout.custom_dark_theme_dialog);
+        dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        TextView header = dialog.findViewById(R.id.edit_title);
+
+        RadioButton on = dialog.findViewById(R.id.radio_button_on);
+        RadioButton off = dialog.findViewById(R.id.radio_button_off);
+        RadioButton as_on_device = dialog.findViewById(R.id.radio_button_default);
+
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
+
+            header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            on.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            off.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            as_on_device.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+        } else if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
+
+            header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            on.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            off.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            as_on_device.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+        } else if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
+
+            header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            on.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            off.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            as_on_device.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+        }
+
+        if (settings.getCustomTheme().equals(UserSettings.DEFAULT_THEME)) {
+            as_on_device.setChecked(true);
+        }
+
+        if (settings.getCustomTheme().equals(UserSettings.LIGHT_THEME)) {
+            off.setChecked(true);
+
+        }
+
+        if (settings.getCustomTheme().equals(UserSettings.DARK_THEME)) {
+            on.setChecked(true);
+        }
+
+
+        on.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                settings.setCustomTheme(UserSettings.DARK_THEME);
+                SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, MODE_PRIVATE).edit();
+                editor.putString(UserSettings.CUSTOM_THEME, settings.getCustomTheme());
+                editor.apply();
+                dialog.dismiss();
+                updateView();
+            }
+
+        });
+
+        off.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                settings.setCustomTheme(UserSettings.LIGHT_THEME);
+                SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, MODE_PRIVATE).edit();
+                editor.putString(UserSettings.CUSTOM_THEME, settings.getCustomTheme());
+                editor.apply();
+                dialog.dismiss();
+                updateView();
+            }
+        });
+
+        as_on_device.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                settings.setCustomTheme(UserSettings.DEFAULT_THEME);
+                SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, MODE_PRIVATE).edit();
+                editor.putString(UserSettings.CUSTOM_THEME, settings.getCustomTheme());
+                editor.apply();
+                dialog.dismiss();
+                updateView();
+            }
+        });
+
+        dialog.show();
+    }
+
     public void showCurrencyDialog() {
         Dialog dialog = new Dialog(SettingsActivity.this);
         dialog.setContentView(R.layout.custom_currency_dialog);
@@ -385,27 +469,25 @@ public class SettingsActivity extends AppCompatActivity {
 
 
     private void updateView() {
+        if (settings.getCustomTheme().equals(UserSettings.DEFAULT_THEME)) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        }
         if (settings.getCustomTheme().equals(UserSettings.LIGHT_THEME)) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            if (darkModeSwitch.isChecked()) {
-                darkModeSwitch.setChecked(false);
-            }
-
-        } else if (settings.getCustomTheme().equals(UserSettings.DARK_THEME)) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            if (!darkModeSwitch.isChecked()) {
-                darkModeSwitch.setChecked(true);
-            }
-
         }
-
+        if (settings.getCustomTheme().equals(UserSettings.DARK_THEME)) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
 
             generalText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            advancedText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             securityText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-            notificationText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            removeAdsText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            removeAdsSubText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             multiplyText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            multiplySubText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             disablePriceText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             strikeText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             darkModeText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
@@ -422,10 +504,14 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
-            generalText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-            securityText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-            notificationText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            generalText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
+            advancedText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
+            securityText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
+            removeAdsText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            removeAdsSubText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
             multiplyText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            multiplySubText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
+
             disablePriceText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             strikeText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             darkModeText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
@@ -443,10 +529,13 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
-            generalText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-            securityText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-            notificationText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            generalText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            advancedText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            securityText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            removeAdsText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            removeAdsSubText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             multiplyText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            multiplySubText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             disablePriceText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             strikeText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             darkModeText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));

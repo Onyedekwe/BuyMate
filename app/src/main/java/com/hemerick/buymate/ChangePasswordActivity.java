@@ -1,20 +1,25 @@
 package com.hemerick.buymate;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -25,6 +30,7 @@ import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.hemerick.buymate.Database.UserSettings;
+import com.hemerick.buymate.NetworkUtils.Network;
 
 import io.github.muddz.styleabletoast.StyleableToast;
 
@@ -93,83 +99,125 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
     public void changePassword() {
 
+        if (Network.isNetworkAvailable(ChangePasswordActivity.this)) {
+            String current_password = currentPassword.getText().toString().trim();
+            String new_password = newPassword.getText().toString().trim();
+            String confirm_password = confirmPassword.getText().toString().trim();
 
-        String current_password = currentPassword.getText().toString().trim();
-        String new_password = newPassword.getText().toString().trim();
-        String confirm_password = confirmPassword.getText().toString().trim();
+            if (!current_password.isEmpty()) {
+                if (!new_password.isEmpty()) {
+                    if (!confirm_password.isEmpty()) {
+                        if (new_password.length() >= 6) {
+                            if (new_password.equals(confirm_password)) {
 
-        if (!current_password.isEmpty()) {
-            if (!new_password.isEmpty()) {
-                if (!confirm_password.isEmpty()) {
-                    if (new_password.length() >= 6) {
-                        if (new_password.equals(confirm_password)) {
+                                progressBar.setVisibility(View.VISIBLE);
+                                new Handler().postDelayed(new Runnable() {
 
-                            progressBar.setVisibility(View.VISIBLE);
-                            new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
 
-                                @Override
-                                public void run() {
+                                        AuthCredential credential = EmailAuthProvider.getCredential(firebaseUser.getEmail(), current_password);
+                                        firebaseUser.reauthenticate(credential)
+                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if (task.isSuccessful()) {
+                                                            firebaseUser.updatePassword(new_password)
+                                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                        @Override
+                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                            if (task.isSuccessful()) {
+                                                                                progressBar.setVisibility(View.INVISIBLE);
+                                                                                StyleableToast.makeText(ChangePasswordActivity.this, "Password updated", R.style.custom_toast).show();
+                                                                                ChangePasswordActivity.super.onBackPressed();
 
-                                    AuthCredential credential = EmailAuthProvider.getCredential(firebaseUser.getEmail(), current_password);
-                                    firebaseUser.reauthenticate(credential)
-                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    if (task.isSuccessful()) {
-                                                        firebaseUser.updatePassword(new_password)
-                                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                    @Override
-                                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                                        if (task.isSuccessful()) {
-                                                                            progressBar.setVisibility(View.INVISIBLE);
-                                                                            StyleableToast.makeText(ChangePasswordActivity.this, "Password updated", R.style.custom_toast).show();
-                                                                            ChangePasswordActivity.super.onBackPressed();
+                                                                            } else {
+                                                                                progressBar.setVisibility(View.INVISIBLE);
+                                                                                StyleableToast.makeText(ChangePasswordActivity.this, "Password update failed", R.style.custom_toast).show();
 
-                                                                        } else {
-                                                                            progressBar.setVisibility(View.INVISIBLE);
-                                                                            StyleableToast.makeText(ChangePasswordActivity.this, "Password update failed", R.style.custom_toast).show();
-
+                                                                            }
                                                                         }
-                                                                    }
-                                                                });
-                                                    } else {
-                                                        progressBar.setVisibility(View.INVISIBLE);
-                                                        StyleableToast.makeText(ChangePasswordActivity.this, "Error: " + task.getException(), R.style.custom_toast).show();
+                                                                    });
+                                                        } else {
+                                                            progressBar.setVisibility(View.INVISIBLE);
+                                                            StyleableToast.makeText(ChangePasswordActivity.this, "Error: " + task.getException(), R.style.custom_toast).show();
 
+                                                        }
                                                     }
-                                                }
-                                            });
+                                                });
 
-                                }
-                            }, 2000);
+                                    }
+                                }, 2000);
 
+                            } else {
+                                confirm_password_parent.setError("Password does not match");
+                            }
                         } else {
-                            confirm_password_parent.setError("Password does not match");
+                            new_password_parent.setError("Password must be at least 6 characters long");
                         }
                     } else {
-                        new_password_parent.setError("Password must be at least 6 characters long");
+                        confirm_password_parent.setError("Retype password to proceed");
                     }
                 } else {
-                    confirm_password_parent.setError("Retype password to proceed");
+                    new_password_parent.setError("Enter your new password");
                 }
             } else {
-                new_password_parent.setError("Enter your new password");
+                current_password_parent.setError("Enter your current password");
             }
         } else {
-            current_password_parent.setError("Enter your current password");
+            final Dialog dialog = new Dialog(ChangePasswordActivity.this);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.no_connection_layout);
+
+            TextView no_connection_Text1 = dialog.findViewById(R.id.no_connection_text_1);
+            TextView no_connection_Text2 = dialog.findViewById(R.id.no_connection_text_2);
+            TextView no_connection_Text3 = dialog.findViewById(R.id.no_connection_text_3);
+            Button try_again_btn = dialog.findViewById(R.id.try_again);
+
+            if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
+
+                no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+
+            }
+
+            if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
+
+                no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            }
+
+            if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
+
+                no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+
+            }
+
+
+            try_again_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+
+            dialog.show();
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
+            dialog.getWindow().setGravity(Gravity.BOTTOM);
         }
     }
 
     private void updateView() {
-        if (settings.getCustomTheme().equals(UserSettings.LIGHT_THEME)) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
-        }
-
-        if (settings.getCustomTheme().equals(UserSettings.DARK_THEME)) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-
-        }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
 
@@ -214,9 +262,6 @@ public class ChangePasswordActivity extends AppCompatActivity {
         }
 
         sharedPreferences = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
-
-        String theme = sharedPreferences.getString(UserSettings.CUSTOM_THEME, UserSettings.LIGHT_THEME);
-        settings.setCustomTheme(theme);
 
         String textSize = sharedPreferences.getString(UserSettings.CUSTOM_TEXT_SIZE, UserSettings.TEXT_MEDIUM);
         settings.setCustomTextSize(textSize);

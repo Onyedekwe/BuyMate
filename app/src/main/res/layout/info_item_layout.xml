@@ -132,7 +132,7 @@
                 android:layout_gravity="center"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/increase"
-                app:layout_constraintTop_toTopOf="parent" >
+                app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     android:id="@+id/quantity"
@@ -165,7 +165,6 @@
                     app:layout_constraintEnd_toStartOf="@+id/increase"
                     app:layout_constraintTop_toTopOf="parent" />
             </LinearLayout>
-
 
 
             <ImageView
@@ -262,14 +261,14 @@
                 android:layout_width="150dp"
                 android:layout_height="200dp"
                 android:visibility="gone"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop" />
 
             <ProgressBar
                 android:id="@+id/progress_bar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center" />
         </androidx.cardview.widget.CardView>
 
         <LinearLayout
@@ -277,8 +276,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            >
+            app:layout_constraintEnd_toEndOf="parent">
 
 
             <TextView
