@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,8 +16,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.PowerManager;
 import android.provider.AlarmClock;
 import android.provider.MediaStore;
@@ -32,6 +35,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -45,15 +49,20 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -72,9 +81,12 @@ import com.hemerick.buymate.Adapter.ShopItemAdapter;
 import com.hemerick.buymate.Adapter.ShopMoveAdapter;
 import com.hemerick.buymate.Database.ShopDatabase;
 import com.hemerick.buymate.Database.UserSettings;
+import com.hemerick.buymate.NetworkUtils.Network;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -84,13 +96,15 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Objects;
 
-public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.OnNoteListener {
+public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.OnNoteListener, SwipeRefreshLayout.OnRefreshListener {
 
+    SwipeRefreshLayout swipeRefreshLayout;
     String category;
 
     ConstraintLayout favSumLayout;
 
     String temp_item;
+    Boolean is_photo_url_empty = false;
     Toolbar itemToolbar;
     SearchView searchView;
     EditText searchEditText;
@@ -140,6 +154,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
     StorageReference storageReference;
 
     int CAMERA_REQUEST = 2468;
+    int GALLERY_REQUEST = 1;
 
     LinearLayout emptyNotesLayout;
     TextView emptyText1;
@@ -166,6 +181,8 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
 
+        swipeRefreshLayout = findViewById(R.id.swipe);
+        swipeRefreshLayout.setOnRefreshListener(this);
 
         //configure the toolbar
         itemToolbar = findViewById(R.id.cate_title);
@@ -246,6 +263,8 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             }
         });
 
+
+
         Fav_Item_category = new ArrayList<>();
         Item_Favourites_List = new ArrayList<>();
 
@@ -263,7 +282,6 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         } else {
             itemTouchHelper = null;
         }
-
 
         displayData();
     }
@@ -978,8 +996,8 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         }
 
         addItemIllustrationLayout.setVisibility(View.VISIBLE);
-        add_Item_Text_Header_1.setVisibility(View.GONE);
-        add_Item_Text_Header_2.setTypeface(null, Typeface.BOLD);
+        add_Item_Text_Header_1.setText("Add an item to your list");
+        add_Item_Text_Header_2.setVisibility(View.GONE);
 
 
         Items_Check.clear();
@@ -1271,32 +1289,63 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
+
         LinearLayout takePictureLayout = dialog.findViewById(R.id.takePictureLayout);
         LinearLayout uploadPictureLayout = dialog.findViewById(R.id.uploadPictureLayout);
 
         takePictureLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
-                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+
+                if(Network.isNetworkAvailable(ItemActivity.this)){
+                    dialog.dismiss();
+                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                }else{
+                    showNoNetworkDialog();
+                }
+
+
+            }
+        });
+
+        uploadPictureLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(Network.isNetworkAvailable(ItemActivity.this)){
+                   dialog.dismiss();
+                    Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+                    galleryIntent.setType("image/*");
+                    startActivityForResult(galleryIntent, GALLERY_REQUEST);
+                }else{
+                    showNoNetworkDialog();
+                }
             }
         });
 
 
         TextView title = dialog.findViewById(R.id.image_title);
+        TextView title_2 = dialog.findViewById(R.id.image_title_2);
+        title_2.setText("(" + temp_item + ")");
+        if(is_photo_url_empty == false){
+            title.setText("Update image");
+        }else{
+            title.setText("Add image");
+        }
         TextView takePictureText = dialog.findViewById(R.id.takePictureText);
         TextView uploadPictureText = dialog.findViewById(R.id.uploadPictureText);
 
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
             title.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            title_2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             takePictureText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             uploadPictureText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
             title.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            title_2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             takePictureText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             uploadPictureText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
 
@@ -1304,6 +1353,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
             title.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            title_2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             takePictureText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             uploadPictureText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
         }
@@ -1313,8 +1363,10 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if ((requestCode == CAMERA_REQUEST) && (resultCode == Activity.RESULT_OK)) {
             recyclerView.setClickable(false);
             main_progress_bar.setVisibility(View.VISIBLE);
@@ -1325,7 +1377,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                     Bundle extras = data.getExtras();
                     Bitmap imageBitmap = (Bitmap) extras.get("data");
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
                     byte[] imageData = stream.toByteArray();
 
 
@@ -1371,12 +1423,81 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                         }
                     });
                 }
-            }, 3000);
+            }, 1000);
+        }
 
+        if(requestCode == GALLERY_REQUEST && resultCode ==Activity.RESULT_OK && data != null){
+            Uri selectedImageUri = data.getData();
+
+            try{
+
+                recyclerView.setClickable(false);
+                main_progress_bar.setVisibility(View.VISIBLE);
+
+                ContentResolver contentResolver = getContentResolver();
+                InputStream inputStream = contentResolver.openInputStream(selectedImageUri);
+                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream);
+                        byte[] imageData = stream.toByteArray();
+
+
+                        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                        String email = firebaseUser.getEmail().trim();
+                        getDateNdTime();
+                        String path = email + day + month + year + fullTimeWithSeconds + ".jpg";
+
+                        StorageReference imageRef = storageReference.child(path);
+
+                        UploadTask uploadTask = imageRef.putBytes(imageData);
+                        uploadTask.addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(ItemActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                String old_url = null;
+                                Cursor res = db.getPhotourl(category, temp_item);
+                                while (res.moveToNext()) {
+                                    old_url = res.getString(12);
+                                }
+
+                                db.updatePhoto(category, temp_item, path);
+
+                                ArrayList<String> total_url = new ArrayList<>();
+
+                                res = db.getCategory(ItemActivity.this);
+                                while (res.moveToNext()) {
+                                    total_url.add(res.getString(12));
+                                }
+                                res.close();
+
+                                if (!total_url.contains(old_url)) {
+                                    FirebaseStorage storage = FirebaseStorage.getInstance();
+                                    StorageReference storageReference = storage.getReference().child(old_url);
+                                    storageReference.delete();
+                                }
+                                recyclerView.setClickable(true);
+                                main_progress_bar.setVisibility(View.GONE);
+                            }
+                        });
+                    }
+                }, 1000);
+
+
+            }catch (Exception e){
+                Toast.makeText(ItemActivity.this, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
 
         }
 
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     public void showRenameDialog(String prevName, int position) {
@@ -1707,7 +1828,10 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
         ImageView favouritesIcon = dialog.findViewById(R.id.favouritesIcon);
 
+        CardView image_card = dialog.findViewById(R.id.image_card);
+
         ImageView itemImage = dialog.findViewById(R.id.item_image);
+        ImageView itemImageNull = dialog.findViewById(R.id.item_image_null);
         ProgressBar progressBar = dialog.findViewById(R.id.progress_bar);
 
         ImageView reduce = dialog.findViewById(R.id.reduce);
@@ -1827,40 +1951,46 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             @Override
             public void onShow(DialogInterface dialog) {
                 if (!finalPhotourl.trim().isEmpty()) {
-
+                    is_photo_url_empty = false;
                     progressBar.setVisibility(View.VISIBLE);
+                    if(Network.isNetworkAvailable(ItemActivity.this)){
 
-                    FirebaseStorage storage = FirebaseStorage.getInstance();
-                    StorageReference storageReference = storage.getReference();
-                    StorageReference imageRef = storageReference.child(finalPhotourl);
-                    try {
-                        final File localFile = File.createTempFile(finalPhotourl, "jpg");
-                        imageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                        FirebaseStorage storage = FirebaseStorage.getInstance();
+                        StorageReference storageReference = storage.getReference();
+                        StorageReference imageRef = storageReference.child(finalPhotourl);
+                        try {
+                            final File localFile = File.createTempFile(finalPhotourl, "jpg");
+                            imageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                    Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                                    itemImage.setImageBitmap(bitmap);
+                                    itemImage.setVisibility(View.VISIBLE);
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(ItemActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    itemImage.setImageResource(R.drawable.final_image_not_found_icon);
+                                }
+                            });
+                        } catch (Exception ex) {
+                            Toast.makeText(ItemActivity.this, "Error: " + ex.getMessage(), Toast.LENGTH_SHORT).show();
+                            itemImage.setImageResource(R.drawable.final_image_not_found_icon);
+                        }
+
+                        new Handler().postDelayed(new Runnable() {
                             @Override
-                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-                                itemImage.setImageBitmap(bitmap);
-                                itemImage.setVisibility(View.VISIBLE);
+                            public void run() {
+                                progressBar.setVisibility(View.INVISIBLE);
                             }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(ItemActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                itemImage.setImageResource(R.drawable.final_image_not_found_icon);
-                            }
-                        });
-                    } catch (Exception ex) {
-                        Toast.makeText(ItemActivity.this, "Error: " + ex.getMessage(), Toast.LENGTH_SHORT).show();
-                        itemImage.setImageResource(R.drawable.final_image_not_found_icon);
+                        }, 3000);
                     }
 
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            progressBar.setVisibility(View.INVISIBLE);
-                        }
-                    }, 3000);
 
+                }else {
+                    is_photo_url_empty = true;
+                   itemImageNull.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -1882,6 +2012,25 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             total_price.setText(formatNumber(temp_price));
         }
 
+
+
+        itemImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                temp_item = temp;
+                dialog.dismiss();
+                showAddImageDialog();
+            }
+        });
+
+        itemImageNull.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                temp_item = temp;
+                dialog.dismiss();
+                showAddImageDialog();
+            }
+        });
 
         unit_price.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -2983,6 +3132,57 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         }
     }
 
+    public void showNoNetworkDialog() {
+        final Dialog dialog = new Dialog(ItemActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.no_connection_layout);
+
+        TextView no_connection_Text1 = dialog.findViewById(R.id.no_connection_text_1);
+        TextView no_connection_Text2 = dialog.findViewById(R.id.no_connection_text_2);
+        TextView no_connection_Text3 = dialog.findViewById(R.id.no_connection_text_3);
+        Button try_again_btn = dialog.findViewById(R.id.try_again);
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
+
+            no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+
+        }
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
+
+            no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+        }
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
+
+            no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+
+        }
+
+
+        try_again_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+    }
+
     private void updateView() {
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
@@ -3198,4 +3398,15 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
     }
 
 
+    @Override
+    public void onRefresh() {
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+               recreate();
+               swipeRefreshLayout.setRefreshing(false);
+            }
+        } , 2000) ;
+
+    }
 }

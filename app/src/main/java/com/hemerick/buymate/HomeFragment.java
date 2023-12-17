@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.provider.AlarmClock;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -25,6 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -50,6 +52,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -80,6 +83,8 @@ import io.github.muddz.styleabletoast.StyleableToast;
 
 
 public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNoteListener {
+
+    SwipeRefreshLayout swipeRefreshLayout;
     Context context = getContext();
     ShopDatabase db;
     ArrayList<String> category_list;
@@ -147,6 +152,21 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
             activity.setSupportActionBar(toolbar);
         }
 
+        swipeRefreshLayout = rootView.findViewById(R.id.swipe);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        searchEditText.setText("");
+                        displayData();
+                        adapter.notifyDataSetChanged();
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                } , 3000) ;
+            }
+        });
 
         setHasOptionsMenu(true);
         drawerLayout = rootView.findViewById(R.id.drawerLayout);

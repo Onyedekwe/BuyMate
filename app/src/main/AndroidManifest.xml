@@ -32,7 +32,7 @@
         <activity
             android:name=".PremiumActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".BackupActivity"
             android:exported="false" />
@@ -58,11 +58,12 @@
             android:name=".HomeActivity"
             android:exported="false">
             <intent-filter>
-                <action android:name="android.intent.action.SENDTO"/>
-                <data android:scheme="mailto"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
+                <action android:name="android.intent.action.SENDTO" />
 
+                <data android:scheme="mailto" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".ConfigurePasscodeActivity"

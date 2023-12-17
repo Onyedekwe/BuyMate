@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -66,9 +67,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     public void updateView() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.buymate_color_theme));
-        }
+
 
 
         if (settings.getCustomTheme().equals(UserSettings.DEFAULT_THEME)) {
@@ -79,8 +78,20 @@ public class SplashActivity extends AppCompatActivity {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
 
+
         if (settings.getCustomTheme().equals(UserSettings.DARK_THEME)) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.buymate_color_theme));
+
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                getWindow().getDecorView().setSystemUiVisibility(0);
+            }
+
+
         }
     }
 
@@ -100,4 +111,14 @@ public class SplashActivity extends AppCompatActivity {
         updateView();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            getWindow().getDecorView().setSystemUiVisibility(0);
+
+        }
+    }
 }

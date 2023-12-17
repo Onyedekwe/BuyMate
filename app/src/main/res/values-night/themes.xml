@@ -47,4 +47,8 @@
         <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
     </style>
 
+    <style name="bottomNavBarStyle" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">#454F53</item>
+    </style>
+
 </resources>

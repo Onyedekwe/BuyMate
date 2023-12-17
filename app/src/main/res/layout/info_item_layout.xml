@@ -247,6 +247,7 @@
         android:layout_height="wrap_content">
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/image_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:cardCornerRadius="15dp"
@@ -263,6 +264,16 @@
                 android:visibility="gone"
                 android:scaleType="centerCrop" />
 
+            <ImageView
+                android:id="@+id/item_image_null"
+                android:layout_width="150dp"
+                android:layout_height="200dp"
+                android:padding="10dp"
+                android:visibility="gone"
+                android:background="@drawable/bg_stroke_curve_corner_premium"
+                android:src="@drawable/final_add_photo_text_icon"
+                android:scaleType="fitCenter" />
+
             <ProgressBar
                 android:id="@+id/progress_bar"
                 android:layout_width="wrap_content"
@@ -276,7 +287,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
 
             <TextView

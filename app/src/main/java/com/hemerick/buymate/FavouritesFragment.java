@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,8 +15,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -45,10 +48,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -66,9 +71,11 @@ import com.hemerick.buymate.Adapter.RecyclerViewFavTouchHelper;
 import com.hemerick.buymate.Adapter.ShopFavouritesAdapter;
 import com.hemerick.buymate.Database.ShopDatabase;
 import com.hemerick.buymate.Database.UserSettings;
+import com.hemerick.buymate.NetworkUtils.Network;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -78,6 +85,8 @@ import java.util.Locale;
 
 
 public class FavouritesFragment extends Fragment implements ShopFavouritesAdapter.OnNoteListener {
+
+    SwipeRefreshLayout swipeRefreshLayout;
     Context context;
     Toolbar toolbar;
     RecyclerView recyclerView;
@@ -92,6 +101,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
 
     String temp_item;
     String temp_category;
+    Boolean is_photo_url_empty = false;
 
     ShopFavouritesAdapter adapter;
     TextView totalItems;
@@ -139,6 +149,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
     StorageReference storageReference;
 
     int CAMERA_REQUEST = 2468;
+    int GALLERY_REQUEST = 1;
 
     public static String formatNumber(double number) {
         return String.format("%,.2f", number);
@@ -184,6 +195,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
 
+
         itemFavourites = new ArrayList<>();
         category = new ArrayList<>();
         sum = new ArrayList<>();
@@ -208,6 +220,20 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
 
         currency_textbox = rootView.findViewById(R.id.currency_box);
 
+        swipeRefreshLayout = rootView.findViewById(R.id.swipe);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        displayData();
+                        adapter.notifyDataSetChanged();
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                }, 3000);
+            }
+        });
 
         eyeView = rootView.findViewById(R.id.eyeView);
         eyeView.setOnClickListener(new View.OnClickListener() {
@@ -850,12 +876,14 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.info_item_layout);
 
+        CardView image_card = dialog.findViewById(R.id.image_card);
 
         ImageView favouritesIcon = dialog.findViewById(R.id.favouritesIcon);
         ImageView reduce = dialog.findViewById(R.id.reduce);
         ImageView increase = dialog.findViewById(R.id.increase);
 
         ImageView itemImage = dialog.findViewById(R.id.item_image);
+        ImageView itemImageNull = dialog.findViewById(R.id.item_image_null);
         ProgressBar progressBar = dialog.findViewById(R.id.progress_bar);
 
         TextView item_name = dialog.findViewById(R.id.item_name);
@@ -969,38 +997,43 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
             @Override
             public void onShow(DialogInterface dialog) {
                 if (!finalPhotourl.trim().isEmpty()) {
-
+                    is_photo_url_empty = false;
                     progressBar.setVisibility(View.VISIBLE);
-
-                    FirebaseStorage storage = FirebaseStorage.getInstance();
-                    StorageReference storageReference = storage.getReference();
-                    StorageReference imageRef = storageReference.child(finalPhotourl);
-                    try {
-                        final File localFile = File.createTempFile(finalPhotourl, "jpg");
-                        imageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-                                itemImage.setImageBitmap(bitmap);
-                                itemImage.setVisibility(View.VISIBLE);
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(context, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                itemImage.setImageResource(R.drawable.final_image_not_found_icon);
-                            }
-                        });
-                    } catch (Exception ex) {
-                        Toast.makeText(context, "Error: " + ex.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            progressBar.setVisibility(View.INVISIBLE);
+                    if (Network.isNetworkAvailable(context)) {
+                        FirebaseStorage storage = FirebaseStorage.getInstance();
+                        StorageReference storageReference = storage.getReference();
+                        StorageReference imageRef = storageReference.child(finalPhotourl);
+                        try {
+                            final File localFile = File.createTempFile(finalPhotourl, "jpg");
+                            imageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                    Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                                    itemImage.setImageBitmap(bitmap);
+                                    itemImage.setVisibility(View.VISIBLE);
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(context, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    itemImage.setImageResource(R.drawable.final_image_not_found_icon);
+                                }
+                            });
+                        } catch (Exception ex) {
+                            Toast.makeText(context, "Error: " + ex.getMessage(), Toast.LENGTH_SHORT).show();
                         }
-                    }, 3000);
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                progressBar.setVisibility(View.INVISIBLE);
+                            }
+                        }, 3000);
+                    }
 
+
+                } else {
+                    is_photo_url_empty = true;
+                    itemImageNull.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -1021,6 +1054,25 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
             total_price.setText(formatNumber(temp_price));
         }
 
+        itemImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                temp_item = temp;
+                temp_category = category.get(position);
+                dialog.dismiss();
+                showAddImageDialog();
+            }
+        });
+
+        itemImageNull.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                temp_item = temp;
+                temp_category = category.get(position);
+                dialog.dismiss();
+                showAddImageDialog();
+            }
+        });
 
         unit_price.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1347,14 +1399,41 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
         takePictureLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
-                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+
+
+                if (Network.isNetworkAvailable(context)) {
+                    dialog.dismiss();
+                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                } else {
+                    showNoNetworkDialog();
+                }
+            }
+        });
+
+        uploadPictureLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Network.isNetworkAvailable(context)) {
+                    dialog.dismiss();
+                    Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+                    galleryIntent.setType("image/*");
+                    startActivityForResult(galleryIntent, GALLERY_REQUEST);
+                } else {
+                    showNoNetworkDialog();
+                }
             }
         });
 
 
         TextView title = dialog.findViewById(R.id.image_title);
+        TextView title_2 = dialog.findViewById(R.id.image_title_2);
+        title_2.setText("(" + temp_item + ")");
+        if (is_photo_url_empty == false) {
+            title.setText("Update image");
+        } else {
+            title.setText("Add image");
+        }
         TextView takePictureText = dialog.findViewById(R.id.takePictureText);
         TextView uploadPictureText = dialog.findViewById(R.id.uploadPictureText);
 
@@ -1394,7 +1473,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                     Bundle extras = data.getExtras();
                     Bitmap imageBitmap = (Bitmap) extras.get("data");
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
                     byte[] imageData = stream.toByteArray();
 
 
@@ -1442,11 +1521,83 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                         }
                     });
                 }
-            }, 3000);
+            }, 1000);
 
 
         }
 
+        if (requestCode == GALLERY_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
+            Uri selectedImageUri = data.getData();
+
+            try {
+
+                recyclerView.setClickable(false);
+                main_progress_bar.setVisibility(View.VISIBLE);
+
+                ContentResolver contentResolver = context.getContentResolver();
+                InputStream inputStream = contentResolver.openInputStream(selectedImageUri);
+                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream);
+                        byte[] imageData = stream.toByteArray();
+
+
+                        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                        String email = firebaseUser.getEmail().trim();
+                        getDateNdTime();
+                        String path = email + day + month + year + fullTimeWithSeconds + ".jpg";
+
+                        StorageReference imageRef = storageReference.child(path);
+
+                        UploadTask uploadTask = imageRef.putBytes(imageData);
+                        uploadTask.addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(context, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                                String old_url = null;
+                                Cursor res = db.getPhotourl(temp_category, temp_item);
+                                while (res.moveToNext()) {
+                                    old_url = res.getString(12);
+                                }
+
+                                db.updatePhoto(temp_category, temp_item, path);
+
+                                ArrayList<String> total_url = new ArrayList<>();
+
+                                res = db.getCategory(context);
+                                while (res.moveToNext()) {
+                                    total_url.add(res.getString(12));
+                                }
+                                res.close();
+
+                                if (!total_url.contains(old_url)) {
+                                    FirebaseStorage storage = FirebaseStorage.getInstance();
+                                    StorageReference storageReference = storage.getReference().child(old_url);
+                                    storageReference.delete();
+                                }
+                                recyclerView.setClickable(true);
+                                main_progress_bar.setVisibility(View.INVISIBLE);
+                            }
+                        });
+                    }
+                }, 1000);
+
+
+            } catch (Exception e) {
+                Toast.makeText(context, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+
+        }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -2230,6 +2381,57 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
     public void onDestroyView() {
         db.close();
         super.onDestroyView();
+    }
+
+    public void showNoNetworkDialog() {
+        final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.no_connection_layout);
+
+        TextView no_connection_Text1 = dialog.findViewById(R.id.no_connection_text_1);
+        TextView no_connection_Text2 = dialog.findViewById(R.id.no_connection_text_2);
+        TextView no_connection_Text3 = dialog.findViewById(R.id.no_connection_text_3);
+        Button try_again_btn = dialog.findViewById(R.id.try_again);
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
+
+            no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+
+        }
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
+
+            no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+        }
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
+
+            no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+
+        }
+
+
+        try_again_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
     private void updateView() {

@@ -65,7 +65,7 @@
             android:layout_height="20dp"
             android:layout_gravity="center"
             android:layout_marginEnd="10dp"
-            android:src="@drawable/final_lock_icon"/>
+            android:src="@drawable/final_diamond_filled_icon"/>
     </LinearLayout>
 
     <LinearLayout

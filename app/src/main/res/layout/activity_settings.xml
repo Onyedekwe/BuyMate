@@ -118,7 +118,7 @@
                         android:layout_gravity="center"
                         android:layout_marginEnd="30dp"
                         android:contentDescription="@string/open_icon_content_description"
-                        android:src="@drawable/final_lock_icon"
+                        android:src="@drawable/final_diamond_filled_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -287,7 +287,7 @@
                             android:id="@+id/removeAdsSubText"
                             android:layout_width="200dp"
                             android:layout_height="wrap_content"
-                            android:text="Become a premium user \uD83D\uDC8E"
+                            android:text="Become a premium user"
                             android:textColor="?attr/itemTextAppearanceInactive"
                             android:textSize="15sp" />
                     </LinearLayout>
@@ -300,7 +300,7 @@
                         android:layout_gravity="center"
                         android:layout_marginEnd="30dp"
                         android:contentDescription="@string/open_icon_content_description"
-                        android:src="@drawable/final_lock_icon"
+                        android:src="@drawable/final_diamond_filled_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
