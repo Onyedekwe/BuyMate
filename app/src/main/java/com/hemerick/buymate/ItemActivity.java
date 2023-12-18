@@ -927,7 +927,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         year = currentYear;
         time = timeFormat.format(date);
         fullTimeWithSeconds = seconds.format(date);
-        formattedDate = currentDayNumber + "/" + currentMonthNumber + "/" + currentYear;
+        formattedDate = currentDayNumber + "-" + currentMonthNumber + "-" + currentYear;
     }
 
     //dialog to add a new item

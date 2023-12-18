@@ -38,28 +38,32 @@ public class SplashActivity extends AppCompatActivity {
             }
         }, 1000);
 
-        if (settings.getIsAuthenticated().equals(UserSettings.NOT_AUTHENTICATED)) {
+        if (settings.getIsAuthenticated().equals(UserSettings.NOT_AUTHENTICATED))
+        {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     Intent intent = new Intent(SplashActivity.this, SignUpActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
+                    finish();
                 }
             }, 3000);
-        } else {
+        }
+        else {
 
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Intent intent;
+                    Intent intentHome, intentPasscode;
                     if (settings.getPassword().equals(UserSettings.NOT_SET_PASSWORD)) {
-                        intent = new Intent(SplashActivity.this, HomeActivity.class);
+                        intentHome = new Intent(SplashActivity.this, HomeActivity.class);
+                        startActivity(intentHome);
+                        finish();
                     } else {
-                        intent = new Intent(SplashActivity.this, InsertPasscodeActivity.class);
+                        intentPasscode = new Intent(SplashActivity.this, InsertPasscodeActivity.class);
+                        startActivity(intentPasscode);
+                        finish();
                     }
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
                 }
             }, 3000);
 

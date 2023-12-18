@@ -303,49 +303,50 @@ public class NotesFragment extends Fragment implements ShopNotesAdapter.OnNoteLi
 
     private void filterList(String text) {
 
-        ArrayList<String> filterList = new ArrayList<>();
-        ArrayList<String> filterList2 = new ArrayList<>();
-        ArrayList<String> filterList3 = new ArrayList<>();
+        if(!note_heading_list.isEmpty()){
+            ArrayList<String> filterList = new ArrayList<>();
+            ArrayList<String> filterList2 = new ArrayList<>();
+            ArrayList<String> filterList3 = new ArrayList<>();
 
 
-        ArrayList<String> searchList = new ArrayList<>();
-        for (int i = 0; i < note_heading_list.size(); i++) {
-            searchList.add(note_heading_list.get(i) + note_content_list.get(i));
-        }
-        for (int j = 0; j < note_heading_list.size(); j++) {
-            String item = searchList.get(j);
-            if (item.toLowerCase().contains(text.toLowerCase())) {
-                filterList.add(note_heading_list.get(j));
-                Cursor res = db.getNoteContent(note_heading_list.get(j));
-                while (res.moveToNext()) {
-                    filterList2.add(res.getString(2));
-                    filterList3.add(res.getString(3));
-                }
-                res.close();
+            ArrayList<String> searchList = new ArrayList<>();
+            for (int i = 0; i < note_heading_list.size(); i++) {
+                searchList.add(note_heading_list.get(i) + note_content_list.get(i));
             }
+            for (int j = 0; j < note_heading_list.size(); j++) {
+                String item = searchList.get(j);
+                if (item.toLowerCase().contains(text.toLowerCase())) {
+                    filterList.add(note_heading_list.get(j));
+                    Cursor res = db.getNoteContent(note_heading_list.get(j));
+                    while (res.moveToNext()) {
+                        filterList2.add(res.getString(2));
+                        filterList3.add(res.getString(3));
+                    }
+                    res.close();
+                }
 
-        }
-        shopNotesAdapter.setFilterList(filterList, filterList2, filterList3);
-        emptyNotesLayout.setVisibility(View.GONE);
-        emptyTEXT1.setVisibility(View.GONE);
-        emptyTEXT2.setVisibility(View.GONE);
-        emptyTEXT3.setVisibility(View.GONE);
-        emptyTEXT1.setText("No note found");
-
-        if (filterList.isEmpty()) {
-            emptyImageView.setImageResource(R.drawable.illustration_no_search_data);
-            ViewGroup.LayoutParams params = emptyImageView.getLayoutParams();
-            params.width = 200;
-            params.height = 200;
-            emptyImageView.setLayoutParams(params);
-            emptyNotesLayout.setVisibility(View.VISIBLE);
-            emptyTEXT1.setVisibility(View.VISIBLE);
+            }
+            shopNotesAdapter.setFilterList(filterList, filterList2, filterList3);
+            emptyNotesLayout.setVisibility(View.GONE);
+            emptyTEXT1.setVisibility(View.GONE);
             emptyTEXT2.setVisibility(View.GONE);
             emptyTEXT3.setVisibility(View.GONE);
             emptyTEXT1.setText("No note found");
 
-        }
+            if (filterList.isEmpty()) {
+                emptyImageView.setImageResource(R.drawable.illustration_no_search_data);
+                ViewGroup.LayoutParams params = emptyImageView.getLayoutParams();
+                params.width = 200;
+                params.height = 200;
+                emptyImageView.setLayoutParams(params);
+                emptyNotesLayout.setVisibility(View.VISIBLE);
+                emptyTEXT1.setVisibility(View.VISIBLE);
+                emptyTEXT2.setVisibility(View.GONE);
+                emptyTEXT3.setVisibility(View.GONE);
+                emptyTEXT1.setText("No note found");
 
+            }
+        }
     }
 
 

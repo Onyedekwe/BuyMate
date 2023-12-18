@@ -724,8 +724,9 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         if (isFirstStart) {
             addItemIllustrationLayout.setVisibility(View.VISIBLE);
         } else {
-            addItemTextHeader.setVisibility(View.GONE);
-            addItemTextHeader2.setTypeface(null, Typeface.BOLD);
+            addItemTextHeader.setVisibility(View.VISIBLE);
+            addItemTextHeader.setText("Add an item to your list");
+            addItemTextHeader2.setVisibility(View.GONE);
             addItemIllustrationLayout.setVisibility(View.VISIBLE);
         }
         Cursor res = db.getCategory(context);
@@ -1731,7 +1732,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
             });
 
         } else {
-            StyleableToast.makeText(context, getString(R.string.list_created), R.style.custom_toast).show();
+            StyleableToast.makeText(context, getString(R.string.list_created), R.style.custom_toast_2).show();
             Intent intent = new Intent(context, ItemActivity.class);
             intent.putExtra("ITEM", category);
             startActivity(intent);
@@ -1780,41 +1781,45 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         year = currentYear;
         day = currentDay + " " + currentDayNumber;
 
-        formattedDate = currentDayNumber + "/" + currentMonthNumber + "/" + currentYear;
+        formattedDate = currentDayNumber + "-" + currentMonthNumber + "-" + currentYear;
     }
 
     private void filterList(String text) {
-        ArrayList<String> filterList = new ArrayList<>();
+        if(!category_list.isEmpty()){
+            ArrayList<String> filterList = new ArrayList<>();
 
-        for (String item : category_list) {
-            if (item.toLowerCase().contains(text.toLowerCase())) {
-                filterList.add(item);
+            for (String item : category_list) {
+                if (item.toLowerCase().contains(text.toLowerCase())) {
+                    filterList.add(item);
+                }
             }
-        }
-        adapter.setFilterList(filterList);
+            adapter.setFilterList(filterList);
 
-        emptyView.setVisibility(View.GONE);
-        emptyTextLayout.setVisibility(View.GONE);
-        emptyText1.setVisibility(View.GONE);
-        emptyText2.setVisibility(View.GONE);
-        emptyText3.setVisibility(View.GONE);
-        empty_create_btn.setVisibility(View.GONE);
-
-        if (filterList.isEmpty()) {
-            emptyView.setImageResource(R.drawable.illustration_no_search_data);
-            ViewGroup.LayoutParams params = emptyView.getLayoutParams();
-            params.width = 200;
-            params.height = 200;
-            emptyView.setLayoutParams(params);
-            emptyView.setVisibility(View.VISIBLE);
-            emptyTextLayout.setVisibility(View.VISIBLE);
-            emptyText1.setVisibility(View.VISIBLE);
+            emptyView.setVisibility(View.GONE);
+            emptyTextLayout.setVisibility(View.GONE);
+            emptyText1.setVisibility(View.GONE);
             emptyText2.setVisibility(View.GONE);
             emptyText3.setVisibility(View.GONE);
             empty_create_btn.setVisibility(View.GONE);
-            emptyText1.setText("No list found");
 
+            if (filterList.isEmpty()) {
+                emptyView.setImageResource(R.drawable.illustration_no_search_data);
+                ViewGroup.LayoutParams params = emptyView.getLayoutParams();
+                params.width = 200;
+                params.height = 200;
+                emptyView.setLayoutParams(params);
+                emptyView.setVisibility(View.VISIBLE);
+                emptyTextLayout.setVisibility(View.VISIBLE);
+                emptyText1.setVisibility(View.VISIBLE);
+                emptyText2.setVisibility(View.GONE);
+                emptyText3.setVisibility(View.GONE);
+                empty_create_btn.setVisibility(View.GONE);
+                emptyText1.setText("No list found");
+
+            }
         }
+
+
     }
 
     private void updateRecyclerView() {
