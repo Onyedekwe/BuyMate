@@ -12,7 +12,7 @@ android {
         applicationId "com.hemerick.buymate"
         minSdk 24
         targetSdk 33
-        versionCode 1
+        versionCode 7
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -56,5 +56,7 @@ dependencies {
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation 'com.android.billingclient:billing:6.1.0'
     implementation 'com.android.billingclient:billing-ktx:6.1.0'
+    implementation 'com.google.firebase:firebase-crashlytics-buildtools:2.9.9'
+
 
 }

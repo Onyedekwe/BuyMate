@@ -22,6 +22,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.cardview.widget.CardView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -368,17 +369,13 @@ public class SignUpActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
 
-                                    FirebaseUser user = firebaseAuth.getCurrentUser();
-
 
                                     StyleableToast.makeText(SignUpActivity.this, "Sign up successful", R.style.custom_toast).show();
 
                                     settings.setIsAuthenticated(UserSettings.IS_AUTHENTICATED);
-                                    settings.setUsername(user.getDisplayName());
 
                                     SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
                                     editor.putString(UserSettings.IS_AUTHENTICATED, settings.getIsAuthenticated());
-                                    editor.putString(UserSettings.USER_NAME, settings.getUsername());
                                     editor.apply();
 
                                     progressBar.setVisibility(View.INVISIBLE);
@@ -403,6 +400,7 @@ public class SignUpActivity extends AppCompatActivity {
 
 
     private void updateView() {
+
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
             sub_header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
@@ -451,7 +449,6 @@ public class SignUpActivity extends AppCompatActivity {
         }
 
         sharedPreferences = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
-
 
         String textSize = sharedPreferences.getString(UserSettings.CUSTOM_TEXT_SIZE, UserSettings.TEXT_MEDIUM);
         settings.setCustomTextSize(textSize);

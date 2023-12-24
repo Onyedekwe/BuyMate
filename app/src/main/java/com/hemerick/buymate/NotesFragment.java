@@ -27,6 +27,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -129,10 +131,10 @@ public class NotesFragment extends Fragment implements ShopNotesAdapter.OnNoteLi
                 new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        searchEditText.setText("");
-                        displayData();
-                        shopNotesAdapter.notifyDataSetChanged();
-                        swipeRefreshLayout.setRefreshing(false);
+                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                        FragmentTransaction transaction = fragmentManager.beginTransaction();
+                        transaction.replace(R.id.framelayoutContainer, new NotesFragment());
+                        transaction.commit();
                     }
                 } , 3000) ;
             }

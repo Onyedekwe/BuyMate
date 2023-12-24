@@ -159,10 +159,10 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                 new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        searchEditText.setText("");
-                        displayData();
-                        adapter.notifyDataSetChanged();
-                        swipeRefreshLayout.setRefreshing(false);
+                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                        FragmentTransaction transaction = fragmentManager.beginTransaction();
+                        transaction.replace(R.id.framelayoutContainer, new HomeFragment());
+                        transaction.commit();
                     }
                 } , 3000) ;
             }

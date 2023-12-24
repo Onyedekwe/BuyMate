@@ -233,17 +233,13 @@ public class LogInActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
 
 
-                                    FirebaseUser user = firebaseAuth.getCurrentUser();
-
 
                                     StyleableToast.makeText(LogInActivity.this, "Sign up successful", R.style.custom_toast).show();
 
                                     settings.setIsAuthenticated(UserSettings.IS_AUTHENTICATED);
-                                    settings.setUsername(user.getDisplayName());
 
                                     SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
                                     editor.putString(UserSettings.IS_AUTHENTICATED, settings.getIsAuthenticated());
-                                    editor.putString(UserSettings.USER_NAME, settings.getUsername());
                                     editor.apply();
 
 
@@ -279,17 +275,19 @@ public class LogInActivity extends AppCompatActivity {
                                         new Handler().postDelayed(new Runnable() {
                                             @Override
                                             public void run() {
-                                                StyleableToast.makeText(LogInActivity.this, "Log in successful", R.style.custom_toast).show();
 
+
+                                                StyleableToast.makeText(LogInActivity.this, "Log in successful", R.style.custom_toast).show();
                                                 settings.setIsAuthenticated(UserSettings.IS_AUTHENTICATED);
+
                                                 SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
                                                 editor.putString(UserSettings.IS_AUTHENTICATED, settings.getIsAuthenticated());
                                                 editor.apply();
 
+                                                progressBar.setVisibility(View.INVISIBLE);
 
                                                 Intent intent = new Intent(LogInActivity.this, HomeActivity.class);
                                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                progressBar.setVisibility(View.INVISIBLE);
                                                 startActivity(intent);
                                             }
                                         }, 2000);
