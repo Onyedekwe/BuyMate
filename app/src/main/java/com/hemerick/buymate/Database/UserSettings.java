@@ -117,11 +117,25 @@ public class UserSettings extends Application {
         return isPremiumSubscribed;
     }
 
+
     public void setIsPremiumSubscribed(String isPremiumSubscribed) {
         this.isPremiumSubscribed = isPremiumSubscribed;
     }
 
-    public static final String IS_AUTHENTICATED = "isFingerPrintDisabled";
+    public static final String IS_LIFETIME_PURCHASED = "isLifetimePurchased";
+        public static final String YES_LIFETIME_PURCHASED = "yesLifetimePurchased";
+    public static final String NO_LIFETIME_NOT_SUBSCRIBED = "noLifetimeNotPurchased";
+    private String isLifetimePurchased;
+
+    public String getIsLifetimePurchased() {
+        return isLifetimePurchased;
+    }
+
+    public void setIsLifetimePurchased(String isLifetimePurchased) {
+        this.isLifetimePurchased = isLifetimePurchased;
+    }
+
+    public static final String IS_AUTHENTICATED = "isAuthenticated";
     public static final String YES_AUTHENTICATED = "yesAuthenticated";
     public static final String NOT_AUTHENTICATED = "notAuthenticated";
     private String isAuthenticated;

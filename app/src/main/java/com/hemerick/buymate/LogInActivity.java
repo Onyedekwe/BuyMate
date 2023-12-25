@@ -24,6 +24,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.BillingClientStateListener;
+import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.PurchasesResponseListener;
+import com.android.billingclient.api.PurchasesUpdatedListener;
+import com.android.billingclient.api.QueryPurchasesParams;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -42,6 +49,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.hemerick.buymate.Database.UserSettings;
 import com.hemerick.buymate.NetworkUtils.Network;
+
+import java.util.List;
 
 import io.github.muddz.styleabletoast.StyleableToast;
 
@@ -67,6 +76,7 @@ public class LogInActivity extends AppCompatActivity {
     CardView googleCard;
 
     FirebaseAuth firebaseAuth;
+    private BillingClient billingClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +113,17 @@ public class LogInActivity extends AppCompatActivity {
         googleSignInClient = GoogleSignIn.getClient(LogInActivity.this, googleSignInOptions);
 
 
+        billingClient = BillingClient.newBuilder(this)
+                .enablePendingPurchases() // Optional: Handle pending purchases
+                .setListener(new PurchasesUpdatedListener() {
+                    @Override
+                    public void onPurchasesUpdated(@NonNull BillingResult billingResult, @Nullable List<Purchase> list) {
+                        // Handle purchase updates
+                    }
+                })
+                .build();
+
+
         googleCard = findViewById(R.id.googleCard);
         googleCard.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,7 +154,6 @@ public class LogInActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LogInActivity.this, SignUpActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
         });
@@ -242,11 +262,14 @@ public class LogInActivity extends AppCompatActivity {
                                     editor.putString(UserSettings.IS_AUTHENTICATED, settings.getIsAuthenticated());
                                     editor.apply();
 
+                                    checkIfLifetimeSubscribed();
 
                                     Intent intent = new Intent(LogInActivity.this, HomeActivity.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                     progressBar.setVisibility(View.INVISIBLE);
                                     startActivity(intent);
+
+
 
                                 }
                             }
@@ -254,6 +277,57 @@ public class LogInActivity extends AppCompatActivity {
 
             }
         }, 2000);
+
+    }
+
+    private void checkIfLifetimeSubscribed(){
+        billingClient.startConnection(new BillingClientStateListener() {
+            @Override
+            public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
+                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                    billingClient.queryPurchasesAsync(QueryPurchasesParams.newBuilder()
+                            .setProductType(BillingClient.ProductType.INAPP)
+                            .build(), new PurchasesResponseListener() {
+                        @Override
+
+
+                        public
+
+                        void
+
+                        onQueryPurchasesResponse(@NonNull BillingResult billingResult, @NonNull List<Purchase> list)
+
+                        {
+
+                            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                                boolean hasLifetimePayment = false;
+                                for (Purchase purchase : list) {
+                                    if (purchase.getOrderId().equals("com.hemerick.lifetime_subscription") &&
+                                            purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
+                                        hasLifetimePayment = true;
+                                        break;
+                                    }
+                                }
+
+                                // Proceed based on lifetime payment status
+                                if (hasLifetimePayment) {
+                                    settings.setIsLifetimePurchased(UserSettings.YES_LIFETIME_PURCHASED);
+                                    SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
+                                    editor.putString(UserSettings.IS_LIFETIME_PURCHASED, settings.getIsLifetimePurchased());
+                                    editor.apply();
+
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onBillingServiceDisconnected() {
+                // Handle billing service disconnections
+            }
+        });
 
     }
 
@@ -286,9 +360,13 @@ public class LogInActivity extends AppCompatActivity {
 
                                                 progressBar.setVisibility(View.INVISIBLE);
 
+                                                checkIfLifetimeSubscribed();
+
                                                 Intent intent = new Intent(LogInActivity.this, HomeActivity.class);
                                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                                 startActivity(intent);
+
+
                                             }
                                         }, 2000);
 
@@ -425,6 +503,9 @@ public class LogInActivity extends AppCompatActivity {
 
         String authenticated = sharedPreferences.getString(UserSettings.IS_AUTHENTICATED, UserSettings.NOT_AUTHENTICATED);
         settings.setIsAuthenticated(authenticated);
+
+        String lifetimePurchased = sharedPreferences.getString(UserSettings.IS_LIFETIME_PURCHASED, UserSettings.NO_LIFETIME_NOT_SUBSCRIBED);
+        settings.setIsLifetimePurchased(lifetimePurchased);
 
         updateView();
     }

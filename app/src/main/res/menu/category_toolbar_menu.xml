@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item
+        android:id="@+id/ads"
+        android:icon="@drawable/final_remove_ads_icon"
+        android:title="@string/category_toolbar_mark_text"
+        app:showAsAction="always"/>
+
+</menu>

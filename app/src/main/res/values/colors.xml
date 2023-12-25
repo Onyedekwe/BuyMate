@@ -20,6 +20,6 @@
     <color name="text_color">#DCEDF5</color>
 
 
-    <color name="inactive_text_color">#C2C4C6</color>
-    <color name="inactive_text_color_dark">#97A2A8</color>
+    <color name="inactive_text_color">#CCCECF</color>
+    <color name="inactive_text_color_dark">#858E93</color>
 </resources>

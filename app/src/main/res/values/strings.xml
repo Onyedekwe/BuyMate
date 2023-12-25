@@ -294,6 +294,9 @@
     <string name="moved">Item moved to </string>
     <string name="copied">Item copied to </string>
 
+    <string name="full_star">"\u2606""\u2606""\u2606""\u2606"</string>
+    <string name="star">"\u2606""\u2606""\u2606"</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

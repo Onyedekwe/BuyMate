@@ -35,8 +35,6 @@
                     app:contentScrim="?attr/backgroundColor"
                     app:expandedTitleMarginBottom="15dp"
                     app:expandedTitleMarginStart="15dp"
-                    app:collapsedTitleTextAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-                    app:expandedTitleTextAppearance="@style/TextAppearance.Material3.HeadlineMedium"
                     app:expandedTitleTextColor="?attr/colorSecondaryVariant"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -62,8 +60,7 @@
                     android:layout_marginStart="15dp"
                     android:text="What do you want to buy?"
                     android:textColor="?attr/textFillColor"
-                    android:textSize="22dp"
-                    android:textStyle="bold" />
+                    android:textSize="22dp"/>
 
 
                 <LinearLayout

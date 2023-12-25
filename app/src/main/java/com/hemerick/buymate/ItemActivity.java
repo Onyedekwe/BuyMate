@@ -824,7 +824,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             Cursor res_checked = db.getStatus(category, Items.get(i));
             while (res_checked.moveToNext()) {
                 seeChecked.add(res_checked.getString(3));
-            }
+            }res_checked.close();
         }
         for (String checked : seeChecked) {
             if (checked.equals(String.valueOf(1))) {
@@ -841,8 +841,6 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
 
         Items_list_size_textbox.setText(getString(R.string.total_items_text) + " " + "(" + checked_count + "/" + Items.size() + ")");
-
-
     }
 
     @SuppressLint("SetTextI18n")
@@ -855,7 +853,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         while (res.moveToNext()) {
             Items_Prices_List.add(res.getString(4));
             Items_Quantities_List.add(res.getString(9));
-        }
+        }res.close();
 
 
         double temp_sum = 0;
@@ -880,7 +878,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             Cursor res_checked = db.getStatus(category, Items.get(i));
             while (res_checked.moveToNext()) {
                 seeChecked.add(res_checked.getString(3));
-            }
+            }res_checked.close();
         }
         for (String checked : seeChecked) {
             if (checked.equals(String.valueOf(1))) {

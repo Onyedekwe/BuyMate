@@ -25,6 +25,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.cardview.widget.CardView;
 
+import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.BillingClientStateListener;
+import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.PurchasesResponseListener;
+import com.android.billingclient.api.PurchasesUpdatedListener;
+import com.android.billingclient.api.QueryPurchasesParams;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -43,6 +50,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.hemerick.buymate.Database.UserSettings;
 import com.hemerick.buymate.NetworkUtils.Network;
+
+import java.util.List;
 
 import io.github.muddz.styleabletoast.StyleableToast;
 
@@ -64,6 +73,7 @@ public class SignUpActivity extends AppCompatActivity {
     CardView googleCard;
 
     FirebaseAuth firebaseAuth;
+    private BillingClient billingClient;
 
     ProgressBar progressBar;
 
@@ -102,6 +112,16 @@ public class SignUpActivity extends AppCompatActivity {
 
 
         googleSignInClient = GoogleSignIn.getClient(SignUpActivity.this, googleSignInOptions);
+
+        billingClient = BillingClient.newBuilder(this)
+                .enablePendingPurchases() // Optional: Handle pending purchases
+                .setListener(new PurchasesUpdatedListener() {
+                    @Override
+                    public void onPurchasesUpdated(@NonNull BillingResult billingResult, @Nullable List<Purchase> list) {
+                        // Handle purchase updates
+                    }
+                })
+                .build();
 
 
         googleCard = findViewById(R.id.googleCard);
@@ -176,6 +196,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                                                             progressBar.setVisibility(View.INVISIBLE);
 
+                                                            checkIfLifetimeSubscribed();
 
                                                             Intent intent = new Intent(SignUpActivity.this, HomeActivity.class);
                                                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -380,6 +401,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                                     progressBar.setVisibility(View.INVISIBLE);
 
+                                    checkIfLifetimeSubscribed();
 
                                     Intent intent = new Intent(SignUpActivity.this, HomeActivity.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -398,6 +420,56 @@ public class SignUpActivity extends AppCompatActivity {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
+    private void checkIfLifetimeSubscribed(){
+        billingClient.startConnection(new BillingClientStateListener() {
+            @Override
+            public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
+                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                    billingClient.queryPurchasesAsync(QueryPurchasesParams.newBuilder()
+                            .setProductType(BillingClient.ProductType.INAPP)
+                            .build(), new PurchasesResponseListener() {
+                        @Override
+
+
+                        public
+
+                        void
+
+                        onQueryPurchasesResponse(@NonNull BillingResult billingResult, @NonNull List<Purchase> list)
+
+                        {
+
+                            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                                boolean hasLifetimePayment = false;
+                                for (Purchase purchase : list) {
+                                    if (purchase.getOrderId().equals("com.hemerick.lifetime_subscription") &&
+                                            purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
+                                        hasLifetimePayment = true;
+                                        break;
+                                    }
+                                }
+
+                                // Proceed based on lifetime payment status
+                                if (hasLifetimePayment) {
+                                    settings.setIsLifetimePurchased(UserSettings.YES_LIFETIME_PURCHASED);
+                                    SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
+                                    editor.putString(UserSettings.IS_LIFETIME_PURCHASED, settings.getIsLifetimePurchased());
+                                    editor.apply();
+
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onBillingServiceDisconnected() {
+                // Handle billing service disconnections
+            }
+        });
+
+    }
 
     private void updateView() {
 
@@ -458,6 +530,9 @@ public class SignUpActivity extends AppCompatActivity {
 
         String firstname = sharedPreferences.getString(UserSettings.USER_NAME, UserSettings.USER_NAME_NOT_SET);
         settings.setUsername(firstname);
+
+        String lifetimePurchased = sharedPreferences.getString(UserSettings.IS_LIFETIME_PURCHASED, UserSettings.NO_LIFETIME_NOT_SUBSCRIBED);
+        settings.setIsLifetimePurchased(lifetimePurchased);
 
         updateView();
     }
