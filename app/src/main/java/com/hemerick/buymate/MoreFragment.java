@@ -28,7 +28,7 @@ public class MoreFragment extends Fragment {
     ConstraintLayout account_layout, message_layout, share_layout, rate_layout, about_layout, premium_layout, settings_layout, backup_layout;
     TextView premium_text, premium_text2, account_text, message_text, share_text, rate_text, rate_text2, premium_text_2, about_text, settings_text, backup_text;
 
-    ImageView account_icon;
+    ImageView account_icon, backup_premium_icon;
     UserSettings settings;
 
 
@@ -54,6 +54,8 @@ public class MoreFragment extends Fragment {
         settings_text = rootView.findViewById(R.id.settingText);
         backup_text = rootView.findViewById(R.id.backupText);
 
+        backup_premium_icon = rootView.findViewById(R.id.backup_premium_icon);
+
         account_icon = rootView.findViewById(R.id.account_icon);
 
         share_layout = rootView.findViewById(R.id.shareLayout);
@@ -74,8 +76,16 @@ public class MoreFragment extends Fragment {
         premium_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), PremiumActivity.class);
-                startActivity(intent);
+                Intent intent;
+                if (settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)) {
+                    intent = new Intent(getContext(), PaymentSuccessfulActivity.class);
+                    startActivity(intent);
+                }else{
+                    intent = new Intent(getContext(), PremiumActivity.class);
+                    startActivity(intent);
+                }
+
+
             }
         });
 
@@ -236,10 +246,9 @@ public class MoreFragment extends Fragment {
         dialog.show();
     }
 
+
     public boolean onBackPressed() {
-
         return false;
-
     }
 
     private void updateView() {
@@ -286,6 +295,10 @@ public class MoreFragment extends Fragment {
             about_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             settings_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
         }
+
+        if (settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)) {
+            backup_premium_icon.setImageResource(R.drawable.final_open_icon);
+        }
     }
 
     private void loadSharedPreferences() {
@@ -294,6 +307,9 @@ public class MoreFragment extends Fragment {
 
         String textSize = sharedPreferences.getString(UserSettings.CUSTOM_TEXT_SIZE, UserSettings.TEXT_MEDIUM);
         settings.setCustomTextSize(textSize);
+
+        String lifetimePurchased = sharedPreferences.getString(UserSettings.IS_LIFETIME_PURCHASED, UserSettings.NO_LIFETIME_NOT_SUBSCRIBED);
+        settings.setIsLifetimePurchased(lifetimePurchased);
 
         updateView();
     }

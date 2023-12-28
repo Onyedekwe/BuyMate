@@ -30,7 +30,6 @@
                     android:id="@+id/collapsing_Toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="105dp"
-                    android:layout_marginEnd="5dp"
                     app:collapsedTitleTextColor="?attr/colorSecondaryVariant"
                     app:contentScrim="?attr/backgroundColor"
                     app:expandedTitleMarginBottom="15dp"

@@ -56,9 +56,8 @@
             android:text="Buymate premium gives you access to:"
             android:textAlignment="center"
             android:layout_marginHorizontal="50dp"
-            android:textColor="?attr/colorSecondaryVariant"
+            android:textColor="?attr/textFillColor"
             android:textSize="20sp"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView2" />
@@ -70,7 +69,7 @@
             android:layout_height="wrap_content"
             android:autoStart="true"
             android:flipInterval="3000"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:inAnimation="@anim/transition_in_left"
             android:outAnimation="@anim/transition_out_right"
             app:layout_constraintEnd_toEndOf="parent"
@@ -94,17 +93,18 @@
                         android:backgroundTint="?attr/colorSurface"
                         app:cardCornerRadius="25dp"
                         android:layout_margin="5dp"
-                        app:cardElevation="1dp">
+                        app:cardElevation="0dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="5dp"
+                            android:background="?attr/backgroundColor"
                             android:orientation="vertical">
 
                             <ImageView
                                 android:layout_width="match_parent"
-                                android:layout_height="150dp"
+                                android:layout_height="130dp"
                                 android:layout_margin="5dp"
                                 android:scaleType="fitCenter"
                                 android:src="@drawable/illustration_premium_cloud" />
@@ -129,7 +129,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:layout_gravity="center"
                     android:layout_marginHorizontal="20dp"
                     android:orientation="horizontal">
@@ -141,18 +140,19 @@
                         android:backgroundTint="?attr/colorSurface"
                         app:cardCornerRadius="25dp"
                         android:layout_margin="5dp"
-                        app:cardElevation="1dp">
+                        app:cardElevation="0dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="5dp"
+                            android:background="?attr/backgroundColor"
                             android:orientation="vertical">
 
 
                             <ImageView
                                 android:layout_width="match_parent"
-                                android:layout_height="150dp"
+                                android:layout_height="130dp"
                                 android:layout_margin="5dp"
                                 android:scaleType="fitCenter"
                                 android:src="@drawable/illustration_premium_remove_ad" />
@@ -177,7 +177,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:layout_gravity="center"
                     android:layout_marginHorizontal="20dp"
                     android:orientation="horizontal">
@@ -189,18 +188,19 @@
                         android:backgroundTint="?attr/colorSurface"
                         app:cardCornerRadius="25dp"
                         android:layout_margin="5dp"
-                        app:cardElevation="1dp">
+                        app:cardElevation="0dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="5dp"
+                            android:background="?attr/backgroundColor"
                             android:orientation="vertical">
 
 
                             <ImageView
                                 android:layout_width="match_parent"
-                                android:layout_height="150dp"
+                                android:layout_height="130dp"
                                 android:layout_margin="5dp"
                                 android:scaleType="fitCenter"
                                 android:src="@drawable/illustration_premium_insert_images" />
@@ -224,15 +224,6 @@
         </ViewFlipper>
 
 
-
-
-
-
-
-
-
-
-
         <LinearLayout
             android:id="@+id/price_details_container"
             android:layout_width="match_parent"
@@ -249,12 +240,14 @@
                 android:layout_height="match_parent"
                 android:fontFamily="@font/lexend"
                 android:gravity="center"
-                android:text="at"
+                android:text="ONE TIME PURCHASE OFFER"
                 android:layout_gravity="center"
-                android:layout_marginTop="5dp"
-                android:textColor="?attr/colorSecondaryVariant"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="20dp"
+                android:textColor="?attr/textFillColor"
+                android:textStyle="bold"
+                android:textSize="16sp"/>
+
             <LinearLayout
                 android:id="@+id/linearLayout"
                 android:layout_width="wrap_content"
@@ -263,73 +256,7 @@
                 android:orientation="horizontal">
 
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/yearly_card"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="15dp"
-                    android:layout_marginHorizontal="5dp"
-                    android:layout_weight="1"
-                    app:cardBackgroundColor="?attr/colorPrimary"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="5dp">
 
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
-                        android:background="@drawable/bg_stroke_curve_corner_premium"
-                        android:minWidth="120dp"
-                        android:minHeight="120dp"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:maxLines="1"
-                            android:text="@string/star"
-                            android:textAlignment="center"/>
-
-                        <TextView
-                            android:id="@+id/yearly_currency_text"
-                            android:layout_width="130dp"
-                            android:layout_height="0dp"
-                            android:layout_gravity="center"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:textStyle="bold"
-                            android:text="0.00"
-                            android:fontFamily="@font/jost"
-                            android:textColor="?attr/textFillColor"
-                            android:textSize="19sp"/>
-
-                        <LinearLayout
-                            android:id="@+id/yearly_layout"
-                            android:layout_width="wrap_content"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.5"
-                            android:background="?attr/colorPrimary"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/yearly_sub_text"
-                                android:layout_width="130dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:maxLines="1"
-                                android:text="Yearly"
-                                android:textAlignment="center"
-                                android:textColor="@color/white"/>
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
                 <androidx.cardview.widget.CardView
                     android:id="@+id/lifetime_card"
                     android:layout_width="0dp"
@@ -338,15 +265,13 @@
                     android:layout_marginVertical="15dp"
                     android:layout_weight="1"
                     app:cardCornerRadius="10dp"
-                    app:cardElevation="5dp">
+                    app:cardElevation="1dp">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="1dp"
                         android:background="@drawable/bg_stroke_curve_corner_premium"
-                        android:minWidth="120dp"
-                        android:minHeight="120dp"
                         android:orientation="vertical">
 
                         <TextView
@@ -360,38 +285,39 @@
                             />
 
                         <TextView
-                            android:id="@+id/lifetime_currency_text"
-                            android:layout_width="130dp"
-                            android:layout_height="0dp"
+                            android:id="@+id/prev_lifetime_currency_text"
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_weight="1"
                             android:gravity="center"
                             android:text="0.00"
+                            android:visibility="gone"
                             android:textStyle="bold"
                             android:textColor="?attr/textFillColor"
-                            android:textSize="19sp"/>
+                            android:textSize="20sp"/>
 
+                        <TextView
+                            android:id="@+id/lifetime_currency_text"
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:layout_marginVertical="5dp"
+                            android:text="0.00"
+                            android:textStyle="bold"
+                            android:textColor="?attr/colorSecondaryVariant"
+                            android:textSize="25sp"/>
 
-                        <LinearLayout
-                            android:id="@+id/lifetime_layout"
-                            android:layout_width="wrap_content"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.5"
-                            android:background="?attr/color"
-                            android:orientation="horizontal">
-
-                            <TextView
+                        <TextView
                                 android:id="@+id/lifetime_sub_text"
-                                android:layout_width="130dp"
+                                android:layout_width="200dp"
                                 android:layout_height="wrap_content"
-                                android:maxLines="1"
                                 android:layout_gravity="center"
                                 android:gravity="center"
-                                android:text="Lifetime"
+                                android:text="Pay one time only"
+                                android:layout_marginVertical="5dp"
                                 android:textAlignment="center"
                                 android:textColor="?attr/textFillColor"/>
-
-                        </LinearLayout>
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
@@ -402,7 +328,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="40dp"
-                android:layout_marginTop="13dp"
+                android:layout_marginTop="25dp"
                 android:backgroundTint="?attr/buttonTint"
                 android:gravity="center"
                 android:text="Upgrade Now!"
@@ -420,7 +346,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="30dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="15dp"
                 android:text="Subscription renews automatically. You can cancel it in Google Play Setting"
                 android:textAlignment="center"
                 android:textColor="?attr/textFillColor"
@@ -440,7 +366,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/price_details_container" >
+            app:layout_constraintTop_toBottomOf="@+id/cardView2" >
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -480,46 +406,18 @@
                 android:text="It may be a network issue or a Google Play server error. Try again later. If the problem persists, contact our support team." />
 
 
-
         </LinearLayout>
-        <LinearLayout
-            android:id="@+id/already_subscribed_layout"
-            android:layout_width="match_parent"
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:visibility="gone"
-            android:orientation="vertical"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/no_network_layout">
-
-            <TextView
-                android:id="@+id/already_subscribed_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:textColor="?attr/textFillColor"
-                android:textStyle="bold"
-                android:text="Currently Subscribed to Buymate" />
-
-
-            <TextView
-                android:id="@+id/already_subscribed_sub_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginHorizontal="20dp"
-                android:textAlignment="center"
-                android:layout_marginTop="15dp"
-                android:lineSpacingExtra="2dp"
-                android:text="Hi, you are currently subscribed to Buymate and you currently enjoy full functionality of the app!"
-                android:textColor="?attr/textFillColor"/>
-
-        </LinearLayout>
-
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

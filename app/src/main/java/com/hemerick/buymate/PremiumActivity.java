@@ -5,12 +5,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.PowerManager;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,30 +45,28 @@ import com.hemerick.buymate.NetworkUtils.Network;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import io.github.muddz.styleabletoast.StyleableToast;
 
-public class PremiumActivity extends AppCompatActivity {
-
-    boolean isPremium = false;
-    String currently_subscribed = "";
-
-
+public class PremiumActivity extends AppCompatActivity implements PurchasesUpdatedListener {
     Toolbar toolbar;
+
+    ProgressBar progressBar;
     private UserSettings settings;
     private PowerManager.WakeLock wakeLock;
 
-    TextView header, sub_header, tip, no_network_header, no_network_sub_header, already_subscribed_header, already_subscribed_sub_header;
+    TextView header, sub_header, tip, no_network_header, no_network_sub_header;
 
     TextView backupText, removeAdsText, insertImageText;
-    TextView lifetime_currencyText, yearly_currencyText;
-    TextView lifetime_subText, yearly_subText;
+    TextView lifetime_currencyText;
+    TextView lifetime_subText, prev_lifetime_currency_text;
 
-    LinearLayout lifetime_layout, yearly_layout, price_details_container, no_network_layout, already_sunscribed_layout;
+    LinearLayout lifetime_layout, price_details_container, no_network_layout;
 
-    CardView lifetime_card, yearly_card;
+    CardView lifetime_card;
 
     ArrayList<String> product_price_list;
 
@@ -80,9 +80,14 @@ public class PremiumActivity extends AppCompatActivity {
     int colorPrimary;
     int textColor;
 
+    String LIFETIME_PRODUCT_ID = "com.hemerick.lifetime_subscription";
+    String YEARLY_PRODUCT_ID = "com.hemerick.yearly_subscription";
+
+    String price = "";
+    Boolean isPremium = false;
+
     private BillingClient billingClient;
 
-    boolean isSuccess = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +104,8 @@ public class PremiumActivity extends AppCompatActivity {
             }
         });
 
+        progressBar = findViewById(R.id.progress_bar);
+
         header = findViewById(R.id.header);
         sub_header = findViewById(R.id.sub_header);
         tip = findViewById(R.id.tip);
@@ -106,8 +113,7 @@ public class PremiumActivity extends AppCompatActivity {
         no_network_header = findViewById(R.id.no_network_header);
         no_network_sub_header = findViewById(R.id.no_network_sub_header);
 
-        already_subscribed_header = findViewById(R.id.already_subscribed_header);
-        already_subscribed_sub_header = findViewById(R.id.already_subscribed_sub_header);
+
 
 
         backupText = findViewById(R.id.backupText);
@@ -118,23 +124,17 @@ public class PremiumActivity extends AppCompatActivity {
         product_price_list = new ArrayList<>();
 
         lifetime_card = findViewById(R.id.lifetime_card);
-        yearly_card = findViewById(R.id.yearly_card);
 
 
         lifetime_currencyText = findViewById(R.id.lifetime_currency_text);
-        yearly_currencyText = findViewById(R.id.yearly_currency_text);
 
 
         lifetime_subText = findViewById(R.id.lifetime_sub_text);
-        yearly_subText = findViewById(R.id.yearly_sub_text);
-
-        lifetime_layout = findViewById(R.id.lifetime_layout);
-        yearly_layout = findViewById(R.id.yearly_layout);
+        prev_lifetime_currency_text = findViewById(R.id.prev_lifetime_currency_text);
 
         price_details_container = findViewById(R.id.price_details_container);
         no_network_layout = findViewById(R.id.no_network_layout);
 
-        already_sunscribed_layout = findViewById(R.id.already_subscribed_layout);
 
 
         upgradeBtn = findViewById(R.id.upgrade_btn);
@@ -168,378 +168,264 @@ public class PremiumActivity extends AppCompatActivity {
             }
         });
 
-
-        lifetime_card.setOnClickListener(new View.OnClickListener() {
+        progressBar.setVisibility(View.VISIBLE);
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void onClick(View v) {
+            public void run() {
 
-                yearly_card.setCardBackgroundColor(Color.TRANSPARENT);
+                if(Network.isNetworkAvailable(PremiumActivity.this)){
+                    billingClient = BillingClient.newBuilder(PremiumActivity.this)
+                            .enablePendingPurchases().setListener(PremiumActivity.this).build();
+                    billingClient.startConnection(new BillingClientStateListener() {
+                        @Override
+                        public void onBillingServiceDisconnected() {
 
-                yearly_layout.setBackgroundColor(shadowColor);
-                yearly_subText.setTextColor(textColor);
+                        }
 
+                        @Override
+                        public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
+                            if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK){
+                                ExecutorService executorService = Executors.newSingleThreadExecutor();
+                                executorService.execute(() -> {
+                                    try{
+                                        billingClient.queryPurchasesAsync(
+                                                QueryPurchasesParams.newBuilder()
+                                                        .setProductType(BillingClient.ProductType.INAPP)
+                                                        .build(),
+                                                ((billingResult1, list) -> {
+                                                    for(Purchase purchase : list){
+                                                        if(purchase!=null && purchase.isAcknowledged()){
+                                                            isPremium = true;
+                                                        }
+                                                    }
+                                                }));
+                                    }catch (Exception ex){
+                                        isPremium = false;
+                                    }
+                                    runOnUiThread(() -> {
+                                        try{
+                                            Thread.sleep(1000);
+                                        }catch (InterruptedException e){
+                                            e.printStackTrace();
+                                        }
+                                        if(isPremium){
+                                            Toast.makeText(getApplicationContext(), "Premium is enabled", Toast.LENGTH_SHORT).show();
+                                            price_details_container.setVisibility(View.GONE);
+                                            progressBar.setVisibility(View.INVISIBLE);
 
-                lifetime_card.setCardBackgroundColor(colorPrimary);
-                lifetime_layout.setBackgroundColor(colorPrimary);
-                lifetime_subText.setTextColor(Color.WHITE);
-                selected_plan = "lifetime";
+                                        }else{
+                                            Toast.makeText(getApplicationContext(), "Premium is not enabled", Toast.LENGTH_SHORT).show();
+                                            getPrice();
+                                            progressBar.setVisibility(View.INVISIBLE);
+                                        }
+
+                                    });
+
+                                });
+                            }
+                        }
+                    });
+                }else{
+                    no_network_layout.setVisibility(View.VISIBLE);
+                    price_details_container.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.INVISIBLE);
+                }
+
             }
-        });
-
-        yearly_card.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                lifetime_card.setCardBackgroundColor(Color.TRANSPARENT);
+        }, 1000);
 
 
-                lifetime_layout.setBackgroundColor(shadowColor);
-                lifetime_subText.setTextColor(textColor);
-
-                yearly_card.setCardBackgroundColor(colorPrimary);
-                yearly_layout.setBackgroundColor(colorPrimary);
-                yearly_subText.setTextColor(Color.WHITE);
-                selected_plan = "yearly";
-            }
-        });
 
         getColors();
         loadSharedPreferences();
 
-        billingClient = BillingClient.newBuilder(PremiumActivity.this).setListener(purchasesUpdatedListener).enablePendingPurchases().build();
-
-        if (Network.isNetworkAvailable(PremiumActivity.this)) {
-            if (settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)) {
-                price_details_container.setVisibility(View.GONE);
-                no_network_layout.setVisibility(View.GONE);
-                informLifetimePayment();
-                already_sunscribed_layout.setVisibility(View.VISIBLE);
-            } else {
-                checkIfSubscribed();
-            }
-        } else {
-            price_details_container.setVisibility(View.GONE);
-            no_network_layout.setVisibility(View.VISIBLE);
-        }
-
-
-
     }
 
-    private PurchasesUpdatedListener purchasesUpdatedListener = new PurchasesUpdatedListener() {
-        @Override
-        public void onPurchasesUpdated(@NonNull BillingResult billingResult, @Nullable List<Purchase> list) {
-            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && list != null) {
-                for (Purchase purchase : list) {
-                    if (purchase.getProducts().contains("com.hemerick.yearly_subscription")) {
-                        handlePurchase(purchase);
-                    } else if (purchase.getProducts().contains("com.hemerick.lifetime_subscription")) {
-                        grantLifetimeAccess(purchase);
+
+    public void btn_upgrade_click(View view) {
+      if(billingClient.isReady()) {
+          initiatePurchase();
+      }
+      else{
+          billingClient = BillingClient.newBuilder(this).enablePendingPurchases().setListener(this).build();
+          billingClient.startConnection(new BillingClientStateListener() {
+              @Override
+              public void onBillingServiceDisconnected() {
+
+              }
+
+              @Override
+              public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
+                    if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK){
+                        initiatePurchase();
+                    }else {
+                        Toast.makeText(getApplicationContext(), "Error " + billingResult.getDebugMessage(), Toast.LENGTH_SHORT).show();
                     }
+              }
+          });
+      }
+    }
 
+    private void initiatePurchase() {
+        QueryProductDetailsParams queryProductDetailsParams =
+                QueryProductDetailsParams.newBuilder().setProductList(
+                        ImmutableList.of(QueryProductDetailsParams.Product.newBuilder()
+                                .setProductId(LIFETIME_PRODUCT_ID)
+                                .setProductType(BillingClient.ProductType.INAPP)
+                                .build()))
+                        .build();
 
-                }
-            } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
-
-                isSuccess = true;
-                ConnectionClass.premium = true;
-                ConnectionClass.locked = false;
-
-            } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.FEATURE_NOT_SUPPORTED) {
-                //textview.setText("Feature Not Supported")
-            } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.BILLING_UNAVAILABLE) {
-                //textview.setText("Billing_unavailable")
-            } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.USER_CANCELED) {
-                //textview.setText("User Cancelled")
-            } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.DEVELOPER_ERROR) {
-                //textview.setText("Developer Error")
-            } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.ITEM_UNAVAILABLE) {
-                //textview.setText("ITEM UNAVAILABLE")
-            } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.NETWORK_ERROR) {
-                //textview.setText("NETWORK ERROR")
-            } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.SERVICE_DISCONNECTED) {
-                //textview.setText("Service_Disconnected")
-            } else {
-                Toast.makeText(getApplicationContext(), "Error " + billingResult.getDebugMessage(), Toast.LENGTH_SHORT).show();
-            }
-        }
-    };
-
-
-    void handlePurchase(final Purchase purchase) {
-        ConsumeParams consumeParams = ConsumeParams.newBuilder().setPurchaseToken(purchase.getPurchaseToken()).build();
-
-        ConsumeResponseListener listener = new ConsumeResponseListener() {
-            @Override
-            public void onConsumeResponse(@NonNull BillingResult billingResult, @NonNull String s) {
-                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-
-                }
-            }
-        };
-        billingClient.consumeAsync(consumeParams, listener);
-        if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
-            if (!verifyValidSignature(purchase.getOriginalJson(), purchase.getSignature())) {
-                Toast.makeText(getApplicationContext(), "Error : Invalid Purchase", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            if (!purchase.isAcknowledged()) {
-                AcknowledgePurchaseParams acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder().setPurchaseToken(purchase.getPurchaseToken()).build();
-                billingClient.acknowledgePurchase(acknowledgePurchaseParams, acknowledgePurchaseResponseListener);
-
-                price_details_container.setVisibility(View.GONE);
-                no_network_layout.setVisibility(View.GONE);
-                informYearlySubscription();
-                already_sunscribed_layout.setVisibility(View.VISIBLE);
-
-                //textview.setText("Subscribed")
-            }
-            ConnectionClass.premium = true;
-            ConnectionClass.locked = false;
-            //textview.setVisibility(Gone);
-        } else if (purchase.getPurchaseState() == Purchase.PurchaseState.PENDING) {
-            //textview.setText("Subscrption pending")
-        } else if (purchase.getPurchaseState() == Purchase.PurchaseState.UNSPECIFIED_STATE) {
-            //textview.setText("Unspecified State")
-
-        }
+        billingClient.queryProductDetailsAsync(
+                queryProductDetailsParams,
+                new ProductDetailsResponseListener() {
+                    @Override
+                    public void onProductDetailsResponse(@NonNull BillingResult billingResult, @NonNull List<ProductDetails> list) {
+                        for(ProductDetails productDetails : list){
+                          ImmutableList productDetailsList = ImmutableList.of(
+                                  BillingFlowParams.ProductDetailsParams.newBuilder()
+                                          .setProductDetails(productDetails)
+                                          .build()
+                          );
+                          BillingFlowParams billingFlowParams = BillingFlowParams.newBuilder()
+                                  .setProductDetailsParamsList(productDetailsList)
+                                  .build();
+                          billingClient.launchBillingFlow(PremiumActivity.this, billingFlowParams);
+                        }
+                    }
+                });
     }
 
 
-    private void grantLifetimeAccess(final Purchase purchase) {
-        if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
-            if (!verifyValidSignature(purchase.getOriginalJson(), purchase.getSignature())) {
-                Toast.makeText(getApplicationContext(), "Error : Invalid Purchase", Toast.LENGTH_SHORT).show();
+    public void getPrice(){
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                QueryProductDetailsParams queryProductDetailsParams = QueryProductDetailsParams.newBuilder()
+                        .setProductList(
+                                ImmutableList.of(QueryProductDetailsParams.Product.newBuilder()
+                                        .setProductId(LIFETIME_PRODUCT_ID)
+                                        .setProductType(BillingClient.ProductType.INAPP)
+                                        .build()))
+                        .build();
+
+                billingClient.queryProductDetailsAsync(queryProductDetailsParams, new ProductDetailsResponseListener() {
+                    @Override
+                    public void onProductDetailsResponse(@NonNull BillingResult billingResult, @NonNull List<ProductDetails> list) {
+
+                        for(ProductDetails productDetails : list){
+
+                            ImmutableList productDetailsParamsList =
+                                    ImmutableList.of(
+                                            BillingFlowParams.ProductDetailsParams.newBuilder()
+                                            .setProductDetails(productDetails)
+                                            .build()
+                            );
+                            price  = productDetails.getOneTimePurchaseOfferDetails().getFormattedPrice();
+                        }
+                    }
+                });
+            }
+        });
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Thread.sleep(1000);
+                }catch (InterruptedException e){
+                    e.printStackTrace();
+                }
+                lifetime_currencyText.setText(price);
+            }
+        });
+    }
+
+
+    @Override
+    public void onPurchasesUpdated(@NonNull BillingResult billingResult, @Nullable List<Purchase> list) {
+
+       if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && list != null){
+           for(Purchase purchase : list){
+             handlePurchase(purchase);
+           }
+       }
+       else if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED){
+           Toast.makeText(PremiumActivity.this, "ITEM_ALREADY_OWNED", Toast.LENGTH_SHORT).show();
+       }
+       else if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.FEATURE_NOT_SUPPORTED){
+           Toast.makeText(PremiumActivity.this, "FEATURE_NOT_SUPPORTED", Toast.LENGTH_SHORT).show();
+       }
+       else if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.USER_CANCELED){
+           Toast.makeText(PremiumActivity.this, "USER_CANCELED", Toast.LENGTH_SHORT).show();
+       }
+       else if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.DEVELOPER_ERROR){
+           Toast.makeText(PremiumActivity.this, "DEVELOPER_ERROR", Toast.LENGTH_SHORT).show();
+       }
+       else if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.ITEM_UNAVAILABLE){
+           Toast.makeText(PremiumActivity.this, "ITEM_UNAVAILABLE", Toast.LENGTH_SHORT).show();
+       }
+       else if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.NETWORK_ERROR){
+           Toast.makeText(PremiumActivity.this, "NETWORK_ERROR", Toast.LENGTH_SHORT).show();
+       }
+       else if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.SERVICE_DISCONNECTED){
+           Toast.makeText(PremiumActivity.this, "SERVICE_DISCONNECTED", Toast.LENGTH_SHORT).show();
+       }
+       else {
+           Toast.makeText(getApplicationContext(), "Error: "+billingResult.getDebugMessage(),Toast.LENGTH_SHORT ).show();
+       }
+
+
+    }
+
+    private void handlePurchase(Purchase purchase) {
+
+        if(purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED){
+            if(!verifyValidSignature(purchase.getOriginalJson(),purchase.getSignature())){
+                Toast.makeText(getApplicationContext(), "Error: invalid purchase", Toast.LENGTH_SHORT).show();
                 return;
             }
-            if (!purchase.isAcknowledged()) {
-                AcknowledgePurchaseParams acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder().setPurchaseToken(purchase.getPurchaseToken()).build();
-                billingClient.acknowledgePurchase(acknowledgePurchaseParams, acknowledgePurchaseResponseListener);
-
+            if(!purchase.isAcknowledged()){
+                AcknowledgePurchaseParams acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder()
+                        .setPurchaseToken(purchase.getPurchaseToken())
+                        .build();
+                billingClient.acknowledgePurchase(acknowledgePurchaseParams,acknowledgePurchaseResponseListener);
                 settings.setIsLifetimePurchased(UserSettings.YES_LIFETIME_PURCHASED);
                 SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
                 editor.putString(UserSettings.IS_LIFETIME_PURCHASED, settings.getIsLifetimePurchased());
                 editor.apply();
-
-                price_details_container.setVisibility(View.GONE);
-                no_network_layout.setVisibility(View.GONE);
-                informLifetimePayment();
-                already_sunscribed_layout.setVisibility(View.VISIBLE);
-
+            }else{
+                settings.setIsLifetimePurchased(UserSettings.YES_LIFETIME_PURCHASED);
+                SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
+                editor.putString(UserSettings.IS_LIFETIME_PURCHASED, settings.getIsLifetimePurchased());
+                editor.apply();
+                recreate();
             }
-            // Grant lifetime access
-            ConnectionClass.premium = true;
-            ConnectionClass.locked = false;
-            //textview.setVisibility(Gone);
-        } else if (purchase.getPurchaseState() == Purchase.PurchaseState.PENDING) {
-            //textview.setText("Subscrption pending")
         } else if (purchase.getPurchaseState() == Purchase.PurchaseState.UNSPECIFIED_STATE) {
-            //textview.setText("Unspecified State")
+       //not necessary     Toast.makeText(getApplicationContext(), "UNSPECIFIED_STATE", Toast.LENGTH_SHORT).show();
         }
-
     }
+
 
     AcknowledgePurchaseResponseListener acknowledgePurchaseResponseListener = new AcknowledgePurchaseResponseListener() {
         @Override
         public void onAcknowledgePurchaseResponse(@NonNull BillingResult billingResult) {
-            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                //textview.setText("Subscribed");
-                isSuccess = true;
-                ConnectionClass.premium = true;
-                ConnectionClass.locked = false;
+            if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK){
+                settings.setIsLifetimePurchased(UserSettings.YES_LIFETIME_PURCHASED);
+                SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
+                editor.putString(UserSettings.IS_LIFETIME_PURCHASED, settings.getIsLifetimePurchased());
+                editor.apply();
             }
         }
     };
 
 
-    private boolean verifyValidSignature(String signedData, String signature) {
-        try {
-            String base64Key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgthYJCUO0n1jRUAZ/BUkeuV6x/2Y3OZVZhG28fbuqF32v4ZkFCG6aJW0V9NXpkRdQn5G6lf4b4Mkg8qN0eZQv2V46Uxs8134e/cTmWK7WYY+VzXX5YxHMu0eVNMI2q/xf5A3UhPTZHZjzKLJI4K8ncg9UIRO/awvjCILMr45l9tBScDmxMw7hAChbyS3bu8rmRSTT6csV9Ukf3wrTIncKbS3NRq5crm56g8RGCR5yzrYk3R+b8DZO4gsWz4sFEqdvxHAPMAh88SgwyT52oM6QuVcP/03itx9R3jje4nqJgxQTRasdkJEPUR53/05DOtklgl/8MwnBixweUBCyWinmQIDAQAB";
-            return Security.verifyPurchase(base64Key.trim(), signedData, signature);
-        } catch (IOException e) {
-            return false;
-        }
-    }
-
-    private void getSubPrice() {
-        billingClient.startConnection(new BillingClientStateListener() {
-            @Override
-            public void onBillingServiceDisconnected() {
-
+    private boolean verifyValidSignature(String signedData, String signature){
+            try{
+                String base64Key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgthYJCUO0n1jRUAZ/BUkeuV6x/2Y3OZVZhG28fbuqF32v4ZkFCG6aJW0V9NXpkRdQn5G6lf4b4Mkg8qN0eZQv2V46Uxs8134e/cTmWK7WYY+VzXX5YxHMu0eVNMI2q/xf5A3UhPTZHZjzKLJI4K8ncg9UIRO/awvjCILMr45l9tBScDmxMw7hAChbyS3bu8rmRSTT6csV9Ukf3wrTIncKbS3NRq5crm56g8RGCR5yzrYk3R+b8DZO4gsWz4sFEqdvxHAPMAh88SgwyT52oM6QuVcP/03itx9R3jje4nqJgxQTRasdkJEPUR53/05DOtklgl/8MwnBixweUBCyWinmQIDAQAB";
+                return Security.verifyPurchase(base64Key, signedData, signature);
+            }catch (IOException e){
+                return false;
             }
-
-            @Override
-            public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
-                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                    ExecutorService executorService = Executors.newSingleThreadExecutor();
-                    executorService.execute(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            List<QueryProductDetailsParams.Product> productList = new ArrayList<>();
-
-                            QueryProductDetailsParams.Product product = QueryProductDetailsParams.Product.newBuilder().setProductId("com.hemerick.yearly_subscription").setProductType(BillingClient.ProductType.SUBS).build();
-                            productList.add(product);
-
-
-                            QueryProductDetailsParams queryProductDetailsParams = QueryProductDetailsParams.newBuilder().setProductList(productList).build();
-
-                            billingClient.queryProductDetailsAsync(queryProductDetailsParams, new ProductDetailsResponseListener() {
-                                @Override
-                                public void onProductDetailsResponse(@NonNull BillingResult billingResult, @NonNull List<ProductDetails> list) {
-                                    // Handle the response containing details of the queried subscription product(s).
-
-                                    // Process details for each subscription product
-                                    for (ProductDetails productDetails : list) {
-                                        String formattedPrice = productDetails.getSubscriptionOfferDetails().get(0).getPricingPhases().getPricingPhaseList().get(0).getFormattedPrice();
-                                        product_price_list.add(formattedPrice);
-                                        // Print or use the extracted information as needed
-
-                                    }
-                                }
-                            });
-                        }
-                    });
-
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                Thread.sleep(1000);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-
-                            }
-                            for (int i = 0; i < product_price_list.size(); i++) {
-
-                                yearly_currencyText.setText(product_price_list.get(i));
-                                getOneTimePrice();
-
-                            }
-                        }
-                    });
-                }
-            }
-        });
-    }
-
-    private void getOneTimePrice() {
-        QueryProductDetailsParams queryProductDetailsParams = QueryProductDetailsParams.newBuilder().setProductList(ImmutableList.of(QueryProductDetailsParams.Product.newBuilder().setProductId("com.hemerick.lifetime_subscription").setProductType(BillingClient.ProductType.INAPP).build())).build();
-
-        billingClient.queryProductDetailsAsync(queryProductDetailsParams, new ProductDetailsResponseListener() {
-            @Override
-            public void onProductDetailsResponse(@NonNull BillingResult billingResult, @NonNull List<ProductDetails> list) {
-                for (ProductDetails productDetails : list) {
-                    String formattedPrice = productDetails.getOneTimePurchaseOfferDetails().getFormattedPrice();
-                    lifetime_currencyText.setText(formattedPrice);
-                }
-            }
-        });
-    }
-
-    public void btn_upgrade_click(View view) {
-        billingClient.startConnection(new BillingClientStateListener() {
-            @Override
-            public void onBillingServiceDisconnected() {
-
-            }
-
-            @Override
-            public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
-
-                if (selected_plan.equals("yearly")) {
-
-                    String productId = "com.hemerick.yearly_subscription";
-                    QueryProductDetailsParams queryProductDetailsParams = QueryProductDetailsParams.newBuilder().setProductList(ImmutableList.of(QueryProductDetailsParams.Product.newBuilder().setProductId(productId).setProductType(BillingClient.ProductType.SUBS).build())).build();
-                    billingClient.queryProductDetailsAsync(queryProductDetailsParams, new ProductDetailsResponseListener() {
-                        @Override
-                        public void onProductDetailsResponse(@NonNull BillingResult billingResult, @NonNull List<ProductDetails> list) {
-                            for (ProductDetails productDetails : list) {
-                                String offerToken = productDetails.getSubscriptionOfferDetails().get(0).getOfferToken();
-                                ImmutableList productDetailsParamsList = ImmutableList.of(BillingFlowParams.ProductDetailsParams.newBuilder().setProductDetails(productDetails).setOfferToken(offerToken).build());
-                                BillingFlowParams billingFlowParams = BillingFlowParams.newBuilder().setProductDetailsParamsList(productDetailsParamsList).build();
-                                billingClient.launchBillingFlow(PremiumActivity.this, billingFlowParams);
-                            }
-                        }
-                    });
-                } else if (selected_plan.equals("lifetime")) {
-                    String productId = "com.hemerick.lifetime_subscription";
-                    QueryProductDetailsParams queryProductDetailsParams = QueryProductDetailsParams.newBuilder().setProductList(ImmutableList.of(QueryProductDetailsParams.Product.newBuilder().setProductId(productId).setProductType(BillingClient.ProductType.INAPP).build())).build();
-                    billingClient.queryProductDetailsAsync(queryProductDetailsParams, new ProductDetailsResponseListener() {
-                        @Override
-                        public void onProductDetailsResponse(@NonNull BillingResult billingResult, @NonNull List<ProductDetails> list) {
-                            for (ProductDetails productDetails : list) {
-                                ImmutableList productDetailsParamsList = ImmutableList.of(BillingFlowParams.ProductDetailsParams.newBuilder().setProductDetails(productDetails).build());
-                                BillingFlowParams billingFlowParams = BillingFlowParams.newBuilder().setProductDetailsParamsList(productDetailsParamsList).build();
-                                billingClient.launchBillingFlow(PremiumActivity.this, billingFlowParams);
-                            }
-                        }
-                    });
-                }
-            }
-        });
-    }
-
-    private void checkIfSubscribed(){
-
-        billingClient.startConnection(new BillingClientStateListener() {
-            @Override
-            public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
-                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                    billingClient.queryPurchasesAsync(QueryPurchasesParams.newBuilder().setProductType(BillingClient.ProductType.SUBS).build(), new PurchasesResponseListener() {
-                        @Override
-                        public void onQueryPurchasesResponse(@NonNull BillingResult billingResult, @NonNull List<Purchase> list) {
-
-                            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                                boolean isSubscribedToYearlyPlan = false;
-                                for (Purchase purchase : list) {
-                                    if (purchase.getOrderId().equals("com.hemerick.yearly_subscription") && purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
-                                        isSubscribedToYearlyPlan = true;
-                                        break;
-                                    }
-                                }
-
-                                // Proceed based on subscription status
-                                if (isSubscribedToYearlyPlan) {
-                                    price_details_container.setVisibility(View.GONE);
-                                    no_network_layout.setVisibility(View.GONE);
-                                    informYearlySubscription();
-                                    already_sunscribed_layout.setVisibility(View.VISIBLE);
-                                } else {
-                                    getSubPrice();
-                                }
-                            }
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onBillingServiceDisconnected() {
-                // Handle billing service disconnections
-            }
-        });
-    }
-
-    private void informYearlySubscription(){
-        String user_name = settings.getUsername();
-
-        String headerText = "Thanks for sticking with us, " + user_name + "!";
-        String subheaderText = "Your yearly support means the world!\nYour access to all the premium features is active.";
-
-        already_subscribed_header.setText(headerText);
-        already_subscribed_sub_header.setText(subheaderText);
-    }
-
-    private void informLifetimePayment(){
-        String user_name = settings.getUsername();
-        String app_name = getString(R.string.app_name);
-
-        String headerText = "Thanks for joining the " +app_name+ " Lifetime Club!";
-        String subheaderText = "Your access to everything is permanently unlocked.";
-
-        already_subscribed_header.setText(headerText);
-        already_subscribed_sub_header.setText(subheaderText);
     }
 
 
@@ -686,18 +572,16 @@ public class PremiumActivity extends AppCompatActivity {
             tip.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.mini_text));
             no_network_header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             no_network_sub_header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-            already_subscribed_header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-            already_subscribed_sub_header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
 
             backupText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.mini_text));
             removeAdsText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.mini_text));
             insertImageText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.mini_text));
 
             lifetime_subText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-            yearly_subText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            prev_lifetime_currency_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
 
 
-            upgradeBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            upgradeBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
 
         }
 
@@ -707,15 +591,14 @@ public class PremiumActivity extends AppCompatActivity {
             tip.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
             no_network_header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             no_network_sub_header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-            already_subscribed_header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-            already_subscribed_sub_header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+
 
             backupText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
             removeAdsText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
             insertImageText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
 
             lifetime_subText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-            yearly_subText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            prev_lifetime_currency_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_max_text));
 
             upgradeBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
         }
@@ -726,15 +609,15 @@ public class PremiumActivity extends AppCompatActivity {
             tip.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_text));
             no_network_header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             no_network_sub_header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-            already_subscribed_header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-            already_subscribed_sub_header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+
 
             backupText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_text));
             removeAdsText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_text));
             insertImageText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_text));
 
             lifetime_subText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-            yearly_subText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            prev_lifetime_currency_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_max_max_text));
+
 
             upgradeBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
         }
@@ -764,14 +647,11 @@ public class PremiumActivity extends AppCompatActivity {
         updateView();
     }
 
-    public void quit_click(View view) {
-        finish();
-    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (billingClient != null) {
+        if(billingClient != null){
             billingClient.endConnection();
         }
     }

@@ -627,6 +627,10 @@ public class SettingsActivity extends AppCompatActivity {
             }
         }
 
+        if (settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)) {
+            RemoveAdsLayout.setVisibility(View.GONE);
+        }
+
         multiplySwitch.setChecked(settings.getIsMultiplyDisabled().equals(UserSettings.NO_MULTIPLY_NOT_DISABLED));
 
         disablePriceSwitch.setChecked(!settings.getIsPriceDisabled().equals(UserSettings.YES_PRICE_DISABLED));
@@ -669,6 +673,9 @@ public class SettingsActivity extends AppCompatActivity {
 
         String disablePrice = sharedPreferences.getString(UserSettings.IS_PRICE_DISABLED, UserSettings.NO_PRICE_NOT_DISABLED);
         settings.setIsPriceDisabled(disablePrice);
+
+        String lifetimePurchased = sharedPreferences.getString(UserSettings.IS_LIFETIME_PURCHASED, UserSettings.NO_LIFETIME_NOT_SUBSCRIBED);
+        settings.setIsLifetimePurchased(lifetimePurchased);
 
         updateView();
     }

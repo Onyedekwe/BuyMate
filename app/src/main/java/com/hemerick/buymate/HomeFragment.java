@@ -183,8 +183,14 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                 } else if (itemId == R.id.nav_premium) {
                     navigationView.getCheckedItem().setChecked(false);
                     item.setChecked(true);
-                    Intent intent = new Intent(getContext(), PremiumActivity.class);
-                    startActivity(intent);
+                    Intent intent;
+                    if (settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)) {
+                        intent = new Intent(getContext(), PaymentSuccessfulActivity.class);
+                        startActivity(intent);
+                    }else{
+                        intent = new Intent(getContext(), PremiumActivity.class);
+                        startActivity(intent);
+                    }
                 } else if (itemId == R.id.nav_reminder) {
                     navigationView.getCheckedItem().setChecked(false);
                     item.setChecked(true);
@@ -627,7 +633,8 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
             });
         } else {
             collapsingToolbarLayout.setTitle(getString(R.string.app_name));
-            if (settings.getIsPremiumSubscribed().equals(UserSettings.NOT_SUBSCRIBED)) {
+
+            if (!settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)) {
                 inflater.inflate(R.menu.category_toolbar_menu, menu);
                 menu.findItem(R.id.ads).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
@@ -637,8 +644,8 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                         return true;
                     }
                 });
-
-            } else {
+            }
+            else {
                 inflater.inflate(R.menu.category_toolbar_subscribed_menu, menu);
 
 
@@ -1696,48 +1703,13 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
 
 
     public void insertItem(String category, String description, int status, double price, String month, String year, String day, String time, double quantity, String unit) {
-
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
-        boolean isFirstStart = sharedPreferences.getBoolean("isFirstStart", true);
         String finalPrice = formatNumberV2(price);
         String finalQuantity = formatNumberV2(quantity);
-
         db.insertItem(category, description, status, finalPrice, month, year, day, time, finalQuantity, unit);
 
-        UserSettings settings = (UserSettings) getActivity().getApplication();
-        settings.setFirstStart(false);
-        SharedPreferences.Editor editor = getActivity().getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
-        editor.putBoolean("isFirstStart", settings.getFirstStart());
-        editor.apply();
-
-
-        if (isFirstStart) {
-            Dialog dialog = new Dialog(getContext());
-            dialog.setContentView(R.layout.success_dialog_popup);
-            dialog.getWindow().setBackgroundDrawable(context.getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
-            dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            dialog.setCancelable(false);
-            dialog.show();
-
-            Button okay = dialog.findViewById(R.id.okBtn);
-            okay.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                    Intent intent = new Intent(context, ItemActivity.class);
-                    intent.putExtra("ITEM", category);
-                    startActivity(intent);
-
-                }
-            });
-
-        } else {
-            StyleableToast.makeText(context, getString(R.string.list_created), R.style.custom_toast_2).show();
-            Intent intent = new Intent(context, ItemActivity.class);
-            intent.putExtra("ITEM", category);
-            startActivity(intent);
-        }
-
+        Intent intent = new Intent(context, ItemActivity.class);
+        intent.putExtra("ITEM", category);
+        startActivity(intent);
 
     }
 
@@ -1969,6 +1941,9 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
 
         String multiply_disabled = sharedPreferences.getString(UserSettings.IS_MULTIPLY_DISABLED, UserSettings.NO_MULTIPLY_NOT_DISABLED);
         settings.setIsMultiplyDisabled(multiply_disabled);
+
+        String lifetimePurchased = sharedPreferences.getString(UserSettings.IS_LIFETIME_PURCHASED, UserSettings.NO_LIFETIME_NOT_SUBSCRIBED);
+        settings.setIsLifetimePurchased(lifetimePurchased);
 
         updateView();
     }

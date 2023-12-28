@@ -18,6 +18,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -52,6 +53,8 @@ import com.hemerick.buymate.Database.UserSettings;
 import com.hemerick.buymate.NetworkUtils.Network;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import io.github.muddz.styleabletoast.StyleableToast;
 
@@ -76,6 +79,7 @@ public class SignUpActivity extends AppCompatActivity {
     private BillingClient billingClient;
 
     ProgressBar progressBar;
+    Boolean isPremium = false;
 
 
     @Override
@@ -194,9 +198,11 @@ public class SignUpActivity extends AppCompatActivity {
                                                             editor.putString(UserSettings.USER_NAME, settings.getUsername());
                                                             editor.apply();
 
+                                                            checkIfLifetimeSubscribed();
+
                                                             progressBar.setVisibility(View.INVISIBLE);
 
-                                                            checkIfLifetimeSubscribed();
+
 
                                                             Intent intent = new Intent(SignUpActivity.this, HomeActivity.class);
                                                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -399,9 +405,11 @@ public class SignUpActivity extends AppCompatActivity {
                                     editor.putString(UserSettings.IS_AUTHENTICATED, settings.getIsAuthenticated());
                                     editor.apply();
 
+                                    checkIfLifetimeSubscribed();
+
                                     progressBar.setVisibility(View.INVISIBLE);
 
-                                    checkIfLifetimeSubscribed();
+
 
                                     Intent intent = new Intent(SignUpActivity.this, HomeActivity.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -424,43 +432,47 @@ public class SignUpActivity extends AppCompatActivity {
         billingClient.startConnection(new BillingClientStateListener() {
             @Override
             public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
-                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                    billingClient.queryPurchasesAsync(QueryPurchasesParams.newBuilder()
-                            .setProductType(BillingClient.ProductType.INAPP)
-                            .build(), new PurchasesResponseListener() {
-                        @Override
 
-
-                        public
-
-                        void
-
-                        onQueryPurchasesResponse(@NonNull BillingResult billingResult, @NonNull List<Purchase> list)
-
-                        {
-
-                            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                                boolean hasLifetimePayment = false;
-                                for (Purchase purchase : list) {
-                                    if (purchase.getOrderId().equals("com.hemerick.lifetime_subscription") &&
-                                            purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
-                                        hasLifetimePayment = true;
-                                        break;
-                                    }
-                                }
-
-                                // Proceed based on lifetime payment status
-                                if (hasLifetimePayment) {
-                                    settings.setIsLifetimePurchased(UserSettings.YES_LIFETIME_PURCHASED);
-                                    SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
-                                    editor.putString(UserSettings.IS_LIFETIME_PURCHASED, settings.getIsLifetimePurchased());
-                                    editor.apply();
-
-                                }
-                            }
+                if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK){
+                    ExecutorService executorService = Executors.newSingleThreadExecutor();
+                    executorService.execute(() -> {
+                        try{
+                            billingClient.queryPurchasesAsync(
+                                    QueryPurchasesParams.newBuilder()
+                                            .setProductType(BillingClient.ProductType.INAPP)
+                                            .build(),
+                                    ((billingResult1, list) -> {
+                                        for(Purchase purchase : list){
+                                            if(purchase!=null && purchase.isAcknowledged()){
+                                                isPremium = true;
+                                            }
+                                        }
+                                    }));
+                        }catch (Exception ex){
+                            isPremium = false;
                         }
+                        runOnUiThread(() -> {
+                            try{
+                                Thread.sleep(1000);
+                            }catch (InterruptedException e){
+                                e.printStackTrace();
+                            }
+                            if(isPremium){
+                                Toast.makeText(getApplicationContext(), "Premium is enabled", Toast.LENGTH_SHORT).show();
+                                settings.setIsLifetimePurchased(UserSettings.YES_LIFETIME_PURCHASED);
+                                SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
+                                editor.putString(UserSettings.IS_LIFETIME_PURCHASED, settings.getIsLifetimePurchased());
+                                editor.apply();
+                            }else{
+                                Toast.makeText(getApplicationContext(), "Premium is not enabled", Toast.LENGTH_SHORT).show();
+                            }
+
+                        });
+
                     });
                 }
+
+
             }
 
             @Override

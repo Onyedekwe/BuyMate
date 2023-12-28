@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/backgroundColor"
+    android:background="@drawable/bg_bottom_popup"
     android:orientation="vertical">
 
     <pl.droidsonroids.gif.GifImageView
@@ -41,7 +41,7 @@
             android:layout_marginTop="10dp"
             android:textAlignment="center"
             android:layout_marginHorizontal="20dp"
-            android:text="Upgrade to Buymate yearly or lifetime subscription to add photos to your list items"
+            android:text="Upgrade to Buymate lifetime subscription to enjoy this feature and more!"
             android:textColor="?attr/textFillColor"
             android:textSize="18sp" />
 
@@ -49,43 +49,33 @@
 
     </LinearLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/upgradeBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:minHeight="56dp"
+        android:layout_marginHorizontal="40dp"
         android:layout_marginTop="30dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="20dp">
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="?attr/buttonTint"
+        android:gravity="center"
+        android:text="Upgrade"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:text="@string/shop_bottom_layout_cancel_button_text"
+        android:textAllCaps="false"
+        android:layout_gravity="center"
+        android:textColor="?attr/textFillColor"
+        android:textStyle="bold"/>
 
 
-        <Button
-            android:id="@+id/cancelButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="40dp"
-            android:background="@android:color/transparent"
-            android:text="@string/shop_bottom_layout_cancel_button_text"
-            android:textAllCaps="false"
-            android:textColor="?attr/textFillColor"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/upgradeBtn"
-            app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/upgradeBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:backgroundTint="?attr/buttonTint"
-            android:text="Upgrade"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            app:cornerRadius="5dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

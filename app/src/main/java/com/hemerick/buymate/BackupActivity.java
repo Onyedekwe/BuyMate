@@ -17,6 +17,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,9 +29,13 @@ import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.PurchaseHistoryRecord;
+import com.android.billingclient.api.PurchaseHistoryResponseListener;
 import com.android.billingclient.api.PurchasesResponseListener;
 import com.android.billingclient.api.PurchasesUpdatedListener;
+import com.android.billingclient.api.QueryPurchaseHistoryParams;
 import com.android.billingclient.api.QueryPurchasesParams;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.hemerick.buymate.Database.Firebase;
@@ -55,6 +60,8 @@ public class BackupActivity extends AppCompatActivity {
     CardView backup_card, restore_card;
 
     ProgressBar progressBar;
+
+    boolean isSuccess = false;
 
     private BillingClient billingClient;
 
@@ -84,17 +91,11 @@ public class BackupActivity extends AppCompatActivity {
         backup_text_2 = findViewById(R.id.backup_text_2);
         restore_text_2 = findViewById(R.id.restore_text_2);
 
-        billingClient = BillingClient.newBuilder(this)
-                .enablePendingPurchases() // Optional: Handle pending purchases
-                .setListener(new PurchasesUpdatedListener() {
-                    @Override
-                    public void onPurchasesUpdated(@NonNull BillingResult billingResult, @Nullable List<Purchase> list) {
-                        // Handle purchase updates
-                    }
-                })
-                .build();
+
 
         backup_card = findViewById(R.id.backup_card);
+
+
         backup_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,12 +104,11 @@ public class BackupActivity extends AppCompatActivity {
                     if (settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)) {
                        backupData();
                     } else {
-                        checkIfSubscribed(code);
+                        showUpgradeRequiredDialog();
                     }
                 } else {
                     showNoNetworkDialog();
                 }
-
             }
         });
 
@@ -121,7 +121,7 @@ public class BackupActivity extends AppCompatActivity {
                     if (settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)) {
                         restoreData();
                     } else {
-                        checkIfSubscribed(code);
+                        showUpgradeRequiredDialog();
                     }
                 } else {
                     showNoNetworkDialog();
@@ -130,7 +130,19 @@ public class BackupActivity extends AppCompatActivity {
         });
 
         loadSharedPreferences();
+
+        billingClient = BillingClient.newBuilder(BackupActivity.this).setListener(purchasesUpdatedListener).enablePendingPurchases().build();
+
     }
+
+    private PurchasesUpdatedListener purchasesUpdatedListener = new PurchasesUpdatedListener() {
+        @Override
+        public void onPurchasesUpdated(@NonNull BillingResult billingResult, @Nullable List<Purchase> list) {
+
+        }
+    };
+
+
 
     public void backupData() {
 
@@ -161,49 +173,8 @@ public class BackupActivity extends AppCompatActivity {
         }
     }
 
-    private void checkIfSubscribed(int code){
 
-        billingClient.startConnection(new BillingClientStateListener() {
-            @Override
-            public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
-                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                    billingClient.queryPurchasesAsync(QueryPurchasesParams.newBuilder().setProductType(BillingClient.ProductType.SUBS).build(), new PurchasesResponseListener() {
-                        @Override
-                        public void onQueryPurchasesResponse(@NonNull BillingResult billingResult, @NonNull List<Purchase> list) {
 
-                            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                                boolean isSubscribedToYearlyPlan = false;
-                                for (Purchase purchase : list) {
-                                    if (purchase.getOrderId().equals("com.hemerick.yearly_subscription") && purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
-                                        isSubscribedToYearlyPlan = true;
-                                        break;
-                                    }
-                                }
-
-                                // Proceed based on subscription status
-                                if (isSubscribedToYearlyPlan) {
-
-                                    if(code == 1){
-                                        backupData();
-                                    }
-                                    else if (code == 2) {
-                                        restoreData();
-                                    }
-                                } else {
-                                    showUpgradeRequiredDialog();
-                                }
-                            }
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onBillingServiceDisconnected() {
-                // Handle billing service disconnections
-            }
-        });
-    }
 
     public void showNoNetworkDialog() {
         final Dialog dialog = new Dialog(BackupActivity.this);
@@ -258,14 +229,14 @@ public class BackupActivity extends AppCompatActivity {
 
     public void showUpgradeRequiredDialog(){
         Dialog dialog = new Dialog(BackupActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.upgrade_required_layout);
-        dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
 
         TextView header = dialog.findViewById(R.id.upgrade_text_1);
         TextView sub_header = dialog.findViewById(R.id.upgrade_text_2);
         Button cancelBtn = dialog.findViewById(R.id.cancelButton);
-        Button upgradeBtn = dialog.findViewById(R.id.upgradeBtn);
+        ExtendedFloatingActionButton upgradeBtn = dialog.findViewById(R.id.upgradeBtn);
 
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
@@ -300,12 +271,17 @@ public class BackupActivity extends AppCompatActivity {
         upgradeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialog.dismiss();
                 Intent upgrade_intent = new Intent(BackupActivity.this, PremiumActivity.class);
                 startActivity(upgrade_intent);
             }
         });
 
         dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
 
     }
 
