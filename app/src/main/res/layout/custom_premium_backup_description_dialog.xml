@@ -12,7 +12,7 @@
         android:layout_height="120dp"
         android:layout_marginTop="10dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/illustration_premium_cloud"/>
+        android:src="@drawable/illustration_premium_cloud" />
 
     <LinearLayout
         android:layout_width="match_parent"

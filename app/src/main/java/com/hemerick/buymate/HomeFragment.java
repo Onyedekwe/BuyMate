@@ -7,14 +7,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
-import android.os.Looper;
 import android.provider.AlarmClock;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -26,7 +28,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -34,6 +35,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -44,6 +46,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -63,12 +66,31 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.hemerick.buymate.Adapter.ShopCategoryAdapter;
 import com.hemerick.buymate.Database.ShopDatabase;
 import com.hemerick.buymate.Database.UserSettings;
+import com.itextpdf.io.font.constants.StandardFonts;
+import com.itextpdf.io.image.ImageData;
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.colors.DeviceRgb;
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.borders.DashedBorder;
+import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.Div;
+import com.itextpdf.layout.element.Image;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.properties.HorizontalAlignment;
+import com.itextpdf.layout.properties.TextAlignment;
+import com.itextpdf.layout.properties.UnitValue;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -76,6 +98,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Locale;
 
@@ -84,12 +107,16 @@ import io.github.muddz.styleabletoast.StyleableToast;
 
 public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNoteListener {
 
+    SharedPreferences sharedPreferences;
     SwipeRefreshLayout swipeRefreshLayout;
     Context context = getContext();
     ShopDatabase db;
     ArrayList<String> category_list;
+    HashSet<String> suggest_list;
+    HashSet<String> suggest_unit_list;
     ArrayList<String> itemCheck;
     ArrayList<String> priceCheck;
+    ArrayList<String> final_priceCheck;
     ArrayList<String> quantityCheck;
     ArrayList<String> unitCheck;
     ArrayList<String> selectList;
@@ -105,6 +132,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
     String year;
     String day;
     String time;
+    String fullTimeWithSeconds;
     String formattedDate;
     SearchView searchView;
     EditText searchEditText;
@@ -128,6 +156,8 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
     TextView userName;
     TextView userEmail;
 
+    ProgressBar progressBar;
+
     TextView toolbar_text_2;
     ActionBarDrawerToggle toggle;
     Calendar calendar;
@@ -135,6 +165,11 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
     int currentMinutes;
     private UserSettings settings;
 
+
+    //dialogs
+    TimePickerDialog timePickerDialog;
+    Dialog rename_dialog, show_sort_dialog, edit_dialog, login_warning_dialog,
+            delete_dialog, show_category_dialog, bottom_dialog, menu_delete_dialog, show_share_dialog;
 
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
@@ -156,15 +191,12 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                        FragmentTransaction transaction = fragmentManager.beginTransaction();
-                        transaction.replace(R.id.framelayoutContainer, new HomeFragment());
-                        transaction.commit();
-                    }
-                } , 3000) ;
+
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.framelayoutContainer, new HomeFragment());
+                transaction.commit();
+
             }
         });
 
@@ -187,7 +219,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                     if (settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)) {
                         intent = new Intent(getContext(), PaymentSuccessfulActivity.class);
                         startActivity(intent);
-                    }else{
+                    } else {
                         intent = new Intent(getContext(), PremiumActivity.class);
                         startActivity(intent);
                     }
@@ -247,6 +279,9 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                     } else {
                         showLogInWarningDialog();
                     }
+                } else if (itemId == R.id.nav_about) {
+                    Intent intent = new Intent(getContext(), AboutActivity.class);
+                    startActivity(intent);
                 }
 
                 return true;
@@ -332,12 +367,14 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         db = new ShopDatabase(context);
 
         category_list = new ArrayList<>();
+        suggest_list = new HashSet<>();
+        suggest_unit_list = new HashSet<>();
         itemCheck = new ArrayList<>();
         priceCheck = new ArrayList<>();
+        final_priceCheck = new ArrayList<>();
         quantityCheck = new ArrayList<>();
         unitCheck = new ArrayList<>();
         recyclerView = rootView.findViewById(R.id.todo_list);
-
 
         adapter = new ShopCategoryAdapter(context, settings, category_list, this);
         recyclerView.setAdapter(adapter);
@@ -405,6 +442,14 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                 emptyText1.setText(getString(R.string.no_list));
             } else {
                 emptyView.setImageResource(R.drawable.illustration_empty_list_1);
+                String[] suggestion_list = getResources().getStringArray(R.array.item_suggestions);
+                String[] unit_list = getResources().getStringArray(R.array.units);
+                for (String s : suggestion_list) {
+                    db.insertSuggest(s);
+                }
+                for (String su : unit_list) {
+                    db.insertSuggestUnit(su);
+                }
             }
 
             emptyTextLayout.setVisibility(View.VISIBLE);
@@ -500,6 +545,22 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
             }
 
         }
+
+        Cursor resItemName = db.getSuggestName();
+        while (resItemName.moveToNext()) {
+            suggest_list.add(resItemName.getString(1).trim());
+        }
+
+
+        resItemName = db.getSuggestUnit();
+        while (resItemName.moveToNext()) {
+            String temp_unit = resItemName.getString(1);
+            if (!temp_unit.trim().isEmpty()) {
+                suggest_unit_list.add(temp_unit);
+            }
+        }
+        resItemName.close();
+
     }
 
     @Override
@@ -515,21 +576,20 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                 @Override
                 public boolean onMenuItemClick(@NonNull MenuItem item) {
 
-
-                    Dialog dialog = new Dialog(context);
-                    dialog.setContentView(R.layout.custom_delete_dialog);
-                    dialog.getWindow().setBackgroundDrawable(context.getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
-                    dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    menu_delete_dialog = new Dialog(context);
+                    menu_delete_dialog.setContentView(R.layout.custom_delete_dialog);
+                    menu_delete_dialog.getWindow().setBackgroundDrawable(context.getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
+                    menu_delete_dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
                     StringBuilder items_selected = new StringBuilder();
                     for (String items : finalSelectList) {
                         items_selected.append("\u2022 ").append(items).append("\n");
                     }
 
-                    TextView delete_heading = dialog.findViewById(R.id.delete_heading);
-                    TextView delete_message = dialog.findViewById(R.id.delete_message);
-                    Button deleteButton = dialog.findViewById(R.id.delete_button);
-                    Button cancelButton = dialog.findViewById(R.id.cancel_button);
+                    TextView delete_heading = menu_delete_dialog.findViewById(R.id.delete_heading);
+                    TextView delete_message = menu_delete_dialog.findViewById(R.id.delete_message);
+                    Button deleteButton = menu_delete_dialog.findViewById(R.id.delete_button);
+                    Button cancelButton = menu_delete_dialog.findViewById(R.id.cancel_button);
 
                     if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
                         delete_heading.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
@@ -587,10 +647,12 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                                     }
                                     res.close();
 
+                                    File directory = new File(context.getFilesDir(), "Buymate_Images");
                                     if (!total_url.contains(old_url)) {
-                                        FirebaseStorage storage = FirebaseStorage.getInstance();
-                                        StorageReference storageReference = storage.getReference().child(old_url);
-                                        storageReference.delete();
+                                        File imageFileToDelete = new File(directory, old_url);
+                                        if (imageFileToDelete.exists()) {
+                                            imageFileToDelete.delete();
+                                        }
                                     }
 
 
@@ -609,18 +671,18 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                             } else {
                                 adapter.notifyDataSetChanged();
                             }
-                            dialog.dismiss();
+                            menu_delete_dialog.dismiss();
                         }
                     });
 
                     cancelButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            dialog.dismiss();
+                            menu_delete_dialog.dismiss();
                         }
                     });
 
-                    dialog.show();
+                    menu_delete_dialog.show();
                     return true;
                 }
             });
@@ -644,8 +706,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                         return true;
                     }
                 });
-            }
-            else {
+            } else {
                 inflater.inflate(R.menu.category_toolbar_subscribed_menu, menu);
 
 
@@ -664,35 +725,47 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
     }
 
     public void showBottomDialogue() {
-        final Dialog dialog = new Dialog(context);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.shopbottomlayout);
+        bottom_dialog = new Dialog(context);
+        bottom_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        bottom_dialog.setContentView(R.layout.shopbottomlayout);
 
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
+        sharedPreferences = context.getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
         boolean isFirstStart = sharedPreferences.getBoolean("isFirstStart", true);
 
 
-        TextView addItemTextHeader = dialog.findViewById(R.id.addItemHeaderText);
-        TextView addItemTextHeader2 = dialog.findViewById(R.id.addItemHeaderText2);
-        AutoCompleteTextView descText = dialog.findViewById(R.id.desc_name);
+        TextView addItemTextHeader = bottom_dialog.findViewById(R.id.addItemHeaderText);
+        TextView addItemTextHeader2 = bottom_dialog.findViewById(R.id.addItemHeaderText2);
 
-        String[] suggestion_list = getResources().getStringArray(R.array.item_suggestions);
-        ArrayAdapter<String> suggest_adapter = new ArrayAdapter<>(context, R.layout.unit_drop_down_layout, suggestion_list);
-        descText.setAdapter(suggest_adapter);
 
-        EditText descPrice = dialog.findViewById(R.id.desc_price);
-        EditText descQuantity = dialog.findViewById(R.id.desc_quantity);
-        LinearLayout addItemIllustrationLayout = dialog.findViewById(R.id.addItem_Illustration_Layout);
-        Button cancelButton = dialog.findViewById(R.id.CancelButton);
-        Button saveButton = dialog.findViewById(R.id.BtnSave);
+        EditText descPrice = bottom_dialog.findViewById(R.id.desc_price);
+        EditText descQuantity = bottom_dialog.findViewById(R.id.desc_quantity);
+        LinearLayout addItemIllustrationLayout = bottom_dialog.findViewById(R.id.addItem_Illustration_Layout);
+        Button cancelButton = bottom_dialog.findViewById(R.id.CancelButton);
+        Button saveButton = bottom_dialog.findViewById(R.id.BtnSave);
 
-        TextInputLayout textInputLayout = dialog.findViewById(R.id.desc_price_text_input_layout);
+        TextInputLayout textInputLayout = bottom_dialog.findViewById(R.id.desc_price_text_input_layout);
         textInputLayout.setPrefixText(settings.getCurrency());
 
-        AutoCompleteTextView unitText = dialog.findViewById(R.id.unit_textView);
-        String[] unit_list = getResources().getStringArray(R.array.units);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.unit_drop_down_layout, unit_list);
-        unitText.setAdapter(adapter);
+
+        AutoCompleteTextView descText = bottom_dialog.findViewById(R.id.desc_name);
+        AutoCompleteTextView unitText = bottom_dialog.findViewById(R.id.unit_textView);
+
+        if (settings.getIsSuggestionDisabled().equals(UserSettings.YES_SUGGESTION_DISABLED)) {
+
+        } else {
+            ArrayList<String> temp_suggestion_list = new ArrayList<>(suggest_list);
+            ArrayAdapter<String> suggest_adapter = new ArrayAdapter<>(context, R.layout.unit_drop_down_layout, temp_suggestion_list);
+            descText.setAdapter(suggest_adapter);
+            ArrayList<String> temp_suggestion_unit_list = new ArrayList<>(suggest_unit_list);
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.unit_drop_down_layout, temp_suggestion_unit_list);
+            unitText.setAdapter(adapter);
+        }
+
+
+        LinearLayout more_layout = bottom_dialog.findViewById(R.id.more_layout);
+        LinearLayout price_quantity_layout = bottom_dialog.findViewById(R.id.price_quantity_layout);
+        TextView more_text = bottom_dialog.findViewById(R.id.more_text);
+        ImageView more_image = bottom_dialog.findViewById(R.id.more_icon);
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
             addItemTextHeader.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
@@ -703,6 +776,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
             descQuantity.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             cancelButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             saveButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            more_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
@@ -714,6 +788,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
             descQuantity.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             cancelButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             saveButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            more_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
@@ -725,6 +800,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
             descQuantity.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             cancelButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             saveButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            more_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
         }
 
 
@@ -743,10 +819,24 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         }
         res.close();
 
+        more_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int visibility_status = price_quantity_layout.getVisibility();
+                if (visibility_status == View.GONE) {
+                    price_quantity_layout.setVisibility(View.VISIBLE);
+                    more_image.setImageResource(R.drawable.final_arrow_drop_down_icon);
+                } else if (visibility_status == View.VISIBLE) {
+                    price_quantity_layout.setVisibility(View.GONE);
+                    more_image.setImageResource(R.drawable.final_arrow_drop_up_icon);
+                }
+            }
+        });
+
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                bottom_dialog.dismiss();
             }
         });
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -768,12 +858,12 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                                 double quant = 1;
                                 double temp_price = 0;
                                 insertItem(categoryTitle, description, 0, temp_price, month, year, day, time, quant, unit);
-                                dialog.dismiss();
+                                bottom_dialog.dismiss();
                             } else {
                                 double quant2 = Long.parseLong(descQuantity.getText().toString().trim());
                                 double temp_price = 0;
                                 insertItem(categoryTitle, description, 0, temp_price, month, year, day, time, quant2, unit);
-                                dialog.dismiss();
+                                bottom_dialog.dismiss();
                             }
                         } else {
                             StyleableToast.makeText(context, getString(R.string.list_exist_already), R.style.custom_toast_2).show();
@@ -784,12 +874,12 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                                 double quant = 1;
                                 double p = Double.parseDouble(descPrice.getText().toString().trim());
                                 insertItem(categoryTitle, description, 0, p, month, year, day, time, quant, unit);
-                                dialog.dismiss();
+                                bottom_dialog.dismiss();
                             } else {
                                 double quant2 = Double.parseDouble(descQuantity.getText().toString().trim());
                                 double p2 = Double.parseDouble(descPrice.getText().toString().trim());
                                 insertItem(categoryTitle, description, 0, p2, month, year, day, time, quant2, unit);
-                                dialog.dismiss();
+                                bottom_dialog.dismiss();
                             }
                         } else {
                             StyleableToast.makeText(context, getString(R.string.list_exist_already), R.style.custom_toast_2).show();
@@ -802,34 +892,35 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
             }
         });
 
-        dialog.show();
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
-        dialog.getWindow().setGravity(Gravity.BOTTOM);
+        bottom_dialog.show();
+        bottom_dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        bottom_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        bottom_dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
+        bottom_dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
     public void showCategoryDialog() {
-        final Dialog dialog = new Dialog(context);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.category_title_set_popup);
+
+        show_category_dialog = new Dialog(context);
+        show_category_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        show_category_dialog.setContentView(R.layout.category_title_set_popup);
         getDateNdTime();
 
 
-        EditText categoryName = dialog.findViewById(R.id.category_name);
-        LinearLayout newCategoryIllustrationLayout = dialog.findViewById(R.id.newCategory_Illustration_Layout);
-        TextView emptyText1 = dialog.findViewById(R.id.emptyText1);
-        TextView emptyText2 = dialog.findViewById(R.id.emptyText2);
-        TextView sugest1 = dialog.findViewById(R.id.Suggest_1);
-        TextView sugest2 = dialog.findViewById(R.id.Suggest_2);
-        TextView sugest3 = dialog.findViewById(R.id.Suggest_3);
+        EditText categoryName = show_category_dialog.findViewById(R.id.category_name);
+        LinearLayout newCategoryIllustrationLayout = show_category_dialog.findViewById(R.id.newCategory_Illustration_Layout);
+        TextView emptyText1 = show_category_dialog.findViewById(R.id.emptyText1);
+        TextView emptyText2 = show_category_dialog.findViewById(R.id.emptyText2);
+        TextView sugest1 = show_category_dialog.findViewById(R.id.Suggest_1);
+        TextView sugest2 = show_category_dialog.findViewById(R.id.Suggest_2);
+        TextView sugest3 = show_category_dialog.findViewById(R.id.Suggest_3);
         sugest3.setText(formattedDate);
-        TextView sugest4 = dialog.findViewById(R.id.Suggest_4);
-        TextView sugest5 = dialog.findViewById(R.id.Suggest_5);
-        TextView sugest6 = dialog.findViewById(R.id.Suggest_6);
-        TextView sugest7 = dialog.findViewById(R.id.Suggest_7);
-        TextView sugest8 = dialog.findViewById(R.id.Suggest_8);
-        Button categorySaveBtn = dialog.findViewById(R.id.category_btnSave);
+        TextView sugest4 = show_category_dialog.findViewById(R.id.Suggest_4);
+        TextView sugest5 = show_category_dialog.findViewById(R.id.Suggest_5);
+        TextView sugest6 = show_category_dialog.findViewById(R.id.Suggest_6);
+        TextView sugest7 = show_category_dialog.findViewById(R.id.Suggest_7);
+        TextView sugest8 = show_category_dialog.findViewById(R.id.Suggest_8);
+        Button categorySaveBtn = show_category_dialog.findViewById(R.id.category_btnSave);
 
 
         newCategoryIllustrationLayout.setVisibility(View.VISIBLE);
@@ -972,7 +1063,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                     if (!itemCheck.contains(categoryTitle)) {
                         getDateNdTime();
                         showBottomDialogue();
-                        dialog.dismiss();
+                        show_category_dialog.dismiss();
                     } else {
                         int count = 1;
                         String newItem = categoryName.getText().toString().trim() + " (" + count + ")";
@@ -982,8 +1073,9 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                         }
                         categoryTitle = newItem;
                         getDateNdTime();
+                        show_category_dialog.dismiss();
                         showBottomDialogue();
-                        dialog.dismiss();
+
 
                     }
                 } else {
@@ -993,25 +1085,24 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
             }
         });
 
-        dialog.show();
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
-        dialog.getWindow().setGravity(Gravity.BOTTOM);
+        show_category_dialog.show();
+        show_category_dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        show_category_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        show_category_dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
+        show_category_dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
     public void showDeleteDialog(int position) {
         String temp = adapter.getItemName(position);
+        delete_dialog = new Dialog(context);
+        delete_dialog.setContentView(R.layout.custom_delete_dialog);
+        delete_dialog.getWindow().setBackgroundDrawable(context.getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
+        delete_dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        Dialog dialog = new Dialog(context);
-        dialog.setContentView(R.layout.custom_delete_dialog);
-        dialog.getWindow().setBackgroundDrawable(context.getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-        TextView delete_heading = dialog.findViewById(R.id.delete_heading);
-        TextView delete_message = dialog.findViewById(R.id.delete_message);
-        Button deleteButton = dialog.findViewById(R.id.delete_button);
-        Button cancelButton = dialog.findViewById(R.id.cancel_button);
+        TextView delete_heading = delete_dialog.findViewById(R.id.delete_heading);
+        TextView delete_message = delete_dialog.findViewById(R.id.delete_message);
+        Button deleteButton = delete_dialog.findViewById(R.id.delete_button);
+        Button cancelButton = delete_dialog.findViewById(R.id.cancel_button);
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
             delete_heading.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
@@ -1068,22 +1159,29 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                     }
                     res.close();
 
+
+                    File directory = new File(context.getFilesDir(), "Buymate_Images");
                     if (!total_url.contains(old_url)) {
-                        FirebaseStorage storage = FirebaseStorage.getInstance();
-                        StorageReference storageReference = storage.getReference().child(old_url);
-                        storageReference.delete();
+                        File imageFileToDelete = new File(directory, old_url);
+                        if (imageFileToDelete.exists()) {
+                            imageFileToDelete.delete();
+                        }
                     }
 
 
                 }
 
-
-                category_list.remove(temp);
-
                 db.deleteCategory(temp);
-                adapter.notifyItemRemoved(position);
-                adapter.checkEmpty();
-                dialog.dismiss();
+                category_list.remove(temp);
+                if (category_list.isEmpty()) {
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.framelayoutContainer, new HomeFragment());
+                    fragmentTransaction.commit();
+                } else {
+                    adapter.notifyItemRemoved(position);
+                }
+                delete_dialog.dismiss();
                 StyleableToast.makeText(context, getString(R.string.removed), R.style.custom_toast_2).show();
                 searchEditText.setText("");
 
@@ -1094,23 +1192,23 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
             @Override
             public void onClick(View v) {
                 adapter.notifyItemChanged(position);
-                dialog.dismiss();
+                delete_dialog.dismiss();
             }
         });
 
-        dialog.show();
+        delete_dialog.show();
     }
 
     public void showLogInWarningDialog() {
-        Dialog dialog = new Dialog(getContext());
-        dialog.setContentView(R.layout.custom_logout_warning_dialog);
-        dialog.getWindow().setBackgroundDrawable(getContext().getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        login_warning_dialog = new Dialog(getContext());
+        login_warning_dialog.setContentView(R.layout.custom_logout_warning_dialog);
+        login_warning_dialog.getWindow().setBackgroundDrawable(getContext().getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
+        login_warning_dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        TextView header = dialog.findViewById(R.id.header);
-        TextView alertText = dialog.findViewById(R.id.alert_text);
-        Button backup = dialog.findViewById(R.id.backup);
-        TextView okBtn = dialog.findViewById(R.id.okBtn);
+        TextView header = login_warning_dialog.findViewById(R.id.header);
+        TextView alertText = login_warning_dialog.findViewById(R.id.alert_text);
+        Button backup = login_warning_dialog.findViewById(R.id.backup);
+        TextView okBtn = login_warning_dialog.findViewById(R.id.okBtn);
 
         alertText.setText("Please login to Buymate to be able to message us.");
         backup.setText("Login");
@@ -1140,7 +1238,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         backup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                login_warning_dialog.dismiss();
                 Intent intent = new Intent(getContext(), LogInActivity.class);
                 startActivity(intent);
             }
@@ -1149,27 +1247,26 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         okBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                login_warning_dialog.dismiss();
             }
         });
 
-        dialog.show();
+        login_warning_dialog.show();
     }
 
     private void showEditDialog(String prevTask, int position) {
-
-        final Dialog dialog = new Dialog(context);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.edit_category_layout);
-        TextView title = dialog.findViewById(R.id.cate_edit_title);
-        LinearLayout renameLayout = dialog.findViewById(R.id.rename);
-        TextView renameText = dialog.findViewById(R.id.renameText);
-        LinearLayout shareLayout = dialog.findViewById(R.id.share);
-        TextView shareText = dialog.findViewById(R.id.shareText);
-        LinearLayout reminderLayout = dialog.findViewById(R.id.reminder);
-        TextView reminderText = dialog.findViewById(R.id.alarmText);
-        LinearLayout deleteLayout = dialog.findViewById(R.id.delete);
-        TextView deleteText = dialog.findViewById(R.id.deleteText);
+        edit_dialog = new Dialog(context);
+        edit_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        edit_dialog.setContentView(R.layout.edit_category_layout);
+        TextView title = edit_dialog.findViewById(R.id.cate_edit_title);
+        LinearLayout renameLayout = edit_dialog.findViewById(R.id.rename);
+        TextView renameText = edit_dialog.findViewById(R.id.renameText);
+        LinearLayout shareLayout = edit_dialog.findViewById(R.id.share);
+        TextView shareText = edit_dialog.findViewById(R.id.shareText);
+        LinearLayout reminderLayout = edit_dialog.findViewById(R.id.reminder);
+        TextView reminderText = edit_dialog.findViewById(R.id.alarmText);
+        LinearLayout deleteLayout = edit_dialog.findViewById(R.id.delete);
+        TextView deleteText = edit_dialog.findViewById(R.id.deleteText);
 
         title.setText(prevTask);
 
@@ -1203,22 +1300,22 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
             @Override
             public void onClick(View v) {
                 showRenameDialog(prevTask, position);
-                dialog.dismiss();
+                edit_dialog.dismiss();
             }
         });
 
         shareLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showShareDialog(prevTask);
-                dialog.dismiss();
+                showShareOptionDialog(prevTask);
+                edit_dialog.dismiss();
             }
         });
 
         reminderLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                edit_dialog.dismiss();
                 showAlarmDialog(prevTask);
 
             }
@@ -1228,59 +1325,60 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
             @Override
             public void onClick(View v) {
                 showDeleteDialog(position);
-                dialog.dismiss();
+                edit_dialog.dismiss();
             }
         });
 
 
-        dialog.show();
-        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+        edit_dialog.show();
+        edit_dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
                 adapter.notifyItemChanged(position);
             }
         });
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
-        dialog.getWindow().setGravity(Gravity.BOTTOM);
+        edit_dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        edit_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        edit_dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
+        edit_dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
     private void showSortByDialog() {
-        final Dialog dialog = new Dialog(context);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.sort_category_layout);
 
-        TextView header = dialog.findViewById(R.id.sortBy_title);
-        LinearLayout nameAscend = dialog.findViewById(R.id.name_ascend);
-        CheckBox checkNameAscend = dialog.findViewById(R.id.check_name_ascend);
-        TextView nameTextAscend = dialog.findViewById(R.id.sort_nameText_ascend);
+        show_sort_dialog = new Dialog(context);
+        show_sort_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        show_sort_dialog.setContentView(R.layout.sort_category_layout);
+
+        TextView header = show_sort_dialog.findViewById(R.id.sortBy_title);
+        LinearLayout nameAscend = show_sort_dialog.findViewById(R.id.name_ascend);
+        CheckBox checkNameAscend = show_sort_dialog.findViewById(R.id.check_name_ascend);
+        TextView nameTextAscend = show_sort_dialog.findViewById(R.id.sort_nameText_ascend);
         checkNameAscend.setClickable(false);
-        LinearLayout nameDescend = dialog.findViewById(R.id.name_descend);
-        CheckBox checkNameDescend = dialog.findViewById(R.id.check_name_descend);
-        TextView nameTextDescend = dialog.findViewById(R.id.sort_nameText_descend);
+        LinearLayout nameDescend = show_sort_dialog.findViewById(R.id.name_descend);
+        CheckBox checkNameDescend = show_sort_dialog.findViewById(R.id.check_name_descend);
+        TextView nameTextDescend = show_sort_dialog.findViewById(R.id.sort_nameText_descend);
         checkNameDescend.setClickable(false);
-        LinearLayout dateAscend = dialog.findViewById(R.id.date_ascend);
-        CheckBox checkDateAscend = dialog.findViewById(R.id.check_date_ascend);
-        TextView dateTextAscend = dialog.findViewById(R.id.sort_dateText_ascend);
+        LinearLayout dateAscend = show_sort_dialog.findViewById(R.id.date_ascend);
+        CheckBox checkDateAscend = show_sort_dialog.findViewById(R.id.check_date_ascend);
+        TextView dateTextAscend = show_sort_dialog.findViewById(R.id.sort_dateText_ascend);
         checkDateAscend.setClickable(false);
-        LinearLayout dateDescend = dialog.findViewById(R.id.date_descend);
-        CheckBox checkDateDescend = dialog.findViewById(R.id.check_date_descend);
-        TextView dateTextDescend = dialog.findViewById(R.id.sort_dateText_descend);
+        LinearLayout dateDescend = show_sort_dialog.findViewById(R.id.date_descend);
+        CheckBox checkDateDescend = show_sort_dialog.findViewById(R.id.check_date_descend);
+        TextView dateTextDescend = show_sort_dialog.findViewById(R.id.sort_dateText_descend);
         checkDateDescend.setClickable(false);
-        LinearLayout priceAscend = dialog.findViewById(R.id.price_ascend);
-        CheckBox checkPriceAscend = dialog.findViewById(R.id.check_price_ascend);
+        LinearLayout priceAscend = show_sort_dialog.findViewById(R.id.price_ascend);
+        CheckBox checkPriceAscend = show_sort_dialog.findViewById(R.id.check_price_ascend);
         checkPriceAscend.setClickable(false);
-        TextView priceTextAscend = dialog.findViewById(R.id.price_text_ascend);
+        TextView priceTextAscend = show_sort_dialog.findViewById(R.id.price_text_ascend);
         priceTextAscend.setText(getString(R.string.sort_price_text));
-        LinearLayout priceDescend = dialog.findViewById(R.id.price_descend);
-        CheckBox checkPriceDescend = dialog.findViewById(R.id.check_price_descend);
+        LinearLayout priceDescend = show_sort_dialog.findViewById(R.id.price_descend);
+        CheckBox checkPriceDescend = show_sort_dialog.findViewById(R.id.check_price_descend);
         checkPriceDescend.setClickable(false);
-        TextView priceTextDescend = dialog.findViewById(R.id.price_text_descend);
+        TextView priceTextDescend = show_sort_dialog.findViewById(R.id.price_text_descend);
         priceTextDescend.setText(getString(R.string.sort_price_text));
-        LinearLayout quantityAscend = dialog.findViewById(R.id.quantity_ascend);
+        LinearLayout quantityAscend = show_sort_dialog.findViewById(R.id.quantity_ascend);
         quantityAscend.setVisibility(View.GONE);
-        LinearLayout quantityDescend = dialog.findViewById(R.id.quantity_descend);
+        LinearLayout quantityDescend = show_sort_dialog.findViewById(R.id.quantity_descend);
         quantityDescend.setVisibility(View.GONE);
 
         SharedPreferences sharedPreferences = context.getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
@@ -1352,7 +1450,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        dialog.dismiss();
+                        show_sort_dialog.dismiss();
                     }
                 }, 300);
             }
@@ -1376,7 +1474,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        dialog.dismiss();
+                        show_sort_dialog.dismiss();
                     }
                 }, 300);
             }
@@ -1400,7 +1498,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        dialog.dismiss();
+                        show_sort_dialog.dismiss();
                     }
                 }, 300);
             }
@@ -1424,7 +1522,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        dialog.dismiss();
+                        show_sort_dialog.dismiss();
                     }
                 }, 300);
 
@@ -1451,7 +1549,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        dialog.dismiss();
+                        show_sort_dialog.dismiss();
                     }
                 }, 300);
             }
@@ -1476,7 +1574,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        dialog.dismiss();
+                        show_sort_dialog.dismiss();
                     }
                 }, 300);
 
@@ -1484,19 +1582,22 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         });
 
 
-        dialog.show();
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
-        dialog.getWindow().setGravity(Gravity.BOTTOM);
+        show_sort_dialog.show();
+        show_sort_dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        show_sort_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        show_sort_dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
+        show_sort_dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
-    public void showShareDialog(String prevTask) {
+    public void showShareTextDialog(String prevTask) {
         StringBuilder result = new StringBuilder();
 
 
         Cursor res = db.getItems(prevTask, context);
         itemCheck.clear();
+        priceCheck.clear();
+        quantityCheck.clear();
+        unitCheck.clear();
         while (res.moveToNext()) {
             itemCheck.add(res.getString(2).trim());
             priceCheck.add(res.getString(4).trim());
@@ -1547,6 +1648,13 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
 
         }
 
+        String appLink = "https://play.google.com/store/apps/details?id=" + getContext().getPackageName();
+
+        result.append("\n\n\n").append("Improve your shopping experience with Buymate.");
+        result.append("\n\n").append("Download Buymate on Google Play:");
+        result.append("\n").append(appLink);
+
+
         String items = result.toString();
 
         Intent intent = new Intent(Intent.ACTION_SEND);
@@ -1560,14 +1668,254 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
 
     }
 
-    public void showRenameDialog(String prevName, int position) {
-        final Dialog dialog = new Dialog(context);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.update_category_name_layout);
+    public void showDownloadPdfDialog(String prevTask) {
 
-        TextView headingText = dialog.findViewById(R.id.renameHeading);
-        TextInputEditText description = dialog.findViewById(R.id.description);
-        ExtendedFloatingActionButton saveButton = dialog.findViewById(R.id.save);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Cursor res = db.getItems(prevTask, context);
+                itemCheck.clear();
+                priceCheck.clear();
+                final_priceCheck.clear();
+                quantityCheck.clear();
+                unitCheck.clear();
+                while (res.moveToNext()) {
+                    itemCheck.add(res.getString(2).trim());
+                    priceCheck.add(res.getString(4).trim());
+                    quantityCheck.add(res.getString(9).trim());
+                    unitCheck.add(" " + res.getString(11));
+
+                }
+                res.close();
+
+
+                double total = 0;
+                double PriceQuantityIndex;
+                for (int i = 0; i < itemCheck.size(); i++) {
+                    double priceIndex = Double.parseDouble(priceCheck.get(i));
+                    double quantityIndex = Double.parseDouble(quantityCheck.get(i));
+
+                    if (settings.getIsMultiplyDisabled().equals(UserSettings.YES_MULTIPLY_DISABLED)) {
+                        PriceQuantityIndex = priceIndex;
+                    } else {
+                        PriceQuantityIndex = priceIndex * quantityIndex;
+                    }
+                    final_priceCheck.add(String.valueOf(PriceQuantityIndex));
+                    total += PriceQuantityIndex;
+
+                }
+                try {
+
+
+                    String name = getString(R.string.app_name) + "_" + prevTask + "_" + System.currentTimeMillis() + ".pdf";
+                    String filename = name.replaceAll(" ", "_");
+
+                    File directory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), getString(R.string.app_name));
+                    if (!directory.exists()) {
+                        directory.mkdirs(); // Create the directory if it doesn't exist
+                    }
+
+
+                    File pdfFile = new File(directory, filename);
+                    PdfWriter writer = new PdfWriter(pdfFile.getAbsolutePath());
+                    PdfDocument pdfDocument = new PdfDocument(writer);
+                    Document document = new Document(pdfDocument);
+
+
+                    int drawableResourceId = R.drawable.buymate_pdf_header;
+                    Drawable drawable = ContextCompat.getDrawable(context, drawableResourceId);
+
+                    Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    byte[] imageBytes = stream.toByteArray();
+
+                    ImageData imageData = ImageDataFactory.create(imageBytes);
+                    Image image = new Image(imageData);
+
+                    document.add(image);
+
+
+                    int colorValue = ContextCompat.getColor(context, R.color.pdf_table_header);
+                    float[] rgb = new float[]{
+                            Color.red(colorValue) / 255f,
+                            Color.green(colorValue) / 255f,
+                            Color.blue(colorValue) / 255f
+                    };
+
+                    com.itextpdf.kernel.colors.Color itextBlack = new DeviceRgb(rgb[0], rgb[1], rgb[2]);
+
+
+                    colorValue = ContextCompat.getColor(context, R.color.buymate_color_theme);
+                    rgb = new float[]{
+                            Color.red(colorValue) / 255f,
+                            Color.green(colorValue) / 255f,
+                            Color.blue(colorValue) / 255f
+                    };
+
+                    com.itextpdf.kernel.colors.Color itextBlue = new DeviceRgb(rgb[0], rgb[1], rgb[2]);
+
+                    colorValue = ContextCompat.getColor(context, R.color.white);
+                    rgb = new float[]{
+                            Color.red(colorValue) / 255f,
+                            Color.green(colorValue) / 255f,
+                            Color.blue(colorValue) / 255f
+                    };
+
+                    com.itextpdf.kernel.colors.Color itextWhite = new DeviceRgb(rgb[0], rgb[1], rgb[2]);
+
+                    Paragraph introText = new Paragraph(prevTask)
+                            .setTextAlignment(TextAlignment.CENTER)
+                            .setHorizontalAlignment(HorizontalAlignment.CENTER)
+                            .setFontSize(24).setCharacterSpacing(2f)
+                            .setBold()
+                            .setFontColor(itextBlack);
+                    document.add(introText);
+
+
+                    getDateNdTime();
+
+                    Paragraph date = new Paragraph(month + " " + day + "," + " " + year + " " + time)
+                            .setTextAlignment(TextAlignment.CENTER)
+                            .setHorizontalAlignment(HorizontalAlignment.CENTER)
+                            .setFontSize(15)
+                            .setCharacterSpacing(2f);
+
+                    document.add(date);
+
+
+                    String currency = settings.getCurrency();
+                    if (currency.equals("\u20A6")) {
+                        currency = "NGN";
+                    }
+
+                    PdfFont font = PdfFontFactory.createFont(StandardFonts.HELVETICA);
+
+
+                    int count = 2;
+                    if (settings.getIsShareQuantityDisabled().equals(UserSettings.NO_SHARE_QUANTITY_NOT_DISABLED)) {
+                        count = count + 2;
+                    }
+                    if (settings.getIsSharePriceDisabled().equals(UserSettings.NO_SHARE_PRICE_NOT_DISABLED)) {
+                        count = count + 1;
+                    }
+
+
+                    Table table = new Table(count);
+                    table.setWidth(UnitValue.createPercentValue(100));
+                    table.setMarginTop(20f);
+                    table.setFontSize(18f);
+                    table.setFontColor(itextBlack);
+
+                    table.addCell(new Cell().add(new Paragraph("NO")).setTextAlignment(TextAlignment.LEFT).setBold().setPaddingLeft(8f).setCharacterSpacing(1.5f).setFontColor(itextBlack));
+                    table.addCell(new Cell().add(new Paragraph("ITEM")).setTextAlignment(TextAlignment.LEFT).setBold().setPaddingLeft(8f).setCharacterSpacing(1.5f).setFontColor(itextBlack));
+
+
+                    if (settings.getIsShareQuantityDisabled().equals(UserSettings.NO_SHARE_QUANTITY_NOT_DISABLED)) {
+                        table.addCell(new Cell().add(new Paragraph("QUANTITY")).setTextAlignment(TextAlignment.CENTER).setBold().setCharacterSpacing(1.5f).setFontColor(itextBlack));
+                        table.addCell(new Cell().add(new Paragraph("UNIT")).setTextAlignment(TextAlignment.CENTER).setBold().setCharacterSpacing(1.5f).setFontColor(itextBlack));
+                    }
+
+                    if (settings.getIsSharePriceDisabled().equals(UserSettings.NO_SHARE_PRICE_NOT_DISABLED)) {
+                        table.addCell(new Cell().add(new Paragraph("PRICE" + "(" + currency + ")")).setTextAlignment(TextAlignment.CENTER).setBold().setCharacterSpacing(1.5f).setFontColor(itextBlack).setFont(font));
+                    }
+
+
+                    int num = 1;
+                    for (int p = 0; p < itemCheck.size(); p++) {
+                        table.addCell(new Cell().add(new Paragraph(String.valueOf(num))).setTextAlignment(TextAlignment.LEFT).setPaddingLeft(8f));
+                        table.addCell(new Cell().add(new Paragraph(itemCheck.get(p))).setTextAlignment(TextAlignment.LEFT).setPaddingLeft(8f));
+                        if (settings.getIsShareQuantityDisabled().equals(UserSettings.NO_SHARE_QUANTITY_NOT_DISABLED)) {
+                            table.addCell(new Cell().add(new Paragraph(quantityCheck.get(p))).setTextAlignment(TextAlignment.CENTER));
+                            table.addCell(new Cell().add(new Paragraph(unitCheck.get(p))).setTextAlignment(TextAlignment.CENTER));
+                        }
+                        if (settings.getIsSharePriceDisabled().equals(UserSettings.NO_SHARE_PRICE_NOT_DISABLED)) {
+                            table.addCell(new Cell().add(new Paragraph(final_priceCheck.get(p))).setTextAlignment(TextAlignment.CENTER));
+                        }
+                        num = num + 1;
+                    }
+
+
+                    if (settings.getIsShareTotalDisabled().equals(UserSettings.NO_SHARE_TOTAL_NOT_DISABLED)) {
+
+
+                        if (count == 2) {
+
+                            table.addCell(new Cell(1, 1).add(new Paragraph("Total:")).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
+                            table.addCell(new Cell(1, 1).add(new Paragraph(currency + " " + formatNumberV3(total))).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
+
+                        } else if (count == 3) {
+                            table.addCell(new Cell(1, 1).add(new Paragraph("Total:")).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
+                            table.addCell(new Cell(1, 2).add(new Paragraph(currency + " " + formatNumberV3(total))).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
+
+
+                        } else if (count == 5) {
+                            table.addCell(new Cell(1, 2).add(new Paragraph("Total:")).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
+                            table.addCell(new Cell(1, 3).add(new Paragraph(currency + " " + formatNumberV3(total))).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
+
+                        }
+                    }
+
+                    document.add(table);
+
+
+                    Paragraph contact = new Paragraph("Contact us at:")
+                            .setTextAlignment(TextAlignment.CENTER)
+                            .setHorizontalAlignment(HorizontalAlignment.CENTER)
+                            .setFontSize(15)
+                            .setMarginTop(50f)
+                            .setCharacterSpacing(2f)
+                            .setFontColor(itextBlack);
+                    document.add(contact);
+
+                    Paragraph email = new Paragraph(getString(R.string.app_email))
+                            .setTextAlignment(TextAlignment.CENTER)
+                            .setHorizontalAlignment(HorizontalAlignment.CENTER)
+                            .setFontSize(15)
+                            .setCharacterSpacing(2f)
+                            .setBold()
+                            .setFontColor(itextBlue);
+                    document.add(email);
+
+
+                    Div dashedLine = new Div().setWidth(UnitValue.createPercentValue(100))
+                            .setBorderBottom(new DashedBorder(1f))
+                            .setMarginTop(20f);
+
+                    document.add(dashedLine);
+
+                    Paragraph close_text = new Paragraph("Improve your shopping experience with Buymate.")
+                            .setTextAlignment(TextAlignment.CENTER)
+                            .setHorizontalAlignment(HorizontalAlignment.CENTER)
+                            .setFontSize(15)
+                            .setCharacterSpacing(2f)
+                            .setMarginTop(20f)
+                            .setFontColor(itextBlack);
+                    document.add(close_text);
+
+                    document.close();
+                    progressBar.setVisibility(View.GONE);
+                    show_share_dialog.dismiss();
+                    Toast.makeText(context, "PDF downloaded to" + directory, Toast.LENGTH_LONG).show();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, 3000);
+    }
+
+
+    public void showRenameDialog(String prevName, int position) {
+        rename_dialog = new Dialog(context);
+        rename_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        rename_dialog.setContentView(R.layout.update_category_name_layout);
+
+        TextView headingText = rename_dialog.findViewById(R.id.renameHeading);
+        TextInputEditText description = rename_dialog.findViewById(R.id.description);
+        ExtendedFloatingActionButton saveButton = rename_dialog.findViewById(R.id.save);
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
             description.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
@@ -1602,7 +1950,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
             public void onClick(View v) {
                 String newName = description.getText().toString().trim();
                 if (newName.trim().equals(prevName.trim())) {
-                    dialog.dismiss();
+                    rename_dialog.dismiss();
                     StyleableToast.makeText(context, getString(R.string.list_rename_success), R.style.custom_toast).show();
                 } else {
                     itemCheck.remove(prevName);
@@ -1613,7 +1961,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                                 Toast.makeText(context, R.string.rename_fail, Toast.LENGTH_SHORT).show();
                             } else {
                                 StyleableToast.makeText(context, getString(R.string.list_rename_success), R.style.custom_toast).show();
-                                dialog.dismiss();
+                                rename_dialog.dismiss();
                                 adapter.refreshUpdate(newName, position);
                                 adapter.notifyItemChanged(position);
                             }
@@ -1629,7 +1977,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                                 StyleableToast.makeText(context, getString(R.string.rename_fail), R.style.custom_toast).show();
                             } else {
                                 StyleableToast.makeText(context, getString(R.string.list_rename_success), R.style.custom_toast).show();
-                                dialog.dismiss();
+                                rename_dialog.dismiss();
                                 adapter.refreshUpdate(newItem, position);
                                 adapter.notifyItemChanged(position);
                             }
@@ -1642,18 +1990,18 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
             }
         });
 
-        dialog.show();
-        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+        rename_dialog.show();
+        rename_dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
 
                 adapter.notifyItemChanged(position);
             }
         });
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
-        dialog.getWindow().setGravity(Gravity.BOTTOM);
+        rename_dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        rename_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        rename_dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
+        rename_dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
     public void showAlarmDialog(String description) {
@@ -1663,7 +2011,8 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         currentHour = calendar.get(Calendar.HOUR_OF_DAY);
         currentMinutes = calendar.get(Calendar.MINUTE);
 
-        TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), R.style.TimePickerTheme, new TimePickerDialog.OnTimeSetListener() {
+
+        timePickerDialog = new TimePickerDialog(getContext(), R.style.TimePickerTheme, new TimePickerDialog.OnTimeSetListener() {
 
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -1707,6 +2056,15 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         String finalQuantity = formatNumberV2(quantity);
         db.insertItem(category, description, status, finalPrice, month, year, day, time, finalQuantity, unit);
 
+
+        if (!suggest_list.contains(description.trim())) {
+            db.insertSuggest(description);
+        }
+
+        if (!suggest_unit_list.contains(unit.trim())) {
+            db.insertSuggestUnit(unit);
+        }
+
         Intent intent = new Intent(context, ItemActivity.class);
         intent.putExtra("ITEM", category);
         startActivity(intent);
@@ -1724,6 +2082,10 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
             DecimalFormat decimalFormat = new DecimalFormat("0.00");
             return decimalFormat.format(number);
         }
+    }
+
+    public static String formatNumberV3(double number) {
+        return String.format("%,.2f", number);
     }
 
     public void getDateNdTime() {
@@ -1747,17 +2109,18 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         String currentDayNumber = sdfDayNumber.format(date);
 
         SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a", Locale.getDefault());
+        SimpleDateFormat seconds = new SimpleDateFormat("h:mm:ss a", Locale.getDefault());
 
         time = timeFormat.format(date);
         month = currentMonth;
         year = currentYear;
         day = currentDay + " " + currentDayNumber;
-
+        fullTimeWithSeconds = seconds.format(date);
         formattedDate = currentDayNumber + "-" + currentMonthNumber + "-" + currentYear;
     }
 
     private void filterList(String text) {
-        if(!category_list.isEmpty()){
+        if (!category_list.isEmpty()) {
             ArrayList<String> filterList = new ArrayList<>();
 
             for (String item : category_list) {
@@ -1794,6 +2157,70 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
 
     }
 
+    private void showShareOptionDialog(String temp_item) {
+
+        show_share_dialog = new Dialog(context);
+        show_share_dialog.setContentView(R.layout.custom_share_dialog);
+        show_share_dialog.getWindow().setBackgroundDrawable(context.getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
+        show_share_dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+
+        LinearLayout shareAsTextLayout = show_share_dialog.findViewById(R.id.textLayout);
+        LinearLayout downaloadPDFLayout = show_share_dialog.findViewById(R.id.pdfLayout);
+        progressBar = show_share_dialog.findViewById(R.id.progress_bar);
+
+        shareAsTextLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showShareTextDialog(temp_item);
+            }
+        });
+
+        downaloadPDFLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                progressBar.setVisibility(View.VISIBLE);
+                showDownloadPdfDialog(temp_item);
+            }
+        });
+
+        TextView title = show_share_dialog.findViewById(R.id.title);
+        TextView title_2 = show_share_dialog.findViewById(R.id.title_2);
+        title_2.setText("(" + temp_item + ")");
+
+
+        TextView textText = show_share_dialog.findViewById(R.id.asText);
+        TextView pdfText = show_share_dialog.findViewById(R.id.asPDF);
+
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
+            title.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            title_2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            textText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            pdfText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+        }
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
+            title.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            title_2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            textText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            pdfText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+
+        }
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
+            title.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            title_2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            textText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            pdfText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+        }
+
+
+        show_share_dialog.show();
+
+    }
+
     private void updateRecyclerView() {
 
         boolean isGridEnabled = UserSettings.isGridLockEnabled(getContext());
@@ -1811,7 +2238,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
 
     @Override
     public void onNoteClick(int position) {
-        String temp = category_list.get(position);
+        String temp = adapter.getItemName(position);
         Intent intent = new Intent(context, ItemActivity.class);
         intent.putExtra("ITEM", temp);
         intent.putExtra("ACTIVITYINDEX", 1);
@@ -1831,6 +2258,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
 
     @Override
     public void onResume() {
+        super.onResume();
         MenuItem settingNav = navigationView.getMenu().findItem(R.id.nav_setting);
         MenuItem HomeNav = navigationView.getMenu().findItem(R.id.nav_home);
         settingNav.setChecked(false);
@@ -1840,7 +2268,23 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         }
         displayData();
         adapter.notifyDataSetChanged();
-        super.onResume();
+
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        MenuItem settingNav = navigationView.getMenu().findItem(R.id.nav_setting);
+        MenuItem HomeNav = navigationView.getMenu().findItem(R.id.nav_home);
+        settingNav.setChecked(false);
+        HomeNav.setChecked(true);
+        if (drawerLayout.isOpen()) {
+            drawerLayout.close();
+        }
+        displayData();
+        adapter.notifyDataSetChanged();
+
     }
 
     @Override
@@ -1860,26 +2304,13 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         }
     }
 
-    @Override
-    public void onStart() {
-        MenuItem settingNav = navigationView.getMenu().findItem(R.id.nav_setting);
-        MenuItem HomeNav = navigationView.getMenu().findItem(R.id.nav_home);
-        settingNav.setChecked(false);
-        HomeNav.setChecked(true);
-        if (drawerLayout.isOpen()) {
-            drawerLayout.close();
-        }
-        displayData();
-        adapter.notifyDataSetChanged();
-        super.onStart();
-    }
 
     private void updateView() {
 
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
             searchEditText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-            sortByText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            sortByText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.mini_text));
             navigationView.setItemTextAppearance(androidx.appcompat.R.style.Base_TextAppearance_AppCompat_Small);
             emptyText1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             emptyText2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
@@ -1890,7 +2321,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
             searchEditText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-            sortByText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
+            sortByText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             navigationView.setItemTextAppearance(androidx.appcompat.R.style.Base_TextAppearance_AppCompat_Menu);
             emptyText1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             emptyText2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
@@ -1901,7 +2332,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
             searchEditText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-            sortByText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            sortByText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
             navigationView.setItemTextAppearance(androidx.appcompat.R.style.Base_TextAppearance_AppCompat_Large);
             emptyText1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             emptyText2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
@@ -1921,13 +2352,13 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         String textSize = sharedPreferences.getString(UserSettings.CUSTOM_TEXT_SIZE, UserSettings.TEXT_MEDIUM);
         settings.setCustomTextSize(textSize);
 
-        String is_price_disabled = sharedPreferences.getString(UserSettings.IS_SHARE_PRICE_DISABLED, UserSettings.YES_SHARE_PRICE_DISABLED);
+        String is_price_disabled = sharedPreferences.getString(UserSettings.IS_SHARE_PRICE_DISABLED, UserSettings.NO_SHARE_PRICE_NOT_DISABLED);
         settings.setIsSharePriceDisabled(is_price_disabled);
 
-        String is_quantity_disabled = sharedPreferences.getString(UserSettings.IS_SHARE_QUANTITY_DISABLED, UserSettings.YES_SHARE_QUANTITY_DISABLED);
+        String is_quantity_disabled = sharedPreferences.getString(UserSettings.IS_SHARE_QUANTITY_DISABLED, UserSettings.NO_SHARE_QUANTITY_NOT_DISABLED);
         settings.setIsShareQuantityDisabled(is_quantity_disabled);
 
-        String is_total_disabled = sharedPreferences.getString(UserSettings.IS_SHARE_TOTAL_DISABLED, UserSettings.YES_SHARE_TOTAL_DISABLED);
+        String is_total_disabled = sharedPreferences.getString(UserSettings.IS_SHARE_TOTAL_DISABLED, UserSettings.NO_SHARE_TOTAL_NOT_DISABLED);
         settings.setIsShareTotalDisabled(is_total_disabled);
 
         String currency = sharedPreferences.getString(UserSettings.CURRENCY, UserSettings.CURRENCY_DOLLAR);
@@ -1939,13 +2370,51 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         String premium_subscribed = sharedPreferences.getString(UserSettings.IS_PREMIUM_SUBSCRIBED, UserSettings.NOT_SUBSCRIBED);
         settings.setIsPremiumSubscribed(premium_subscribed);
 
-        String multiply_disabled = sharedPreferences.getString(UserSettings.IS_MULTIPLY_DISABLED, UserSettings.NO_MULTIPLY_NOT_DISABLED);
+        String multiply_disabled = sharedPreferences.getString(UserSettings.IS_MULTIPLY_DISABLED, UserSettings.YES_MULTIPLY_DISABLED);
         settings.setIsMultiplyDisabled(multiply_disabled);
 
         String lifetimePurchased = sharedPreferences.getString(UserSettings.IS_LIFETIME_PURCHASED, UserSettings.NO_LIFETIME_NOT_SUBSCRIBED);
         settings.setIsLifetimePurchased(lifetimePurchased);
 
+        String suggestion = sharedPreferences.getString(UserSettings.IS_SUGGESTION_DISABLED, UserSettings.NO_SUGGESTION_NOT_DISABLED);
+        settings.setIsSuggestionDisabled(suggestion);
+
         updateView();
+    }
+
+    @Override
+    public void onPause() {
+
+        super.onPause();
+
+        if (rename_dialog != null && rename_dialog.isShowing()) {
+            rename_dialog.dismiss();
+        }
+        if (show_sort_dialog != null && show_sort_dialog.isShowing()) {
+            show_sort_dialog.dismiss();
+        }
+        if (edit_dialog != null && edit_dialog.isShowing()) {
+            edit_dialog.dismiss();
+        }
+        if (login_warning_dialog != null && login_warning_dialog.isShowing()) {
+            login_warning_dialog.dismiss();
+        }
+        if (delete_dialog != null && delete_dialog.isShowing()) {
+            delete_dialog.dismiss();
+        }
+        if (show_category_dialog != null && show_category_dialog.isShowing()) {
+            show_category_dialog.dismiss();
+        }
+        if (bottom_dialog != null && bottom_dialog.isShowing()) {
+            bottom_dialog.dismiss();
+        }
+        if (menu_delete_dialog != null && menu_delete_dialog.isShowing()) {
+            menu_delete_dialog.dismiss();
+        }
+        if (show_share_dialog != null && show_share_dialog.isShowing()) {
+            show_share_dialog.dismiss();
+        }
+
     }
 
     @Override

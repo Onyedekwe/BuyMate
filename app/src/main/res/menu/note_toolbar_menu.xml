@@ -9,6 +9,12 @@
         app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/voice"
+        android:title="Voice typinc"
+        app:showAsAction="always"
+        android:icon="@drawable/final_voice_icon"/>
+
+    <item
         android:id="@+id/save"
         android:icon="@drawable/final_done_icon"
         android:title="@string/note_toolbar_save_text"

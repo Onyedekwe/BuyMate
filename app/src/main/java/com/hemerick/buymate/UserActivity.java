@@ -79,6 +79,15 @@ public class UserActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        settings = new UserSettings();
+        SharedPreferences sharedPreferences_theme = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
+        String theme = sharedPreferences_theme.getString(UserSettings.CUSTOM_THEME, UserSettings.LIGHT_THEME);
+        settings.setCustomTheme(theme);
+
+        if (settings.getCustomTheme().equals(UserSettings.DIM_THEME)) {
+            setTheme(R.style.Dynamic_Dim);
+        }
+
         setContentView(R.layout.activity_user);
 
         toolbar = findViewById(R.id.account_title);
@@ -89,7 +98,7 @@ public class UserActivity extends AppCompatActivity {
             }
         });
 
-        settings = new UserSettings();
+
         db = new ShopDatabase(this);
 
         firebaseAuth = FirebaseAuth.getInstance();

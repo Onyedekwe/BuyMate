@@ -76,6 +76,9 @@ public class ShopCategoryAdapter extends RecyclerView.Adapter<ShopCategoryAdapte
         int shadowColor = typedValue.data;
 
 
+        context.getTheme().resolveAttribute(com.google.android.material.R.attr.backgroundColor, typedValue, true);
+        int backgroundColor = typedValue.data;
+
         context.getTheme().resolveAttribute(android.R.attr.color, typedValue, true);
         int shadowColor2 = typedValue.data;
 
@@ -120,11 +123,15 @@ public class ShopCategoryAdapter extends RecyclerView.Adapter<ShopCategoryAdapte
 
         if (isSelectAll) {
             holder.categoryCardView.setBackgroundColor(shadowColor);
-            holder.title_layout.setBackgroundColor(Color.TRANSPARENT);
+            holder.title_layout.setBackgroundColor(backgroundColor);
+            holder.title_layout.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_transparent_curved_rectangle));
+
         } else {
             if (selectList.contains(shop_id.get(position))) {
                 holder.categoryCardView.setBackgroundColor(shadowColor);
-                holder.title_layout.setBackgroundColor(Color.TRANSPARENT);
+                holder.title_layout.setBackgroundColor(backgroundColor);
+                holder.title_layout.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_transparent_curved_rectangle));
+
             } else {
                 holder.categoryCardView.setBackgroundColor(Color.TRANSPARENT);
                 holder.title_layout.setBackgroundColor(shadowColor2);
@@ -191,6 +198,8 @@ public class ShopCategoryAdapter extends RecyclerView.Adapter<ShopCategoryAdapte
         if (shop_id.isEmpty()) {
             Intent intent = new Intent(context, HomeActivity.class);
             context.startActivity(intent);
+        } else {
+            notifyDataSetChanged();
         }
     }
 
@@ -266,6 +275,9 @@ public class ShopCategoryAdapter extends RecyclerView.Adapter<ShopCategoryAdapte
                 context.getTheme().resolveAttribute(android.R.attr.colorControlHighlight, typedValue, true);
                 int shadowColor = typedValue.data;
 
+                context.getTheme().resolveAttribute(com.google.android.material.R.attr.backgroundColor, typedValue, true);
+                int baColor = typedValue.data;
+
                 context.getTheme().resolveAttribute(android.R.attr.color, typedValue, true);
                 int shadowColor2 = typedValue.data;
 
@@ -285,7 +297,8 @@ public class ShopCategoryAdapter extends RecyclerView.Adapter<ShopCategoryAdapte
                     }
                 } else {
                     categoryCardView.setBackgroundColor(shadowColor);
-                    title_layout.setBackgroundColor(Color.TRANSPARENT);
+                    title_layout.setBackgroundColor(baColor);
+                    title_layout.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_transparent_curved_rectangle));
                     selectList.add(s);
                     ((AppCompatActivity) v.getContext()).supportInvalidateOptionsMenu();
 

@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -32,10 +31,19 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        settings = (UserSettings) getApplication();
+        SharedPreferences sharedPreferences_theme = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
+        String theme = sharedPreferences_theme.getString(UserSettings.CUSTOM_THEME, UserSettings.LIGHT_THEME);
+        settings.setCustomTheme(theme);
+
+        if (settings.getCustomTheme().equals(UserSettings.DIM_THEME)) {
+            setTheme(R.style.Dynamic_Dim);
+        }
+
         setContentView(R.layout.activity_home);
 
 
-        settings = (UserSettings) getApplication();
         bottomNavigationView = findViewById(R.id.bottombar);
 
 
@@ -164,24 +172,21 @@ public class HomeActivity extends AppCompatActivity {
             bottomNavigationView.setItemTextAppearanceActive(androidx.appcompat.R.style.Base_TextAppearance_AppCompat_Medium);
         }
 
-        if (fragment instanceof MoreFragment) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.framelayoutContainer, new MoreFragment());
-            fragmentTransaction.commit();
-            bottomNavigationView.getMenu().getItem(3).setChecked(true);
-
-        }
-
         if (fragment instanceof NotesFragment) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.framelayoutContainer, new NotesFragment());
             fragmentTransaction.commit();
             bottomNavigationView.getMenu().getItem(2).setChecked(true);
-
         }
 
+        if (fragment instanceof MoreFragment) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.framelayoutContainer, new MoreFragment());
+            fragmentTransaction.commit();
+            bottomNavigationView.getMenu().getItem(3).setChecked(true);
+        }
 
         if (fragment instanceof HomeFragment) {
             FragmentManager fragmentManager = getSupportFragmentManager();

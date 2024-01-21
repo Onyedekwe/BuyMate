@@ -88,109 +88,156 @@
                     android:textColor="?attr/textFillColor" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/desc_price_text_input_layout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <LinearLayout
+                android:id="@+id/more_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="8dp"
-                android:layout_marginTop="20dp"
-                android:hint="@string/shop_bottom_layout_price_textBox_hint"
-                android:textColor="?attr/colorOnSurface"
-                app:counterEnabled="true"
-                app:counterMaxLength="7"
-                app:endIconMode="clear_text"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginHorizontal="100dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/des_name"
-                app:prefixText="$">
+                app:layout_constraintTop_toBottomOf="@id/des_name">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/desc_price"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"
-                    android:lineSpacingExtra="4dp"
-                    android:maxLength="7"
-                    android:maxLines="1"
-                    android:scrollbars="vertical"
-                    android:textColor="?attr/textFillColor" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:orientation="horizontal"
+                    android:gravity="center">
 
+                    <TextView
+                        android:id="@+id/more_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="More"
+                        android:layout_gravity="center"
+                        android:gravity="center" />
+
+                    <ImageView
+                        android:id="@+id/more_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/final_arrow_drop_up_icon" />
+                </LinearLayout>
+            </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/price_quantity_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:orientation="horizontal"
+                android:visibility="gone"
+                android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/desc_price_text_input_layout">
+                app:layout_constraintTop_toBottomOf="@id/more_layout">
 
-                <LinearLayout
-                    android:layout_width="0dp"
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/desc_price_text_input_layout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:layout_marginEnd="20dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/shop_bottom_layout_price_textBox_hint"
+                    android:textColor="?attr/colorOnSurface"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="7"
+                    app:endIconMode="clear_text"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/more_layout"
+                    app:prefixText="$">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/desc_price"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="5dp"
-                        android:hint="@string/shop_bottom_layout_quantity_textBox_hint"
-                        android:textColor="?attr/colorOnSurface"
-                        app:counterEnabled="true"
-                        app:counterMaxLength="7"
-                        app:endIconMode="clear_text"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/desc_quantity"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="numberDecimal"
-                            android:lineSpacingExtra="4dp"
-                            android:maxLength="7"
-                            android:maxLines="1"
-                            android:scrollbars="vertical"
-                            android:textColor="?attr/textFillColor" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-
-                </LinearLayout>
+                        android:inputType="numberDecimal"
+                        android:lineSpacingExtra="4dp"
+                        android:maxLength="7"
+                        android:maxLines="1"
+                        android:scrollbars="vertical"
+                        android:textColor="?attr/textFillColor" />
+                </com.google.android.material.textfield.TextInputLayout>
 
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:orientation="vertical">
+                    android:layout_marginStart="5dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/desc_price_text_input_layout">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginEnd="20dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="5dp"
+                            android:hint="@string/shop_bottom_layout_quantity_textBox_hint"
+                            android:textColor="?attr/colorOnSurface"
+                            app:counterEnabled="true"
+                            app:counterMaxLength="7"
+                            app:endIconMode="clear_text"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/desc_quantity"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="numberDecimal"
+                                android:lineSpacingExtra="4dp"
+                                android:maxLength="7"
+                                android:maxLines="1"
+                                android:scrollbars="vertical"
+                                android:textColor="?attr/textFillColor" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
-                        android:layout_marginHorizontal="5dp"
-                        android:hint="Unit"
-                        app:counterEnabled="true"
-                        app:counterMaxLength="7">
+                        android:orientation="vertical">
 
-                        <AutoCompleteTextView
-                            android:id="@+id/unit_textView"
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:inputType="text|textCapSentences"
-                            android:maxLength="7"
-                            android:maxLines="1"
-                            android:textColor="?attr/textFillColor" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                            android:layout_gravity="end"
+                            android:layout_marginHorizontal="5dp"
+                            android:hint="Unit"
+                            app:counterEnabled="true"
+                            app:counterMaxLength="7">
 
+                            <AutoCompleteTextView
+                                android:id="@+id/unit_textView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:minWidth="110dp"
+                                android:inputType="text|textCapSentences"
+                                android:maxLength="7"
+                                android:maxLines="1"
+                                android:textColor="?attr/textFillColor" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
                 </LinearLayout>
+
             </LinearLayout>
 
 
@@ -227,7 +274,7 @@
                 android:text="@string/shop_bottom_layout_done_button_text"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                app:cornerRadius="5dp"
+                app:cornerRadius="25dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

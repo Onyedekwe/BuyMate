@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="150dp"
         android:scaleType="fitEnd"
-        android:src="@drawable/illustration_premium_dark_mode"/>
+        android:src="@drawable/illustration_premium_dark_mode" />
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -2,6 +2,8 @@ package com.hemerick.buymate.Adapter;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
@@ -25,6 +27,7 @@ import com.hemerick.buymate.Database.UserSettings;
 import com.hemerick.buymate.FavouritesFragment;
 import com.hemerick.buymate.R;
 
+import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -85,6 +88,7 @@ public class ShopFavouritesAdapter extends RecyclerView.Adapter<ShopFavouritesAd
 
         }
     }
+
     public static String formatNumberV3(double number) {
         return String.format("%,.2f", number);
     }
@@ -104,6 +108,9 @@ public class ShopFavouritesAdapter extends RecyclerView.Adapter<ShopFavouritesAd
         TypedValue typedValue = new TypedValue();
         context.getTheme().resolveAttribute(android.R.attr.colorControlHighlight, typedValue, true);
         int shadowColor = typedValue.data;
+
+        context.getTheme().resolveAttribute(com.google.android.material.R.attr.backgroundColor, typedValue, true);
+        int backgroundColor = typedValue.data;
 
         holder.cateBox.setText(String.valueOf(shop_id.get(position)));
         holder.textBox.setText(String.valueOf(item_id.get(position)));
@@ -134,6 +141,23 @@ public class ShopFavouritesAdapter extends RecyclerView.Adapter<ShopFavouritesAd
             } else {
                 holder.priceBox.setVisibility(View.VISIBLE);
                 holder.currencyBox.setVisibility(View.VISIBLE);
+            }
+
+            String url = res.getString(12);
+            if (!url.trim().isEmpty()) {
+                File directory = new File(context.getFilesDir(), "Buymate_Images");
+                File imageFile = new File(directory, url);
+
+                Bitmap retrieveBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+                holder.itemImage.setImageBitmap(retrieveBitmap);
+                holder.itemImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                holder.itemImage.setPadding(0, 0, 0, 0);
+
+            } else {
+                holder.itemImage.setImageResource(R.drawable.final_add_photo_text_icon);
+                holder.itemImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                holder.itemImage.setPadding(10, 0, 10, 0);
+                holder.itemImage.setBackgroundColor(backgroundColor);
             }
 
 
@@ -289,6 +313,7 @@ public class ShopFavouritesAdapter extends RecyclerView.Adapter<ShopFavouritesAd
         TextView priceBox;
         TextView quantityBox;
         TextView currencyBox;
+        ImageView itemImage;
         ImageView options;
         ImageView favourites;
         OnNoteListener onNoteListener;
@@ -306,26 +331,27 @@ public class ShopFavouritesAdapter extends RecyclerView.Adapter<ShopFavouritesAd
             options = itemView.findViewById(R.id.optionbox);
             favourites = itemView.findViewById(R.id.favourite_box);
             currencyBox = itemView.findViewById(R.id.currencybox);
+            itemImage = itemView.findViewById(R.id.item_image);
 
             if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
                 textBox.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.small_text));
                 priceBox.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.small_text));
                 currencyBox.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.small_text));
-                quantityBox.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.small_text));
+                quantityBox.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.mini_text));
             }
 
             if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
                 textBox.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.medium_text));
                 priceBox.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.maxi_text));
                 currencyBox.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.maxi_text));
-                quantityBox.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.medium_text));
+                quantityBox.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.small_text));
             }
 
             if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
                 textBox.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.large_text));
                 priceBox.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.medium_text));
                 currencyBox.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.medium_text));
-                quantityBox.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.large_text));
+                quantityBox.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.medium_text));
             }
 
             currencyBox.setText(settings.getCurrency());

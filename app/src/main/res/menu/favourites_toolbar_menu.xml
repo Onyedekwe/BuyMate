@@ -8,6 +8,11 @@
         android:icon="@drawable/final_share_icon"
         android:title="@string/favourites_toolbar_share_text"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/voice"
+        android:title="Voice typinc"
+        app:showAsAction="always"
+        android:icon="@drawable/final_voice_icon"/>
 
     <item
         android:id="@+id/sort"

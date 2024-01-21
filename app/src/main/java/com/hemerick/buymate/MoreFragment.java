@@ -25,8 +25,8 @@ import com.hemerick.buymate.Database.UserSettings;
 
 
 public class MoreFragment extends Fragment {
-    ConstraintLayout account_layout, message_layout, share_layout, rate_layout, about_layout, premium_layout, settings_layout, backup_layout;
-    TextView premium_text, premium_text2, account_text, message_text, share_text, rate_text, rate_text2, premium_text_2, about_text, settings_text, backup_text;
+    ConstraintLayout account_layout, message_layout, share_layout, rate_layout, about_layout, premium_layout, settings_layout, backup_layout, twitter_layout, website_layout;
+    TextView premium_text, premium_text2, account_text, message_text, share_text, rate_text, rate_text2, premium_text_2, about_text, settings_text, backup_text, twitter_text, website_text;
 
     ImageView account_icon, backup_premium_icon;
     UserSettings settings;
@@ -54,9 +54,27 @@ public class MoreFragment extends Fragment {
         settings_text = rootView.findViewById(R.id.settingText);
         backup_text = rootView.findViewById(R.id.backupText);
 
+        twitter_text = rootView.findViewById(R.id.twitterText);
+        website_text = rootView.findViewById(R.id.websiteText);
+
         backup_premium_icon = rootView.findViewById(R.id.backup_premium_icon);
 
         account_icon = rootView.findViewById(R.id.account_icon);
+
+        twitter_layout = rootView.findViewById(R.id.twitterLayout);
+        twitter_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        website_layout = rootView.findViewById(R.id.websiteLayout);
+        website_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         share_layout = rootView.findViewById(R.id.shareLayout);
         share_layout.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +98,7 @@ public class MoreFragment extends Fragment {
                 if (settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)) {
                     intent = new Intent(getContext(), PaymentSuccessfulActivity.class);
                     startActivity(intent);
-                }else{
+                } else {
                     intent = new Intent(getContext(), PremiumActivity.class);
                     startActivity(intent);
                 }
@@ -158,6 +176,15 @@ public class MoreFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), SettingsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        about_layout = rootView.findViewById(R.id.aboutLayout);
+        about_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), AboutActivity.class);
                 startActivity(intent);
             }
         });
@@ -266,6 +293,8 @@ public class MoreFragment extends Fragment {
             backup_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             about_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             settings_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            twitter_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            website_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
@@ -280,6 +309,8 @@ public class MoreFragment extends Fragment {
             about_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             backup_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             settings_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            twitter_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            website_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
@@ -294,6 +325,8 @@ public class MoreFragment extends Fragment {
             backup_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             about_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             settings_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            twitter_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            website_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
         }
 
         if (settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)) {
@@ -326,6 +359,7 @@ public class MoreFragment extends Fragment {
             account_text.setText("Account");
             account_icon.setImageResource(R.drawable.final_account_icon);
         }
+
 
     }
 }

@@ -34,22 +34,32 @@ public class SettingsActivity extends AppCompatActivity {
             darkModeText, keepScreenBrightText,
             textSizeText, lockAppText, swipeActionText, swipeActionSubText1, swipeActionSubText2,
             detailedListShareText, detailedListShareSubText, disablePriceText, multiplyText, multiplySubText, strikeText,
-            currencyText, currencySubText;
+            currencyText, currencySubText, itemSuggestionText;
     Toolbar toolbar;
+    Boolean clear = false;
     SharedPreferences sharedPreferences;
     private SwitchCompat keepScreenBrightSwitch, disablePriceSwitch, multiplySwitch;
     private ConstraintLayout DarkModeLayout, RemoveAdsLayout, TextSizeLayout, SwipeActionLayout,
             DetailedSharingLayout, DisablePriceLayout, MultiplyLayout, StrikeLayout, CurrencyLayout,
-            AppLockLayout;
-    private UserSettings settings;
+            AppLockLayout, ItemSuggestionLayout;
+    private UserSettings settings = new UserSettings();
     private PowerManager.WakeLock wakeLock;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
 
         settings = new UserSettings();
+        SharedPreferences sharedPreferences_theme = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
+        String theme = sharedPreferences_theme.getString(UserSettings.CUSTOM_THEME, UserSettings.LIGHT_THEME);
+        settings.setCustomTheme(theme);
+
+        if (settings.getCustomTheme().equals(UserSettings.DIM_THEME)) {
+            setTheme(R.style.Dynamic_Dim);
+        }
+
+        setContentView(R.layout.activity_settings);
+
 
         toolbar = findViewById(R.id.settingToolbar);
 
@@ -82,13 +92,14 @@ public class SettingsActivity extends AppCompatActivity {
         multiplySubText = findViewById(R.id.multiplySubText);
         disablePriceText = findViewById(R.id.disable_price_Text);
         DisablePriceLayout = findViewById(R.id.disablePriceLayout);
+        itemSuggestionText = findViewById(R.id.item_suggestionText);
 
         strikeText = findViewById(R.id.strikeText);
         currencyText = findViewById(R.id.currencyTextHeader);
         currencySubText = findViewById(R.id.currencySubText);
         CurrencyLayout = findViewById(R.id.currencyLayout);
         AppLockLayout = findViewById(R.id.lockLayout);
-
+        ItemSuggestionLayout = findViewById(R.id.itemSuggestionLayout);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,6 +108,14 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
+
+        ItemSuggestionLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SettingsActivity.this, ItemSuggestionActivity.class);
+                startActivity(intent);
+            }
+        });
 
         RemoveAdsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -321,6 +340,7 @@ public class SettingsActivity extends AppCompatActivity {
         RadioButton on = dialog.findViewById(R.id.radio_button_on);
         RadioButton off = dialog.findViewById(R.id.radio_button_off);
         RadioButton as_on_device = dialog.findViewById(R.id.radio_button_default);
+        RadioButton dim = dialog.findViewById(R.id.radio_button_dim);
 
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
@@ -329,18 +349,21 @@ public class SettingsActivity extends AppCompatActivity {
             on.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             off.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             as_on_device.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            dim.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
         } else if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
 
             header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             on.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             off.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             as_on_device.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            dim.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
         } else if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
 
             header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             on.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             off.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             as_on_device.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            dim.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
         }
 
         if (settings.getCustomTheme().equals(UserSettings.DEFAULT_THEME)) {
@@ -356,6 +379,10 @@ public class SettingsActivity extends AppCompatActivity {
             on.setChecked(true);
         }
 
+        if (settings.getCustomTheme().equals(UserSettings.DIM_THEME)) {
+            dim.setChecked(true);
+        }
+
 
         on.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -365,7 +392,10 @@ public class SettingsActivity extends AppCompatActivity {
                 editor.putString(UserSettings.CUSTOM_THEME, settings.getCustomTheme());
                 editor.apply();
                 dialog.dismiss();
-                updateView();
+                startActivity(new Intent(SettingsActivity.this, SettingsActivity.class));
+                finish();
+                clear = true;
+
             }
 
         });
@@ -379,6 +409,7 @@ public class SettingsActivity extends AppCompatActivity {
                 editor.apply();
                 dialog.dismiss();
                 updateView();
+                clear = true;
             }
         });
 
@@ -391,6 +422,21 @@ public class SettingsActivity extends AppCompatActivity {
                 editor.apply();
                 dialog.dismiss();
                 updateView();
+                clear = true;
+            }
+        });
+
+        dim.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                settings.setCustomTheme(UserSettings.DIM_THEME);
+                SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, MODE_PRIVATE).edit();
+                editor.putString(UserSettings.CUSTOM_THEME, settings.getCustomTheme());
+                editor.apply();
+                dialog.dismiss();
+                startActivity(new Intent(SettingsActivity.this, SettingsActivity.class));
+                finish();
+                clear = true;
             }
         });
 
@@ -478,6 +524,9 @@ public class SettingsActivity extends AppCompatActivity {
         if (settings.getCustomTheme().equals(UserSettings.DARK_THEME)) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
+        if (settings.getCustomTheme().equals(UserSettings.DIM_THEME)) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
 
@@ -501,6 +550,7 @@ public class SettingsActivity extends AppCompatActivity {
             detailedListShareSubText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             currencyText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             currencySubText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            itemSuggestionText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
@@ -521,6 +571,7 @@ public class SettingsActivity extends AppCompatActivity {
             swipeActionText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             detailedListShareText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             currencyText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            itemSuggestionText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             currencySubText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
             detailedListShareSubText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
             swipeActionSubText1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
@@ -544,6 +595,7 @@ public class SettingsActivity extends AppCompatActivity {
             lockAppText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             swipeActionText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             detailedListShareText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            itemSuggestionText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             currencyText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             currencySubText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             detailedListShareSubText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
@@ -653,6 +705,7 @@ public class SettingsActivity extends AppCompatActivity {
         String theme = sharedPreferences.getString(UserSettings.CUSTOM_THEME, UserSettings.LIGHT_THEME);
         settings.setCustomTheme(theme);
 
+
         String textSize = sharedPreferences.getString(UserSettings.CUSTOM_TEXT_SIZE, UserSettings.TEXT_MEDIUM);
         settings.setCustomTextSize(textSize);
 
@@ -665,7 +718,7 @@ public class SettingsActivity extends AppCompatActivity {
         String disables_swipe = sharedPreferences.getString(UserSettings.IS_SWIPE_DISABLED, UserSettings.NOT_DISABLED);
         settings.setIsSwipeDisabled(disables_swipe);
 
-        String multiply_disabled = sharedPreferences.getString(UserSettings.IS_MULTIPLY_DISABLED, UserSettings.NO_MULTIPLY_NOT_DISABLED);
+        String multiply_disabled = sharedPreferences.getString(UserSettings.IS_MULTIPLY_DISABLED, UserSettings.YES_MULTIPLY_DISABLED);
         settings.setIsMultiplyDisabled(multiply_disabled);
 
         String currency = sharedPreferences.getString(UserSettings.CURRENCY, UserSettings.CURRENCY_DOLLAR);
@@ -792,7 +845,8 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
+        startActivity(new Intent(SettingsActivity.this, HomeActivity.class));
+        finish();
     }
 
 }

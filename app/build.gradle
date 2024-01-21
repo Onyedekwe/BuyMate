@@ -58,5 +58,7 @@ dependencies {
     implementation 'com.android.billingclient:billing-ktx:6.1.0'
     implementation 'com.google.firebase:firebase-crashlytics-buildtools:2.9.9'
 
+    implementation 'com.itextpdf:itext7-core:7.2.4'
+
 
 }

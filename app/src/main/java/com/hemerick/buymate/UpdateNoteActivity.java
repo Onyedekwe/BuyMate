@@ -1,5 +1,6 @@
 package com.hemerick.buymate;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.speech.RecognizerIntent;
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -25,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -58,6 +61,16 @@ public class UpdateNoteActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        settings = new UserSettings();
+        SharedPreferences sharedPreferences_theme = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
+        String theme = sharedPreferences_theme.getString(UserSettings.CUSTOM_THEME, UserSettings.LIGHT_THEME);
+        settings.setCustomTheme(theme);
+
+        if (settings.getCustomTheme().equals(UserSettings.DIM_THEME)) {
+            setTheme(R.style.Dynamic_Dim);
+        }
+
         setContentView(R.layout.activity_update_note);
 
         toolbar = findViewById(R.id.update_note_title);
@@ -68,7 +81,7 @@ public class UpdateNoteActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
-        settings = new UserSettings();
+
         date_box = findViewById(R.id.update_date_text);
         heading_box = findViewById(R.id.update_heading_text);
         content_box = findViewById(R.id.update_content_text);
@@ -324,10 +337,63 @@ public class UpdateNoteActivity extends AppCompatActivity {
             });
 
             dialog.show();
+        } else if (item.getItemId() == R.id.voice) {
+            showGoogleVoiceDialog();
         }
 
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    private void typeWithVoice(String text) {
+        String previous_text;
+        String new_text;
+
+        if (content_box.hasFocus()) {
+            previous_text = content_box.getText().toString().trim();
+            new_text = text;
+            if (previous_text.isEmpty()) {
+                content_box.setText(new_text);
+            } else {
+                content_box.setText(previous_text + " " + new_text);
+            }
+
+        } else if (heading_box.hasFocus()) {
+            previous_text = heading_box.getText().toString().trim();
+            new_text = text;
+            if (previous_text.isEmpty()) {
+                heading_box.setText(new_text);
+            } else {
+                heading_box.setText(previous_text + " " + new_text);
+            }
+        } else {
+            previous_text = content_box.getText().toString().trim();
+            new_text = text;
+            if (previous_text.isEmpty()) {
+                content_box.setText(new_text);
+            } else {
+                content_box.setText(previous_text + " " + new_text);
+            }
+        }
+
+    }
+
+    public void showGoogleVoiceDialog() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Listening...");
+        startActivityForResult(intent, 8080);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if ((requestCode == 8080) && (resultCode == Activity.RESULT_OK)) {
+            String voiceText = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).get(0);
+            typeWithVoice(voiceText);
+        }
+
     }
 
     public void getDateNdTime() {
@@ -414,25 +480,7 @@ public class UpdateNoteActivity extends AppCompatActivity {
         if (wakeLock != null && wakeLock.isHeld()) {
             wakeLock.release();
         }
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        boolean isWakeLockEnabled = UserSettings.isWakeLockEnabled(this);
-
-        if (isWakeLockEnabled) {
-            PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-            wakeLock = powerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "MyApp:KeepScreeOn");
-
-            if (!wakeLock.isHeld()) {
-                wakeLock.acquire();
-            }
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
         String headBox = heading_box.getText().toString();
         String contentBox = content_box.getText().toString();
         String totsText = headBox + contentBox;
@@ -457,7 +505,6 @@ public class UpdateNoteActivity extends AppCompatActivity {
                     prev_heading = new_heading;
                     prev_content = content_box.getText().toString();
                     if (update) {
-                        Toast.makeText(getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
 
                     } else {
                         Toast.makeText(getApplicationContext(), "Update failed", Toast.LENGTH_SHORT).show();
@@ -473,7 +520,6 @@ public class UpdateNoteActivity extends AppCompatActivity {
                     prev_heading = newItem;
                     prev_content = content_box.getText().toString();
                     if (update) {
-                        Toast.makeText(getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(getApplicationContext(), "Update Failed", Toast.LENGTH_SHORT).show();
                     }
@@ -482,9 +528,28 @@ public class UpdateNoteActivity extends AppCompatActivity {
         } else {
             db.deleteNote(prev_heading, prev_content);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        boolean isWakeLockEnabled = UserSettings.isWakeLockEnabled(this);
+
+        if (isWakeLockEnabled) {
+            PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+            wakeLock = powerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "MyApp:KeepScreeOn");
+
+            if (!wakeLock.isHeld()) {
+                wakeLock.acquire();
+            }
+        }
+    }
 
 
-        super.onBackPressed();
+    @Override
+    protected void onDestroy() {
+        db.close();
+        super.onDestroy();
     }
 
 }

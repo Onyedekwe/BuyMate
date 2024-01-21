@@ -38,8 +38,7 @@ public class SplashActivity extends AppCompatActivity {
             }
         }, 1000);
 
-        if (settings.getIsAuthenticated().equals(UserSettings.NOT_AUTHENTICATED))
-        {
+        if (settings.getIsAuthenticated().equals(UserSettings.NOT_AUTHENTICATED)) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -48,8 +47,7 @@ public class SplashActivity extends AppCompatActivity {
                     finish();
                 }
             }, 3000);
-        }
-        else {
+        } else {
 
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -73,7 +71,6 @@ public class SplashActivity extends AppCompatActivity {
     public void updateView() {
 
 
-
         if (settings.getCustomTheme().equals(UserSettings.DEFAULT_THEME)) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
         }
@@ -91,7 +88,7 @@ public class SplashActivity extends AppCompatActivity {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.buymate_color_theme));
 
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 getWindow().getDecorView().setSystemUiVisibility(0);
             }
 

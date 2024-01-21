@@ -51,79 +51,80 @@
             app:queryHint="@string/item_search_hint"
             app:searchIcon="@drawable/final_search_icon_2" />
     </com.google.android.material.appbar.AppBarLayout>
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="?attr/backgroundColor">
-
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="?attr/backgroundColor"
-            android:orientation="vertical">
-
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/notes_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="?attr/backgroundColor"
-                android:overScrollMode="never" />
+            android:background="?attr/backgroundColor">
 
             <LinearLayout
-                android:id="@+id/emptyNotesLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="?attr/backgroundColor"
-                android:orientation="vertical"
-                android:visibility="gone">
+                android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/empty"
-                    android:layout_width="130dp"
-                    android:layout_height="130dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="50dp"
-                    android:contentDescription="@string/fragment_notes_illustration_content_description"
-                    app:srcCompat="@drawable/illustration_empty_list_2" />
 
-                <TextView
-                    android:id="@+id/emptyTEXT1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/fragment_notes_illustration_text_1"
-                    android:textColor="?attr/textFillColor"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/notes_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/backgroundColor"
+                    android:overScrollMode="never" />
 
-                <TextView
-                    android:id="@+id/emptyTEXT2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="@string/fragment_notes_illustration_text_2"
-                    android:textColor="?attr/textFillColor"
-                    android:textSize="15sp" />
+                <LinearLayout
+                    android:id="@+id/emptyNotesLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/backgroundColor"
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
-                <TextView
-                    android:id="@+id/emptyTEXT3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="@string/fragment_notes_illustration_text_3"
-                    android:textColor="?attr/textFillColor"
-                    android:textSize="15sp" />
+                    <ImageView
+                        android:id="@+id/empty"
+                        android:layout_width="130dp"
+                        android:layout_height="130dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="50dp"
+                        android:contentDescription="@string/fragment_notes_illustration_content_description"
+                        app:srcCompat="@drawable/illustration_empty_list_2" />
+
+                    <TextView
+                        android:id="@+id/emptyTEXT1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/fragment_notes_illustration_text_1"
+                        android:textColor="?attr/textFillColor"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/emptyTEXT2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/fragment_notes_illustration_text_2"
+                        android:textColor="?attr/textFillColor"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/emptyTEXT3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/fragment_notes_illustration_text_3"
+                        android:textColor="?attr/textFillColor"
+                        android:textSize="15sp" />
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+        </androidx.core.widget.NestedScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

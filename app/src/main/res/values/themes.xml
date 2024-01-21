@@ -19,7 +19,7 @@
         <item name="fontFamily">@font/lexend</item>
 
         <!-- Customize your theme here. -->
-        <item name="backgroundColor">#F1F5F5</item>
+        <item name="backgroundColor">#F2F3F7</item>
         <item name="colorSurface">@color/white</item>
         <item name="trackColor">#EFEDED</item>
         <item name="colorError">@color/light_red</item>

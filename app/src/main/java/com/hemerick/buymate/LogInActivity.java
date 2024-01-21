@@ -29,7 +29,6 @@ import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.Purchase;
-import com.android.billingclient.api.PurchasesResponseListener;
 import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.QueryPurchasesParams;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -46,7 +45,6 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.hemerick.buymate.Database.UserSettings;
 import com.hemerick.buymate.NetworkUtils.Network;
@@ -86,9 +84,19 @@ public class LogInActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_log_in);
 
         settings = new UserSettings();
+        SharedPreferences sharedPreferences_theme = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
+        String theme = sharedPreferences_theme.getString(UserSettings.CUSTOM_THEME, UserSettings.LIGHT_THEME);
+        settings.setCustomTheme(theme);
+
+        if (settings.getCustomTheme().equals(UserSettings.DIM_THEME)) {
+            setTheme(R.style.Dynamic_Dim);
+        }
+
+        setContentView(R.layout.activity_log_in);
+
+
         firebaseAuth = FirebaseAuth.getInstance();
 
         sub_header = findViewById(R.id.sub_header);
@@ -258,7 +266,6 @@ public class LogInActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
 
 
-
                                     StyleableToast.makeText(LogInActivity.this, "Sign up successful", R.style.custom_toast).show();
 
                                     settings.setIsAuthenticated(UserSettings.IS_AUTHENTICATED);
@@ -275,7 +282,6 @@ public class LogInActivity extends AppCompatActivity {
                                     startActivity(intent);
 
 
-
                                 }
                             }
                         });
@@ -285,42 +291,42 @@ public class LogInActivity extends AppCompatActivity {
 
     }
 
-    private void checkIfLifetimeSubscribed(){
+    private void checkIfLifetimeSubscribed() {
         billingClient.startConnection(new BillingClientStateListener() {
             @Override
             public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
 
-                if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK){
+                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                     ExecutorService executorService = Executors.newSingleThreadExecutor();
                     executorService.execute(() -> {
-                        try{
+                        try {
                             billingClient.queryPurchasesAsync(
                                     QueryPurchasesParams.newBuilder()
                                             .setProductType(BillingClient.ProductType.INAPP)
                                             .build(),
                                     ((billingResult1, list) -> {
-                                        for(Purchase purchase : list){
-                                            if(purchase!=null && purchase.isAcknowledged()){
+                                        for (Purchase purchase : list) {
+                                            if (purchase != null && purchase.isAcknowledged()) {
                                                 isPremium = true;
                                             }
                                         }
                                     }));
-                        }catch (Exception ex){
+                        } catch (Exception ex) {
                             isPremium = false;
                         }
                         runOnUiThread(() -> {
-                            try{
+                            try {
                                 Thread.sleep(1000);
-                            }catch (InterruptedException e){
+                            } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
-                            if(isPremium){
+                            if (isPremium) {
                                 Toast.makeText(getApplicationContext(), "Premium is enabled", Toast.LENGTH_SHORT).show();
                                 settings.setIsLifetimePurchased(UserSettings.YES_LIFETIME_PURCHASED);
                                 SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
                                 editor.putString(UserSettings.IS_LIFETIME_PURCHASED, settings.getIsLifetimePurchased());
                                 editor.apply();
-                            }else{
+                            } else {
                                 Toast.makeText(getApplicationContext(), "Premium is not enabled", Toast.LENGTH_SHORT).show();
                             }
 

@@ -12,6 +12,7 @@ public class UserSettings extends Application {
     public static final String DEFAULT_THEME = "defaultTheme";
     public static final String LIGHT_THEME = "lightTheme";
     public static final String DARK_THEME = "darkTheme";
+    public static final String DIM_THEME = "dimTheme";
     private String customTheme;
 
     //keepScreenBright
@@ -57,6 +58,10 @@ public class UserSettings extends Application {
     public static final String IS_SWIPE_DISABLED = "isSwipeDisabled";
     public static final String YES_DISABLED = "yesDisabled";
     public static final String NOT_DISABLED = "notDisabled";
+
+    public static final String IS_SUGGESTION_DISABLED = "isSuggestionDisabled";
+    public static final String YES_SUGGESTION_DISABLED = "yesSuggestionDisabled";
+    public static final String NO_SUGGESTION_NOT_DISABLED = "noSuggestionNotDisabled";
 
 
     public static final String IS_SHARE_PRICE_DISABLED = "isSharePriceDisabled";
@@ -123,7 +128,7 @@ public class UserSettings extends Application {
     }
 
     public static final String IS_LIFETIME_PURCHASED = "isLifetimePurchased";
-        public static final String YES_LIFETIME_PURCHASED = "yesLifetimePurchased";
+    public static final String YES_LIFETIME_PURCHASED = "yesLifetimePurchased";
     public static final String NO_LIFETIME_NOT_SUBSCRIBED = "noLifetimeNotPurchased";
     private String isLifetimePurchased;
 
@@ -141,9 +146,6 @@ public class UserSettings extends Application {
     private String isAuthenticated;
 
 
-
-
-
     public String getIsAuthenticated() {
         return isAuthenticated;
     }
@@ -151,7 +153,6 @@ public class UserSettings extends Application {
     public void setIsAuthenticated(String isAuthenticated) {
         this.isAuthenticated = isAuthenticated;
     }
-
 
 
     public static final String USER_NAME = "userName";
@@ -172,6 +173,9 @@ public class UserSettings extends Application {
 
     private String isSwipeDisabled;
 
+
+    private String isSuggestionDisabled;
+
     private String isSharePriceDisabled;
     private String isShareQuantityDisabled;
     private String IsShareTotalDisabled;
@@ -186,6 +190,14 @@ public class UserSettings extends Application {
     private String currency;
     private String password;
 
+
+    public String getIsSuggestionDisabled() {
+        return isSuggestionDisabled;
+    }
+
+    public void setIsSuggestionDisabled(String isSuggestionDisabled) {
+        this.isSuggestionDisabled = isSuggestionDisabled;
+    }
 
     public static void setGridLayoutEnabled(Context context, boolean enabled) {
         SharedPreferences preference = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);

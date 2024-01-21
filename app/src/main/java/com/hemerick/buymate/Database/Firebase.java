@@ -1,7 +1,13 @@
 package com.hemerick.buymate.Database;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.os.Handler;
+import android.util.TypedValue;
+import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -35,13 +41,28 @@ public class Firebase {
     private static DatabaseReference shoppingListRef;
     ShopDatabase db;
 
+    UserSettings settings;
+
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
+    boolean no_record = true;
 
     String email;
     Context context;
 
+    Dialog cloud_dialog;
+
+
+    boolean isFirstStart;
+
     public Firebase(Context context) {
+
+        settings = new UserSettings();
+        SharedPreferences sharedPreferences_firstStart = context.getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
+        isFirstStart = sharedPreferences_firstStart.getBoolean("isFirstStart", true);
+
+        String textSize = sharedPreferences_firstStart.getString(UserSettings.CUSTOM_TEXT_SIZE, UserSettings.TEXT_MEDIUM);
+        settings.setCustomTextSize(textSize);
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
@@ -533,118 +554,206 @@ public class Firebase {
     }
 
 
-    public void backupData() {
-        ArrayList<String> categories = new ArrayList<>();
-        ArrayList<String> descriptions = new ArrayList<>();
-        ArrayList<Integer> status = new ArrayList<>();
-        ArrayList<String> price = new ArrayList<>();
-        ArrayList<String> month = new ArrayList<>();
-        ArrayList<String> year = new ArrayList<>();
-        ArrayList<String> day = new ArrayList<>();
-        ArrayList<String> time = new ArrayList<>();
-        ArrayList<String> quantity = new ArrayList<>();
-        ArrayList<Integer> favourites = new ArrayList<>();
-        ArrayList<String> unit = new ArrayList<>();
-        ArrayList<String> photourl = new ArrayList<>();
+    public boolean backupData() {
 
+        cloud_dialog = new Dialog(context);
+        cloud_dialog.setContentView(R.layout.cloud_dialog_popup);
+        cloud_dialog.getWindow().setBackgroundDrawable(context.getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
+        cloud_dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        ArrayList<String> heading = new ArrayList<>();
-        ArrayList<String> content = new ArrayList<>();
-        ArrayList<String> date = new ArrayList<>();
+        TextView percent = cloud_dialog.findViewById(R.id.percent);
+        TextView info = cloud_dialog.findViewById(R.id.info);
 
-        Cursor res = db.getCategory(context);
-        while (res.moveToNext()) {
-            categories.add(res.getString(1));
-            descriptions.add(res.getString(2));
-            status.add(res.getInt(3));
-            price.add(res.getString(4));
-            month.add(res.getString(5));
-            year.add(res.getString(6));
-            day.add(res.getString(7));
-            time.add(res.getString(8));
-            quantity.add(res.getString(9));
-            favourites.add(res.getInt(10));
-            unit.add(res.getString(11));
-            photourl.add(res.getString(12));
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
+            percent.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.small_text));
+            info.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.small_text));
+
         }
 
-        res = db.getNoteHeading();
-        while (res.moveToNext()) {
-            heading.add(res.getString(1));
-            content.add(res.getString(2));
-            date.add(res.getString(3));
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
+            percent.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.medium_text));
+            info.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.medium_text));
         }
 
-        res.close();
-
-        for (int i = 0; i < categories.size(); i++) {
-
-            insertNewData(categories.get(i), descriptions.get(i),
-                    status.get(i), price.get(i), month.get(i),
-                    year.get(i), day.get(i), time.get(i),
-                    quantity.get(i), favourites.get(i), photourl.get(i), unit.get(i));
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
+            percent.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.large_text));
+            info.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.large_text));
         }
 
-        for (int j = 0; j < heading.size(); j++) {
-            insertNote(heading.get(j), content.get(j), date.get(j));
-        }
+        percent.setText("Backing up data...");
+        info.setText("Please wait for backup to complete");
 
-        StyleableToast.makeText(context, "Backup complete", R.style.custom_toast_2).show();
+        cloud_dialog.show();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ArrayList<String> categories = new ArrayList<>();
+                ArrayList<String> descriptions = new ArrayList<>();
+                ArrayList<Integer> status = new ArrayList<>();
+                ArrayList<String> price = new ArrayList<>();
+                ArrayList<String> month = new ArrayList<>();
+                ArrayList<String> year = new ArrayList<>();
+                ArrayList<String> day = new ArrayList<>();
+                ArrayList<String> time = new ArrayList<>();
+                ArrayList<String> quantity = new ArrayList<>();
+                ArrayList<Integer> favourites = new ArrayList<>();
+                ArrayList<String> unit = new ArrayList<>();
+                ArrayList<String> photourl = new ArrayList<>();
 
 
+                ArrayList<String> heading = new ArrayList<>();
+                ArrayList<String> content = new ArrayList<>();
+                ArrayList<String> date = new ArrayList<>();
+
+                Cursor res = db.getCategory(context);
+                while (res.moveToNext()) {
+                    categories.add(res.getString(1));
+                    descriptions.add(res.getString(2));
+                    status.add(res.getInt(3));
+                    price.add(res.getString(4));
+                    month.add(res.getString(5));
+                    year.add(res.getString(6));
+                    day.add(res.getString(7));
+                    time.add(res.getString(8));
+                    quantity.add(res.getString(9));
+                    favourites.add(res.getInt(10));
+                    unit.add(res.getString(11));
+                    photourl.add(" ");
+                }
+
+                res = db.getNoteHeading();
+                while (res.moveToNext()) {
+                    heading.add(res.getString(1));
+                    content.add(res.getString(2));
+                    date.add(res.getString(3));
+                }
+
+                res.close();
+
+
+                for (int i = 0; i < categories.size(); i++) {
+
+                    insertNewData(categories.get(i), descriptions.get(i),
+                            status.get(i), price.get(i), month.get(i),
+                            year.get(i), day.get(i), time.get(i),
+                            quantity.get(i), favourites.get(i), photourl.get(i), unit.get(i));
+                }
+
+                for (int j = 0; j < heading.size(); j++) {
+                    insertNote(heading.get(j), content.get(j), date.get(j));
+                }
+
+                cloud_dialog.dismiss();
+                StyleableToast.makeText(context, "Backup complete", R.style.custom_toast_2).show();
+            }
+        }, 3000);
+        return true;
     }
 
     public void getAllList() {
-        DatabaseReference categoryRef = shoppingListRef.child("list_category");
-        categoryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        cloud_dialog = new Dialog(context);
+        cloud_dialog.setContentView(R.layout.cloud_dialog_popup);
+        cloud_dialog.getWindow().setBackgroundDrawable(context.getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
+        cloud_dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        TextView percent = cloud_dialog.findViewById(R.id.percent);
+        TextView info = cloud_dialog.findViewById(R.id.info);
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
+            percent.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.small_text));
+            info.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.small_text));
+
+        }
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
+            percent.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.medium_text));
+            info.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.medium_text));
+        }
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
+            percent.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.large_text));
+            info.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.large_text));
+        }
+
+        percent.setText("Restoring data...");
+        info.setText("Please wait for restore to complete");
+
+
+        cloud_dialog.show();
+
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
+            public void run() {
+                DatabaseReference categoryRef = shoppingListRef.child("list_category");
+                categoryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
 
-                    ArrayList<String> total_url = new ArrayList<>();
-                    Cursor res = db.getCategory(context);
-                    while (res.moveToNext()) {
-                        total_url.add(res.getString(12));
-                    }
-                    res.close();
+                            ArrayList<String> total_url = new ArrayList<>();
+                            Cursor res = db.getCategory(context);
+                            while (res.moveToNext()) {
+                                total_url.add(res.getString(12));
+                            }
+                            res.close();
 
-                    for (int i = 0; i < total_url.size(); i++) {
-                        if (!total_url.get(i).trim().isEmpty()) {
-                            FirebaseStorage storage = FirebaseStorage.getInstance();
-                            StorageReference storageReference = storage.getReference().child(total_url.get(i));
-                            storageReference.delete();
+                            for (int i = 0; i < total_url.size(); i++) {
+                                if (!total_url.get(i).trim().isEmpty()) {
+                                    FirebaseStorage storage = FirebaseStorage.getInstance();
+                                    StorageReference storageReference = storage.getReference().child(total_url.get(i));
+                                    storageReference.delete();
+                                }
+                            }
+
+
+                            db.deleteAllList();
+                            for (DataSnapshot itemSnapshot : snapshot.getChildren()) {
+                                String category = itemSnapshot.child("category").getValue(String.class);
+                                String description = itemSnapshot.child("description").getValue(String.class);
+                                int status = itemSnapshot.child("status").getValue(Integer.class);
+                                String price = itemSnapshot.child("price").getValue(String.class);
+                                String month = itemSnapshot.child("month").getValue(String.class);
+                                String year = itemSnapshot.child("year").getValue(String.class);
+                                String day = itemSnapshot.child("day").getValue(String.class);
+                                String time = itemSnapshot.child("time").getValue(String.class);
+                                String quantity = itemSnapshot.child("quantity").getValue(String.class);
+                                int favourites = itemSnapshot.child("favourites").getValue(Integer.class);
+                                String unit = itemSnapshot.child("unit").getValue(String.class);
+                                String photourl = itemSnapshot.child("photourl").getValue(String.class);
+                                db.insertItem(category, description, status, price, month, year, day, time, quantity, unit);
+                                db.updateFavourites(category, description, favourites);
+                                db.updatePhoto(category, description, photourl);
+
+                            }
+
+                            StyleableToast.makeText(context, "List Restored", R.style.custom_toast_2).show();
+                            if (isFirstStart) {
+                                settings.setFirstStart(false);
+                                SharedPreferences.Editor editor = context.getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
+                                editor.putBoolean("isFirstStart", settings.getFirstStart());
+                                editor.apply();
+                            }
+
+                        } else {
+                            Toast.makeText(context, "No List Found", Toast.LENGTH_SHORT).show();
                         }
                     }
 
-                    db.deleteAllList();
-                    for (DataSnapshot itemSnapshot : snapshot.getChildren()) {
-                        String category = itemSnapshot.child("category").getValue(String.class);
-                        String description = itemSnapshot.child("description").getValue(String.class);
-                        int status = itemSnapshot.child("status").getValue(Integer.class);
-                        String price = itemSnapshot.child("price").getValue(String.class);
-                        String month = itemSnapshot.child("month").getValue(String.class);
-                        String year = itemSnapshot.child("year").getValue(String.class);
-                        String day = itemSnapshot.child("day").getValue(String.class);
-                        String time = itemSnapshot.child("time").getValue(String.class);
-                        String quantity = itemSnapshot.child("quantity").getValue(String.class);
-                        int favourites = itemSnapshot.child("favourites").getValue(Integer.class);
-                        String unit = itemSnapshot.child("unit").getValue(String.class);
-
-                        db.insertItem(category, description, status, price, month, year, day, time, quantity, unit);
-                        db.updateFavourites(category, description, favourites);
-
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(context, "Error: " + error.getMessage(), Toast.LENGTH_SHORT);
                     }
-                } else {
-                    Toast.makeText(context, "No list found", Toast.LENGTH_SHORT).show();
-                }
+                });
             }
+        }, 3000);
 
+
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(context, "Error: " + error.getMessage(), Toast.LENGTH_SHORT);
+            public void run() {
+                getAllNotes();
             }
-        });
-
+        }, 2000);
     }
 
     public void getAllNotes() {
@@ -661,8 +770,11 @@ public class Firebase {
 
                         db.insertNote(heading, content, date);
                     }
+                    cloud_dialog.dismiss();
+                    StyleableToast.makeText(context, "Notes Restored", R.style.custom_toast_2).show();
                 } else {
-                    Toast.makeText(context, "No notes found", Toast.LENGTH_SHORT).show();
+                    cloud_dialog.dismiss();
+                    Toast.makeText(context, "No Notes Found", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -674,8 +786,8 @@ public class Firebase {
 
     }
 
-    public void deleteData() {
 
+    public void deleteData() {
 
         idRef.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -688,7 +800,6 @@ public class Firebase {
                 Toast.makeText(context, "Error: " + e.getMessage(), Toast.LENGTH_SHORT);
             }
         });
-
 
     }
 

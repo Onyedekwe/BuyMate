@@ -206,7 +206,6 @@ public class ShopNotesAdapter extends RecyclerView.Adapter<ShopNotesAdapter.MyVi
         selectListHeading.clear();
         selectListContent.clear();
         selectListDate.clear();
-        notifyDataSetChanged();
         ((AppCompatActivity) getContext()).supportInvalidateOptionsMenu();
     }
 
