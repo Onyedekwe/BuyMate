@@ -1,5 +1,6 @@
 package com.hemerick.buymate;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
+import android.speech.RecognizerIntent;
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -26,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -47,6 +50,7 @@ public class CreateNoteActivity extends AppCompatActivity {
     String full_date;
     ArrayList<String> itemCheck;
 
+
     String prev_heading;
     String prev_content;
     int count_init = 0;
@@ -59,6 +63,15 @@ public class CreateNoteActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        settings = new UserSettings();
+        SharedPreferences sharedPreferences_theme = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
+        String theme = sharedPreferences_theme.getString(UserSettings.CUSTOM_THEME, UserSettings.LIGHT_THEME);
+        settings.setCustomTheme(theme);
+
+        if (settings.getCustomTheme().equals(UserSettings.DIM_THEME)) {
+            setTheme(R.style.Dynamic_Dim);
+        }
+
         setContentView(R.layout.activity_create_note);
 
         toolbar = findViewById(R.id.note_title);
@@ -77,7 +90,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         itemCheck = new ArrayList<>();
         getDateNdTime();
         date_box.setText(full_date);
-        settings = new UserSettings();
+
 
         heading_box.addTextChangedListener(new TextWatcher() {
             @Override
@@ -359,8 +372,60 @@ public class CreateNoteActivity extends AppCompatActivity {
             });
 
             dialog.show();
+        } else if (item.getItemId() == R.id.voice) {
+            showGoogleVoiceDialog();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void typeWithVoice(String text) {
+        String previous_text;
+        String new_text;
+
+        if (content_box.hasFocus()) {
+            previous_text = content_box.getText().toString().trim();
+            new_text = text;
+            if (previous_text.isEmpty()) {
+                content_box.setText(new_text);
+            } else {
+                content_box.setText(previous_text + " " + new_text);
+            }
+
+        } else if (heading_box.hasFocus()) {
+            previous_text = heading_box.getText().toString().trim();
+            new_text = text;
+            if (previous_text.isEmpty()) {
+                heading_box.setText(new_text);
+            } else {
+                heading_box.setText(previous_text + " " + new_text);
+            }
+        } else {
+            previous_text = content_box.getText().toString().trim();
+            new_text = text;
+            if (previous_text.isEmpty()) {
+                content_box.setText(new_text);
+            } else {
+                content_box.setText(previous_text + " " + new_text);
+            }
+        }
+
+    }
+
+    public void showGoogleVoiceDialog() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Listening...");
+        startActivityForResult(intent, 8080);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if ((requestCode == 8080) && (resultCode == Activity.RESULT_OK)) {
+            String voiceText = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).get(0);
+            typeWithVoice(voiceText);
+        }
+
     }
 
     public void getDateNdTime() {
@@ -443,101 +508,7 @@ public class CreateNoteActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        String headBox = heading_box.getText().toString();
-        String contentBox = content_box.getText().toString();
-        String totsText = headBox + contentBox;
-
-        if (count_init > 0) {
-            if (!totsText.trim().isEmpty()) {
-                if (!headBox.trim().equals(prev_heading.trim()) | !contentBox.trim().equals(prev_content.trim())) {
-                    Cursor res = db.getNoteHeading();
-                    itemCheck.clear();
-                    while (res.moveToNext()) {
-                        itemCheck.add(res.getString(1));
-                    }
-                    res.close();
-                    itemCheck.remove(prev_heading);
-                    String new_heading;
-                    if (heading_box.getText().toString().trim().isEmpty()) {
-                        new_heading = "Untitled";
-                    } else {
-                        new_heading = heading_box.getText().toString();
-                    }
-                    if (!itemCheck.contains(new_heading)) {
-                        boolean update = db.updateNote(prev_heading, new_heading, content_box.getText().toString(), date_box.getText().toString());
-                        prev_heading = new_heading;
-                        prev_content = content_box.getText().toString();
-                        if (update) {
-                            Toast.makeText(getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Update failed", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        int count = 1;
-                        String newItem = new_heading + " (" + count + ")";
-                        while (itemCheck.contains(newItem)) {
-                            count++;
-                            newItem = new_heading + " (" + count + ")";
-                        }
-                        boolean update = db.updateNote(prev_heading, newItem, content_box.getText().toString(), date_box.getText().toString());
-                        prev_heading = newItem;
-                        prev_content = content_box.getText().toString();
-                        if (update) {
-                            Toast.makeText(getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Update Failed", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
-            } else {
-                db.deleteNote(prev_heading, prev_content);
-            }
-
-
-        } else {
-            if (count_init == 0) {
-                if (!totsText.trim().isEmpty()) {
-                    Cursor res = db.getNoteHeading();
-                    itemCheck.clear();
-                    while (res.moveToNext()) {
-                        itemCheck.add(res.getString(1));
-                    }
-                    res.close();
-                    String new_heading;
-                    if (heading_box.getText().toString().trim().isEmpty()) {
-                        new_heading = "Untitled";
-                    } else {
-                        new_heading = heading_box.getText().toString();
-                    }
-
-                    if (!itemCheck.contains(new_heading)) {
-                        boolean insert = db.insertNote(new_heading, content_box.getText().toString(), date_box.getText().toString());
-                        if (insert) {
-                            Toast.makeText(getApplicationContext(), "Inserted", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Insert Failed", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        int count = 1;
-                        String newItem = new_heading + " (" + count + ")";
-                        while (itemCheck.contains(newItem)) {
-                            count++;
-                            newItem = new_heading + " (" + count + ")";
-                        }
-                        boolean insert = db.insertNote(newItem, content_box.getText().toString(), date_box.getText().toString());
-                        if (insert) {
-                            Toast.makeText(getApplicationContext(), "Inserted", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Insert Failed", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
-            }
-        }
-
-
         super.onBackPressed();
-
     }
 
 
@@ -546,6 +517,122 @@ public class CreateNoteActivity extends AppCompatActivity {
         super.onPause();
         if (wakeLock != null && wakeLock.isHeld()) {
             wakeLock.release();
+        }
+
+
+        ArrayList<String> heading_check = new ArrayList<>();
+        ArrayList<String> content_check = new ArrayList<>();
+        ArrayList<String> date_check = new ArrayList<>();
+
+
+        String headBox = heading_box.getText().toString().trim();
+        String contentBox = content_box.getText().toString().trim();
+        String dateBox = date_box.getText().toString().trim();
+        String totsText = headBox + contentBox;
+
+        Cursor res = db.getNoteHeading();
+        while (res.moveToNext()) {
+            heading_check.add(res.getString(1).trim());
+            content_check.add(res.getString(2).trim());
+            date_check.add(res.getString(3).trim());
+        }
+        res.close();
+
+        if (count_init > 0) {
+
+
+            if (!heading_check.contains(prev_heading) && !content_check.contains(prev_content)) {
+                if (!totsText.trim().isEmpty()) {
+                    if (!headBox.trim().equals(prev_heading.trim()) | !contentBox.trim().equals(prev_content.trim())) {
+                        res = db.getNoteHeading();
+                        itemCheck.clear();
+                        while (res.moveToNext()) {
+                            itemCheck.add(res.getString(1));
+                        }
+                        res.close();
+                        itemCheck.remove(prev_heading);
+                        String new_heading;
+                        if (heading_box.getText().toString().trim().isEmpty()) {
+                            new_heading = "Untitled";
+                        } else {
+                            new_heading = heading_box.getText().toString();
+                        }
+                        if (!itemCheck.contains(new_heading)) {
+                            boolean update = db.updateNote(prev_heading, new_heading, content_box.getText().toString(), date_box.getText().toString());
+                            prev_heading = new_heading;
+                            prev_content = content_box.getText().toString();
+                            if (update) {
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Update failed", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            int count = 1;
+                            String newItem = new_heading + " (" + count + ")";
+                            while (itemCheck.contains(newItem)) {
+                                count++;
+                                newItem = new_heading + " (" + count + ")";
+                            }
+                            boolean update = db.updateNote(prev_heading, newItem, content_box.getText().toString(), date_box.getText().toString());
+                            prev_heading = newItem;
+                            prev_content = content_box.getText().toString();
+                            if (update) {
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Update Failed", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                } else {
+                    db.deleteNote(prev_heading, prev_content);
+                }
+            }
+        } else {
+            if (count_init == 0) {
+
+                if (!heading_check.contains(headBox) && !content_check.contains(contentBox) && !date_check.contains(dateBox)) {
+
+
+                    if (!totsText.trim().isEmpty()) {
+                        res = db.getNoteHeading();
+                        itemCheck.clear();
+                        while (res.moveToNext()) {
+                            itemCheck.add(res.getString(1));
+                        }
+                        res.close();
+                        String new_heading;
+                        if (heading_box.getText().toString().trim().isEmpty()) {
+                            new_heading = "Untitled";
+                        } else {
+                            new_heading = heading_box.getText().toString();
+                        }
+
+                        if (!itemCheck.contains(new_heading)) {
+                            boolean insert = db.insertNote(new_heading, content_box.getText().toString(), date_box.getText().toString());
+                            prev_heading = new_heading;
+                            prev_content = content_box.getText().toString();
+                            if (insert) {
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Insert Failed", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            int count = 1;
+                            String newItem = new_heading + " (" + count + ")";
+                            while (itemCheck.contains(newItem)) {
+                                count++;
+                                newItem = new_heading + " (" + count + ")";
+                            }
+                            boolean insert = db.insertNote(newItem, content_box.getText().toString(), date_box.getText().toString());
+                            prev_heading = newItem;
+                            prev_content = content_box.getText().toString();
+                            if (insert) {
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Insert Failed", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+
+
+                }
+            }
         }
     }
 
@@ -562,7 +649,13 @@ public class CreateNoteActivity extends AppCompatActivity {
                 wakeLock.acquire();
             }
         }
+
     }
 
 
+    @Override
+    protected void onDestroy() {
+        db.close();
+        super.onDestroy();
+    }
 }

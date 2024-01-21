@@ -1,4 +1,4 @@
-package com.hemerick.buymate;
+package com.hemerick.buymate.NetworkUtils;
 
 import static com.google.firebase.crashlytics.buildtools.reloc.com.google.common.base.Verify.verify;
 

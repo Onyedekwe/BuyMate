@@ -19,7 +19,9 @@ public class ShopDatabase extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create Table ShopTable(_id INTEGER primary key autoincrement,category TEXT, description TEXT, status INTEGER, price TEXT, month TEXT, year TEXT, day TEXT, time TEXT, quantity TEXT, favourites INTEGER, unit TEXT, photourl TEXT)");
         db.execSQL("create Table NoteTable(_id INTEGER primary key autoincrement,heading TEXT, content TEXT, date TEXT)");
-
+        db.execSQL("create Table SuggestTable(_id INTEGER primary key autoincrement, itemName TEXT)");
+        db.execSQL("create Table SuggestUnitTable(_id INTEGER primary key autoincrement, itemUnit TEXT)");
+        db.execSQL("create Table PhotoUrlTable(_id INTEGER primary key autoincrement, photoUrl TEXT)");
     }
 
     @Override
@@ -58,6 +60,30 @@ public class ShopDatabase extends SQLiteOpenHelper {
         return result != -1;
 
 
+    }
+
+    public boolean insertSuggest(String itemName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("itemName", itemName);
+        long result = db.insert("SuggestTable", null, contentValues);
+        return result != -1;
+    }
+
+    public boolean insertSuggestUnit(String itemUnit) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("itemUnit", itemUnit);
+        long result = db.insert("SuggestUnitTable", null, contentValues);
+        return result != -1;
+    }
+
+    public boolean insertPhotoUrl(String photoUrl) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("photoUrl", photoUrl);
+        long result = db.insert("PhotoUrlTable", null, contentValues);
+        return result != -1;
     }
 
 
@@ -198,6 +224,17 @@ public class ShopDatabase extends SQLiteOpenHelper {
         }
     }
 
+
+    public void deletePhotoUrl(String photoUrl) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery("select * from PhotoUrlTable where photoUrl = ?", new String[]{photoUrl});
+        if (cursor.getCount() > 0) {
+            long result = db.delete("PhotoUrlTable", "photoUrl = ?", new String[]{photoUrl});
+            db.close();
+        }
+    }
+
+
     public void deleteAllList() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete("ShopTable", null, null);
@@ -235,7 +272,7 @@ public class ShopDatabase extends SQLiteOpenHelper {
         } else if (settings.getCustomCategorySort().equals(UserSettings.DATE_ASCENDING)) {
             res = db.rawQuery("SELECT * FROM ShopTable ORDER BY _id ASC", null);
         } else if (settings.getCustomCategorySort().equals(UserSettings.DATE_DESCENDING)) {
-            res = db.rawQuery("SELECT * FROM ShopTable ORDER BY _id DESC", null);
+            res = db.rawQuery("SELECT * FROM ShopTable ORDER BY _id ASC", null);
         } else if (settings.getCustomCategorySort().equals(UserSettings.PRICE_ASCENDING)) {
             res = db.rawQuery("SELECT * FROM ShopTable ", null);
         } else if (settings.getCustomCategorySort().equals(UserSettings.PRICE_DESCENDING)) {
@@ -248,6 +285,22 @@ public class ShopDatabase extends SQLiteOpenHelper {
     public Cursor getNoteHeading() {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.rawQuery("SELECT * FROM NoteTable ", null);
+    }
+
+    public Cursor getSuggestName() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.rawQuery("SELECT * FROM SuggestTable ", null);
+
+    }
+
+    public Cursor getSuggestUnit() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.rawQuery("SELECT * FROM SuggestUnitTable ", null);
+    }
+
+    public Cursor getPhotoUrl() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.rawQuery("SELECT * FROM PhotoUrlTable ", null);
     }
 
 
@@ -313,6 +366,7 @@ public class ShopDatabase extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.rawQuery("select * from NoteTable where heading = ?", new String[]{heading});
     }
+
 
     public Cursor getStatus(String category, String description) {
         SQLiteDatabase db = this.getWritableDatabase();

@@ -32,10 +32,19 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        settings = (UserSettings) getApplication();
+        SharedPreferences sharedPreferences_theme = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
+        String theme = sharedPreferences_theme.getString(UserSettings.CUSTOM_THEME, UserSettings.LIGHT_THEME);
+        settings.setCustomTheme(theme);
+
+        if (settings.getCustomTheme().equals(UserSettings.DIM_THEME)) {
+            setTheme(R.style.Dynamic_Dim);
+        }
+
         setContentView(R.layout.activity_home);
 
 
-        settings = (UserSettings) getApplication();
         bottomNavigationView = findViewById(R.id.bottombar);
 
 
@@ -89,6 +98,18 @@ public class HomeActivity extends AppCompatActivity {
     @SuppressLint("ResourceType")
     private void updateView() {
 
+        if (settings.getCustomTheme().equals(UserSettings.DEFAULT_THEME)) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        }
+
+        if (settings.getCustomTheme().equals(UserSettings.LIGHT_THEME)) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+
+
+        if (settings.getCustomTheme().equals(UserSettings.DARK_THEME)) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
             bottomNavigationView.setItemTextAppearanceActive(androidx.appcompat.R.style.Base_TextAppearance_AppCompat_Caption);
@@ -116,6 +137,8 @@ public class HomeActivity extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
 
+        String theme = sharedPreferences.getString(UserSettings.CUSTOM_THEME, UserSettings.LIGHT_THEME);
+        settings.setCustomTheme(theme);
 
         String textSize = sharedPreferences.getString(UserSettings.CUSTOM_TEXT_SIZE, UserSettings.TEXT_MEDIUM);
         settings.setCustomTextSize(textSize);
@@ -164,24 +187,21 @@ public class HomeActivity extends AppCompatActivity {
             bottomNavigationView.setItemTextAppearanceActive(androidx.appcompat.R.style.Base_TextAppearance_AppCompat_Medium);
         }
 
-        if (fragment instanceof MoreFragment) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.framelayoutContainer, new MoreFragment());
-            fragmentTransaction.commit();
-            bottomNavigationView.getMenu().getItem(3).setChecked(true);
-
-        }
-
         if (fragment instanceof NotesFragment) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.framelayoutContainer, new NotesFragment());
             fragmentTransaction.commit();
             bottomNavigationView.getMenu().getItem(2).setChecked(true);
-
         }
 
+        if (fragment instanceof MoreFragment) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.framelayoutContainer, new MoreFragment());
+            fragmentTransaction.commit();
+            bottomNavigationView.getMenu().getItem(3).setChecked(true);
+        }
 
         if (fragment instanceof HomeFragment) {
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -199,7 +219,6 @@ public class HomeActivity extends AppCompatActivity {
 
         long currentTime = System.currentTimeMillis();
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.framelayoutContainer);
-
         if (fragment instanceof FavouritesFragment) {
             if (!((FavouritesFragment) fragment).onBackPressed()) {
                 FragmentManager fragmentManager = getSupportFragmentManager();

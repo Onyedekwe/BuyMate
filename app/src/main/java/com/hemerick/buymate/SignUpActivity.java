@@ -15,6 +15,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -30,7 +31,6 @@ import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.Purchase;
-import com.android.billingclient.api.PurchasesResponseListener;
 import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.QueryPurchasesParams;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -47,7 +47,6 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.hemerick.buymate.Database.UserSettings;
 import com.hemerick.buymate.NetworkUtils.Network;
@@ -85,9 +84,19 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
 
         settings = new UserSettings();
+        SharedPreferences sharedPreferences_theme = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
+        String theme = sharedPreferences_theme.getString(UserSettings.CUSTOM_THEME, UserSettings.LIGHT_THEME);
+        settings.setCustomTheme(theme);
+
+        if (settings.getCustomTheme().equals(UserSettings.DIM_THEME)) {
+            setTheme(R.style.Dynamic_Dim);
+        }
+
+        setContentView(R.layout.activity_signup);
+
+
         firebaseAuth = FirebaseAuth.getInstance();
 
         sub_header = findViewById(R.id.sub_header);
@@ -132,6 +141,11 @@ public class SignUpActivity extends AppCompatActivity {
         googleCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(fullnamebox.getWindowToken(), 0);
+                imm.hideSoftInputFromWindow(emailbox.getWindowToken(), 0);
+                imm.hideSoftInputFromWindow(passwordbox.getWindowToken(), 0);
+                imm.hideSoftInputFromWindow(confirmpasswordbox.getWindowToken(), 0);
                 authenticateUserGoogle();
             }
         });
@@ -141,6 +155,11 @@ public class SignUpActivity extends AppCompatActivity {
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(fullnamebox.getWindowToken(), 0);
+                imm.hideSoftInputFromWindow(emailbox.getWindowToken(), 0);
+                imm.hideSoftInputFromWindow(passwordbox.getWindowToken(), 0);
+                imm.hideSoftInputFromWindow(confirmpasswordbox.getWindowToken(), 0);
                 emailLayout.setErrorEnabled(false);
                 passwordLayout.setErrorEnabled(false);
                 confirmPasswordLayout.setErrorEnabled(false);
@@ -201,7 +220,6 @@ public class SignUpActivity extends AppCompatActivity {
                                                             checkIfLifetimeSubscribed();
 
                                                             progressBar.setVisibility(View.INVISIBLE);
-
 
 
                                                             Intent intent = new Intent(SignUpActivity.this, HomeActivity.class);
@@ -410,7 +428,6 @@ public class SignUpActivity extends AppCompatActivity {
                                     progressBar.setVisibility(View.INVISIBLE);
 
 
-
                                     Intent intent = new Intent(SignUpActivity.this, HomeActivity.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                     startActivity(intent);
@@ -428,42 +445,42 @@ public class SignUpActivity extends AppCompatActivity {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
-    private void checkIfLifetimeSubscribed(){
+    private void checkIfLifetimeSubscribed() {
         billingClient.startConnection(new BillingClientStateListener() {
             @Override
             public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
 
-                if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK){
+                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                     ExecutorService executorService = Executors.newSingleThreadExecutor();
                     executorService.execute(() -> {
-                        try{
+                        try {
                             billingClient.queryPurchasesAsync(
                                     QueryPurchasesParams.newBuilder()
                                             .setProductType(BillingClient.ProductType.INAPP)
                                             .build(),
                                     ((billingResult1, list) -> {
-                                        for(Purchase purchase : list){
-                                            if(purchase!=null && purchase.isAcknowledged()){
+                                        for (Purchase purchase : list) {
+                                            if (purchase != null && purchase.isAcknowledged()) {
                                                 isPremium = true;
                                             }
                                         }
                                     }));
-                        }catch (Exception ex){
+                        } catch (Exception ex) {
                             isPremium = false;
                         }
                         runOnUiThread(() -> {
-                            try{
+                            try {
                                 Thread.sleep(1000);
-                            }catch (InterruptedException e){
+                            } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
-                            if(isPremium){
+                            if (isPremium) {
                                 Toast.makeText(getApplicationContext(), "Premium is enabled", Toast.LENGTH_SHORT).show();
                                 settings.setIsLifetimePurchased(UserSettings.YES_LIFETIME_PURCHASED);
                                 SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
                                 editor.putString(UserSettings.IS_LIFETIME_PURCHASED, settings.getIsLifetimePurchased());
                                 editor.apply();
-                            }else{
+                            } else {
                                 Toast.makeText(getApplicationContext(), "Premium is not enabled", Toast.LENGTH_SHORT).show();
                             }
 
@@ -484,6 +501,19 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void updateView() {
+
+        if (settings.getCustomTheme().equals(UserSettings.DEFAULT_THEME)) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        }
+
+        if (settings.getCustomTheme().equals(UserSettings.LIGHT_THEME)) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+
+
+        if (settings.getCustomTheme().equals(UserSettings.DARK_THEME)) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
 
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
@@ -533,6 +563,10 @@ public class SignUpActivity extends AppCompatActivity {
         }
 
         sharedPreferences = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
+
+        String theme = sharedPreferences.getString(UserSettings.CUSTOM_THEME, UserSettings.LIGHT_THEME);
+        settings.setCustomTheme(theme);
+
 
         String textSize = sharedPreferences.getString(UserSettings.CUSTOM_TEXT_SIZE, UserSettings.TEXT_MEDIUM);
         settings.setCustomTextSize(textSize);

@@ -30,9 +30,17 @@ public class DetailListShareSettingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        settings = (UserSettings) getApplication();
+        SharedPreferences sharedPreferences_theme = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
+        String theme = sharedPreferences_theme.getString(UserSettings.CUSTOM_THEME, UserSettings.LIGHT_THEME);
+        settings.setCustomTheme(theme);
+
+        if (settings.getCustomTheme().equals(UserSettings.DIM_THEME)) {
+            setTheme(R.style.Dynamic_Dim);
+        }
+
         setContentView(R.layout.activity_detail_list_share_setting);
 
-        settings = (UserSettings) getApplication();
 
         toolbar = findViewById(R.id.swipeToolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -165,13 +173,13 @@ public class DetailListShareSettingActivity extends AppCompatActivity {
         String textSize = sharedPreferences.getString(UserSettings.CUSTOM_TEXT_SIZE, UserSettings.TEXT_MEDIUM);
         settings.setCustomTextSize(textSize);
 
-        String is_price_disabled = sharedPreferences.getString(UserSettings.IS_SHARE_PRICE_DISABLED, UserSettings.YES_SHARE_PRICE_DISABLED);
+        String is_price_disabled = sharedPreferences.getString(UserSettings.IS_SHARE_PRICE_DISABLED, UserSettings.NO_SHARE_PRICE_NOT_DISABLED);
         settings.setIsSharePriceDisabled(is_price_disabled);
 
-        String is_quantity_disabled = sharedPreferences.getString(UserSettings.IS_SHARE_QUANTITY_DISABLED, UserSettings.YES_SHARE_QUANTITY_DISABLED);
+        String is_quantity_disabled = sharedPreferences.getString(UserSettings.IS_SHARE_QUANTITY_DISABLED, UserSettings.NO_SHARE_QUANTITY_NOT_DISABLED);
         settings.setIsShareQuantityDisabled(is_quantity_disabled);
 
-        String is_total_disabled = sharedPreferences.getString(UserSettings.IS_SHARE_TOTAL_DISABLED, UserSettings.YES_SHARE_TOTAL_DISABLED);
+        String is_total_disabled = sharedPreferences.getString(UserSettings.IS_SHARE_TOTAL_DISABLED, UserSettings.NO_SHARE_TOTAL_NOT_DISABLED);
         settings.setIsShareTotalDisabled(is_total_disabled);
 
         updateView();

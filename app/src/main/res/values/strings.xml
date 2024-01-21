@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Buymate</string>
     <string name="app_version">1.0.1</string>
+    <string name="app_email">hemerickservices@gmail.com</string>
     <string name="default_web_client_id" translatable="false">401382920363-u289nhkse3o3fi2tevrq68m7oic9vaj6.apps.googleusercontent.com</string>
 
 
@@ -424,6 +425,7 @@
         <item>Magazines</item>
         <!-- Add more items as needed -->
     </string-array>
+
 
 
 </resources>

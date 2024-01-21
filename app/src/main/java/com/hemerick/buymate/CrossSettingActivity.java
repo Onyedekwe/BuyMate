@@ -27,6 +27,15 @@ public class CrossSettingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        settings = new UserSettings();
+        SharedPreferences sharedPreferences_theme = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
+        String theme = sharedPreferences_theme.getString(UserSettings.CUSTOM_THEME, UserSettings.LIGHT_THEME);
+        settings.setCustomTheme(theme);
+
+        if (settings.getCustomTheme().equals(UserSettings.DIM_THEME)) {
+            setTheme(R.style.Dynamic_Dim);
+        }
+
         setContentView(R.layout.activity_cross_setting);
 
         toolbar = findViewById(R.id.swipeToolbar);
@@ -36,7 +45,7 @@ public class CrossSettingActivity extends AppCompatActivity {
                 CrossSettingActivity.super.onBackPressed();
             }
         });
-        settings = new UserSettings();
+
 
         crossText = findViewById(R.id.crossDisableTextHeader);
         crossDescription = findViewById(R.id.cross_description);

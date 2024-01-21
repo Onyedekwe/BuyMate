@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.PowerManager;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -17,7 +16,6 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,15 +24,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
 import com.android.billingclient.api.BillingClient;
-import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.Purchase;
-import com.android.billingclient.api.PurchaseHistoryRecord;
-import com.android.billingclient.api.PurchaseHistoryResponseListener;
-import com.android.billingclient.api.PurchasesResponseListener;
 import com.android.billingclient.api.PurchasesUpdatedListener;
-import com.android.billingclient.api.QueryPurchaseHistoryParams;
-import com.android.billingclient.api.QueryPurchasesParams;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -54,14 +46,13 @@ public class BackupActivity extends AppCompatActivity {
     Toolbar toolbar;
     ShopDatabase db;
 
+
     TextView backup_text, restore_text, backup_text_2, restore_text_2;
     private PowerManager.WakeLock wakeLock;
 
     CardView backup_card, restore_card;
 
     ProgressBar progressBar;
-
-    boolean isSuccess = false;
 
     private BillingClient billingClient;
 
@@ -70,6 +61,15 @@ public class BackupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        settings = new UserSettings();
+        SharedPreferences sharedPreferences_theme = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
+        String theme = sharedPreferences_theme.getString(UserSettings.CUSTOM_THEME, UserSettings.LIGHT_THEME);
+        settings.setCustomTheme(theme);
+
+        if (settings.getCustomTheme().equals(UserSettings.DIM_THEME)) {
+            setTheme(R.style.Dynamic_Dim);
+        }
+
         setContentView(R.layout.activity_backup);
 
         toolbar = findViewById(R.id.backupToolbar);
@@ -80,7 +80,7 @@ public class BackupActivity extends AppCompatActivity {
             }
         });
 
-        settings = new UserSettings();
+
         db = new ShopDatabase(BackupActivity.this);
 
         progressBar = findViewById(R.id.progress_bar);
@@ -92,7 +92,6 @@ public class BackupActivity extends AppCompatActivity {
         restore_text_2 = findViewById(R.id.restore_text_2);
 
 
-
         backup_card = findViewById(R.id.backup_card);
 
 
@@ -102,7 +101,7 @@ public class BackupActivity extends AppCompatActivity {
                 int code = 1;
                 if (Network.isNetworkAvailable(BackupActivity.this)) {
                     if (settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)) {
-                       backupData();
+                        backupData();
                     } else {
                         showUpgradeRequiredDialog();
                     }
@@ -135,7 +134,7 @@ public class BackupActivity extends AppCompatActivity {
 
     }
 
-    private PurchasesUpdatedListener purchasesUpdatedListener = new PurchasesUpdatedListener() {
+    private final PurchasesUpdatedListener purchasesUpdatedListener = new PurchasesUpdatedListener() {
         @Override
         public void onPurchasesUpdated(@NonNull BillingResult billingResult, @Nullable List<Purchase> list) {
 
@@ -143,28 +142,22 @@ public class BackupActivity extends AppCompatActivity {
     };
 
 
-
     public void backupData() {
+
 
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser != null) {
-            progressBar.setVisibility(View.VISIBLE);
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Firebase firebase = new Firebase(BackupActivity.this);
-                    firebase.deleteData();
-                    firebase.backupData();
-                    progressBar.setVisibility(View.GONE);
-                }
-            }, 3000);
+            Firebase firebase = new Firebase(BackupActivity.this);
+            firebase.deleteData();
+            firebase.backupData();
+
         } else {
             StyleableToast.makeText(BackupActivity.this, "You must be logged in before backup", R.style.custom_toast_2).show();
         }
 
     }
 
-    public void restoreData(){
+    public void restoreData() {
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser != null) {
             showLogoutWarningDialog();
@@ -172,8 +165,6 @@ public class BackupActivity extends AppCompatActivity {
             StyleableToast.makeText(BackupActivity.this, "You must be logged in to restore data", R.style.custom_toast_2).show();
         }
     }
-
-
 
 
     public void showNoNetworkDialog() {
@@ -227,7 +218,7 @@ public class BackupActivity extends AppCompatActivity {
         dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
-    public void showUpgradeRequiredDialog(){
+    public void showUpgradeRequiredDialog() {
         Dialog dialog = new Dialog(BackupActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.upgrade_required_layout);
@@ -325,17 +316,8 @@ public class BackupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                progressBar.setVisibility(View.VISIBLE);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Firebase firebase = new Firebase(BackupActivity.this);
-                        firebase.getAllList();
-                        firebase.getAllNotes();
-                        progressBar.setVisibility(View.GONE);
-                        StyleableToast.makeText(BackupActivity.this, "Restore complete", R.style.custom_toast_2).show();
-                    }
-                }, 3000);
+                Firebase firebase = new Firebase(BackupActivity.this);
+                firebase.getAllList();
             }
         });
 
@@ -350,6 +332,7 @@ public class BackupActivity extends AppCompatActivity {
     }
 
     private void updateView() {
+
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
 
@@ -376,6 +359,7 @@ public class BackupActivity extends AppCompatActivity {
         }
     }
 
+
     private void loadSharedPreferences() {
 
         boolean wakeLockEnabled = UserSettings.isWakeLockEnabled(this);
@@ -392,6 +376,7 @@ public class BackupActivity extends AppCompatActivity {
 
         String lifetimePurchased = sharedPreferences.getString(UserSettings.IS_LIFETIME_PURCHASED, UserSettings.NO_LIFETIME_NOT_SUBSCRIBED);
         settings.setIsLifetimePurchased(lifetimePurchased);
+
 
         updateView();
     }

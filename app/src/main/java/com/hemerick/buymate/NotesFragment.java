@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,7 +13,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -71,6 +68,8 @@ public class NotesFragment extends Fragment implements ShopNotesAdapter.OnNoteLi
     TextView emptyTEXT3;
 
     UserSettings settings;
+
+    Dialog menu_delete_dialog;
 
 
     @Override
@@ -128,15 +127,11 @@ public class NotesFragment extends Fragment implements ShopNotesAdapter.OnNoteLi
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                        FragmentTransaction transaction = fragmentManager.beginTransaction();
-                        transaction.replace(R.id.framelayoutContainer, new NotesFragment());
-                        transaction.commit();
-                    }
-                } , 3000) ;
+
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.framelayoutContainer, new NotesFragment());
+                transaction.commit();
             }
         });
 
@@ -173,10 +168,10 @@ public class NotesFragment extends Fragment implements ShopNotesAdapter.OnNoteLi
                 public boolean onMenuItemClick(@NonNull MenuItem item) {
 
 
-                    Dialog dialog = new Dialog(context);
-                    dialog.setContentView(R.layout.custom_delete_dialog);
-                    dialog.getWindow().setBackgroundDrawable(context.getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
-                    dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    menu_delete_dialog = new Dialog(context);
+                    menu_delete_dialog.setContentView(R.layout.custom_delete_dialog);
+                    menu_delete_dialog.getWindow().setBackgroundDrawable(context.getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
+                    menu_delete_dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
 
                     StringBuilder items_selected = new StringBuilder();
@@ -185,10 +180,10 @@ public class NotesFragment extends Fragment implements ShopNotesAdapter.OnNoteLi
                     }
 
 
-                    TextView delete_heading = dialog.findViewById(R.id.delete_heading);
-                    TextView delete_message = dialog.findViewById(R.id.delete_message);
-                    Button deleteButton = dialog.findViewById(R.id.delete_button);
-                    Button cancelButton = dialog.findViewById(R.id.cancel_button);
+                    TextView delete_heading = menu_delete_dialog.findViewById(R.id.delete_heading);
+                    TextView delete_message = menu_delete_dialog.findViewById(R.id.delete_message);
+                    Button deleteButton = menu_delete_dialog.findViewById(R.id.delete_button);
+                    Button cancelButton = menu_delete_dialog.findViewById(R.id.cancel_button);
 
                     if (finalSelectListHeading.size() > 1) {
                         delete_heading.setText(getString(R.string.multiple_notes_remove));
@@ -201,11 +196,11 @@ public class NotesFragment extends Fragment implements ShopNotesAdapter.OnNoteLi
                         @Override
                         public void onClick(View v) {
                             for (int i = 0; i < finalSelectListHeading.size(); i++) {
+
+                                db.deleteNote(finalSelectListHeading.get(i), finalSelectListContent.get(i));
                                 note_heading_list.remove(finalSelectListHeading.get(i));
                                 note_content_list.remove(finalSelectListContent.get(i));
                                 note_date_list.remove(finalSelectListDate.get(i));
-                                shopNotesAdapter.notifyDataSetChanged();
-                                db.deleteNote(selectListHeading.get(i), selectListContent.get(i));
                             }
 
                             if (note_heading_list.size() == 0) {
@@ -218,18 +213,25 @@ public class NotesFragment extends Fragment implements ShopNotesAdapter.OnNoteLi
                             StyleableToast.makeText(context, "Note Deleted", R.style.custom_toast).show();
                             shopNotesAdapter.disableSelection();
                             searchEditText.setText("");
-                            dialog.dismiss();
+
+                            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                            fragmentTransaction.replace(R.id.framelayoutContainer, new NotesFragment());
+                            fragmentTransaction.commit();
+
+                            shopNotesAdapter.notifyDataSetChanged();
+                            menu_delete_dialog.dismiss();
                         }
                     });
 
                     cancelButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            dialog.dismiss();
+                            menu_delete_dialog.dismiss();
                         }
                     });
 
-                    dialog.show();
+                    menu_delete_dialog.show();
                     return true;
                 }
             });
@@ -305,7 +307,7 @@ public class NotesFragment extends Fragment implements ShopNotesAdapter.OnNoteLi
 
     private void filterList(String text) {
 
-        if(!note_heading_list.isEmpty()){
+        if (!note_heading_list.isEmpty()) {
             ArrayList<String> filterList = new ArrayList<>();
             ArrayList<String> filterList2 = new ArrayList<>();
             ArrayList<String> filterList3 = new ArrayList<>();
@@ -358,6 +360,13 @@ public class NotesFragment extends Fragment implements ShopNotesAdapter.OnNoteLi
         super.onDestroyView();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        displayData();
+        shopNotesAdapter.notifyDataSetChanged();
+    }
+
     private void updateView() {
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
@@ -398,4 +407,16 @@ public class NotesFragment extends Fragment implements ShopNotesAdapter.OnNoteLi
         super.onDestroy();
         db.close();
     }
+
+    @Override
+    public void onPause() {
+
+        super.onPause();
+
+        if (menu_delete_dialog != null && menu_delete_dialog.isShowing()) {
+            menu_delete_dialog.dismiss();
+        }
+
+    }
+
 }

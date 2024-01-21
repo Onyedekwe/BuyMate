@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_bottom_popup"
@@ -46,7 +44,6 @@
             android:textSize="18sp" />
 
 
-
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -73,9 +70,7 @@
         android:textAllCaps="false"
         android:layout_gravity="center"
         android:textColor="?attr/textFillColor"
-        android:textStyle="bold"/>
-
-
+        android:textStyle="bold" />
 
 
 </LinearLayout>

@@ -38,6 +38,16 @@ public class SwipeSettingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        settings = new UserSettings();
+        SharedPreferences sharedPreferences_theme = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
+        String theme = sharedPreferences_theme.getString(UserSettings.CUSTOM_THEME, UserSettings.LIGHT_THEME);
+        settings.setCustomTheme(theme);
+
+        if (settings.getCustomTheme().equals(UserSettings.DIM_THEME)) {
+            setTheme(R.style.Dynamic_Dim);
+        }
+
         setContentView(R.layout.activity_swipe_setting);
 
         toolbar = findViewById(R.id.swipeToolbar);
@@ -48,7 +58,6 @@ public class SwipeSettingActivity extends AppCompatActivity {
             }
         });
 
-        settings = new UserSettings();
 
         swipe_left_layout = findViewById(R.id.swipeLeftLayout);
         swipe_right_layout = findViewById(R.id.swipeRightLayout);

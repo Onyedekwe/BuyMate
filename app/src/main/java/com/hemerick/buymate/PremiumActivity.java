@@ -3,7 +3,6 @@ package com.hemerick.buymate;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
@@ -28,12 +27,9 @@ import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingFlowParams;
 import com.android.billingclient.api.BillingResult;
-import com.android.billingclient.api.ConsumeParams;
-import com.android.billingclient.api.ConsumeResponseListener;
 import com.android.billingclient.api.ProductDetails;
 import com.android.billingclient.api.ProductDetailsResponseListener;
 import com.android.billingclient.api.Purchase;
-import com.android.billingclient.api.PurchasesResponseListener;
 import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.QueryProductDetailsParams;
 import com.android.billingclient.api.QueryPurchasesParams;
@@ -41,15 +37,13 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.ImmutableList;
 import com.hemerick.buymate.Database.UserSettings;
 import com.hemerick.buymate.NetworkUtils.Network;
+import com.hemerick.buymate.NetworkUtils.Security;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import io.github.muddz.styleabletoast.StyleableToast;
 
 public class PremiumActivity extends AppCompatActivity implements PurchasesUpdatedListener {
     Toolbar toolbar;
@@ -92,9 +86,18 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_premium);
 
         settings = new UserSettings();
+        SharedPreferences sharedPreferences_theme = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
+        String theme = sharedPreferences_theme.getString(UserSettings.CUSTOM_THEME, UserSettings.LIGHT_THEME);
+        settings.setCustomTheme(theme);
+
+        if (settings.getCustomTheme().equals(UserSettings.DIM_THEME)) {
+            setTheme(R.style.Dynamic_Dim);
+        }
+
+        setContentView(R.layout.activity_premium);
+
 
         toolbar = findViewById(R.id.premuium_title);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -112,8 +115,6 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
 
         no_network_header = findViewById(R.id.no_network_header);
         no_network_sub_header = findViewById(R.id.no_network_sub_header);
-
-
 
 
         backupText = findViewById(R.id.backupText);
@@ -134,7 +135,6 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
 
         price_details_container = findViewById(R.id.price_details_container);
         no_network_layout = findViewById(R.id.no_network_layout);
-
 
 
         upgradeBtn = findViewById(R.id.upgrade_btn);
@@ -173,7 +173,7 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
             @Override
             public void run() {
 
-                if(Network.isNetworkAvailable(PremiumActivity.this)){
+                if (Network.isNetworkAvailable(PremiumActivity.this)) {
                     billingClient = BillingClient.newBuilder(PremiumActivity.this)
                             .enablePendingPurchases().setListener(PremiumActivity.this).build();
                     billingClient.startConnection(new BillingClientStateListener() {
@@ -184,36 +184,36 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
 
                         @Override
                         public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
-                            if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK){
+                            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                                 ExecutorService executorService = Executors.newSingleThreadExecutor();
                                 executorService.execute(() -> {
-                                    try{
+                                    try {
                                         billingClient.queryPurchasesAsync(
                                                 QueryPurchasesParams.newBuilder()
                                                         .setProductType(BillingClient.ProductType.INAPP)
                                                         .build(),
                                                 ((billingResult1, list) -> {
-                                                    for(Purchase purchase : list){
-                                                        if(purchase!=null && purchase.isAcknowledged()){
+                                                    for (Purchase purchase : list) {
+                                                        if (purchase != null && purchase.isAcknowledged()) {
                                                             isPremium = true;
                                                         }
                                                     }
                                                 }));
-                                    }catch (Exception ex){
+                                    } catch (Exception ex) {
                                         isPremium = false;
                                     }
                                     runOnUiThread(() -> {
-                                        try{
+                                        try {
                                             Thread.sleep(1000);
-                                        }catch (InterruptedException e){
+                                        } catch (InterruptedException e) {
                                             e.printStackTrace();
                                         }
-                                        if(isPremium){
+                                        if (isPremium) {
                                             Toast.makeText(getApplicationContext(), "Premium is enabled", Toast.LENGTH_SHORT).show();
                                             price_details_container.setVisibility(View.GONE);
                                             progressBar.setVisibility(View.INVISIBLE);
 
-                                        }else{
+                                        } else {
                                             Toast.makeText(getApplicationContext(), "Premium is not enabled", Toast.LENGTH_SHORT).show();
                                             getPrice();
                                             progressBar.setVisibility(View.INVISIBLE);
@@ -225,7 +225,7 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
                             }
                         }
                     });
-                }else{
+                } else {
                     no_network_layout.setVisibility(View.VISIBLE);
                     price_details_container.setVisibility(View.GONE);
                     progressBar.setVisibility(View.INVISIBLE);
@@ -235,7 +235,6 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
         }, 1000);
 
 
-
         getColors();
         loadSharedPreferences();
 
@@ -243,36 +242,35 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
 
 
     public void btn_upgrade_click(View view) {
-      if(billingClient.isReady()) {
-          initiatePurchase();
-      }
-      else{
-          billingClient = BillingClient.newBuilder(this).enablePendingPurchases().setListener(this).build();
-          billingClient.startConnection(new BillingClientStateListener() {
-              @Override
-              public void onBillingServiceDisconnected() {
+        if (billingClient.isReady()) {
+            initiatePurchase();
+        } else {
+            billingClient = BillingClient.newBuilder(this).enablePendingPurchases().setListener(this).build();
+            billingClient.startConnection(new BillingClientStateListener() {
+                @Override
+                public void onBillingServiceDisconnected() {
 
-              }
+                }
 
-              @Override
-              public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
-                    if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK){
+                @Override
+                public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
+                    if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                         initiatePurchase();
-                    }else {
+                    } else {
                         Toast.makeText(getApplicationContext(), "Error " + billingResult.getDebugMessage(), Toast.LENGTH_SHORT).show();
                     }
-              }
-          });
-      }
+                }
+            });
+        }
     }
 
     private void initiatePurchase() {
         QueryProductDetailsParams queryProductDetailsParams =
                 QueryProductDetailsParams.newBuilder().setProductList(
-                        ImmutableList.of(QueryProductDetailsParams.Product.newBuilder()
-                                .setProductId(LIFETIME_PRODUCT_ID)
-                                .setProductType(BillingClient.ProductType.INAPP)
-                                .build()))
+                                ImmutableList.of(QueryProductDetailsParams.Product.newBuilder()
+                                        .setProductId(LIFETIME_PRODUCT_ID)
+                                        .setProductType(BillingClient.ProductType.INAPP)
+                                        .build()))
                         .build();
 
         billingClient.queryProductDetailsAsync(
@@ -280,23 +278,23 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
                 new ProductDetailsResponseListener() {
                     @Override
                     public void onProductDetailsResponse(@NonNull BillingResult billingResult, @NonNull List<ProductDetails> list) {
-                        for(ProductDetails productDetails : list){
-                          ImmutableList productDetailsList = ImmutableList.of(
-                                  BillingFlowParams.ProductDetailsParams.newBuilder()
-                                          .setProductDetails(productDetails)
-                                          .build()
-                          );
-                          BillingFlowParams billingFlowParams = BillingFlowParams.newBuilder()
-                                  .setProductDetailsParamsList(productDetailsList)
-                                  .build();
-                          billingClient.launchBillingFlow(PremiumActivity.this, billingFlowParams);
+                        for (ProductDetails productDetails : list) {
+                            ImmutableList productDetailsList = ImmutableList.of(
+                                    BillingFlowParams.ProductDetailsParams.newBuilder()
+                                            .setProductDetails(productDetails)
+                                            .build()
+                            );
+                            BillingFlowParams billingFlowParams = BillingFlowParams.newBuilder()
+                                    .setProductDetailsParamsList(productDetailsList)
+                                    .build();
+                            billingClient.launchBillingFlow(PremiumActivity.this, billingFlowParams);
                         }
                     }
                 });
     }
 
 
-    public void getPrice(){
+    public void getPrice() {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(new Runnable() {
             @Override
@@ -313,15 +311,15 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
                     @Override
                     public void onProductDetailsResponse(@NonNull BillingResult billingResult, @NonNull List<ProductDetails> list) {
 
-                        for(ProductDetails productDetails : list){
+                        for (ProductDetails productDetails : list) {
 
                             ImmutableList productDetailsParamsList =
                                     ImmutableList.of(
                                             BillingFlowParams.ProductDetailsParams.newBuilder()
-                                            .setProductDetails(productDetails)
-                                            .build()
-                            );
-                            price  = productDetails.getOneTimePurchaseOfferDetails().getFormattedPrice();
+                                                    .setProductDetails(productDetails)
+                                                    .build()
+                                    );
+                            price = productDetails.getOneTimePurchaseOfferDetails().getFormattedPrice();
                         }
                     }
                 });
@@ -330,9 +328,9 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                try{
+                try {
                     Thread.sleep(1000);
-                }catch (InterruptedException e){
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 lifetime_currencyText.setText(price);
@@ -344,56 +342,48 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
     @Override
     public void onPurchasesUpdated(@NonNull BillingResult billingResult, @Nullable List<Purchase> list) {
 
-       if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && list != null){
-           for(Purchase purchase : list){
-             handlePurchase(purchase);
-           }
-       }
-       else if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED){
-           Toast.makeText(PremiumActivity.this, "ITEM_ALREADY_OWNED", Toast.LENGTH_SHORT).show();
-       }
-       else if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.FEATURE_NOT_SUPPORTED){
-           Toast.makeText(PremiumActivity.this, "FEATURE_NOT_SUPPORTED", Toast.LENGTH_SHORT).show();
-       }
-       else if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.USER_CANCELED){
-           Toast.makeText(PremiumActivity.this, "USER_CANCELED", Toast.LENGTH_SHORT).show();
-       }
-       else if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.DEVELOPER_ERROR){
-           Toast.makeText(PremiumActivity.this, "DEVELOPER_ERROR", Toast.LENGTH_SHORT).show();
-       }
-       else if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.ITEM_UNAVAILABLE){
-           Toast.makeText(PremiumActivity.this, "ITEM_UNAVAILABLE", Toast.LENGTH_SHORT).show();
-       }
-       else if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.NETWORK_ERROR){
-           Toast.makeText(PremiumActivity.this, "NETWORK_ERROR", Toast.LENGTH_SHORT).show();
-       }
-       else if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.SERVICE_DISCONNECTED){
-           Toast.makeText(PremiumActivity.this, "SERVICE_DISCONNECTED", Toast.LENGTH_SHORT).show();
-       }
-       else {
-           Toast.makeText(getApplicationContext(), "Error: "+billingResult.getDebugMessage(),Toast.LENGTH_SHORT ).show();
-       }
+        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && list != null) {
+            for (Purchase purchase : list) {
+                handlePurchase(purchase);
+            }
+        } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
+            Toast.makeText(PremiumActivity.this, "ITEM_ALREADY_OWNED", Toast.LENGTH_SHORT).show();
+        } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.FEATURE_NOT_SUPPORTED) {
+            Toast.makeText(PremiumActivity.this, "FEATURE_NOT_SUPPORTED", Toast.LENGTH_SHORT).show();
+        } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.USER_CANCELED) {
+            Toast.makeText(PremiumActivity.this, "USER_CANCELED", Toast.LENGTH_SHORT).show();
+        } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.DEVELOPER_ERROR) {
+            Toast.makeText(PremiumActivity.this, "DEVELOPER_ERROR", Toast.LENGTH_SHORT).show();
+        } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.ITEM_UNAVAILABLE) {
+            Toast.makeText(PremiumActivity.this, "ITEM_UNAVAILABLE", Toast.LENGTH_SHORT).show();
+        } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.NETWORK_ERROR) {
+            Toast.makeText(PremiumActivity.this, "NETWORK_ERROR", Toast.LENGTH_SHORT).show();
+        } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.SERVICE_DISCONNECTED) {
+            Toast.makeText(PremiumActivity.this, "SERVICE_DISCONNECTED", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "Error: " + billingResult.getDebugMessage(), Toast.LENGTH_SHORT).show();
+        }
 
 
     }
 
     private void handlePurchase(Purchase purchase) {
 
-        if(purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED){
-            if(!verifyValidSignature(purchase.getOriginalJson(),purchase.getSignature())){
+        if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
+            if (!verifyValidSignature(purchase.getOriginalJson(), purchase.getSignature())) {
                 Toast.makeText(getApplicationContext(), "Error: invalid purchase", Toast.LENGTH_SHORT).show();
                 return;
             }
-            if(!purchase.isAcknowledged()){
+            if (!purchase.isAcknowledged()) {
                 AcknowledgePurchaseParams acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder()
                         .setPurchaseToken(purchase.getPurchaseToken())
                         .build();
-                billingClient.acknowledgePurchase(acknowledgePurchaseParams,acknowledgePurchaseResponseListener);
+                billingClient.acknowledgePurchase(acknowledgePurchaseParams, acknowledgePurchaseResponseListener);
                 settings.setIsLifetimePurchased(UserSettings.YES_LIFETIME_PURCHASED);
                 SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
                 editor.putString(UserSettings.IS_LIFETIME_PURCHASED, settings.getIsLifetimePurchased());
                 editor.apply();
-            }else{
+            } else {
                 settings.setIsLifetimePurchased(UserSettings.YES_LIFETIME_PURCHASED);
                 SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
                 editor.putString(UserSettings.IS_LIFETIME_PURCHASED, settings.getIsLifetimePurchased());
@@ -401,7 +391,7 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
                 recreate();
             }
         } else if (purchase.getPurchaseState() == Purchase.PurchaseState.UNSPECIFIED_STATE) {
-       //not necessary     Toast.makeText(getApplicationContext(), "UNSPECIFIED_STATE", Toast.LENGTH_SHORT).show();
+            //not necessary     Toast.makeText(getApplicationContext(), "UNSPECIFIED_STATE", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -409,7 +399,7 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
     AcknowledgePurchaseResponseListener acknowledgePurchaseResponseListener = new AcknowledgePurchaseResponseListener() {
         @Override
         public void onAcknowledgePurchaseResponse(@NonNull BillingResult billingResult) {
-            if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK){
+            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                 settings.setIsLifetimePurchased(UserSettings.YES_LIFETIME_PURCHASED);
                 SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
                 editor.putString(UserSettings.IS_LIFETIME_PURCHASED, settings.getIsLifetimePurchased());
@@ -419,13 +409,13 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
     };
 
 
-    private boolean verifyValidSignature(String signedData, String signature){
-            try{
-                String base64Key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgthYJCUO0n1jRUAZ/BUkeuV6x/2Y3OZVZhG28fbuqF32v4ZkFCG6aJW0V9NXpkRdQn5G6lf4b4Mkg8qN0eZQv2V46Uxs8134e/cTmWK7WYY+VzXX5YxHMu0eVNMI2q/xf5A3UhPTZHZjzKLJI4K8ncg9UIRO/awvjCILMr45l9tBScDmxMw7hAChbyS3bu8rmRSTT6csV9Ukf3wrTIncKbS3NRq5crm56g8RGCR5yzrYk3R+b8DZO4gsWz4sFEqdvxHAPMAh88SgwyT52oM6QuVcP/03itx9R3jje4nqJgxQTRasdkJEPUR53/05DOtklgl/8MwnBixweUBCyWinmQIDAQAB";
-                return Security.verifyPurchase(base64Key, signedData, signature);
-            }catch (IOException e){
-                return false;
-            }
+    private boolean verifyValidSignature(String signedData, String signature) {
+        try {
+            String base64Key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgthYJCUO0n1jRUAZ/BUkeuV6x/2Y3OZVZhG28fbuqF32v4ZkFCG6aJW0V9NXpkRdQn5G6lf4b4Mkg8qN0eZQv2V46Uxs8134e/cTmWK7WYY+VzXX5YxHMu0eVNMI2q/xf5A3UhPTZHZjzKLJI4K8ncg9UIRO/awvjCILMr45l9tBScDmxMw7hAChbyS3bu8rmRSTT6csV9Ukf3wrTIncKbS3NRq5crm56g8RGCR5yzrYk3R+b8DZO4gsWz4sFEqdvxHAPMAh88SgwyT52oM6QuVcP/03itx9R3jje4nqJgxQTRasdkJEPUR53/05DOtklgl/8MwnBixweUBCyWinmQIDAQAB";
+            return Security.verifyPurchase(base64Key, signedData, signature);
+        } catch (IOException e) {
+            return false;
+        }
     }
 
 
@@ -581,7 +571,7 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
             prev_lifetime_currency_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
 
 
-            upgradeBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            upgradeBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
 
         }
 
@@ -651,7 +641,7 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(billingClient != null){
+        if (billingClient != null) {
             billingClient.endConnection();
         }
     }

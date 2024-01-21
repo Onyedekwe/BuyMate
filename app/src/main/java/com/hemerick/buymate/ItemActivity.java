@@ -2,7 +2,6 @@ package com.hemerick.buymate;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.ContentResolver;
@@ -14,15 +13,17 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.PowerManager;
 import android.provider.AlarmClock;
 import android.provider.MediaStore;
+import android.speech.RecognizerIntent;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.RelativeSizeSpan;
@@ -35,7 +36,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -49,42 +49,55 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.hemerick.buymate.Adapter.RecyclerViewItemTouchHelper;
 import com.hemerick.buymate.Adapter.ShopCopyAdapter;
 import com.hemerick.buymate.Adapter.ShopItemAdapter;
 import com.hemerick.buymate.Adapter.ShopMoveAdapter;
 import com.hemerick.buymate.Database.ShopDatabase;
 import com.hemerick.buymate.Database.UserSettings;
-import com.hemerick.buymate.NetworkUtils.Network;
+import com.itextpdf.io.font.constants.StandardFonts;
+import com.itextpdf.io.image.ImageData;
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.colors.DeviceRgb;
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.borders.DashedBorder;
+import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.Div;
+import com.itextpdf.layout.element.Image;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.properties.HorizontalAlignment;
+import com.itextpdf.layout.properties.TextAlignment;
+import com.itextpdf.layout.properties.UnitValue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
@@ -96,11 +109,13 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Objects;
 
+import io.github.muddz.styleabletoast.StyleableToast;
+
 public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.OnNoteListener, SwipeRefreshLayout.OnRefreshListener {
 
     SwipeRefreshLayout swipeRefreshLayout;
     String category;
-
+    ProgressBar progressBar;
     boolean isFirstStart;
 
     ConstraintLayout favSumLayout;
@@ -119,6 +134,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
     Button fab;
     ItemTouchHelper itemTouchHelper;
     ArrayList<String> Items_Prices_List;
+    ArrayList<String> Final_Items_Prices_List;
     ArrayList<String> Items_Quantities_List;
     ArrayList<String> unitCheck;
     ShopDatabase db;
@@ -142,6 +158,10 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
     String formattedDate;
     //to check the items list for something
     ArrayList<String> Items_Check;
+
+    HashSet<String> suggest_list;
+    HashSet<String> suggest_unit_list;
+
     //favourites
     ArrayList<String> Fav_Item_category;
     ArrayList<String> Item_Favourites_List;
@@ -161,15 +181,30 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
     LinearLayout emptyNotesLayout;
     TextView emptyText1;
 
+    Dialog noNetworkDialog, category_dialog, upgrade_required_dialog,
+            move_dialog, sort_by_dialog, copy_dialog, rename_dialog,
+            timePickerDialog, info_dialog, delete_dialog, quantity_dialog,
+            price_dialog, rename_dialog_2, add_image_dialog, edit_dialog,
+            bottom_dialog, menu_unstar_dialog, menu_copy_dialog, menu_move_dialog,
+            menu_delete_dialog, show_share_dialog, voice_input_dialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        settings = (UserSettings) getApplication();
+        SharedPreferences sharedPreferences_theme = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
+        String theme = sharedPreferences_theme.getString(UserSettings.CUSTOM_THEME, UserSettings.LIGHT_THEME);
+        settings.setCustomTheme(theme);
+
+        if (settings.getCustomTheme().equals(UserSettings.DIM_THEME)) {
+            setTheme(R.style.Dynamic_Dim);
+        }
+
         setContentView(R.layout.activity_item);
 
 
         //get the sharedPreferences
-        settings = (UserSettings) getApplication();
 
 
         //get the category name
@@ -219,6 +254,9 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
         //configure the left and right swipe
 
+        suggest_list = new HashSet<>();
+        suggest_unit_list = new HashSet<>();
+
 
         //configure the floating_action_button
         fab = findViewById(R.id.addItem_fab);
@@ -266,13 +304,13 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         });
 
 
-
         Fav_Item_category = new ArrayList<>();
         Item_Favourites_List = new ArrayList<>();
 
         Items_Check = new ArrayList<>();
         filter = new ArrayList<>();
         Items_Prices_List = new ArrayList<>();
+        Final_Items_Prices_List = new ArrayList<>();
         Items_Quantities_List = new ArrayList<>();
         unitCheck = new ArrayList<>();
 
@@ -362,10 +400,10 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                 @Override
                 public boolean onMenuItemClick(@NonNull MenuItem item) {
 
-                    Dialog dialog = new Dialog(ItemActivity.this);
-                    dialog.setContentView(R.layout.custom_delete_dialog);
-                    dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
-                    dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    menu_delete_dialog = new Dialog(ItemActivity.this);
+                    menu_delete_dialog.setContentView(R.layout.custom_delete_dialog);
+                    menu_delete_dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
+                    menu_delete_dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
 
                     StringBuilder items_selected = new StringBuilder();
@@ -373,10 +411,10 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                         items_selected.append("\u2022 ").append(items).append("\n");
                     }
 
-                    TextView delete_heading = dialog.findViewById(R.id.delete_heading);
-                    TextView delete_message = dialog.findViewById(R.id.delete_message);
-                    Button deleteButton = dialog.findViewById(R.id.delete_button);
-                    Button cancelButton = dialog.findViewById(R.id.cancel_button);
+                    TextView delete_heading = menu_delete_dialog.findViewById(R.id.delete_heading);
+                    TextView delete_message = menu_delete_dialog.findViewById(R.id.delete_message);
+                    Button deleteButton = menu_delete_dialog.findViewById(R.id.delete_button);
+                    Button cancelButton = menu_delete_dialog.findViewById(R.id.cancel_button);
 
                     if (finalSelectList.size() > 1) {
                         delete_heading.setText(getString(R.string.multiple_remove));
@@ -425,18 +463,18 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                             recreate();
 
                             shopItemAdapter.notifyDataSetChanged();
-                            dialog.dismiss();
+                            menu_delete_dialog.dismiss();
                         }
                     });
 
                     cancelButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            dialog.dismiss();
+                            menu_delete_dialog.dismiss();
                         }
                     });
 
-                    dialog.show();
+                    menu_delete_dialog.show();
                     return true;
                 }
             });
@@ -445,17 +483,17 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                 @Override
                 public boolean onMenuItemClick(@NonNull MenuItem item) {
 
-                    final Dialog dialog = new Dialog(shopItemAdapter.getContext());
-                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    dialog.setContentView(R.layout.movebottomlayout);
+                    menu_move_dialog = new Dialog(shopItemAdapter.getContext());
+                    menu_move_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    menu_move_dialog.setContentView(R.layout.movebottomlayout);
 
-                    TextView emptyTEXT1 = dialog.findViewById(R.id.emptyTEXT1);
-                    LinearLayout emptyNotesLayout = dialog.findViewById(R.id.emptyNotesLayout);
-                    TextView textView = dialog.findViewById(R.id.item_move_title);
+                    TextView emptyTEXT1 = menu_move_dialog.findViewById(R.id.emptyTEXT1);
+                    LinearLayout emptyNotesLayout = menu_move_dialog.findViewById(R.id.emptyNotesLayout);
+                    TextView textView = menu_move_dialog.findViewById(R.id.item_move_title);
                     textView.setText(getString(R.string.move_to));
-                    SearchView searchView = dialog.findViewById(R.id.search_bar);
+                    SearchView searchView = menu_move_dialog.findViewById(R.id.search_bar);
                     EditText searchEditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
-                    Button button = dialog.findViewById(R.id.create_new_list);
+                    Button button = menu_move_dialog.findViewById(R.id.create_new_list);
 
                     if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
                         textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
@@ -481,7 +519,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
                     displayCategoryData();
                     shopMoveAdapter.setFilterList(categoryList);
-                    RecyclerView moveRecyclerView = dialog.findViewById(R.id.moveRecyclerView);
+                    RecyclerView moveRecyclerView = menu_move_dialog.findViewById(R.id.moveRecyclerView);
                     moveRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
                     moveRecyclerView.setAdapter(shopMoveAdapter);
@@ -520,11 +558,11 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                         }
                     });
 
-                    dialog.show();
-                    dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                    dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
-                    dialog.getWindow().setGravity(Gravity.BOTTOM);
+                    menu_move_dialog.show();
+                    menu_move_dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    menu_move_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    menu_move_dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
+                    menu_move_dialog.getWindow().setGravity(Gravity.BOTTOM);
                     return true;
                 }
             });
@@ -532,18 +570,18 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             menu.findItem(R.id.copy).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(@NonNull MenuItem item) {
-                    final Dialog dialog = new Dialog(shopItemAdapter.getContext());
-                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    dialog.setContentView(R.layout.movebottomlayout);
+                    menu_copy_dialog = new Dialog(shopItemAdapter.getContext());
+                    menu_copy_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    menu_copy_dialog.setContentView(R.layout.movebottomlayout);
 
 
-                    LinearLayout emptyNotesLayout = dialog.findViewById(R.id.emptyNotesLayout);
-                    TextView emptyTEXT1 = dialog.findViewById(R.id.emptyTEXT1);
-                    TextView textView = dialog.findViewById(R.id.item_move_title);
+                    LinearLayout emptyNotesLayout = menu_copy_dialog.findViewById(R.id.emptyNotesLayout);
+                    TextView emptyTEXT1 = menu_copy_dialog.findViewById(R.id.emptyTEXT1);
+                    TextView textView = menu_copy_dialog.findViewById(R.id.item_move_title);
                     textView.setText(getString(R.string.copy_to));
-                    SearchView searchView = dialog.findViewById(R.id.search_bar);
+                    SearchView searchView = menu_copy_dialog.findViewById(R.id.search_bar);
                     EditText searchEditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
-                    Button button = dialog.findViewById(R.id.create_new_list);
+                    Button button = menu_copy_dialog.findViewById(R.id.create_new_list);
 
 
                     if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
@@ -570,7 +608,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
                     displayCategoryData();
                     shopCopyAdapter.setFilterList(categoryList);
-                    RecyclerView copyRecyclerView = dialog.findViewById(R.id.moveRecyclerView);
+                    RecyclerView copyRecyclerView = menu_copy_dialog.findViewById(R.id.moveRecyclerView);
                     copyRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
                     copyRecyclerView.setAdapter(shopCopyAdapter);
@@ -607,11 +645,11 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                         }
                     });
 
-                    dialog.show();
-                    dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                    dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
-                    dialog.getWindow().setGravity(Gravity.BOTTOM);
+                    menu_copy_dialog.show();
+                    menu_copy_dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    menu_copy_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    menu_copy_dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
+                    menu_copy_dialog.getWindow().setGravity(Gravity.BOTTOM);
                     return true;
                 }
             });
@@ -637,49 +675,46 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             menu.findItem(R.id.unStar).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(@NonNull MenuItem item) {
+
+                    menu_unstar_dialog = new Dialog(ItemActivity.this);
+                    menu_unstar_dialog.setContentView(R.layout.custom_delete_dialog);
+                    menu_unstar_dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
+                    menu_unstar_dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+
                     StringBuilder items_selected = new StringBuilder();
                     for (String items : finalSelectList) {
-                        items_selected.append(items).append("\n");
+                        items_selected.append("\u2022 ").append(items).append("\n");
                     }
-                    AlertDialog.Builder builder = new AlertDialog.Builder(shopItemAdapter.getContext());
-                    builder.setTitle(getString(R.string.single_unstar));
-                    builder.setMessage(items_selected.toString());
-                    builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                        @Override
-                        public void onCancel(DialogInterface dialog) {
 
+                    TextView delete_heading = menu_unstar_dialog.findViewById(R.id.delete_heading);
+                    TextView delete_message = menu_unstar_dialog.findViewById(R.id.delete_message);
+                    Button deleteButton = menu_unstar_dialog.findViewById(R.id.delete_button);
+                    Button cancelButton = menu_unstar_dialog.findViewById(R.id.cancel_button);
+
+                    delete_heading.setText(getString(R.string.single_unstar));
+                    delete_message.setText(items_selected.toString());
+                    deleteButton.setText("Remove");
+                    cancelButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            menu_unstar_dialog.dismiss();
                         }
                     });
-                    builder.setPositiveButton(getString(R.string.remove_star), new DialogInterface.OnClickListener() {
+
+                    deleteButton.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        public void onClick(View v) {
                             for (int i = 0; i < finalSelectList.size(); i++) {
                                 db.updateFavourites(category, finalSelectList.get(i), 0);
                                 shopItemAdapter.notifyDataSetChanged();
 
                             }
                             shopItemAdapter.disableSelection();
+                            menu_unstar_dialog.dismiss();
                         }
                     });
-
-                    builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                        }
-                    });
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-
-                    Button a = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
-                    if (a != null) {
-                        a.setTextColor(Color.GRAY);
-                    }
-
-                    Button b = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
-                    if (b != null) {
-                        b.setTextColor(Color.RED);
-                        b.setPadding(50, 0, 10, 0);
-                    }
+                    menu_unstar_dialog.show();
                     return true;
                 }
             });
@@ -759,6 +794,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                     return true;
                 }
             });
+
             menu.findItem(R.id.check).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(@NonNull MenuItem item) {
@@ -796,7 +832,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             menu.findItem(R.id.share).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(@NonNull MenuItem item) {
-                    showShareDialog();
+                    showShareOptionDialog(category);
                     return true;
                 }
             });
@@ -804,6 +840,14 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                 @Override
                 public boolean onMenuItemClick(@NonNull MenuItem item) {
                     showSortByDialog();
+                    return true;
+                }
+            });
+
+            menu.findItem(R.id.voice).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(@NonNull MenuItem item) {
+                    showGoogleVoiceDialog();
                     return true;
                 }
             });
@@ -855,7 +899,8 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             Cursor res_checked = db.getStatus(category, Items.get(i));
             while (res_checked.moveToNext()) {
                 seeChecked.add(res_checked.getString(3));
-            }res_checked.close();
+            }
+            res_checked.close();
         }
         for (String checked : seeChecked) {
             if (checked.equals(String.valueOf(1))) {
@@ -873,6 +918,21 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
         Items_list_size_textbox.setText(getString(R.string.total_items_text) + " " + "(" + checked_count + "/" + Items.size() + ")");
 
+        Cursor resItemName = db.getSuggestName();
+        while (resItemName.moveToNext()) {
+            suggest_list.add(resItemName.getString(1).trim());
+        }
+
+
+        resItemName = db.getSuggestUnit();
+        while (resItemName.moveToNext()) {
+            String temp_unit = resItemName.getString(1);
+            if (!temp_unit.trim().isEmpty()) {
+                suggest_unit_list.add(temp_unit);
+            }
+        }
+        resItemName.close();
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -885,7 +945,8 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         while (res.moveToNext()) {
             Items_Prices_List.add(res.getString(4));
             Items_Quantities_List.add(res.getString(9));
-        }res.close();
+        }
+        res.close();
 
 
         double temp_sum = 0;
@@ -910,7 +971,8 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             Cursor res_checked = db.getStatus(category, Items.get(i));
             while (res_checked.moveToNext()) {
                 seeChecked.add(res_checked.getString(3));
-            }res_checked.close();
+            }
+            res_checked.close();
         }
         for (String checked : seeChecked) {
             if (checked.equals(String.valueOf(1))) {
@@ -956,41 +1018,51 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         month = currentMonth;
         year = currentYear;
         time = timeFormat.format(date);
-        fullTimeWithSeconds = seconds.format(date);
+        fullTimeWithSeconds = String.valueOf(System.currentTimeMillis());
         formattedDate = currentDayNumber + "-" + currentMonthNumber + "-" + currentYear;
     }
 
     //dialog to add a new item
     public void showBottomDialogue() {
 
-        final Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.shopbottomlayout);
+        bottom_dialog = new Dialog(this);
+        bottom_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        bottom_dialog.setContentView(R.layout.shopbottomlayout);
 
-        LinearLayout addItemIllustrationLayout = dialog.findViewById(R.id.addItem_Illustration_Layout);
+        LinearLayout addItemIllustrationLayout = bottom_dialog.findViewById(R.id.addItem_Illustration_Layout);
 
-        TextView add_Item_Text_Header_1 = dialog.findViewById(R.id.addItemHeaderText);
-        TextView add_Item_Text_Header_2 = dialog.findViewById(R.id.addItemHeaderText2);
+        TextView add_Item_Text_Header_1 = bottom_dialog.findViewById(R.id.addItemHeaderText);
+        TextView add_Item_Text_Header_2 = bottom_dialog.findViewById(R.id.addItemHeaderText2);
 
-        AutoCompleteTextView item_name_box = dialog.findViewById(R.id.desc_name);
-        String[] suggestion_list = getResources().getStringArray(R.array.item_suggestions);
-        ArrayAdapter<String> suggest_adapter = new ArrayAdapter<>(ItemActivity.this, R.layout.unit_drop_down_layout, suggestion_list);
-        item_name_box.setAdapter(suggest_adapter);
+        AutoCompleteTextView item_name_box = bottom_dialog.findViewById(R.id.desc_name);
+        AutoCompleteTextView unitText = bottom_dialog.findViewById(R.id.unit_textView);
 
 
-        EditText item_price_box = dialog.findViewById(R.id.desc_price);
-        EditText item_quantity_box = dialog.findViewById(R.id.desc_quantity);
-        Button cancelButton = dialog.findViewById(R.id.CancelButton);
-        Button saveButton = dialog.findViewById(R.id.BtnSave);
+        EditText item_price_box = bottom_dialog.findViewById(R.id.desc_price);
+        EditText item_quantity_box = bottom_dialog.findViewById(R.id.desc_quantity);
+        Button cancelButton = bottom_dialog.findViewById(R.id.CancelButton);
+        Button saveButton = bottom_dialog.findViewById(R.id.BtnSave);
 
-        TextInputLayout textInputLayout = dialog.findViewById(R.id.desc_price_text_input_layout);
+        TextInputLayout textInputLayout = bottom_dialog.findViewById(R.id.desc_price_text_input_layout);
         textInputLayout.setPrefixText(settings.getCurrency());
 
-        AutoCompleteTextView unitText = dialog.findViewById(R.id.unit_textView);
-        String[] unit_list = getResources().getStringArray(R.array.units);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.unit_drop_down_layout, unit_list);
-        unitText.setAdapter(adapter);
 
+        if (settings.getIsSuggestionDisabled().equals(UserSettings.YES_SUGGESTION_DISABLED)) {
+
+        } else {
+            ArrayList<String> temp_suggestion_list = new ArrayList<>(suggest_list);
+            ArrayAdapter<String> suggest_adapter = new ArrayAdapter<>(ItemActivity.this, R.layout.unit_drop_down_layout, temp_suggestion_list);
+            item_name_box.setAdapter(suggest_adapter);
+            ArrayList<String> temp_suggestion_unit_list = new ArrayList<>(suggest_unit_list);
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.unit_drop_down_layout, temp_suggestion_unit_list);
+            unitText.setAdapter(adapter);
+        }
+
+
+        LinearLayout more_layout = bottom_dialog.findViewById(R.id.more_layout);
+        LinearLayout price_quantity_layout = bottom_dialog.findViewById(R.id.price_quantity_layout);
+        TextView more_text = bottom_dialog.findViewById(R.id.more_text);
+        ImageView more_image = bottom_dialog.findViewById(R.id.more_icon);
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
             add_Item_Text_Header_1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
@@ -1001,6 +1073,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             item_quantity_box.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             cancelButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             saveButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            more_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
@@ -1012,6 +1085,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             item_quantity_box.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             cancelButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             saveButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            more_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
@@ -1023,6 +1097,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             item_quantity_box.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             cancelButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             saveButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            more_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
         }
 
         addItemIllustrationLayout.setVisibility(View.VISIBLE);
@@ -1037,10 +1112,25 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         }
         res.close();
 
+        more_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int visibility_status = price_quantity_layout.getVisibility();
+                if (visibility_status == View.GONE) {
+                    price_quantity_layout.setVisibility(View.VISIBLE);
+                    more_image.setImageResource(R.drawable.final_arrow_drop_down_icon);
+                } else if (visibility_status == View.VISIBLE) {
+                    price_quantity_layout.setVisibility(View.GONE);
+                    more_image.setImageResource(R.drawable.final_arrow_drop_up_icon);
+                }
+            }
+        });
+
+
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                bottom_dialog.dismiss();
             }
         });
 
@@ -1064,12 +1154,12 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                                 double temp_quantity = 1;
                                 double temp_price = 0;
                                 insertItem(category, description, 0, temp_price, month, year, day, time, temp_quantity, unit);
-                                dialog.dismiss();
+                                bottom_dialog.dismiss();
                             } else {
                                 double temp_quantity = Double.parseDouble(item_quantity_box.getText().toString().trim());
                                 double temp_price = 0;
                                 insertItem(category, description, 0, temp_price, month, year, day, time, temp_quantity, unit);
-                                dialog.dismiss();
+                                bottom_dialog.dismiss();
                             }
                         } else {
                             Toast.makeText(ItemActivity.this, getString(R.string.item_exist_already), Toast.LENGTH_SHORT).show();
@@ -1080,12 +1170,12 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                                 double temp_quantity = 1;
                                 double temp_price = Double.parseDouble(item_price_box.getText().toString().trim());
                                 insertItem(category, description, 0, temp_price, month, year, day, time, temp_quantity, unit);
-                                dialog.dismiss();
+                                bottom_dialog.dismiss();
                             } else {
                                 double temp_quantity = Double.parseDouble(item_quantity_box.getText().toString().trim());
                                 double temp_price = Double.parseDouble(item_price_box.getText().toString().trim());
                                 insertItem(category, description, 0, temp_price, month, year, day, time, temp_quantity, unit);
-                                dialog.dismiss();
+                                bottom_dialog.dismiss();
                             }
                         } else {
                             Toast.makeText(ItemActivity.this, getString(R.string.item_exist_already), Toast.LENGTH_SHORT).show();
@@ -1099,11 +1189,11 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             }
         });
 
-        dialog.show();
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
-        dialog.getWindow().setGravity(Gravity.BOTTOM);
+        bottom_dialog.show();
+        bottom_dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        bottom_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        bottom_dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
+        bottom_dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
     //for inserting new item
@@ -1116,36 +1206,45 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         Items.add(description);
         shopItemAdapter.notifyDataSetChanged();
         getsum();
+
+        if (!suggest_list.contains(description.trim())) {
+            db.insertSuggest(description);
+        }
+
+        if (!suggest_unit_list.contains(unit.trim())) {
+            db.insertSuggestUnit(unit);
+        }
+
     }
 
     public void showEditDialog(String prevTask, int position) {
 
-        final Dialog dialog = new Dialog(ItemActivity.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.edit_item_layout);
+        edit_dialog = new Dialog(ItemActivity.this);
+        edit_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        edit_dialog.setContentView(R.layout.edit_item_layout);
 
 
-        LinearLayout addImageLayout = dialog.findViewById(R.id.addImage);
-        ImageView addImagePremiumIcon = dialog.findViewById(R.id.add_image_premium_icon);
-        LinearLayout renameLayout = dialog.findViewById(R.id.editName);
-        LinearLayout copyLayout = dialog.findViewById(R.id.copy);
-        LinearLayout moveLayout = dialog.findViewById(R.id.move);
-        LinearLayout changePriceLayout = dialog.findViewById(R.id.editPrice);
-        LinearLayout changeQuantityLayout = dialog.findViewById(R.id.editQuantity);
-        LinearLayout changeFavouritesLayout = dialog.findViewById(R.id.editFavourites);
-        LinearLayout deleteLayout = dialog.findViewById(R.id.remove);
-        LinearLayout infoLayout = dialog.findViewById(R.id.information);
+        LinearLayout addImageLayout = edit_dialog.findViewById(R.id.addImage);
+        ImageView addImagePremiumIcon = edit_dialog.findViewById(R.id.add_image_premium_icon);
+        LinearLayout renameLayout = edit_dialog.findViewById(R.id.editName);
+        LinearLayout copyLayout = edit_dialog.findViewById(R.id.copy);
+        LinearLayout moveLayout = edit_dialog.findViewById(R.id.move);
+        LinearLayout changePriceLayout = edit_dialog.findViewById(R.id.editPrice);
+        LinearLayout changeQuantityLayout = edit_dialog.findViewById(R.id.editQuantity);
+        LinearLayout changeFavouritesLayout = edit_dialog.findViewById(R.id.editFavourites);
+        LinearLayout deleteLayout = edit_dialog.findViewById(R.id.remove);
+        LinearLayout infoLayout = edit_dialog.findViewById(R.id.information);
 
-        TextView title = dialog.findViewById(R.id.item_edit_title);
-        TextView addImageText = dialog.findViewById(R.id.edit_addImage_text);
-        TextView renameText = dialog.findViewById(R.id.edit_rename_text);
-        TextView copyText = dialog.findViewById(R.id.edit_copy_text);
-        TextView moveText = dialog.findViewById(R.id.edit_move_text);
-        TextView priceText = dialog.findViewById(R.id.edit_price_text);
-        TextView quantityText = dialog.findViewById(R.id.edit_quantity_text);
-        TextView optionFavourites = dialog.findViewById(R.id.edit_fav_box);
-        TextView deleteText = dialog.findViewById(R.id.edit_delete_text);
-        TextView detailsText = dialog.findViewById(R.id.edit_details_text);
+        TextView title = edit_dialog.findViewById(R.id.item_edit_title);
+        TextView addImageText = edit_dialog.findViewById(R.id.edit_addImage_text);
+        TextView renameText = edit_dialog.findViewById(R.id.edit_rename_text);
+        TextView copyText = edit_dialog.findViewById(R.id.edit_copy_text);
+        TextView moveText = edit_dialog.findViewById(R.id.edit_move_text);
+        TextView priceText = edit_dialog.findViewById(R.id.edit_price_text);
+        TextView quantityText = edit_dialog.findViewById(R.id.edit_quantity_text);
+        TextView optionFavourites = edit_dialog.findViewById(R.id.edit_fav_box);
+        TextView deleteText = edit_dialog.findViewById(R.id.edit_delete_text);
+        TextView detailsText = edit_dialog.findViewById(R.id.edit_details_text);
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
             title.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
@@ -1217,7 +1316,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             @Override
             public void onClick(View v) {
                 temp_item = prevTask;
-                dialog.dismiss();
+                edit_dialog.dismiss();
                 showAddImageDialog();
             }
         });
@@ -1226,22 +1325,22 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             @Override
             public void onClick(View v) {
                 showRenameDialog(prevTask, position);
-                dialog.dismiss();
+                edit_dialog.dismiss();
             }
         });
 
         copyLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
-                showCopyDailog(prevTask);
+                edit_dialog.dismiss();
+                showCopyDialog(prevTask);
             }
         });
 
         moveLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                edit_dialog.dismiss();
                 showMoveDialog(prevTask);
             }
         });
@@ -1250,7 +1349,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             @Override
             public void onClick(View v) {
                 showPriceDialog(prevTask, position);
-                dialog.dismiss();
+                edit_dialog.dismiss();
             }
         });
 
@@ -1258,7 +1357,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             @Override
             public void onClick(View v) {
                 showQuantityDialog(prevTask, position);
-                dialog.dismiss();
+                edit_dialog.dismiss();
             }
         });
 
@@ -1282,7 +1381,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                     Toast.makeText(ItemActivity.this, R.string.added_to_starred, Toast.LENGTH_SHORT).show();
 
                 }
-                dialog.dismiss();
+                edit_dialog.dismiss();
                 shopItemAdapter.notifyItemChanged(position);
             }
         });
@@ -1291,7 +1390,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             @Override
             public void onClick(View v) {
                 showDeleteDialog(position);
-                dialog.dismiss();
+                edit_dialog.dismiss();
             }
         });
 
@@ -1299,12 +1398,12 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             @Override
             public void onClick(View v) {
                 showInfoDialog(position);
-                dialog.dismiss();
+                edit_dialog.dismiss();
             }
         });
 
-        dialog.show();
-        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+        edit_dialog.show();
+        edit_dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
                 searchView.setQuery("", false);
@@ -1312,34 +1411,37 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                 shopItemAdapter.notifyItemChanged(position);
             }
         });
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
-        dialog.getWindow().setGravity(Gravity.BOTTOM);
+        edit_dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        edit_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        edit_dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
+        edit_dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
     private void showAddImageDialog() {
-        final Dialog dialog = new Dialog(ItemActivity.this);
-        dialog.setContentView(R.layout.custom_image_upload_dialog);
-        dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        add_image_dialog = new Dialog(ItemActivity.this);
+        add_image_dialog.setContentView(R.layout.custom_image_upload_dialog);
+        add_image_dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
+        add_image_dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
 
-        LinearLayout takePictureLayout = dialog.findViewById(R.id.takePictureLayout);
-        LinearLayout uploadPictureLayout = dialog.findViewById(R.id.uploadPictureLayout);
+        LinearLayout takePictureLayout = add_image_dialog.findViewById(R.id.takePictureLayout);
+        LinearLayout uploadPictureLayout = add_image_dialog.findViewById(R.id.uploadPictureLayout);
 
         takePictureLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)) {
-                    if(Network.isNetworkAvailable(ItemActivity.this)){
-                        dialog.dismiss();
+                    add_image_dialog.dismiss();
+                    FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                    if (firebaseUser != null) {
                         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                         startActivityForResult(cameraIntent, CAMERA_REQUEST);
-                    }else{
-                        showNoNetworkDialog();
+                    } else {
+                        StyleableToast.makeText(ItemActivity.this, "You must be logged in to add images", R.style.custom_toast_2).show();
                     }
-                }else{
+
+                } else {
                     showUpgradeRequiredDialog();
                 }
 
@@ -1351,31 +1453,32 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             public void onClick(View v) {
 
                 if (settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)) {
-                    if(Network.isNetworkAvailable(ItemActivity.this)){
-                        dialog.dismiss();
+                    add_image_dialog.dismiss();
+                    FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                    if (firebaseUser != null) {
                         Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
                         galleryIntent.setType("image/*");
                         startActivityForResult(galleryIntent, GALLERY_REQUEST);
-                    }else{
-                        showNoNetworkDialog();
+                    } else {
+                        StyleableToast.makeText(ItemActivity.this, "You must be logged in to add images", R.style.custom_toast_2).show();
                     }
-                }else{
+                } else {
                     showUpgradeRequiredDialog();
                 }
             }
         });
 
 
-        TextView title = dialog.findViewById(R.id.image_title);
-        TextView title_2 = dialog.findViewById(R.id.image_title_2);
+        TextView title = add_image_dialog.findViewById(R.id.image_title);
+        TextView title_2 = add_image_dialog.findViewById(R.id.image_title_2);
         title_2.setText("(" + temp_item + ")");
-        if(is_photo_url_empty == false){
+        if (!is_photo_url_empty) {
             title.setText("Update image");
-        }else{
+        } else {
             title.setText("Add image");
         }
-        TextView takePictureText = dialog.findViewById(R.id.takePictureText);
-        TextView uploadPictureText = dialog.findViewById(R.id.uploadPictureText);
+        TextView takePictureText = add_image_dialog.findViewById(R.id.takePictureText);
+        TextView uploadPictureText = add_image_dialog.findViewById(R.id.uploadPictureText);
 
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
@@ -1401,7 +1504,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         }
 
 
-        dialog.show();
+        add_image_dialog.show();
 
     }
 
@@ -1418,9 +1521,6 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                 public void run() {
                     Bundle extras = data.getExtras();
                     Bitmap imageBitmap = (Bitmap) extras.get("data");
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
-                    byte[] imageData = stream.toByteArray();
 
 
                     FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
@@ -1428,50 +1528,61 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                     getDateNdTime();
                     String path = email + day + month + year + fullTimeWithSeconds + ".jpg";
 
-                    StorageReference imageRef = storageReference.child(path);
 
-                    UploadTask uploadTask = imageRef.putBytes(imageData);
-                    uploadTask.addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(ItemActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    boolean isInserted = false;
+
+                    File directory = new File(ItemActivity.this.getFilesDir(), "Buymate_Images");
+                    if (!directory.exists()) {
+                        directory.mkdir();
+                    }
+
+                    File imageFile = new File(directory, path);
+                    try (FileOutputStream fos = new FileOutputStream(imageFile)) {
+                        isInserted = imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (isInserted) {
+                        String old_url = null;
+                        Cursor res = db.getPhotourl(category, temp_item);
+                        while (res.moveToNext()) {
+                            old_url = res.getString(12);
                         }
-                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            String old_url = null;
-                            Cursor res = db.getPhotourl(category, temp_item);
-                            while (res.moveToNext()) {
-                                old_url = res.getString(12);
-                            }
 
-                            db.updatePhoto(category, temp_item, path);
+                        db.updatePhoto(category, temp_item, path);
+                        db.insertPhotoUrl(path);
 
-                            ArrayList<String> total_url = new ArrayList<>();
 
-                            res = db.getCategory(ItemActivity.this);
-                            while (res.moveToNext()) {
-                                total_url.add(res.getString(12));
-                            }
-                            res.close();
+                        ArrayList<String> total_url = new ArrayList<>();
 
-                            if (!total_url.contains(old_url)) {
-                                FirebaseStorage storage = FirebaseStorage.getInstance();
-                                StorageReference storageReference = storage.getReference().child(old_url);
-                                storageReference.delete();
-                            }
-                            recyclerView.setClickable(true);
-                            main_progress_bar.setVisibility(View.GONE);
+                        res = db.getCategory(ItemActivity.this);
+                        while (res.moveToNext()) {
+                            total_url.add(res.getString(12));
                         }
-                    });
+                        res.close();
+
+                        if (!total_url.contains(old_url)) {
+
+                            File imageFileToDelete = new File(directory, old_url);
+                            if (imageFileToDelete.exists()) {
+                                imageFileToDelete.delete();
+                            }
+                        }
+                        recyclerView.setClickable(true);
+                        main_progress_bar.setVisibility(View.INVISIBLE);
+                        shopItemAdapter.notifyDataSetChanged();
+                    } else {
+                        Toast.makeText(ItemActivity.this, "Error: Couldn't insert image", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }, 1000);
         }
 
-        if(requestCode == GALLERY_REQUEST && resultCode ==Activity.RESULT_OK && data != null){
+        if (requestCode == GALLERY_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
             Uri selectedImageUri = data.getData();
 
-            try{
+            try {
 
                 recyclerView.setClickable(false);
                 main_progress_bar.setVisibility(View.VISIBLE);
@@ -1484,72 +1595,83 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream);
-                        byte[] imageData = stream.toByteArray();
-
 
                         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                         String email = firebaseUser.getEmail().trim();
                         getDateNdTime();
                         String path = email + day + month + year + fullTimeWithSeconds + ".jpg";
 
-                        StorageReference imageRef = storageReference.child(path);
 
-                        UploadTask uploadTask = imageRef.putBytes(imageData);
-                        uploadTask.addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(ItemActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        boolean isInserted = false;
+
+                        File directory = new File(ItemActivity.this.getFilesDir(), "Buymate_Images");
+                        if (!directory.exists()) {
+                            directory.mkdir();
+                        }
+
+                        File imageFile = new File(directory, path);
+                        try (FileOutputStream fos = new FileOutputStream(imageFile)) {
+                            isInserted = bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        if (isInserted) {
+                            String old_url = null;
+                            Cursor res = db.getPhotourl(category, temp_item);
+                            while (res.moveToNext()) {
+                                old_url = res.getString(12);
                             }
-                        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                String old_url = null;
-                                Cursor res = db.getPhotourl(category, temp_item);
-                                while (res.moveToNext()) {
-                                    old_url = res.getString(12);
-                                }
 
-                                db.updatePhoto(category, temp_item, path);
+                            db.updatePhoto(category, temp_item, path);
+                            db.insertPhotoUrl(path);
 
-                                ArrayList<String> total_url = new ArrayList<>();
+                            ArrayList<String> total_url = new ArrayList<>();
 
-                                res = db.getCategory(ItemActivity.this);
-                                while (res.moveToNext()) {
-                                    total_url.add(res.getString(12));
-                                }
-                                res.close();
-
-                                if (!total_url.contains(old_url)) {
-                                    FirebaseStorage storage = FirebaseStorage.getInstance();
-                                    StorageReference storageReference = storage.getReference().child(old_url);
-                                    storageReference.delete();
-                                }
-                                recyclerView.setClickable(true);
-                                main_progress_bar.setVisibility(View.GONE);
+                            res = db.getCategory(ItemActivity.this);
+                            while (res.moveToNext()) {
+                                total_url.add(res.getString(12));
                             }
-                        });
+                            res.close();
+
+                            if (!total_url.contains(old_url)) {
+                                File imageFileToDelete = new File(directory, old_url);
+                                if (imageFileToDelete.exists()) {
+                                    imageFileToDelete.delete();
+                                }
+                            }
+                            recyclerView.setClickable(true);
+                            main_progress_bar.setVisibility(View.GONE);
+                            shopItemAdapter.notifyDataSetChanged();
+                        } else {
+                            Toast.makeText(ItemActivity.this, "Error: Couldn't insert image", Toast.LENGTH_SHORT).show();
+                        }
+
+
                     }
                 }, 1000);
 
 
-            }catch (Exception e){
-                Toast.makeText(ItemActivity.this, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                Toast.makeText(ItemActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
+        }
+        if ((requestCode == 8080) && (resultCode == Activity.RESULT_OK)) {
+            String voiceText = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).get(0);
+            showVoiceDialog(voiceText);
         }
 
     }
 
     public void showRenameDialog(String prevName, int position) {
-        final Dialog dialog = new Dialog(shopItemAdapter.getContext());
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.update_item_name_layout);
+        rename_dialog_2 = new Dialog(shopItemAdapter.getContext());
+        rename_dialog_2.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        rename_dialog_2.setContentView(R.layout.update_item_name_layout);
 
-        TextView headingText = dialog.findViewById(R.id.Heading);
-        EditText description = dialog.findViewById(R.id.description);
-        ExtendedFloatingActionButton saveButton = dialog.findViewById(R.id.save);
+        TextView headingText = rename_dialog_2.findViewById(R.id.Heading);
+        EditText description = rename_dialog_2.findViewById(R.id.description);
+        ExtendedFloatingActionButton saveButton = rename_dialog_2.findViewById(R.id.save);
 
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
@@ -1594,7 +1716,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                             Toast.makeText(shopItemAdapter.getContext(), getString(R.string.rename_fail), Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(shopItemAdapter.getContext(), getString(R.string.rename_success), Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
+                            rename_dialog_2.dismiss();
                             shopItemAdapter.refreshUpdate(newName, position);
                             shopItemAdapter.notifyItemChanged(position);
                             getsum();
@@ -1609,27 +1731,27 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             }
         });
 
-        dialog.show();
-        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+        rename_dialog_2.show();
+        rename_dialog_2.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
                 shopItemAdapter.notifyItemChanged(position);
             }
         });
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
-        dialog.getWindow().setGravity(Gravity.BOTTOM);
+        rename_dialog_2.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        rename_dialog_2.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        rename_dialog_2.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
+        rename_dialog_2.getWindow().setGravity(Gravity.BOTTOM);
     }
 
     public void showPriceDialog(String description, int position) {
-        final Dialog dialog = new Dialog(shopItemAdapter.getContext());
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.price_update_popup);
-        TextView header = dialog.findViewById(R.id.header);
-        EditText priceValue = dialog.findViewById(R.id.price_name);
+        price_dialog = new Dialog(shopItemAdapter.getContext());
+        price_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        price_dialog.setContentView(R.layout.price_update_popup);
+        TextView header = price_dialog.findViewById(R.id.header);
+        EditText priceValue = price_dialog.findViewById(R.id.price_name);
 
-        TextInputLayout textInputLayout = dialog.findViewById(R.id.desc_price_text_input_layout);
+        TextInputLayout textInputLayout = price_dialog.findViewById(R.id.desc_price_text_input_layout);
         textInputLayout.setPrefixText(settings.getCurrency());
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
@@ -1657,7 +1779,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         header.setText(description);
         priceValue.setText(formatNumberV2(temp_price));
 
-        ImageButton priceSaveBtn = dialog.findViewById(R.id.price_btnSave);
+        ImageButton priceSaveBtn = price_dialog.findViewById(R.id.price_btnSave);
         priceSaveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1668,34 +1790,34 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                     Toast.makeText(ItemActivity.this, getString(R.string.price_change_success), Toast.LENGTH_SHORT).show();
                     shopItemAdapter.notifyItemChanged(position);
                     getsum();
-                    dialog.dismiss();
+                    price_dialog.dismiss();
                 } else {
                     Toast.makeText(ItemActivity.this, getString(R.string.please_insert_price), Toast.LENGTH_SHORT).show();
                 }
             }
         });
-        dialog.show();
-        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+        price_dialog.show();
+        price_dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
                 shopItemAdapter.notifyItemChanged(position);
             }
         });
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
-        dialog.getWindow().setGravity(Gravity.BOTTOM);
+        price_dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        price_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        price_dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
+        price_dialog.getWindow().setGravity(Gravity.BOTTOM);
 
     }
 
     public void showQuantityDialog(String description, int position) {
-        final Dialog dialog = new Dialog(shopItemAdapter.getContext());
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.quantity_set_popup);
-        TextView header = dialog.findViewById(R.id.header);
-        EditText quantityValue = dialog.findViewById(R.id.quantity_name);
+        quantity_dialog = new Dialog(shopItemAdapter.getContext());
+        quantity_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        quantity_dialog.setContentView(R.layout.quantity_set_popup);
+        TextView header = quantity_dialog.findViewById(R.id.header);
+        EditText quantityValue = quantity_dialog.findViewById(R.id.quantity_name);
 
-        AutoCompleteTextView unitText = dialog.findViewById(R.id.unit_textView);
+        AutoCompleteTextView unitText = quantity_dialog.findViewById(R.id.unit_textView);
         String[] unit_list = getResources().getStringArray(R.array.units);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(ItemActivity.this, R.layout.unit_drop_down_layout, unit_list);
         unitText.setAdapter(arrayAdapter);
@@ -1735,7 +1857,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         }
 
 
-        ExtendedFloatingActionButton quantitySaveBtn = dialog.findViewById(R.id.quantity_btnSave);
+        ExtendedFloatingActionButton quantitySaveBtn = quantity_dialog.findViewById(R.id.quantity_btnSave);
         quantitySaveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1747,38 +1869,38 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                     Toast.makeText(ItemActivity.this, getString(R.string.quantity_change_success), Toast.LENGTH_SHORT).show();
                     shopItemAdapter.notifyItemChanged(position);
                     getsum();
-                    dialog.dismiss();
+                    quantity_dialog.dismiss();
                 } else {
                     Toast.makeText(ItemActivity.this, getString(R.string.please_insert_quantity), Toast.LENGTH_SHORT).show();
                 }
 
             }
         });
-        dialog.show();
-        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+        quantity_dialog.show();
+        quantity_dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
                 shopItemAdapter.notifyItemChanged(position);
             }
         });
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
-        dialog.getWindow().setGravity(Gravity.BOTTOM);
+        quantity_dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        quantity_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        quantity_dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
+        quantity_dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
     public void showDeleteDialog(int position) {
         String temp = shopItemAdapter.getItemName(position);
 
-        Dialog dialog = new Dialog(ItemActivity.this);
-        dialog.setContentView(R.layout.custom_delete_dialog);
-        dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        delete_dialog = new Dialog(ItemActivity.this);
+        delete_dialog.setContentView(R.layout.custom_delete_dialog);
+        delete_dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
+        delete_dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        TextView delete_heading = dialog.findViewById(R.id.delete_heading);
-        TextView delete_message = dialog.findViewById(R.id.delete_message);
-        Button deleteButton = dialog.findViewById(R.id.delete_button);
-        Button cancelButton = dialog.findViewById(R.id.cancel_button);
+        TextView delete_heading = delete_dialog.findViewById(R.id.delete_heading);
+        TextView delete_message = delete_dialog.findViewById(R.id.delete_message);
+        Button deleteButton = delete_dialog.findViewById(R.id.delete_button);
+        Button cancelButton = delete_dialog.findViewById(R.id.cancel_button);
 
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
@@ -1828,11 +1950,12 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                         total_url.add(res.getString(12));
                     }
                     res.close();
-
+                    File directory = new File(ItemActivity.this.getFilesDir(), "Buymate_Images");
                     if (!total_url.contains(photo_url)) {
-                        FirebaseStorage storage = FirebaseStorage.getInstance();
-                        StorageReference storageReference = storage.getReference().child(photo_url);
-                        storageReference.delete();
+                        File imageFileToDelete = new File(directory, photo_url);
+                        if (imageFileToDelete.exists()) {
+                            imageFileToDelete.delete();
+                        }
                     }
                 }
 
@@ -1841,7 +1964,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                 shopItemAdapter.notifyItemRemoved(position);
                 shopItemAdapter.checkEmpty();
                 getsum();
-                dialog.dismiss();
+                delete_dialog.dismiss();
             }
         });
 
@@ -1849,50 +1972,50 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             @Override
             public void onClick(View v) {
                 shopItemAdapter.notifyItemChanged(position);
-                dialog.dismiss();
+                delete_dialog.dismiss();
             }
         });
 
-        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+        delete_dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
                 shopItemAdapter.notifyItemChanged(position);
             }
         });
 
-        dialog.show();
+        delete_dialog.show();
     }
 
     public void showInfoDialog(int position) {
-        final Dialog dialog = new Dialog(shopItemAdapter.getContext());
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.info_item_layout);
+        info_dialog = new Dialog(shopItemAdapter.getContext());
+        info_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        info_dialog.setContentView(R.layout.info_item_layout);
 
-        ImageView favouritesIcon = dialog.findViewById(R.id.favouritesIcon);
+        ImageView favouritesIcon = info_dialog.findViewById(R.id.favouritesIcon);
 
-        CardView image_card = dialog.findViewById(R.id.image_card);
+        CardView image_card = info_dialog.findViewById(R.id.image_card);
 
-        ImageView itemImage = dialog.findViewById(R.id.item_image);
-        ImageView itemImageNull = dialog.findViewById(R.id.item_image_null);
-        ProgressBar progressBar = dialog.findViewById(R.id.progress_bar);
+        ImageView itemImage = info_dialog.findViewById(R.id.item_image);
+        ImageView itemImageNull = info_dialog.findViewById(R.id.item_image_null);
+        ProgressBar progressBar = info_dialog.findViewById(R.id.progress_bar);
 
-        ImageView reduce = dialog.findViewById(R.id.reduce);
-        ImageView increase = dialog.findViewById(R.id.increase);
+        ImageView reduce = info_dialog.findViewById(R.id.reduce);
+        ImageView increase = info_dialog.findViewById(R.id.increase);
 
-        TextView item_name = dialog.findViewById(R.id.item_name);
-        TextView unit_price = dialog.findViewById(R.id.price_per_unit);
-        TextView total_price = dialog.findViewById(R.id.total_price_item);
-        LinearLayout quantity_parent = dialog.findViewById(R.id.quantity_parent);
-        TextView quantity = dialog.findViewById(R.id.quantity);
-        TextView unit = dialog.findViewById(R.id.unit);
-        TextView day = dialog.findViewById(R.id.full_day);
-        TextView date = dialog.findViewById(R.id.full_date);
-        TextView time = dialog.findViewById(R.id.full_time);
-        TextView quantityText = dialog.findViewById(R.id.quantity_text);
-        TextView priceText = dialog.findViewById(R.id.price_text);
-        TextView subTotalText = dialog.findViewById(R.id.subtotal_text);
+        TextView item_name = info_dialog.findViewById(R.id.item_name);
+        TextView unit_price = info_dialog.findViewById(R.id.price_per_unit);
+        TextView total_price = info_dialog.findViewById(R.id.total_price_item);
+        LinearLayout quantity_parent = info_dialog.findViewById(R.id.quantity_parent);
+        TextView quantity = info_dialog.findViewById(R.id.quantity);
+        TextView unit = info_dialog.findViewById(R.id.unit);
+        TextView day = info_dialog.findViewById(R.id.full_day);
+        TextView date = info_dialog.findViewById(R.id.full_date);
+        TextView time = info_dialog.findViewById(R.id.full_time);
+        TextView quantityText = info_dialog.findViewById(R.id.quantity_text);
+        TextView priceText = info_dialog.findViewById(R.id.price_text);
+        TextView subTotalText = info_dialog.findViewById(R.id.subtotal_text);
 
-        TextView currency_symbol = dialog.findViewById(R.id.currencybox);
+        TextView currency_symbol = info_dialog.findViewById(R.id.currencybox);
         currency_symbol.setText(settings.getCurrency());
 
 
@@ -1946,7 +2069,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         item_name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                info_dialog.dismiss();
                 showRenameDialog(temp, position);
             }
         });
@@ -1989,50 +2112,23 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         }
 
         String finalPhotourl = photourl;
-        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+        info_dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
                 if (!finalPhotourl.trim().isEmpty()) {
                     is_photo_url_empty = false;
-                    progressBar.setVisibility(View.VISIBLE);
-                    if(Network.isNetworkAvailable(ItemActivity.this)){
 
-                        FirebaseStorage storage = FirebaseStorage.getInstance();
-                        StorageReference storageReference = storage.getReference();
-                        StorageReference imageRef = storageReference.child(finalPhotourl);
-                        try {
-                            final File localFile = File.createTempFile(finalPhotourl, "jpg");
-                            imageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                                @Override
-                                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                    Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-                                    itemImage.setImageBitmap(bitmap);
-                                    itemImage.setVisibility(View.VISIBLE);
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(ItemActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                    itemImage.setImageResource(R.drawable.final_image_not_found_icon);
-                                }
-                            });
-                        } catch (Exception ex) {
-                            Toast.makeText(ItemActivity.this, "Error: " + ex.getMessage(), Toast.LENGTH_SHORT).show();
-                            itemImage.setImageResource(R.drawable.final_image_not_found_icon);
-                        }
+                    File directory = new File(ItemActivity.this.getFilesDir(), "Buymate_Images");
+                    File imageFile = new File(directory, finalPhotourl);
 
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                progressBar.setVisibility(View.INVISIBLE);
-                            }
-                        }, 3000);
-                    }
+                    Bitmap retrieveBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
 
+                    itemImage.setImageBitmap(retrieveBitmap);
+                    itemImage.setVisibility(View.VISIBLE);
 
-                }else {
+                } else {
                     is_photo_url_empty = true;
-                   itemImageNull.setVisibility(View.VISIBLE);
+                    itemImageNull.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -2055,12 +2151,11 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         }
 
 
-
         itemImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 temp_item = temp;
-                dialog.dismiss();
+                info_dialog.dismiss();
                 showAddImageDialog();
             }
         });
@@ -2069,7 +2164,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             @Override
             public void onClick(View v) {
                 temp_item = temp;
-                dialog.dismiss();
+                info_dialog.dismiss();
                 showAddImageDialog();
             }
         });
@@ -2077,7 +2172,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         unit_price.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                info_dialog.dismiss();
                 showPriceDialog(shopItemAdapter.getItemName(position), position);
             }
         });
@@ -2111,7 +2206,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         quantity_parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                info_dialog.dismiss();
                 showQuantityDialog(shopItemAdapter.getItemName(position), position);
             }
         });
@@ -2186,7 +2281,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             }
         });
 
-        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+        info_dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
                 searchView.setQuery("", false);
@@ -2198,11 +2293,11 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             }
         });
 
-        dialog.show();
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
-        dialog.getWindow().setGravity(Gravity.BOTTOM);
+        info_dialog.show();
+        info_dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        info_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        info_dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
+        info_dialog.getWindow().setGravity(Gravity.BOTTOM);
 
     }
 
@@ -2213,7 +2308,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         currentHour = calendar.get(Calendar.HOUR_OF_DAY);
         currentMinutes = calendar.get(Calendar.MINUTE);
 
-        TimePickerDialog timePickerDialog = new TimePickerDialog(ItemActivity.this, R.style.TimePickerTheme, new TimePickerDialog.OnTimeSetListener() {
+        timePickerDialog = new TimePickerDialog(ItemActivity.this, R.style.TimePickerTheme, new TimePickerDialog.OnTimeSetListener() {
 
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -2244,13 +2339,13 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
     }
 
     public void showRenameDialog() {
-        final Dialog dialog = new Dialog(ItemActivity.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.update_category_name_layout);
+        rename_dialog = new Dialog(ItemActivity.this);
+        rename_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        rename_dialog.setContentView(R.layout.update_category_name_layout);
 
-        TextView headingText = dialog.findViewById(R.id.renameHeading);
-        TextInputEditText description = dialog.findViewById(R.id.description);
-        ExtendedFloatingActionButton saveButton = dialog.findViewById(R.id.save);
+        TextView headingText = rename_dialog.findViewById(R.id.renameHeading);
+        TextInputEditText description = rename_dialog.findViewById(R.id.description);
+        ExtendedFloatingActionButton saveButton = rename_dialog.findViewById(R.id.save);
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
             description.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
@@ -2285,7 +2380,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             public void onClick(View v) {
                 String newName = description.getText().toString().trim();
                 if (newName.trim().equals(category)) {
-                    dialog.dismiss();
+                    rename_dialog.dismiss();
                 } else {
                     Items_Check.remove(category);
                     if (!newName.isEmpty()) {
@@ -2297,7 +2392,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                                 Toast.makeText(ItemActivity.this, getString(R.string.list_rename_success), Toast.LENGTH_SHORT).show();
                                 itemToolbar.setTitle(newName);
                                 category = newName;
-                                dialog.dismiss();
+                                rename_dialog.dismiss();
 
                             }
                         } else {
@@ -2314,7 +2409,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                                 Toast.makeText(ItemActivity.this, getString(R.string.list_rename_success), Toast.LENGTH_SHORT).show();
                                 itemToolbar.setTitle(newName);
                                 category = newName;
-                                dialog.dismiss();
+                                rename_dialog.dismiss();
 
                             }
                         }
@@ -2326,19 +2421,19 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             }
         });
 
-        dialog.show();
-        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+        rename_dialog.show();
+        rename_dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
             }
         });
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
-        dialog.getWindow().setGravity(Gravity.BOTTOM);
+        rename_dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        rename_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        rename_dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
+        rename_dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
-    public void showShareDialog() {
+    public void showShareTextDialog() {
         StringBuilder result = new StringBuilder();
         Cursor res = db.getItems(category, ItemActivity.this);
         Items_Check.clear();
@@ -2391,6 +2486,12 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             result.append("\n").append(getString(R.string.share_list_total)).append("       ").append(formatNumber(total));
         }
 
+        String appLink = "https://play.google.com/store/apps/details?id=" + this.getPackageName();
+
+        result.append("\n\n\n").append("Improve your shopping experience with Buymate.");
+        result.append("\n\n").append("Download Buymate on Google Play:");
+        result.append("\n").append(appLink);
+
         String items = result.toString();
 
         Intent intent = new Intent(Intent.ACTION_SEND);
@@ -2403,19 +2504,319 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
     }
 
-    public void showCopyDailog(String itemName) {
-        final Dialog dialog = new Dialog(ItemActivity.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.movebottomlayout);
+    public void showDownloadPdfDialog(String prevTask) {
+
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Cursor res = db.getItems(category, ItemActivity.this);
+                Items_Check.clear();
+                Items_Prices_List.clear();
+                Items_Quantities_List.clear();
+                Final_Items_Prices_List.clear();
+                while (res.moveToNext()) {
+                    Items_Check.add(res.getString(2).trim());
+                    Items_Prices_List.add(res.getString(4).trim());
+                    Items_Quantities_List.add(res.getString(9).trim());
+                    unitCheck.add(" " + res.getString(11));
+                }
+                res.close();
+
+
+                double total = 0;
+                double PriceQuantityIndex;
+                for (int i = 0; i < Items_Check.size(); i++) {
+                    double priceIndex = Double.parseDouble(Items_Prices_List.get(i));
+                    double quantityIndex = Double.parseDouble(Items_Quantities_List.get(i));
+                    if (settings.getIsMultiplyDisabled().equals(UserSettings.NO_MULTIPLY_NOT_DISABLED)) {
+                        PriceQuantityIndex = priceIndex * quantityIndex;
+                    } else {
+                        PriceQuantityIndex = priceIndex;
+                    }
+                    Final_Items_Prices_List.add(String.valueOf(PriceQuantityIndex));
+                    total += PriceQuantityIndex;
+
+                }
+                try {
+
+
+                    String name = getString(R.string.app_name) + "_" + prevTask + "_" + System.currentTimeMillis() + ".pdf";
+                    String filename = name.replaceAll(" ", "_");
+
+                    File directory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), getString(R.string.app_name));
+                    if (!directory.exists()) {
+                        directory.mkdirs(); // Create the directory if it doesn't exist
+                    }
+
+
+                    File pdfFile = new File(directory, filename);
+                    PdfWriter writer = new PdfWriter(pdfFile.getAbsolutePath());
+                    PdfDocument pdfDocument = new PdfDocument(writer);
+                    Document document = new Document(pdfDocument);
+
+
+                    int drawableResourceId = R.drawable.buymate_pdf_header;
+                    Drawable drawable = ContextCompat.getDrawable(ItemActivity.this, drawableResourceId);
+
+                    Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    byte[] imageBytes = stream.toByteArray();
+
+                    ImageData imageData = ImageDataFactory.create(imageBytes);
+                    Image image = new Image(imageData);
+
+                    document.add(image);
+
+
+                    int colorValue = ContextCompat.getColor(ItemActivity.this, R.color.pdf_table_header);
+                    float[] rgb = new float[]{
+                            Color.red(colorValue) / 255f,
+                            Color.green(colorValue) / 255f,
+                            Color.blue(colorValue) / 255f
+                    };
+
+                    com.itextpdf.kernel.colors.Color itextBlack = new DeviceRgb(rgb[0], rgb[1], rgb[2]);
+
+
+                    colorValue = ContextCompat.getColor(ItemActivity.this, R.color.buymate_color_theme);
+                    rgb = new float[]{
+                            Color.red(colorValue) / 255f,
+                            Color.green(colorValue) / 255f,
+                            Color.blue(colorValue) / 255f
+                    };
+
+                    com.itextpdf.kernel.colors.Color itextBlue = new DeviceRgb(rgb[0], rgb[1], rgb[2]);
+
+                    colorValue = ContextCompat.getColor(ItemActivity.this, R.color.white);
+                    rgb = new float[]{
+                            Color.red(colorValue) / 255f,
+                            Color.green(colorValue) / 255f,
+                            Color.blue(colorValue) / 255f
+                    };
+
+                    com.itextpdf.kernel.colors.Color itextWhite = new DeviceRgb(rgb[0], rgb[1], rgb[2]);
+
+                    Paragraph introText = new Paragraph(prevTask)
+                            .setTextAlignment(TextAlignment.CENTER)
+                            .setHorizontalAlignment(HorizontalAlignment.CENTER)
+                            .setFontSize(24).setCharacterSpacing(2f)
+                            .setBold()
+                            .setFontColor(itextBlack);
+                    document.add(introText);
+
+
+                    getDateNdTime();
+
+                    Paragraph date = new Paragraph(month + " " + day + "," + " " + year + " " + time)
+                            .setTextAlignment(TextAlignment.CENTER)
+                            .setHorizontalAlignment(HorizontalAlignment.CENTER)
+                            .setFontSize(15)
+                            .setCharacterSpacing(2f);
+
+                    document.add(date);
+
+
+                    String currency = settings.getCurrency();
+                    if (currency.equals("\u20A6")) {
+                        currency = "NGN";
+                    }
+
+                    PdfFont font = PdfFontFactory.createFont(StandardFonts.HELVETICA);
+
+
+                    int count = 2;
+                    if (settings.getIsShareQuantityDisabled().equals(UserSettings.NO_SHARE_QUANTITY_NOT_DISABLED)) {
+                        count = count + 2;
+                    }
+                    if (settings.getIsSharePriceDisabled().equals(UserSettings.NO_SHARE_PRICE_NOT_DISABLED)) {
+                        count = count + 1;
+                    }
+
+
+                    Table table = new Table(count);
+                    table.setWidth(UnitValue.createPercentValue(100));
+                    table.setMarginTop(20f);
+                    table.setFontSize(18f);
+                    table.setFontColor(itextBlack);
+
+                    table.addCell(new Cell().add(new Paragraph("NO")).setTextAlignment(TextAlignment.LEFT).setBold().setPaddingLeft(8f).setCharacterSpacing(1.5f).setFontColor(itextBlack));
+                    table.addCell(new Cell().add(new Paragraph("ITEM")).setTextAlignment(TextAlignment.LEFT).setBold().setPaddingLeft(8f).setCharacterSpacing(1.5f).setFontColor(itextBlack));
+
+
+                    if (settings.getIsShareQuantityDisabled().equals(UserSettings.NO_SHARE_QUANTITY_NOT_DISABLED)) {
+                        table.addCell(new Cell().add(new Paragraph("QUANTITY")).setTextAlignment(TextAlignment.CENTER).setBold().setCharacterSpacing(1.5f).setFontColor(itextBlack));
+                        table.addCell(new Cell().add(new Paragraph("UNIT")).setTextAlignment(TextAlignment.CENTER).setBold().setCharacterSpacing(1.5f).setFontColor(itextBlack));
+                    }
+
+                    if (settings.getIsSharePriceDisabled().equals(UserSettings.NO_SHARE_PRICE_NOT_DISABLED)) {
+                        table.addCell(new Cell().add(new Paragraph("PRICE" + "(" + currency + ")")).setTextAlignment(TextAlignment.CENTER).setBold().setCharacterSpacing(1.5f).setFontColor(itextBlack).setFont(font));
+                    }
+
+
+                    int num = 1;
+                    for (int p = 0; p < Items_Check.size(); p++) {
+                        table.addCell(new Cell().add(new Paragraph(String.valueOf(num))).setTextAlignment(TextAlignment.LEFT).setPaddingLeft(8f));
+                        table.addCell(new Cell().add(new Paragraph(Items_Check.get(p))).setTextAlignment(TextAlignment.LEFT).setPaddingLeft(8f));
+                        if (settings.getIsShareQuantityDisabled().equals(UserSettings.NO_SHARE_QUANTITY_NOT_DISABLED)) {
+                            table.addCell(new Cell().add(new Paragraph(Items_Quantities_List.get(p))).setTextAlignment(TextAlignment.CENTER));
+                            table.addCell(new Cell().add(new Paragraph(unitCheck.get(p))).setTextAlignment(TextAlignment.CENTER));
+                        }
+                        if (settings.getIsSharePriceDisabled().equals(UserSettings.NO_SHARE_PRICE_NOT_DISABLED)) {
+                            table.addCell(new Cell().add(new Paragraph(Final_Items_Prices_List.get(p))).setTextAlignment(TextAlignment.CENTER));
+                        }
+                        num = num + 1;
+                    }
+
+
+                    if (settings.getIsShareTotalDisabled().equals(UserSettings.NO_SHARE_TOTAL_NOT_DISABLED)) {
+
+
+                        if (count == 2) {
+
+                            table.addCell(new Cell(1, 1).add(new Paragraph("Total:")).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
+                            table.addCell(new Cell(1, 1).add(new Paragraph(currency + " " + formatNumberV3(total))).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
+
+                        } else if (count == 3) {
+                            table.addCell(new Cell(1, 1).add(new Paragraph("Total:")).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
+                            table.addCell(new Cell(1, 2).add(new Paragraph(currency + " " + formatNumberV3(total))).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
+
+
+                        } else if (count == 5) {
+                            table.addCell(new Cell(1, 2).add(new Paragraph("Total:")).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
+                            table.addCell(new Cell(1, 3).add(new Paragraph(currency + " " + formatNumberV3(total))).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
+
+                        }
+                    }
+
+                    document.add(table);
+
+
+                    Paragraph contact = new Paragraph("Contact us at:")
+                            .setTextAlignment(TextAlignment.CENTER)
+                            .setHorizontalAlignment(HorizontalAlignment.CENTER)
+                            .setFontSize(15)
+                            .setMarginTop(50f)
+                            .setCharacterSpacing(2f)
+                            .setFontColor(itextBlack);
+                    document.add(contact);
+
+                    Paragraph email = new Paragraph(getString(R.string.app_email))
+                            .setTextAlignment(TextAlignment.CENTER)
+                            .setHorizontalAlignment(HorizontalAlignment.CENTER)
+                            .setFontSize(15)
+                            .setCharacterSpacing(2f)
+                            .setBold()
+                            .setFontColor(itextBlue);
+                    document.add(email);
+
+
+                    Div dashedLine = new Div().setWidth(UnitValue.createPercentValue(100))
+                            .setBorderBottom(new DashedBorder(1f))
+                            .setMarginTop(20f);
+
+                    document.add(dashedLine);
+
+                    Paragraph close_text = new Paragraph("Improve your shopping experience with Buymate.")
+                            .setTextAlignment(TextAlignment.CENTER)
+                            .setHorizontalAlignment(HorizontalAlignment.CENTER)
+                            .setFontSize(15)
+                            .setCharacterSpacing(2f)
+                            .setMarginTop(20f)
+                            .setFontColor(itextBlack);
+                    document.add(close_text);
+
+                    document.close();
+                    progressBar.setVisibility(View.GONE);
+                    show_share_dialog.dismiss();
+                    Toast.makeText(ItemActivity.this, "PDF downloaded to" + directory, Toast.LENGTH_LONG).show();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, 3000);
+    }
+
+    private void showShareOptionDialog(String temp_item) {
+
+        show_share_dialog = new Dialog(ItemActivity.this);
+        show_share_dialog.setContentView(R.layout.custom_share_dialog);
+        show_share_dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
+        show_share_dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        progressBar = show_share_dialog.findViewById(R.id.progress_bar);
+
+        LinearLayout shareAsTextLayout = show_share_dialog.findViewById(R.id.textLayout);
+        LinearLayout shareAsPDFLayout = show_share_dialog.findViewById(R.id.pdfLayout);
+
+
+        shareAsTextLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showShareTextDialog();
+                show_share_dialog.dismiss();
+            }
+        });
+
+        shareAsPDFLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
+                showDownloadPdfDialog(temp_item);
+            }
+        });
+
+        TextView title = show_share_dialog.findViewById(R.id.title);
+        TextView title_2 = show_share_dialog.findViewById(R.id.title_2);
+        title_2.setText("(" + temp_item + ")");
+
+
+        TextView textText = show_share_dialog.findViewById(R.id.asText);
+        TextView pdfText = show_share_dialog.findViewById(R.id.asPDF);
+
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
+            title.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            title_2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            textText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            pdfText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+        }
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
+            title.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            title_2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            textText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            pdfText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+
+        }
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
+            title.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            title_2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            textText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            pdfText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+        }
+
+
+        show_share_dialog.show();
+
+    }
+
+    public void showCopyDialog(String itemName) {
+        copy_dialog = new Dialog(ItemActivity.this);
+        copy_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        copy_dialog.setContentView(R.layout.movebottomlayout);
         single_selected_item = itemName;
 
-        TextView textView = dialog.findViewById(R.id.item_move_title);
-        TextView emptyTEXT1 = dialog.findViewById(R.id.emptyTEXT1);
-        LinearLayout emptyNotesLayout = dialog.findViewById(R.id.emptyNotesLayout);
+        TextView textView = copy_dialog.findViewById(R.id.item_move_title);
+        TextView emptyTEXT1 = copy_dialog.findViewById(R.id.emptyTEXT1);
+        LinearLayout emptyNotesLayout = copy_dialog.findViewById(R.id.emptyNotesLayout);
         textView.setText(getString(R.string.copy_to));
-        SearchView searchView = dialog.findViewById(R.id.search_bar);
+        SearchView searchView = copy_dialog.findViewById(R.id.search_bar);
         EditText searchEditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
-        Button button = dialog.findViewById(R.id.create_new_list);
+        Button button = copy_dialog.findViewById(R.id.create_new_list);
 
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
@@ -2445,7 +2846,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             searchView.setVisibility(View.GONE);
         }
         shopCopyAdapter.setFilterList(categoryList);
-        RecyclerView copyRecyclerView = dialog.findViewById(R.id.moveRecyclerView);
+        RecyclerView copyRecyclerView = copy_dialog.findViewById(R.id.moveRecyclerView);
         copyRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
         copyRecyclerView.setAdapter(shopCopyAdapter);
@@ -2474,7 +2875,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                 return true;
             }
         });
-        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+        copy_dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
             }
@@ -2488,53 +2889,53 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         });
 
 
-        dialog.show();
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
-        dialog.getWindow().setGravity(Gravity.BOTTOM);
+        copy_dialog.show();
+        copy_dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        copy_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        copy_dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
+        copy_dialog.getWindow().setGravity(Gravity.BOTTOM);
 
     }
 
     private void showSortByDialog() {
-        final Dialog dialog = new Dialog(ItemActivity.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.sort_category_layout);
+        sort_by_dialog = new Dialog(ItemActivity.this);
+        sort_by_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        sort_by_dialog.setContentView(R.layout.sort_category_layout);
 
-        LinearLayout nameAscend = dialog.findViewById(R.id.name_ascend);
-        CheckBox checkNameAscend = dialog.findViewById(R.id.check_name_ascend);
+        LinearLayout nameAscend = sort_by_dialog.findViewById(R.id.name_ascend);
+        CheckBox checkNameAscend = sort_by_dialog.findViewById(R.id.check_name_ascend);
         checkNameAscend.setClickable(false);
-        LinearLayout nameDescend = dialog.findViewById(R.id.name_descend);
-        CheckBox checkNameDescend = dialog.findViewById(R.id.check_name_descend);
+        LinearLayout nameDescend = sort_by_dialog.findViewById(R.id.name_descend);
+        CheckBox checkNameDescend = sort_by_dialog.findViewById(R.id.check_name_descend);
         checkNameDescend.setClickable(false);
-        LinearLayout dateAscend = dialog.findViewById(R.id.date_ascend);
-        CheckBox checkDateAscend = dialog.findViewById(R.id.check_date_ascend);
+        LinearLayout dateAscend = sort_by_dialog.findViewById(R.id.date_ascend);
+        CheckBox checkDateAscend = sort_by_dialog.findViewById(R.id.check_date_ascend);
         checkDateAscend.setClickable(false);
-        LinearLayout dateDescend = dialog.findViewById(R.id.date_descend);
-        CheckBox checkDateDescend = dialog.findViewById(R.id.check_date_descend);
+        LinearLayout dateDescend = sort_by_dialog.findViewById(R.id.date_descend);
+        CheckBox checkDateDescend = sort_by_dialog.findViewById(R.id.check_date_descend);
         checkDateDescend.setClickable(false);
-        LinearLayout priceAscend = dialog.findViewById(R.id.price_ascend);
-        CheckBox checkPriceAscend = dialog.findViewById(R.id.check_price_ascend);
+        LinearLayout priceAscend = sort_by_dialog.findViewById(R.id.price_ascend);
+        CheckBox checkPriceAscend = sort_by_dialog.findViewById(R.id.check_price_ascend);
         checkPriceAscend.setClickable(false);
-        LinearLayout priceDescend = dialog.findViewById(R.id.price_descend);
-        CheckBox checkPriceDescend = dialog.findViewById(R.id.check_price_descend);
+        LinearLayout priceDescend = sort_by_dialog.findViewById(R.id.price_descend);
+        CheckBox checkPriceDescend = sort_by_dialog.findViewById(R.id.check_price_descend);
         checkPriceDescend.setClickable(false);
-        LinearLayout quantityAscend = dialog.findViewById(R.id.quantity_ascend);
-        CheckBox checkQuantityAscend = dialog.findViewById(R.id.check_quantity_ascend);
+        LinearLayout quantityAscend = sort_by_dialog.findViewById(R.id.quantity_ascend);
+        CheckBox checkQuantityAscend = sort_by_dialog.findViewById(R.id.check_quantity_ascend);
         checkQuantityAscend.setClickable(false);
-        LinearLayout quantityDescend = dialog.findViewById(R.id.quantity_descend);
-        CheckBox checkQuantityDescend = dialog.findViewById(R.id.check_quantity_descend);
+        LinearLayout quantityDescend = sort_by_dialog.findViewById(R.id.quantity_descend);
+        CheckBox checkQuantityDescend = sort_by_dialog.findViewById(R.id.check_quantity_descend);
         checkQuantityDescend.setClickable(false);
 
-        TextView header = dialog.findViewById(R.id.sortBy_title);
-        TextView nameTextAscend = dialog.findViewById(R.id.sort_nameText_ascend);
-        TextView nameTextDescend = dialog.findViewById(R.id.sort_nameText_descend);
-        TextView dateTextAscend = dialog.findViewById(R.id.sort_dateText_ascend);
-        TextView dateTextDescend = dialog.findViewById(R.id.sort_dateText_descend);
-        TextView priceTextAscend = dialog.findViewById(R.id.price_text_ascend);
-        TextView priceTextDescend = dialog.findViewById(R.id.price_text_descend);
-        TextView quantityTextAscend = dialog.findViewById(R.id.sort_quantityText_ascend);
-        TextView quantityTextDescend = dialog.findViewById(R.id.sort_quantityText_descend);
+        TextView header = sort_by_dialog.findViewById(R.id.sortBy_title);
+        TextView nameTextAscend = sort_by_dialog.findViewById(R.id.sort_nameText_ascend);
+        TextView nameTextDescend = sort_by_dialog.findViewById(R.id.sort_nameText_descend);
+        TextView dateTextAscend = sort_by_dialog.findViewById(R.id.sort_dateText_ascend);
+        TextView dateTextDescend = sort_by_dialog.findViewById(R.id.sort_dateText_descend);
+        TextView priceTextAscend = sort_by_dialog.findViewById(R.id.price_text_ascend);
+        TextView priceTextDescend = sort_by_dialog.findViewById(R.id.price_text_descend);
+        TextView quantityTextAscend = sort_by_dialog.findViewById(R.id.sort_quantityText_ascend);
+        TextView quantityTextDescend = sort_by_dialog.findViewById(R.id.sort_quantityText_descend);
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
             header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
@@ -2615,7 +3016,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        dialog.dismiss();
+                        sort_by_dialog.dismiss();
                     }
                 }, 300);
             }
@@ -2643,7 +3044,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        dialog.dismiss();
+                        sort_by_dialog.dismiss();
                     }
                 }, 300);
             }
@@ -2671,7 +3072,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        dialog.dismiss();
+                        sort_by_dialog.dismiss();
                     }
                 }, 300);
 
@@ -2700,7 +3101,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        dialog.dismiss();
+                        sort_by_dialog.dismiss();
                     }
                 }, 300);
             }
@@ -2728,7 +3129,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        dialog.dismiss();
+                        sort_by_dialog.dismiss();
                     }
                 }, 300);
             }
@@ -2756,7 +3157,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        dialog.dismiss();
+                        sort_by_dialog.dismiss();
                     }
                 }, 300);
             }
@@ -2784,7 +3185,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        dialog.dismiss();
+                        sort_by_dialog.dismiss();
                     }
                 }, 300);
             }
@@ -2813,31 +3214,102 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        dialog.dismiss();
+                        sort_by_dialog.dismiss();
                     }
                 }, 300);
             }
         });
 
-        dialog.show();
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
-        dialog.getWindow().setGravity(Gravity.BOTTOM);
+        sort_by_dialog.show();
+        sort_by_dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        sort_by_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        sort_by_dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
+        sort_by_dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
+
+    public void showVoiceDialog(String voice_text) {
+
+        voice_input_dialog = new Dialog(ItemActivity.this);
+        voice_input_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        voice_input_dialog.setContentView(R.layout.voice_typing_layout);
+
+        TextView headingText = voice_input_dialog.findViewById(R.id.Heading);
+        TextInputEditText description = voice_input_dialog.findViewById(R.id.description);
+        Button cancelBtn = voice_input_dialog.findViewById(R.id.cancelButton);
+        Button addBtn = voice_input_dialog.findViewById(R.id.addBtn);
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
+            description.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            headingText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            cancelBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            addBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+        }
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
+            description.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            headingText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            cancelBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            addBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+        }
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
+            description.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            headingText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            cancelBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            addBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+        }
+
+        description.setText(voice_text);
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                voice_input_dialog.dismiss();
+            }
+        });
+
+        addBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (!Items.contains(voice_text)) {
+                    getDateNdTime();
+                    insertItem(category, voice_text, 0, 0, month, year, day, time, 1, " ");
+                    voice_input_dialog.dismiss();
+                }
+
+            }
+        });
+
+        voice_input_dialog.show();
+
+        voice_input_dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        voice_input_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        voice_input_dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
+        voice_input_dialog.getWindow().setGravity(Gravity.BOTTOM);
+    }
+
+
+    public void showGoogleVoiceDialog() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Listening...");
+        startActivityForResult(intent, 8080);
+    }
+
+
     public void showMoveDialog(String itemName) {
-        final Dialog dialog = new Dialog(shopItemAdapter.getContext());
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.movebottomlayout);
+        move_dialog = new Dialog(shopItemAdapter.getContext());
+        move_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        move_dialog.setContentView(R.layout.movebottomlayout);
         single_selected_item = itemName;
 
-        TextView textView = dialog.findViewById(R.id.item_move_title);
-        TextView emptyTEXT1 = dialog.findViewById(R.id.emptyTEXT1);
-        LinearLayout emptyNotesLayout = dialog.findViewById(R.id.emptyNotesLayout);
-        SearchView searchView = dialog.findViewById(R.id.search_bar);
+        TextView textView = move_dialog.findViewById(R.id.item_move_title);
+        TextView emptyTEXT1 = move_dialog.findViewById(R.id.emptyTEXT1);
+        LinearLayout emptyNotesLayout = move_dialog.findViewById(R.id.emptyNotesLayout);
+        SearchView searchView = move_dialog.findViewById(R.id.search_bar);
         EditText searchEditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
-        Button button = dialog.findViewById(R.id.create_new_list);
+        Button button = move_dialog.findViewById(R.id.create_new_list);
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
             textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
@@ -2869,7 +3341,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             searchView.setVisibility(View.GONE);
         }
         shopMoveAdapter.setFilterList(categoryList);
-        RecyclerView moveRecyclerView = dialog.findViewById(R.id.moveRecyclerView);
+        RecyclerView moveRecyclerView = move_dialog.findViewById(R.id.moveRecyclerView);
         moveRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
         moveRecyclerView.setAdapter(shopMoveAdapter);
@@ -2900,7 +3372,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             }
         });
 
-        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+        move_dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
             }
@@ -2914,23 +3386,23 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         });
 
 
-        dialog.show();
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
-        dialog.getWindow().setGravity(Gravity.BOTTOM);
+        move_dialog.show();
+        move_dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        move_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        move_dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
+        move_dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
-    public void showUpgradeRequiredDialog(){
-        Dialog dialog = new Dialog(ItemActivity.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.upgrade_required_layout);
+    public void showUpgradeRequiredDialog() {
+        upgrade_required_dialog = new Dialog(ItemActivity.this);
+        upgrade_required_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        upgrade_required_dialog.setContentView(R.layout.upgrade_required_layout);
 
 
-        TextView header = dialog.findViewById(R.id.upgrade_text_1);
-        TextView sub_header = dialog.findViewById(R.id.upgrade_text_2);
-        Button cancelBtn = dialog.findViewById(R.id.cancelButton);
-        ExtendedFloatingActionButton upgradeBtn = dialog.findViewById(R.id.upgradeBtn);
+        TextView header = upgrade_required_dialog.findViewById(R.id.upgrade_text_1);
+        TextView sub_header = upgrade_required_dialog.findViewById(R.id.upgrade_text_2);
+        Button cancelBtn = upgrade_required_dialog.findViewById(R.id.cancelButton);
+        ExtendedFloatingActionButton upgradeBtn = upgrade_required_dialog.findViewById(R.id.upgradeBtn);
 
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
@@ -2958,48 +3430,49 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                upgrade_required_dialog.dismiss();
             }
         });
 
         upgradeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                upgrade_required_dialog.dismiss();
                 Intent upgrade_intent = new Intent(ItemActivity.this, PremiumActivity.class);
                 startActivity(upgrade_intent);
             }
         });
 
-        dialog.show();
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
-        dialog.getWindow().setGravity(Gravity.BOTTOM);
+        upgrade_required_dialog.show();
+        upgrade_required_dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        upgrade_required_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        upgrade_required_dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
+        upgrade_required_dialog.getWindow().setGravity(Gravity.BOTTOM);
 
     }
 
     public void showCategoryDialog(String checkCopyOrMoved) {
-        final Dialog dialog = new Dialog(ItemActivity.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.category_title_set_popup);
+
+        category_dialog = new Dialog(ItemActivity.this);
+        category_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        category_dialog.setContentView(R.layout.category_title_set_popup);
         getDateNdTime();
 
 
-        EditText categoryName = dialog.findViewById(R.id.category_name);
-        LinearLayout newCategoryIllustrationLayout = dialog.findViewById(R.id.newCategory_Illustration_Layout);
-        TextView emptyText1 = dialog.findViewById(R.id.emptyText1);
-        TextView emptyText2 = dialog.findViewById(R.id.emptyText2);
-        TextView sugest1 = dialog.findViewById(R.id.Suggest_1);
-        TextView sugest2 = dialog.findViewById(R.id.Suggest_2);
-        TextView sugest3 = dialog.findViewById(R.id.Suggest_3);
+        EditText categoryName = category_dialog.findViewById(R.id.category_name);
+        LinearLayout newCategoryIllustrationLayout = category_dialog.findViewById(R.id.newCategory_Illustration_Layout);
+        TextView emptyText1 = category_dialog.findViewById(R.id.emptyText1);
+        TextView emptyText2 = category_dialog.findViewById(R.id.emptyText2);
+        TextView sugest1 = category_dialog.findViewById(R.id.Suggest_1);
+        TextView sugest2 = category_dialog.findViewById(R.id.Suggest_2);
+        TextView sugest3 = category_dialog.findViewById(R.id.Suggest_3);
         sugest3.setText(formattedDate);
-        TextView sugest4 = dialog.findViewById(R.id.Suggest_4);
-        TextView sugest5 = dialog.findViewById(R.id.Suggest_5);
-        TextView sugest6 = dialog.findViewById(R.id.Suggest_6);
-        TextView sugest7 = dialog.findViewById(R.id.Suggest_7);
-        TextView sugest8 = dialog.findViewById(R.id.Suggest_8);
-        Button categorySaveBtn = dialog.findViewById(R.id.category_btnSave);
+        TextView sugest4 = category_dialog.findViewById(R.id.Suggest_4);
+        TextView sugest5 = category_dialog.findViewById(R.id.Suggest_5);
+        TextView sugest6 = category_dialog.findViewById(R.id.Suggest_6);
+        TextView sugest7 = category_dialog.findViewById(R.id.Suggest_7);
+        TextView sugest8 = category_dialog.findViewById(R.id.Suggest_8);
+        Button categorySaveBtn = category_dialog.findViewById(R.id.category_btnSave);
 
 
         newCategoryIllustrationLayout.setVisibility(View.VISIBLE);
@@ -3148,7 +3621,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                         } else if (Objects.equals(check, "copy")) {
                             shopCopyAdapter.insertMoved(categoryTitle);
                         }
-                        dialog.dismiss();
+                        category_dialog.dismiss();
                     } else {
                         int count = 1;
                         String newItem = categoryName.getText().toString().trim() + " (" + count + ")";
@@ -3164,7 +3637,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                             shopCopyAdapter.insertMoved(categoryTitle);
                         }
 
-                        dialog.dismiss();
+                        category_dialog.dismiss();
 
                     }
                 } else {
@@ -3174,11 +3647,11 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             }
         });
 
-        dialog.show();
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
-        dialog.getWindow().setGravity(Gravity.BOTTOM);
+        category_dialog.show();
+        category_dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        category_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        category_dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
+        category_dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
     public void displayCategoryData() {
@@ -3232,15 +3705,20 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         }
     }
 
-    public void showNoNetworkDialog() {
-        final Dialog dialog = new Dialog(ItemActivity.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.no_connection_layout);
+    public static String formatNumberV3(double number) {
+        return String.format("%,.2f", number);
+    }
 
-        TextView no_connection_Text1 = dialog.findViewById(R.id.no_connection_text_1);
-        TextView no_connection_Text2 = dialog.findViewById(R.id.no_connection_text_2);
-        TextView no_connection_Text3 = dialog.findViewById(R.id.no_connection_text_3);
-        Button try_again_btn = dialog.findViewById(R.id.try_again);
+    public void showNoNetworkDialog() {
+
+        noNetworkDialog = new Dialog(ItemActivity.this);
+        noNetworkDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        noNetworkDialog.setContentView(R.layout.no_connection_layout);
+
+        TextView no_connection_Text1 = noNetworkDialog.findViewById(R.id.no_connection_text_1);
+        TextView no_connection_Text2 = noNetworkDialog.findViewById(R.id.no_connection_text_2);
+        TextView no_connection_Text3 = noNetworkDialog.findViewById(R.id.no_connection_text_3);
+        Button try_again_btn = noNetworkDialog.findViewById(R.id.try_again);
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
 
@@ -3272,15 +3750,15 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         try_again_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                noNetworkDialog.dismiss();
             }
         });
 
-        dialog.show();
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
-        dialog.getWindow().setGravity(Gravity.BOTTOM);
+        noNetworkDialog.show();
+        noNetworkDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        noNetworkDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        noNetworkDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
+        noNetworkDialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
     private void updateView() {
@@ -3289,7 +3767,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         isFirstStart = sharedPreferences_firstStart.getBoolean("isFirstStart", true);
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
-            Total_Summation_Textbox.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            Total_Summation_Textbox.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_text));
             Items_list_size_textbox.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             Total_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             fab.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
@@ -3299,7 +3777,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
-            Total_Summation_Textbox.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            Total_Summation_Textbox.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_max_text));
             Items_list_size_textbox.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
             Total_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
             emptyText1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
@@ -3308,7 +3786,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
-            Total_Summation_Textbox.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            Total_Summation_Textbox.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_max_max_text));
             Items_list_size_textbox.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             Total_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             emptyText1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
@@ -3324,6 +3802,19 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
         currency_textbox.setText(settings.getCurrency());
 
+        if (settings.getCustomTheme().equals(UserSettings.DEFAULT_THEME)) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        }
+
+        if (settings.getCustomTheme().equals(UserSettings.LIGHT_THEME)) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+
+
+        if (settings.getCustomTheme().equals(UserSettings.DARK_THEME)) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+
     }
 
     private void loadSharedPreferences() {
@@ -3337,6 +3828,8 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
         SharedPreferences sharedPreferences = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
 
+        String theme = sharedPreferences.getString(UserSettings.CUSTOM_THEME, UserSettings.LIGHT_THEME);
+        settings.setCustomTheme(theme);
 
         String textSize = sharedPreferences.getString(UserSettings.CUSTOM_TEXT_SIZE, UserSettings.TEXT_MEDIUM);
         settings.setCustomTextSize(textSize);
@@ -3344,16 +3837,16 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         String disables_swipe = sharedPreferences.getString(UserSettings.IS_SWIPE_DISABLED, UserSettings.NOT_DISABLED);
         settings.setIsSwipeDisabled(disables_swipe);
 
-        String is_price_disabled = sharedPreferences.getString(UserSettings.IS_SHARE_PRICE_DISABLED, UserSettings.YES_SHARE_PRICE_DISABLED);
+        String is_price_disabled = sharedPreferences.getString(UserSettings.IS_SHARE_PRICE_DISABLED, UserSettings.NO_SHARE_PRICE_NOT_DISABLED);
         settings.setIsSharePriceDisabled(is_price_disabled);
 
-        String is_quantity_disabled = sharedPreferences.getString(UserSettings.IS_SHARE_QUANTITY_DISABLED, UserSettings.YES_SHARE_QUANTITY_DISABLED);
+        String is_quantity_disabled = sharedPreferences.getString(UserSettings.IS_SHARE_QUANTITY_DISABLED, UserSettings.NO_SHARE_QUANTITY_NOT_DISABLED);
         settings.setIsShareQuantityDisabled(is_quantity_disabled);
 
-        String is_total_disabled = sharedPreferences.getString(UserSettings.IS_SHARE_TOTAL_DISABLED, UserSettings.YES_SHARE_TOTAL_DISABLED);
+        String is_total_disabled = sharedPreferences.getString(UserSettings.IS_SHARE_TOTAL_DISABLED, UserSettings.NO_SHARE_TOTAL_NOT_DISABLED);
         settings.setIsShareTotalDisabled(is_total_disabled);
 
-        String multiply_disabled = sharedPreferences.getString(UserSettings.IS_MULTIPLY_DISABLED, UserSettings.NO_MULTIPLY_NOT_DISABLED);
+        String multiply_disabled = sharedPreferences.getString(UserSettings.IS_MULTIPLY_DISABLED, UserSettings.YES_MULTIPLY_DISABLED);
         settings.setIsMultiplyDisabled(multiply_disabled);
 
         String itemEye_disabled = sharedPreferences.getString(UserSettings.IS_ITEM_EYE_DISABLED, UserSettings.NO_ITEM_EYE_NOT_DISABLED);
@@ -3372,21 +3865,17 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         settings.setIsLifetimePurchased(lifetimePurchased);
 
 
+        String suggestion = sharedPreferences.getString(UserSettings.IS_SUGGESTION_DISABLED, UserSettings.NO_SUGGESTION_NOT_DISABLED);
+        settings.setIsSuggestionDisabled(suggestion);
+
 
         updateView();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (wakeLock != null && wakeLock.isHeld()) {
-            wakeLock.release();
-        }
-    }
 
     @Override
     protected void onResume() {
-
+        super.onResume();
         boolean isWakeLockEnabled = UserSettings.isWakeLockEnabled(this);
 
         if (isWakeLockEnabled) {
@@ -3397,10 +3886,8 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                 wakeLock.acquire();
             }
         }
-        displayData();
-        shopItemAdapter.notifyDataSetChanged();
-
-        super.onResume();
+        //  displayData();
+        //  shopItemAdapter.notifyDataSetChanged();
     }
 
     private void filterList(String text) {
@@ -3411,12 +3898,16 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                 filterList.add(item);
             }
         }
-        shopItemAdapter.setFilterList(filterList);
-        emptyNotesLayout.setVisibility(View.GONE);
-        favSumLayout.setVisibility(View.VISIBLE);
+
         if (filterList.isEmpty()) {
+            recyclerView.setVisibility(View.GONE);
             emptyNotesLayout.setVisibility(View.VISIBLE);
             favSumLayout.setVisibility(View.INVISIBLE);
+        } else {
+            shopItemAdapter.setFilterList(filterList);
+            recyclerView.setVisibility(View.VISIBLE);
+            emptyNotesLayout.setVisibility(View.GONE);
+            favSumLayout.setVisibility(View.VISIBLE);
         }
     }
 
@@ -3508,13 +3999,9 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
     @Override
     public void onRefresh() {
-        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-               recreate();
-               swipeRefreshLayout.setRefreshing(false);
-            }
-        } , 2000) ;
+
+        swipeRefreshLayout.setRefreshing(false);
+        recreate();
 
     }
 }

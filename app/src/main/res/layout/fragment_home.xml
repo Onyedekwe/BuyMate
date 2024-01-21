@@ -59,7 +59,7 @@
                     android:layout_marginStart="15dp"
                     android:text="What do you want to buy?"
                     android:textColor="?attr/textFillColor"
-                    android:textSize="22dp"/>
+                    android:textSize="22dp" />
 
 
                 <LinearLayout
@@ -69,19 +69,37 @@
 
                     <androidx.appcompat.widget.SearchView
                         android:id="@+id/search_View"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="45dp"
+                        android:layout_weight="1"
                         android:layout_gravity="center"
                         android:layout_marginStart="15dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
-                        android:layout_marginEnd="15dp"
                         android:background="@drawable/bg_stroke_curve_corner"
                         app:iconifiedByDefault="false"
                         app:queryBackground="@android:color/transparent"
                         app:queryHint="@string/fragment_home_search_view_hint"
                         app:searchIcon="@drawable/final_search_icon_2" />
 
+                    <ImageView
+                        android:id="@+id/sortBy"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:clickable="true"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_gravity="center"
+                        android:scaleType="fitCenter"
+                        android:background="@drawable/bg_stroke_curve_corner_premium"
+                        android:backgroundTint="?attr/colorPrimary"
+                        android:contentDescription="@string/fragment_home_layout_style_icon_content_description"
+                        android:focusable="true"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="15dp"
+                        android:padding="7dp"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:src="@drawable/final_sort_icon"/>
                 </LinearLayout>
 
 
@@ -91,169 +109,166 @@
                     android:background="?attr/trackColor"
                     android:orientation="vertical" />
             </com.google.android.material.appbar.AppBarLayout>
+
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/swipe"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-            <androidx.core.widget.NestedScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="?attr/backgroundColor">
-
-                <LinearLayout
+                <androidx.core.widget.NestedScrollView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="?attr/backgroundColor"
-                    android:orientation="vertical">
+                    android:overScrollMode="always"
+                    android:background="?attr/backgroundColor">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/recyclerLayout"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="?attr/backgroundColor"
-                        android:hapticFeedbackEnabled="true">
+                        android:orientation="vertical">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/recyclerLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="?attr/backgroundColor"
+                            android:hapticFeedbackEnabled="true">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_transparent_curved_rectangle_2"
+                                android:backgroundTint="?attr/backgroundColor"
+                                android:clickable="true"
+                                android:foreground="?attr/selectableItemBackground"
+                                android:orientation="horizontal"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <TextView
+                                    android:id="@+id/page_description_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginStart="15dp"
+                                    android:clickable="false"
+                                    android:focusable="true"
+                                    android:text="Categories"
+                                    android:textColor="?attr/textFillColor" />
+                            </LinearLayout>
+
+                            <ImageView
+                                android:id="@+id/recyclerViewLayoutIcon"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_gravity="bottom"
+                                android:layout_marginEnd="6dp"
+                                android:clickable="true"
+                                android:contentDescription="@string/fragment_home_layout_style_icon_content_description"
+                                android:focusable="true"
+                                android:foreground="?attr/selectableItemBackground"
+                                android:padding="7dp"
+                                android:src="@drawable/final_linear_icon"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/todo_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:overScrollMode="never"
+                            android:background="?attr/backgroundColor"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <pl.droidsonroids.gif.GifImageView
+                            android:id="@+id/empty"
+                            android:layout_width="200dp"
+                            android:layout_height="150dp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="50dp"
+                            android:contentDescription="@string/fragment_home_empty_illustration_content_description"
+                            android:src="@drawable/illustration_empty_list_1"
+                            android:visibility="gone"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
 
                         <LinearLayout
-                            android:id="@+id/sortBy"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bg_transparent_curved_rectangle_2"
-                            android:backgroundTint="?attr/backgroundColor"
-                            android:clickable="true"
-                            android:foreground="?attr/selectableItemBackground"
-                            android:orientation="horizontal"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
+                            android:id="@+id/emptyTextLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="?attr/backgroundColor"
+                            android:orientation="vertical"
+                            android:visibility="gone">
+
 
                             <TextView
-                                android:id="@+id/sortByText"
+                                android:id="@+id/emptyText1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:layout_marginStart="15dp"
-                                android:clickable="false"
-                                android:focusable="true"
+                                android:layout_marginTop="10dp"
+                                android:text="@string/fragment_home_noList_text_1"
+                                android:textColor="?attr/textFillColor"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
 
-                                android:text="@string/fragment_home_sort_by_text"
-                                android:textColor="?attr/textFillColor" />
-
-                            <ImageView
+                            <TextView
+                                android:id="@+id/emptyText2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:background="?attr/backgroundColor"
-                                android:clickable="false"
-                                android:src="@drawable/final_sort_icon" />
+                                android:layout_gravity="center"
+                                android:layout_marginTop="5dp"
+                                android:text="@string/fragment_home_noList_text_2"
+                                android:textColor="?attr/textFillColor"
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:id="@+id/emptyText3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="@string/fragment_home_noList_text_3"
+                                android:textColor="?attr/textFillColor"
+                                android:textSize="18sp" />
+
+                            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                                android:id="@+id/empty_create_btn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:minHeight="55dp"
+                                android:minWidth="180dp"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="30dp"
+                                android:layout_marginBottom="20dp"
+                                android:backgroundTint="?attr/buttonTint"
+                                android:gravity="center"
+                                app:icon="@drawable/final_add_icon"
+                                app:iconGravity="textStart"
+                                app:iconTint="@color/white"
+                                android:text="New list"
+                                android:textAllCaps="false"
+                                android:textColor="@color/white"
+                                android:textSize="18sp" />
                         </LinearLayout>
 
-                        <ImageView
-                            android:id="@+id/recyclerViewLayoutIcon"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_gravity="bottom"
-                            android:layout_marginEnd="6dp"
-                            android:clickable="true"
-                            android:contentDescription="@string/fragment_home_layout_style_icon_content_description"
-                            android:focusable="true"
-                            android:foreground="?attr/selectableItemBackground"
-                            android:padding="7dp"
-                            android:src="@drawable/final_linear_icon"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/todo_list"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="?attr/backgroundColor"
-                        android:overScrollMode="never"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <pl.droidsonroids.gif.GifImageView
-                        android:id="@+id/empty"
-                        android:layout_width="200dp"
-                        android:layout_height="150dp"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="50dp"
-                        android:contentDescription="@string/fragment_home_empty_illustration_content_description"
-                        android:src="@drawable/illustration_empty_list_1"
-                        android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-
-                    <LinearLayout
-                        android:id="@+id/emptyTextLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="?attr/backgroundColor"
-                        android:orientation="vertical"
-                        android:visibility="gone">
-
-
-                        <TextView
-                            android:id="@+id/emptyText1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="10dp"
-                            android:text="@string/fragment_home_noList_text_1"
-                            android:textColor="?attr/textFillColor"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/emptyText2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="5dp"
-                            android:text="@string/fragment_home_noList_text_2"
-                            android:textColor="?attr/textFillColor"
-                            android:textSize="18sp" />
-
-                        <TextView
-                            android:id="@+id/emptyText3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="@string/fragment_home_noList_text_3"
-                            android:textColor="?attr/textFillColor"
-                            android:textSize="18sp" />
-
-                        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                            android:id="@+id/empty_create_btn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:minHeight="55dp"
-                            android:minWidth="180dp"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="30dp"
-                            android:layout_marginBottom="20dp"
-                            android:backgroundTint="?attr/buttonTint"
-                            android:gravity="center"
-                            app:icon="@drawable/final_add_icon"
-                            app:iconGravity="textStart"
-                            app:iconTint="@color/white"
-                            android:text="New list"
-                            android:textAllCaps="false"
-                            android:textColor="@color/white"
-                            android:textSize="18sp" />
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="70dp"/>
                     </LinearLayout>
-                </LinearLayout>
 
-            </androidx.core.widget.NestedScrollView>
+                </androidx.core.widget.NestedScrollView>
 
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

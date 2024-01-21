@@ -2,7 +2,6 @@ package com.hemerick.buymate;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -13,13 +12,15 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
-import android.os.Looper;
 import android.provider.MediaStore;
+import android.speech.RecognizerIntent;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.RelativeSizeSpan;
@@ -49,39 +50,58 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.hemerick.buymate.Adapter.RecyclerViewFavTouchHelper;
 import com.hemerick.buymate.Adapter.ShopFavouritesAdapter;
 import com.hemerick.buymate.Database.ShopDatabase;
 import com.hemerick.buymate.Database.UserSettings;
-import com.hemerick.buymate.NetworkUtils.Network;
+import com.itextpdf.io.font.constants.StandardFonts;
+import com.itextpdf.io.image.ImageData;
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.colors.DeviceRgb;
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.borders.DashedBorder;
+import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.Div;
+import com.itextpdf.layout.element.Image;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.properties.HorizontalAlignment;
+import com.itextpdf.layout.properties.TextAlignment;
+import com.itextpdf.layout.properties.UnitValue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Locale;
+
+import io.github.muddz.styleabletoast.StyleableToast;
 
 
 public class FavouritesFragment extends Fragment implements ShopFavouritesAdapter.OnNoteListener {
@@ -91,6 +111,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
     Toolbar toolbar;
     RecyclerView recyclerView;
 
+    ProgressBar progressBar;
     UserSettings settings;
     ShopDatabase db;
     ArrayList<String> itemFavourites;
@@ -98,6 +119,9 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
     ArrayList<String> itemCheck;
     ArrayList<String> priceCheck;
     ArrayList<String> quantityCheck;
+
+    HashSet<String> suggest_list;
+    HashSet<String> suggest_unit_list;
 
     String temp_item;
     String temp_category;
@@ -148,6 +172,9 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
     FirebaseStorage firebaseStorage;
     StorageReference storageReference;
 
+    Dialog show_share_dialog;
+
+
     int CAMERA_REQUEST = 2468;
     int GALLERY_REQUEST = 1;
 
@@ -162,6 +189,10 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
             DecimalFormat decimalFormat = new DecimalFormat("0.00");
             return decimalFormat.format(number);
         }
+    }
+
+    public static String formatNumberV3(double number) {
+        return String.format("%,.2f", number);
     }
 
     @Override
@@ -212,6 +243,9 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
+        suggest_list = new HashSet<>();
+        suggest_unit_list = new HashSet<>();
+
         main_progress_bar = rootView.findViewById(R.id.progress_bar);
 
         empty_text1 = rootView.findViewById(R.id.empty_text1);
@@ -224,14 +258,11 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        displayData();
-                        adapter.notifyDataSetChanged();
-                        swipeRefreshLayout.setRefreshing(false);
-                    }
-                }, 3000);
+
+                displayData();
+                adapter.notifyDataSetChanged();
+                swipeRefreshLayout.setRefreshing(false);
+
             }
         });
 
@@ -289,9 +320,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
         TextView add_Item_Text_Header_2 = dialog.findViewById(R.id.addItemHeaderText2);
 
         AutoCompleteTextView item_name_box = dialog.findViewById(R.id.desc_name);
-        String[] suggestion_list = getResources().getStringArray(R.array.item_suggestions);
-        ArrayAdapter<String> suggest_adapter = new ArrayAdapter<>(context, R.layout.unit_drop_down_layout, suggestion_list);
-        item_name_box.setAdapter(suggest_adapter);
+        AutoCompleteTextView unitText = dialog.findViewById(R.id.unit_textView);
 
         EditText item_price_box = dialog.findViewById(R.id.desc_price);
         EditText item_quantity_box = dialog.findViewById(R.id.desc_quantity);
@@ -301,11 +330,23 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
         TextInputLayout textInputLayout = dialog.findViewById(R.id.desc_price_text_input_layout);
         textInputLayout.setPrefixText(settings.getCurrency());
 
-        AutoCompleteTextView unitText = dialog.findViewById(R.id.unit_textView);
-        String[] unit_list = getResources().getStringArray(R.array.units);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.unit_drop_down_layout, unit_list);
-        unitText.setAdapter(adapter);
 
+        if (settings.getIsSuggestionDisabled().equals(UserSettings.YES_SUGGESTION_DISABLED)) {
+
+        } else {
+            ArrayList<String> temp_suggestion_list = new ArrayList<>(suggest_list);
+            ArrayAdapter<String> suggest_adapter = new ArrayAdapter<>(context, R.layout.unit_drop_down_layout, temp_suggestion_list);
+            item_name_box.setAdapter(suggest_adapter);
+            ArrayList<String> temp_suggestion_unit_list = new ArrayList<>(suggest_unit_list);
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.unit_drop_down_layout, temp_suggestion_unit_list);
+            unitText.setAdapter(adapter);
+        }
+
+
+        LinearLayout more_layout = dialog.findViewById(R.id.more_layout);
+        LinearLayout price_quantity_layout = dialog.findViewById(R.id.price_quantity_layout);
+        TextView more_text = dialog.findViewById(R.id.more_text);
+        ImageView more_image = dialog.findViewById(R.id.more_icon);
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
             add_Item_Text_Header_1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
@@ -316,6 +357,8 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
             item_quantity_box.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             cancelButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             saveButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            more_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
@@ -327,6 +370,8 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
             item_quantity_box.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             cancelButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             saveButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            more_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
@@ -338,11 +383,13 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
             item_quantity_box.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             cancelButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             saveButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            more_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+
         }
 
         addItemIllustrationLayout.setVisibility(View.VISIBLE);
-        add_Item_Text_Header_1.setVisibility(View.GONE);
-        add_Item_Text_Header_2.setTypeface(null, Typeface.BOLD);
+        add_Item_Text_Header_1.setText("Add an item to your list");
+        add_Item_Text_Header_2.setVisibility(View.GONE);
 
         String CATEGORY = "Untitled";
 
@@ -352,6 +399,20 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
             itemCheck.add(res.getString(2));
         }
         res.close();
+
+        more_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int visibility_status = price_quantity_layout.getVisibility();
+                if (visibility_status == View.GONE) {
+                    price_quantity_layout.setVisibility(View.VISIBLE);
+                    more_image.setImageResource(R.drawable.final_arrow_drop_down_icon);
+                } else if (visibility_status == View.VISIBLE) {
+                    price_quantity_layout.setVisibility(View.GONE);
+                    more_image.setImageResource(R.drawable.final_arrow_drop_up_icon);
+                }
+            }
+        });
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -432,6 +493,14 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
         category.add(cate);
         adapter.notifyDataSetChanged();
         getSum();
+
+        if (!suggest_list.contains(description.trim())) {
+            db.insertSuggest(description);
+        }
+
+        if (!suggest_unit_list.contains(unit.trim())) {
+            db.insertSuggestUnit(unit);
+        }
     }
 
     public void getDateNdTime() {
@@ -452,13 +521,13 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
         String currentDayNumber = sdfDayNumber.format(date);
 
         SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a", Locale.getDefault());
-        SimpleDateFormat seconds = new SimpleDateFormat("h:mm:ss a", Locale.getDefault());
+
 
         day = currentDay + " " + currentDayNumber;
         month = currentMonth;
         year = currentYear;
         time = timeFormat.format(date);
-        fullTimeWithSeconds = seconds.format(date);
+        fullTimeWithSeconds = String.valueOf(System.currentTimeMillis());
     }
 
     @Override
@@ -604,22 +673,36 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                 menu.findItem(R.id.unStar).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(@NonNull MenuItem item) {
+
+                        Dialog menu_unstar_dialog = new Dialog(context);
+                        menu_unstar_dialog.setContentView(R.layout.custom_delete_dialog);
+                        menu_unstar_dialog.getWindow().setBackgroundDrawable(context.getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
+                        menu_unstar_dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+
                         StringBuilder items_selected = new StringBuilder();
                         for (String items : finalSelectList) {
-                            items_selected.append(items).append("\n");
+                            items_selected.append("\u2022 ").append(items).append("\n");
                         }
-                        AlertDialog.Builder builder = new AlertDialog.Builder(adapter.getContext());
-                        builder.setTitle(getString(R.string.single_unstar));
-                        builder.setMessage(items_selected.toString());
-                        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                            @Override
-                            public void onCancel(DialogInterface dialog) {
 
+                        TextView delete_heading = menu_unstar_dialog.findViewById(R.id.delete_heading);
+                        TextView delete_message = menu_unstar_dialog.findViewById(R.id.delete_message);
+                        Button deleteButton = menu_unstar_dialog.findViewById(R.id.delete_button);
+                        Button cancelButton = menu_unstar_dialog.findViewById(R.id.cancel_button);
+
+                        delete_heading.setText(getString(R.string.single_unstar));
+                        delete_message.setText(items_selected.toString());
+                        deleteButton.setText("Remove");
+                        cancelButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                menu_unstar_dialog.dismiss();
                             }
                         });
-                        builder.setPositiveButton(getString(R.string.remove_star), new DialogInterface.OnClickListener() {
+
+                        deleteButton.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                            public void onClick(View v) {
                                 for (int i = 0; i < finalSelectList.size(); i++) {
                                     db.updateFavourites(finalSelectListCategory.get(i), finalSelectList.get(i), 0);
                                     itemFavourites.remove(finalSelectList.get(i));
@@ -632,35 +715,18 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                                     if (checkEmpty) {
                                         recyclerView.setVisibility(View.GONE);
                                         emptyFavLayout.setVisibility(View.VISIBLE);
-                                        favSumLayout.setVisibility(View.INVISIBLE);
+                                        favSumLayout.setVisibility(View.GONE);
                                     }
                                 }
                                 adapter.disableSelection();
-                            }
-
-                        });
-
-                        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                                menu_unstar_dialog.dismiss();
                             }
                         });
-                        AlertDialog dialog = builder.create();
-                        dialog.show();
-
-                        Button a = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
-                        if (a != null) {
-                            a.setTextColor(Color.GRAY);
-                        }
-
-                        Button b = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
-                        if (b != null) {
-                            b.setTextColor(Color.RED);
-                            b.setPadding(50, 0, 10, 0);
-                        }
+                        menu_unstar_dialog.show();
                         return true;
                     }
                 });
+
             } else {
                 collapsingToolbarLayout.setTitle(getString(R.string.fragment_favourites_toolbar_title));
                 inflater.inflate(R.menu.favourites_toolbar_menu, menu);
@@ -738,7 +804,14 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                 menu.findItem(R.id.share).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(@NonNull MenuItem item) {
-                        showShareDialog();
+                        showShareOptionDialog(collapsingToolbarLayout.getTitle().toString());
+                        return true;
+                    }
+                });
+                menu.findItem(R.id.voice).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(@NonNull MenuItem item) {
+                        showGoogleVoiceDialog();
                         return true;
                     }
                 });
@@ -787,6 +860,23 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                 }
             }
         }
+
+        Cursor resItemName = db.getSuggestName();
+        while (resItemName.moveToNext()) {
+            suggest_list.add(resItemName.getString(1).trim());
+        }
+
+
+        resItemName = db.getSuggestUnit();
+        while (resItemName.moveToNext()) {
+            String temp_unit = resItemName.getString(1);
+            if (!temp_unit.trim().isEmpty()) {
+                suggest_unit_list.add(temp_unit);
+            }
+        }
+        resItemName.close();
+
+
         if (itemFavourites.isEmpty()) {
             recyclerView.setVisibility(View.GONE);
             emptyFavLayout.setVisibility(View.VISIBLE);
@@ -996,45 +1086,23 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
+
                 if (!finalPhotourl.trim().isEmpty()) {
                     is_photo_url_empty = false;
-                    progressBar.setVisibility(View.VISIBLE);
-                    if (Network.isNetworkAvailable(context)) {
-                        FirebaseStorage storage = FirebaseStorage.getInstance();
-                        StorageReference storageReference = storage.getReference();
-                        StorageReference imageRef = storageReference.child(finalPhotourl);
-                        try {
-                            final File localFile = File.createTempFile(finalPhotourl, "jpg");
-                            imageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                                @Override
-                                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                    Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-                                    itemImage.setImageBitmap(bitmap);
-                                    itemImage.setVisibility(View.VISIBLE);
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(context, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                    itemImage.setImageResource(R.drawable.final_image_not_found_icon);
-                                }
-                            });
-                        } catch (Exception ex) {
-                            Toast.makeText(context, "Error: " + ex.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                progressBar.setVisibility(View.INVISIBLE);
-                            }
-                        }, 3000);
-                    }
 
+                    File directory = new File(context.getFilesDir(), "Buymate_Images");
+                    File imageFile = new File(directory, finalPhotourl);
+
+                    Bitmap retrieveBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+
+                    itemImage.setImageBitmap(retrieveBitmap);
+                    itemImage.setVisibility(View.VISIBLE);
 
                 } else {
                     is_photo_url_empty = true;
                     itemImageNull.setVisibility(View.VISIBLE);
                 }
+
             }
         });
 
@@ -1406,14 +1474,15 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
             public void onClick(View v) {
 
                 if (settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)) {
-                    if (Network.isNetworkAvailable(context)) {
-                        dialog.dismiss();
+                    dialog.dismiss();
+                    FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                    if (firebaseUser != null) {
                         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                         startActivityForResult(cameraIntent, CAMERA_REQUEST);
                     } else {
-                        showNoNetworkDialog();
+                        StyleableToast.makeText(context, "You must be logged in to add images", R.style.custom_toast_2).show();
                     }
-                }else{
+                } else {
                     showUpgradeRequiredDialog();
                 }
 
@@ -1424,15 +1493,16 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
             @Override
             public void onClick(View v) {
                 if (settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)) {
-                    if (Network.isNetworkAvailable(context)) {
-                        dialog.dismiss();
+                    dialog.dismiss();
+                    FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                    if (firebaseUser != null) {
                         Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
                         galleryIntent.setType("image/*");
                         startActivityForResult(galleryIntent, GALLERY_REQUEST);
                     } else {
-                        showNoNetworkDialog();
+                        StyleableToast.makeText(context, "You must be logged in to add images", R.style.custom_toast_2).show();
                     }
-                }else{
+                } else {
                     showUpgradeRequiredDialog();
                 }
             }
@@ -1442,7 +1512,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
         TextView title = dialog.findViewById(R.id.image_title);
         TextView title_2 = dialog.findViewById(R.id.image_title_2);
         title_2.setText("(" + temp_item + ")");
-        if (is_photo_url_empty == false) {
+        if (!is_photo_url_empty) {
             title.setText("Update image");
         } else {
             title.setText("Add image");
@@ -1476,6 +1546,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if ((requestCode == CAMERA_REQUEST) && (resultCode == Activity.RESULT_OK)) {
             recyclerView.setClickable(false);
             main_progress_bar.setVisibility(View.VISIBLE);
@@ -1485,9 +1556,6 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                 public void run() {
                     Bundle extras = data.getExtras();
                     Bitmap imageBitmap = (Bitmap) extras.get("data");
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
-                    byte[] imageData = stream.toByteArray();
 
 
                     FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
@@ -1495,44 +1563,51 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                     getDateNdTime();
                     String path = email + day + month + year + fullTimeWithSeconds + ".jpg";
 
-                    StorageReference imageRef = storageReference.child(path);
+                    boolean isInserted = false;
 
-                    UploadTask uploadTask = imageRef.putBytes(imageData);
-                    uploadTask.addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(context, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    File directory = new File(context.getFilesDir(), "Buymate_Images");
+                    if (!directory.exists()) {
+                        directory.mkdir();
+                    }
+
+
+                    File imageFile = new File(directory, path);
+                    try (FileOutputStream fos = new FileOutputStream(imageFile)) {
+                        isInserted = imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (isInserted) {
+                        String old_url = null;
+                        Cursor res = db.getPhotourl(temp_category, temp_item);
+                        while (res.moveToNext()) {
+                            old_url = res.getString(12);
                         }
-                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                            String old_url = null;
-                            Cursor res = db.getPhotourl(temp_category, temp_item);
-                            while (res.moveToNext()) {
-                                old_url = res.getString(12);
-                            }
+                        db.updatePhoto(temp_category, temp_item, path);
+                        db.insertPhotoUrl(path);
 
-                            db.updatePhoto(temp_category, temp_item, path);
+                        ArrayList<String> total_url = new ArrayList<>();
 
-                            ArrayList<String> total_url = new ArrayList<>();
-
-                            res = db.getCategory(context);
-                            while (res.moveToNext()) {
-                                total_url.add(res.getString(12));
-                            }
-                            res.close();
-
-                            if (!total_url.contains(old_url)) {
-                                FirebaseStorage storage = FirebaseStorage.getInstance();
-                                StorageReference storageReference = storage.getReference().child(old_url);
-                                storageReference.delete();
-                            }
-                            recyclerView.setClickable(true);
-                            main_progress_bar.setVisibility(View.INVISIBLE);
-
+                        res = db.getCategory(context);
+                        while (res.moveToNext()) {
+                            total_url.add(res.getString(12));
                         }
-                    });
+                        res.close();
+
+                        if (!total_url.contains(old_url)) {
+                            File imageFileToDelete = new File(directory, old_url);
+                            if (imageFileToDelete.exists()) {
+                                imageFileToDelete.delete();
+                            }
+                        }
+                        recyclerView.setClickable(true);
+                        main_progress_bar.setVisibility(View.INVISIBLE);
+                        adapter.notifyDataSetChanged();
+                    } else {
+                        Toast.makeText(context, "Error: Couldn't insert image", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }, 1000);
 
@@ -1555,63 +1630,71 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream);
-                        byte[] imageData = stream.toByteArray();
-
 
                         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                         String email = firebaseUser.getEmail().trim();
                         getDateNdTime();
                         String path = email + day + month + year + fullTimeWithSeconds + ".jpg";
 
-                        StorageReference imageRef = storageReference.child(path);
 
-                        UploadTask uploadTask = imageRef.putBytes(imageData);
-                        uploadTask.addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(context, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        boolean isInserted = false;
+
+                        File directory = new File(context.getFilesDir(), "Buymate_Images");
+                        if (!directory.exists()) {
+                            directory.mkdir();
+                        }
+
+                        File imageFile = new File(directory, path);
+                        try (FileOutputStream fos = new FileOutputStream(imageFile)) {
+                            isInserted = bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        if (isInserted) {
+                            String old_url = null;
+                            Cursor res = db.getPhotourl(temp_category, temp_item);
+                            while (res.moveToNext()) {
+                                old_url = res.getString(12);
                             }
-                        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                                String old_url = null;
-                                Cursor res = db.getPhotourl(temp_category, temp_item);
-                                while (res.moveToNext()) {
-                                    old_url = res.getString(12);
-                                }
+                            db.updatePhoto(temp_category, temp_item, path);
+                            db.insertPhotoUrl(path);
 
-                                db.updatePhoto(temp_category, temp_item, path);
+                            ArrayList<String> total_url = new ArrayList<>();
 
-                                ArrayList<String> total_url = new ArrayList<>();
-
-                                res = db.getCategory(context);
-                                while (res.moveToNext()) {
-                                    total_url.add(res.getString(12));
-                                }
-                                res.close();
-
-                                if (!total_url.contains(old_url)) {
-                                    FirebaseStorage storage = FirebaseStorage.getInstance();
-                                    StorageReference storageReference = storage.getReference().child(old_url);
-                                    storageReference.delete();
-                                }
-                                recyclerView.setClickable(true);
-                                main_progress_bar.setVisibility(View.INVISIBLE);
+                            res = db.getCategory(context);
+                            while (res.moveToNext()) {
+                                total_url.add(res.getString(12));
                             }
-                        });
+                            res.close();
+
+                            if (!total_url.contains(old_url)) {
+                                File imageFileToDelete = new File(directory, old_url);
+                                if (imageFileToDelete.exists()) {
+                                    imageFileToDelete.delete();
+                                }
+                            }
+                            recyclerView.setClickable(true);
+                            main_progress_bar.setVisibility(View.GONE);
+                            adapter.notifyDataSetChanged();
+                        } else {
+                            Toast.makeText(context, "Error: Couldn't insert image", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }, 1000);
-
 
             } catch (Exception e) {
                 Toast.makeText(context, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
         }
-        super.onActivityResult(requestCode, resultCode, data);
+        if ((requestCode == 8080) && (resultCode == Activity.RESULT_OK)) {
+            String voiceText = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).get(0);
+            showVoiceDialog(voiceText);
+        }
+
+
     }
 
     public void showRenameDialog(String prevName, int position) {
@@ -1660,7 +1743,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                 if (!newName.isEmpty()) {
                     if (!itemCheck.contains(newName)) {
                         boolean checkEditData = db.updateItem(category.get(position), newName, prevName);
-                        if (!checkEditData) {
+                        if (checkEditData) {
                             Toast.makeText(adapter.getContext(), getString(R.string.rename_success), Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(adapter.getContext(), getString(R.string.rename_fail), Toast.LENGTH_SHORT).show();
@@ -1758,6 +1841,75 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
 
     }
 
+    public void showVoiceDialog(String voice_text) {
+
+        Dialog voice_input_dialog = new Dialog(context);
+        voice_input_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        voice_input_dialog.setContentView(R.layout.voice_typing_layout);
+
+        TextView headingText = voice_input_dialog.findViewById(R.id.Heading);
+        TextInputEditText description = voice_input_dialog.findViewById(R.id.description);
+        Button cancelBtn = voice_input_dialog.findViewById(R.id.cancelButton);
+        Button addBtn = voice_input_dialog.findViewById(R.id.addBtn);
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
+            description.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            headingText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            cancelBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            addBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+        }
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
+            description.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            headingText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            cancelBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            addBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+        }
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
+            description.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            headingText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            cancelBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            addBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+        }
+
+        description.setText(voice_text);
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                voice_input_dialog.dismiss();
+            }
+        });
+
+        addBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (!itemFavourites.contains(voice_text)) {
+                    String CATEGORY = "Untitled";
+                    getDateNdTime();
+                    insertItem(CATEGORY, voice_text, 0, 0, month, year, day, time, 1, " ");
+                    voice_input_dialog.dismiss();
+                }
+
+            }
+        });
+
+        voice_input_dialog.show();
+
+        voice_input_dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        voice_input_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        voice_input_dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
+        voice_input_dialog.getWindow().setGravity(Gravity.BOTTOM);
+
+    }
+
+    public void showGoogleVoiceDialog() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Listening...");
+        startActivityForResult(intent, 8080);
+    }
 
     public void showQuantityDialog(String description, int position) {
         final Dialog dialog = new Dialog(adapter.getContext());
@@ -2174,7 +2326,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
 
     }
 
-    public void showUpgradeRequiredDialog(){
+    public void showUpgradeRequiredDialog() {
         Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.upgrade_required_layout);
@@ -2232,7 +2384,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
 
     }
 
-    public void showShareDialog() {
+    public void showShareTextDialog() {
         StringBuilder result = new StringBuilder();
         ArrayList<String> temp_category = new ArrayList<>();
         ArrayList<String> temp_favourites = new ArrayList<>();
@@ -2287,22 +2439,334 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
             }
 
             result.append("\n\n");
-
         }
 
         if (settings.getIsShareTotalDisabled().equals(UserSettings.NO_SHARE_TOTAL_NOT_DISABLED)) {
             result.append("\n").append(getString(R.string.share_list_total)).append("       ").append(formatNumber(total));
         }
 
+        String appLink = "https://play.google.com/store/apps/details?id=" + getContext().getPackageName();
+
+        result.append("\n\n\n").append("Improve your shopping experience with Buymate.");
+        result.append("\n\n").append("Download Buymate on Google Play:");
+        result.append("\n").append(appLink);
+
         String items = result.toString();
 
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_TEXT, " \n" + items + "\n");
+        intent.putExtra(Intent.EXTRA_TEXT, "STARRED".toUpperCase() + "\n" + " \n" + items + "\n");
 
         String chooserTitle = getString(R.string.send_message_via);
         Intent chosenIntent = Intent.createChooser(intent, chooserTitle);
         startActivity(chosenIntent);
+
+    }
+
+    public void showDownloadPdfDialog(String prevTask) {
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ArrayList<String> temp_category = new ArrayList<>();
+                ArrayList<String> temp_favourites = new ArrayList<>();
+                ArrayList<String> temp_price_list = new ArrayList<>();
+                ArrayList<String> temp_final_price_list = new ArrayList<>();
+                ArrayList<String> temp_quantity_list = new ArrayList<>();
+                ArrayList<String> unitCheck = new ArrayList<>();
+
+                temp_category.addAll(category);
+                temp_favourites.addAll(itemFavourites);
+
+                for (int i = 0; i < temp_favourites.size(); i++) {
+
+                    Cursor res = db.getPrice(temp_category.get(i), temp_favourites.get(i));
+                    while (res.moveToNext()) {
+                        temp_price_list.add(res.getString(4).trim());
+                        temp_quantity_list.add(res.getString(9).trim());
+                        unitCheck.add(" " + res.getString(11));
+
+                    }
+                    res.close();
+                }
+
+                double total = 0;
+                double PriceQuantityIndex;
+                for (int i = 0; i < itemFavourites.size(); i++) {
+                    double priceIndex = Double.parseDouble(temp_price_list.get(i));
+                    double quantityIndex = Double.parseDouble(temp_quantity_list.get(i));
+                    if (settings.getIsMultiplyDisabled().equals(UserSettings.NO_MULTIPLY_NOT_DISABLED)) {
+                        PriceQuantityIndex = priceIndex * quantityIndex;
+                    } else {
+                        PriceQuantityIndex = priceIndex;
+                    }
+                    temp_final_price_list.add(String.valueOf(PriceQuantityIndex));
+                    total += PriceQuantityIndex;
+
+                }
+                try {
+
+
+                    String name = getString(R.string.app_name) + "_" + prevTask + "_" + System.currentTimeMillis() + ".pdf";
+                    String filename = name.replaceAll(" ", "_");
+
+                    File directory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), getString(R.string.app_name));
+                    if (!directory.exists()) {
+                        directory.mkdirs(); // Create the directory if it doesn't exist
+                    }
+
+
+                    File pdfFile = new File(directory, filename);
+                    PdfWriter writer = new PdfWriter(pdfFile.getAbsolutePath());
+                    PdfDocument pdfDocument = new PdfDocument(writer);
+                    Document document = new Document(pdfDocument);
+
+
+                    int drawableResourceId = R.drawable.buymate_pdf_header;
+                    Drawable drawable = ContextCompat.getDrawable(context, drawableResourceId);
+
+                    Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    byte[] imageBytes = stream.toByteArray();
+
+                    ImageData imageData = ImageDataFactory.create(imageBytes);
+                    Image image = new Image(imageData);
+
+                    document.add(image);
+
+
+                    int colorValue = ContextCompat.getColor(context, R.color.pdf_table_header);
+                    float[] rgb = new float[]{
+                            Color.red(colorValue) / 255f,
+                            Color.green(colorValue) / 255f,
+                            Color.blue(colorValue) / 255f
+                    };
+
+                    com.itextpdf.kernel.colors.Color itextBlack = new DeviceRgb(rgb[0], rgb[1], rgb[2]);
+
+
+                    colorValue = ContextCompat.getColor(context, R.color.buymate_color_theme);
+                    rgb = new float[]{
+                            Color.red(colorValue) / 255f,
+                            Color.green(colorValue) / 255f,
+                            Color.blue(colorValue) / 255f
+                    };
+
+                    com.itextpdf.kernel.colors.Color itextBlue = new DeviceRgb(rgb[0], rgb[1], rgb[2]);
+
+                    colorValue = ContextCompat.getColor(context, R.color.white);
+                    rgb = new float[]{
+                            Color.red(colorValue) / 255f,
+                            Color.green(colorValue) / 255f,
+                            Color.blue(colorValue) / 255f
+                    };
+
+                    com.itextpdf.kernel.colors.Color itextWhite = new DeviceRgb(rgb[0], rgb[1], rgb[2]);
+
+                    Paragraph introText = new Paragraph(prevTask)
+                            .setTextAlignment(TextAlignment.CENTER)
+                            .setHorizontalAlignment(HorizontalAlignment.CENTER)
+                            .setFontSize(24).setCharacterSpacing(2f)
+                            .setBold()
+                            .setFontColor(itextBlack);
+                    document.add(introText);
+
+
+                    getDateNdTime();
+
+                    Paragraph date = new Paragraph(month + " " + day + "," + " " + year + " " + time)
+                            .setTextAlignment(TextAlignment.CENTER)
+                            .setHorizontalAlignment(HorizontalAlignment.CENTER)
+                            .setFontSize(15)
+                            .setCharacterSpacing(2f);
+
+                    document.add(date);
+
+
+                    String currency = settings.getCurrency();
+                    if (currency.equals("\u20A6")) {
+                        currency = "NGN";
+                    }
+
+                    PdfFont font = PdfFontFactory.createFont(StandardFonts.HELVETICA);
+
+
+                    int count = 2;
+                    if (settings.getIsShareQuantityDisabled().equals(UserSettings.NO_SHARE_QUANTITY_NOT_DISABLED)) {
+                        count = count + 2;
+                    }
+                    if (settings.getIsSharePriceDisabled().equals(UserSettings.NO_SHARE_PRICE_NOT_DISABLED)) {
+                        count = count + 1;
+                    }
+
+
+                    Table table = new Table(count);
+                    table.setWidth(UnitValue.createPercentValue(100));
+                    table.setMarginTop(20f);
+                    table.setFontSize(18f);
+                    table.setFontColor(itextBlack);
+
+                    table.addCell(new Cell().add(new Paragraph("NO")).setTextAlignment(TextAlignment.LEFT).setBold().setPaddingLeft(8f).setCharacterSpacing(1.5f).setFontColor(itextBlack));
+                    table.addCell(new Cell().add(new Paragraph("ITEM")).setTextAlignment(TextAlignment.LEFT).setBold().setPaddingLeft(8f).setCharacterSpacing(1.5f).setFontColor(itextBlack));
+
+
+                    if (settings.getIsShareQuantityDisabled().equals(UserSettings.NO_SHARE_QUANTITY_NOT_DISABLED)) {
+                        table.addCell(new Cell().add(new Paragraph("QUANTITY")).setTextAlignment(TextAlignment.CENTER).setBold().setCharacterSpacing(1.5f).setFontColor(itextBlack));
+                        table.addCell(new Cell().add(new Paragraph("UNIT")).setTextAlignment(TextAlignment.CENTER).setBold().setCharacterSpacing(1.5f).setFontColor(itextBlack));
+                    }
+
+                    if (settings.getIsSharePriceDisabled().equals(UserSettings.NO_SHARE_PRICE_NOT_DISABLED)) {
+                        table.addCell(new Cell().add(new Paragraph("PRICE" + "(" + currency + ")")).setTextAlignment(TextAlignment.CENTER).setBold().setCharacterSpacing(1.5f).setFontColor(itextBlack).setFont(font));
+                    }
+
+
+                    int num = 1;
+                    for (int p = 0; p < temp_favourites.size(); p++) {
+                        table.addCell(new Cell().add(new Paragraph(String.valueOf(num))).setTextAlignment(TextAlignment.LEFT).setPaddingLeft(8f));
+                        table.addCell(new Cell().add(new Paragraph(temp_favourites.get(p))).setTextAlignment(TextAlignment.LEFT).setPaddingLeft(8f));
+                        if (settings.getIsShareQuantityDisabled().equals(UserSettings.NO_SHARE_QUANTITY_NOT_DISABLED)) {
+                            table.addCell(new Cell().add(new Paragraph(temp_quantity_list.get(p))).setTextAlignment(TextAlignment.CENTER));
+                            table.addCell(new Cell().add(new Paragraph(unitCheck.get(p))).setTextAlignment(TextAlignment.CENTER));
+                        }
+                        if (settings.getIsSharePriceDisabled().equals(UserSettings.NO_SHARE_PRICE_NOT_DISABLED)) {
+                            table.addCell(new Cell().add(new Paragraph(temp_final_price_list.get(p))).setTextAlignment(TextAlignment.CENTER));
+                        }
+                        num = num + 1;
+                    }
+
+
+                    if (settings.getIsShareTotalDisabled().equals(UserSettings.NO_SHARE_TOTAL_NOT_DISABLED)) {
+
+
+                        if (count == 2) {
+
+                            table.addCell(new Cell(1, 1).add(new Paragraph("Total:")).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
+                            table.addCell(new Cell(1, 1).add(new Paragraph(currency + " " + formatNumberV3(total))).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
+
+                        } else if (count == 3) {
+                            table.addCell(new Cell(1, 1).add(new Paragraph("Total:")).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
+                            table.addCell(new Cell(1, 2).add(new Paragraph(currency + " " + formatNumberV3(total))).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
+
+
+                        } else if (count == 5) {
+                            table.addCell(new Cell(1, 2).add(new Paragraph("Total:")).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
+                            table.addCell(new Cell(1, 3).add(new Paragraph(currency + " " + formatNumberV3(total))).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
+
+                        }
+                    }
+
+                    document.add(table);
+
+
+                    Paragraph contact = new Paragraph("Contact us at:")
+                            .setTextAlignment(TextAlignment.CENTER)
+                            .setHorizontalAlignment(HorizontalAlignment.CENTER)
+                            .setFontSize(15)
+                            .setMarginTop(50f)
+                            .setCharacterSpacing(2f)
+                            .setFontColor(itextBlack);
+                    document.add(contact);
+
+                    Paragraph email = new Paragraph(getString(R.string.app_email))
+                            .setTextAlignment(TextAlignment.CENTER)
+                            .setHorizontalAlignment(HorizontalAlignment.CENTER)
+                            .setFontSize(15)
+                            .setCharacterSpacing(2f)
+                            .setBold()
+                            .setFontColor(itextBlue);
+                    document.add(email);
+
+
+                    Div dashedLine = new Div().setWidth(UnitValue.createPercentValue(100))
+                            .setBorderBottom(new DashedBorder(1f))
+                            .setMarginTop(20f);
+
+                    document.add(dashedLine);
+
+                    Paragraph close_text = new Paragraph("Improve your shopping experience with Buymate.")
+                            .setTextAlignment(TextAlignment.CENTER)
+                            .setHorizontalAlignment(HorizontalAlignment.CENTER)
+                            .setFontSize(15)
+                            .setCharacterSpacing(2f)
+                            .setMarginTop(20f)
+                            .setFontColor(itextBlack);
+                    document.add(close_text);
+
+                    document.close();
+                    progressBar.setVisibility(View.GONE);
+                    show_share_dialog.dismiss();
+                    Toast.makeText(context, "PDF downloaded to" + directory, Toast.LENGTH_LONG).show();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, 3000);
+    }
+
+    private void showShareOptionDialog(String temp_item) {
+
+        show_share_dialog = new Dialog(context);
+        show_share_dialog.setContentView(R.layout.custom_share_dialog);
+        show_share_dialog.getWindow().setBackgroundDrawable(context.getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
+        show_share_dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        progressBar = show_share_dialog.findViewById(R.id.progress_bar);
+
+        LinearLayout shareAsTextLayout = show_share_dialog.findViewById(R.id.textLayout);
+        LinearLayout shareAsPDFLayout = show_share_dialog.findViewById(R.id.pdfLayout);
+
+
+        shareAsTextLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showShareTextDialog();
+                show_share_dialog.dismiss();
+            }
+        });
+
+        shareAsPDFLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
+                showDownloadPdfDialog(temp_item);
+            }
+        });
+
+        TextView title = show_share_dialog.findViewById(R.id.title);
+        TextView title_2 = show_share_dialog.findViewById(R.id.title_2);
+        title_2.setText("(" + temp_item + ")");
+
+
+        TextView textText = show_share_dialog.findViewById(R.id.asText);
+        TextView pdfText = show_share_dialog.findViewById(R.id.asPDF);
+
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
+            title.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            title_2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            textText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            pdfText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+        }
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
+            title.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            title_2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            textText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            pdfText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+
+        }
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
+            title.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            title_2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            textText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            pdfText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+        }
+
+
+        show_share_dialog.show();
 
     }
 
@@ -2397,10 +2861,12 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                     }
                     res.close();
 
+                    File directory = new File(context.getFilesDir(), "Buymate_Images");
                     if (!total_url.contains(photo_url)) {
-                        FirebaseStorage storage = FirebaseStorage.getInstance();
-                        StorageReference storageReference = storage.getReference().child(photo_url);
-                        storageReference.delete();
+                        File imageFileToDelete = new File(directory, photo_url);
+                        if (imageFileToDelete.exists()) {
+                            imageFileToDelete.delete();
+                        }
                     }
                 }
 
@@ -2408,10 +2874,11 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                 category.remove(position);
                 itemFavourites.remove(position);
                 adapter.notifyDataSetChanged();
+                dialog.dismiss();
                 if (itemFavourites.isEmpty()) {
                     recyclerView.setVisibility(View.GONE);
                     emptyFavLayout.setVisibility(View.VISIBLE);
-                    favSumLayout.setVisibility(View.INVISIBLE);
+                    favSumLayout.setVisibility(View.GONE);
                 } else {
                     getSum();
                 }
@@ -2509,7 +2976,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
             totalItems.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-            total.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            total.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_text));
             subTotalText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             empty_text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             empty_text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
@@ -2520,7 +2987,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
             totalItems.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
-            total.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            total.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_max_text));
             subTotalText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             empty_text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             currency_textbox.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
@@ -2530,7 +2997,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
             totalItems.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-            total.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            total.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_max_max_text));
             subTotalText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             empty_text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             currency_textbox.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
@@ -2558,16 +3025,16 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
         String disables_swipe = sharedPreferences.getString(UserSettings.IS_SWIPE_DISABLED, UserSettings.NOT_DISABLED);
         settings.setIsSwipeDisabled(disables_swipe);
 
-        String is_price_disabled = sharedPreferences.getString(UserSettings.IS_SHARE_PRICE_DISABLED, UserSettings.YES_SHARE_PRICE_DISABLED);
+        String is_price_disabled = sharedPreferences.getString(UserSettings.IS_SHARE_PRICE_DISABLED, UserSettings.NO_SHARE_PRICE_NOT_DISABLED);
         settings.setIsSharePriceDisabled(is_price_disabled);
 
-        String is_quantity_disabled = sharedPreferences.getString(UserSettings.IS_SHARE_QUANTITY_DISABLED, UserSettings.YES_SHARE_QUANTITY_DISABLED);
+        String is_quantity_disabled = sharedPreferences.getString(UserSettings.IS_SHARE_QUANTITY_DISABLED, UserSettings.NO_SHARE_QUANTITY_NOT_DISABLED);
         settings.setIsShareQuantityDisabled(is_quantity_disabled);
 
-        String is_total_disabled = sharedPreferences.getString(UserSettings.IS_SHARE_TOTAL_DISABLED, UserSettings.YES_SHARE_TOTAL_DISABLED);
+        String is_total_disabled = sharedPreferences.getString(UserSettings.IS_SHARE_TOTAL_DISABLED, UserSettings.NO_SHARE_TOTAL_NOT_DISABLED);
         settings.setIsShareTotalDisabled(is_total_disabled);
 
-        String multiply_disabled = sharedPreferences.getString(UserSettings.IS_MULTIPLY_DISABLED, UserSettings.NO_MULTIPLY_NOT_DISABLED);
+        String multiply_disabled = sharedPreferences.getString(UserSettings.IS_MULTIPLY_DISABLED, UserSettings.YES_MULTIPLY_DISABLED);
         settings.setIsMultiplyDisabled(multiply_disabled);
 
         String FavEye_disabled = sharedPreferences.getString(UserSettings.IS_FAV_EYE_DISABLED, UserSettings.NO_FAV_EYE_NOT_DISABLED);
@@ -2584,6 +3051,9 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
 
         String lifetimePurchased = sharedPreferences.getString(UserSettings.IS_LIFETIME_PURCHASED, UserSettings.NO_LIFETIME_NOT_SUBSCRIBED);
         settings.setIsLifetimePurchased(lifetimePurchased);
+
+        String suggestion = sharedPreferences.getString(UserSettings.IS_SUGGESTION_DISABLED, UserSettings.NO_SUGGESTION_NOT_DISABLED);
+        settings.setIsSuggestionDisabled(suggestion);
 
         updateView();
     }

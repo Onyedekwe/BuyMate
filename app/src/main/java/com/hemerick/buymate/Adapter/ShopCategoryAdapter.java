@@ -27,7 +27,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.hemerick.buymate.Database.ShopDatabase;
 import com.hemerick.buymate.Database.UserSettings;
 import com.hemerick.buymate.HomeActivity;
+import com.hemerick.buymate.HomeFragment;
 import com.hemerick.buymate.R;
+import com.hemerick.buymate.Widget.ShoppingWidgetProviderConfigureActivity;
 
 import java.util.ArrayList;
 
@@ -43,13 +45,15 @@ public class ShopCategoryAdapter extends RecyclerView.Adapter<ShopCategoryAdapte
     private ArrayList<String> shop_id;
 
 
-    public ShopCategoryAdapter(Context context, UserSettings settings, ArrayList<String> shop_id, OnNoteListener onNoteListener) {
+    public ShopCategoryAdapter(Context context, UserSettings settings, ArrayList<String> shop_id, HomeFragment onNoteListener) {
         this.context = context;
         this.shop_id = shop_id;
         this.onNoteListener = onNoteListener;
         this.settings = settings;
         db = new ShopDatabase(context.getApplicationContext());
     }
+
+
 
     @SuppressLint("NotifyDataSetChanged")
     public void setFilterList(ArrayList<String> filterList) {
@@ -75,6 +79,9 @@ public class ShopCategoryAdapter extends RecyclerView.Adapter<ShopCategoryAdapte
         context.getTheme().resolveAttribute(android.R.attr.colorControlHighlight, typedValue, true);
         int shadowColor = typedValue.data;
 
+
+        context.getTheme().resolveAttribute(com.google.android.material.R.attr.backgroundColor, typedValue, true);
+        int backgroundColor = typedValue.data;
 
         context.getTheme().resolveAttribute(android.R.attr.color, typedValue, true);
         int shadowColor2 = typedValue.data;
@@ -120,11 +127,15 @@ public class ShopCategoryAdapter extends RecyclerView.Adapter<ShopCategoryAdapte
 
         if (isSelectAll) {
             holder.categoryCardView.setBackgroundColor(shadowColor);
-            holder.title_layout.setBackgroundColor(Color.TRANSPARENT);
+            holder.title_layout.setBackgroundColor(backgroundColor);
+            holder.title_layout.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_transparent_curved_rectangle));
+
         } else {
             if (selectList.contains(shop_id.get(position))) {
                 holder.categoryCardView.setBackgroundColor(shadowColor);
-                holder.title_layout.setBackgroundColor(Color.TRANSPARENT);
+                holder.title_layout.setBackgroundColor(backgroundColor);
+                holder.title_layout.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_transparent_curved_rectangle));
+
             } else {
                 holder.categoryCardView.setBackgroundColor(Color.TRANSPARENT);
                 holder.title_layout.setBackgroundColor(shadowColor2);
@@ -191,6 +202,8 @@ public class ShopCategoryAdapter extends RecyclerView.Adapter<ShopCategoryAdapte
         if (shop_id.isEmpty()) {
             Intent intent = new Intent(context, HomeActivity.class);
             context.startActivity(intent);
+        } else {
+            notifyDataSetChanged();
         }
     }
 
@@ -235,18 +248,18 @@ public class ShopCategoryAdapter extends RecyclerView.Adapter<ShopCategoryAdapte
             itemView.setOnLongClickListener(this);
 
             if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
-                category.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.small_text));
-                num.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.small_text));
+                category.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.medium_text));
+                num.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.mini_text));
             }
 
             if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
-                category.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.medium_text));
-                num.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.medium_text));
+                category.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.max_max_text));
+                num.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.maxi_text));
             }
 
             if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
-                category.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.large_text));
-                num.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.large_text));
+                category.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.max_max_max_text));
+                num.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.max_max_text));
             }
 
             options.setOnClickListener(new View.OnClickListener() {
@@ -265,6 +278,9 @@ public class ShopCategoryAdapter extends RecyclerView.Adapter<ShopCategoryAdapte
                 TypedValue typedValue = new TypedValue();
                 context.getTheme().resolveAttribute(android.R.attr.colorControlHighlight, typedValue, true);
                 int shadowColor = typedValue.data;
+
+                context.getTheme().resolveAttribute(com.google.android.material.R.attr.backgroundColor, typedValue, true);
+                int baColor = typedValue.data;
 
                 context.getTheme().resolveAttribute(android.R.attr.color, typedValue, true);
                 int shadowColor2 = typedValue.data;
@@ -285,7 +301,8 @@ public class ShopCategoryAdapter extends RecyclerView.Adapter<ShopCategoryAdapte
                     }
                 } else {
                     categoryCardView.setBackgroundColor(shadowColor);
-                    title_layout.setBackgroundColor(Color.TRANSPARENT);
+                    title_layout.setBackgroundColor(baColor);
+                    title_layout.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_transparent_curved_rectangle));
                     selectList.add(s);
                     ((AppCompatActivity) v.getContext()).supportInvalidateOptionsMenu();
 
