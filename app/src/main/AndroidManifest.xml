@@ -51,6 +51,15 @@
             android:name=".AboutActivity"
             android:exported="false" />
         <activity
+            android:name=".ItemSuggestionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AcknowledgmentsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AboutActivity"
+            android:exported="false" />
+        <activity
             android:name=".PaymentSuccessfulActivity"
             android:exported="false" />
         <activity
