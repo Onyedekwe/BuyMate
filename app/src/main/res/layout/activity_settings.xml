@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
-                app:navigationIcon="@drawable/final_back_icon"
+                app:navigationIcon="@drawable/final_regular_back_icon"
                 app:title="@string/settingsToolbar" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -82,7 +82,7 @@
                         android:layout_gravity="end"
                         android:layout_marginStart="22dp"
                         android:contentDescription="@string/darkMode_icon_content_description"
-                        android:src="@drawable/final_night_icon"
+                        android:src="@drawable/final_regular_night_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -110,7 +110,7 @@
                         android:layout_gravity="center"
                         android:layout_marginEnd="30dp"
                         android:contentDescription="@string/open_icon_content_description"
-                        android:src="@drawable/final_open_icon"
+                        android:src="@drawable/final_regular_open_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -130,12 +130,12 @@
 
                     <ImageView
                         android:id="@+id/screen_icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_gravity="end"
-                        android:layout_marginStart="20dp"
+                        android:layout_marginStart="19dp"
                         android:contentDescription="@string/keepScreenBright_icon_content_description"
-                        android:src="@drawable/final_screen_bright_icon"
+                        android:src="@drawable/final_regular_screen_bright_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -190,7 +190,7 @@
                         android:layout_gravity="end"
                         android:layout_marginStart="20dp"
                         android:contentDescription="@string/textSize_icon_content_description"
-                        android:src="@drawable/final_text_size_icon"
+                        android:src="@drawable/final_regular_text_size_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -217,7 +217,7 @@
                         android:layout_gravity="center"
                         android:layout_marginEnd="30dp"
                         android:contentDescription="@string/open_icon_content_description"
-                        android:src="@drawable/final_open_icon"
+                        android:src="@drawable/final_regular_open_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -296,7 +296,7 @@
                         android:layout_gravity="center"
                         android:layout_marginEnd="25dp"
                         android:contentDescription="@string/open_icon_content_description"
-                        android:src="@drawable/final_diamond_filled_icon"
+                        android:src="@drawable/final_regular_diamond_filled_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -341,7 +341,7 @@
                         android:layout_gravity="end"
                         android:layout_marginStart="20dp"
                         android:contentDescription="@string/account_icon_content_description"
-                        android:src="@drawable/final_strike_through_icon"
+                        android:src="@drawable/final_regular_strike_through_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -368,7 +368,7 @@
                         android:layout_gravity="center"
                         android:layout_marginEnd="30dp"
                         android:contentDescription="@string/open_icon_content_description"
-                        android:src="@drawable/final_open_icon"
+                        android:src="@drawable/final_regular_open_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -394,7 +394,7 @@
                         android:layout_gravity="end"
                         android:layout_marginStart="20dp"
                         android:contentDescription="@string/textSize_icon_content_description"
-                        android:src="@drawable/final_wallet_icon"
+                        android:src="@drawable/final_regular_credit_card_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -448,7 +448,7 @@
                         android:layout_gravity="end"
                         android:layout_marginStart="20dp"
                         android:contentDescription="@string/textSize_icon_content_description"
-                        android:src="@drawable/final_suggestion_icon"
+                        android:src="@drawable/final_regular_suggestion_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -482,7 +482,7 @@
                         android:layout_gravity="center"
                         android:layout_marginEnd="30dp"
                         android:contentDescription="@string/open_icon_content_description"
-                        android:src="@drawable/final_open_icon"
+                        android:src="@drawable/final_regular_open_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -502,12 +502,12 @@
 
                     <ImageView
                         android:id="@+id/multiply_icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_gravity="end"
                         android:layout_marginStart="20dp"
                         android:contentDescription="@string/textSize_icon_content_description"
-                        android:src="@drawable/final_multiply_icon"
+                        android:src="@drawable/final_regular_multiply_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -573,12 +573,12 @@
 
                     <ImageView
                         android:id="@+id/swipeAction_icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="23dp"
+                        android:layout_height="23dp"
                         android:layout_gravity="end"
-                        android:layout_marginStart="20dp"
+                        android:layout_marginStart="21dp"
                         android:contentDescription="@string/lock_icon_content_description"
-                        android:src="@drawable/final_swipe_icon"
+                        android:src="@drawable/final_regular_swipe_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -629,7 +629,7 @@
                         android:layout_gravity="center"
                         android:layout_marginEnd="30dp"
                         android:contentDescription="@string/open_icon_content_description"
-                        android:src="@drawable/final_open_icon"
+                        android:src="@drawable/final_regular_open_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -652,12 +652,12 @@
 
                     <ImageView
                         android:id="@+id/detailedListShare_icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
                         android:layout_gravity="end"
-                        android:layout_marginStart="20dp"
+                        android:layout_marginStart="23dp"
                         android:contentDescription="@string/lock_icon_content_description"
-                        android:src="@drawable/final_receipt_icon"
+                        android:src="@drawable/final_regular_share_options_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -701,7 +701,7 @@
                         android:layout_gravity="center"
                         android:layout_marginEnd="30dp"
                         android:contentDescription="@string/open_icon_content_description"
-                        android:src="@drawable/final_open_icon"
+                        android:src="@drawable/final_regular_open_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -724,12 +724,12 @@
 
                     <ImageView
                         android:id="@+id/currency_icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="27dp"
+                        android:layout_height="27dp"
                         android:layout_gravity="end"
                         android:layout_marginStart="20dp"
                         android:contentDescription="@string/lock_icon_content_description"
-                        android:src="@drawable/final_dollar_icon"
+                        android:src="@drawable/final_regular_currency_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -773,7 +773,7 @@
                         android:layout_gravity="center"
                         android:layout_marginEnd="30dp"
                         android:contentDescription="@string/open_icon_content_description"
-                        android:src="@drawable/final_open_icon"
+                        android:src="@drawable/final_regular_open_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -813,9 +813,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
-                        android:layout_marginStart="20dp"
+                        android:layout_marginStart="21dp"
                         android:contentDescription="@string/lock_icon_content_description"
-                        android:src="@drawable/final_lock_icon"
+                        android:src="@drawable/final_regular_lock_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -842,7 +842,7 @@
                         android:layout_gravity="center"
                         android:layout_marginEnd="30dp"
                         android:contentDescription="@string/open_icon_content_description"
-                        android:src="@drawable/final_open_icon"
+                        android:src="@drawable/final_regular_open_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />

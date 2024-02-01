@@ -67,7 +67,7 @@
             android:layout_height="60dp"
             android:background="?attr/backgroundColor"
             android:contentDescription="@string/price_update_popup_done_icon_content_description"
-            android:src="@drawable/final_done_all_icon" />
+            android:src="@drawable/final_regular_done_all_icon" />
 
     </LinearLayout>
 

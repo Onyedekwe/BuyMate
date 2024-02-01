@@ -45,7 +45,7 @@
                 android:layout_height="37dp"
                 android:layout_gravity="center"
                 android:contentDescription="@string/edit_item_copy_icon_content_description"
-                android:src="@drawable/final_image_icon">
+                android:src="@drawable/final_regular_image_icon">
 
             </ImageView>
 
@@ -66,7 +66,7 @@
             android:layout_height="20dp"
             android:layout_gravity="center"
             android:layout_marginEnd="10dp"
-            android:src="@drawable/final_diamond_filled_icon" />
+            android:src="@drawable/final_regular_diamond_filled_icon" />
     </LinearLayout>
 
     <LinearLayout
@@ -85,7 +85,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:contentDescription="@string/edit_item_rename_icon_content_description"
-            android:src="@drawable/final_rename_icon">
+            android:src="@drawable/final_regular_rename_icon">
 
         </ImageView>
 
@@ -116,7 +116,7 @@
             android:layout_height="37dp"
             android:layout_gravity="center"
             android:contentDescription="@string/edit_item_copy_icon_content_description"
-            android:src="@drawable/final_copy_icon">
+            android:src="@drawable/final_regular_copy_icon">
 
         </ImageView>
 
@@ -147,7 +147,7 @@
             android:layout_height="37dp"
             android:layout_gravity="center"
             android:contentDescription="@string/edit_item_move_icon_content_description"
-            android:src="@drawable/final_move_icon">
+            android:src="@drawable/final_regular_move_icon">
 
         </ImageView>
 
@@ -178,7 +178,7 @@
             android:layout_height="37dp"
             android:layout_gravity="center"
             android:contentDescription="@string/edit_item_price_icon_content_description"
-            android:src="@drawable/final_credit_card_icon">
+            android:src="@drawable/final_regular_credit_card_icon">
 
         </ImageView>
 
@@ -210,7 +210,7 @@
             android:layout_height="37dp"
             android:layout_gravity="center"
             android:contentDescription="@string/edit_item_quantity_icon_content_description"
-            android:src="@drawable/final_shopping_basket_icon">
+            android:src="@drawable/final_regular_quantity_icon">
 
         </ImageView>
 
@@ -242,7 +242,7 @@
             android:layout_height="37dp"
             android:layout_gravity="center"
             android:contentDescription="@string/edit_item_favourites_icon_content_description"
-            android:src="@drawable/final_star_icon">
+            android:src="@drawable/final_regular_star_icon">
 
         </ImageView>
 
@@ -273,7 +273,7 @@
             android:layout_height="37dp"
             android:layout_gravity="center"
             android:contentDescription="@string/edit_item_delete_icon_content_description"
-            android:src="@drawable/final_trash_icon">
+            android:src="@drawable/final_regular_trash_icon">
 
         </ImageView>
 
@@ -304,7 +304,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:contentDescription="@string/edit_item_information_icon_content_description"
-            android:src="@drawable/final_info_circle_icon">
+            android:src="@drawable/final_regular_info_circle_icon">
 
         </ImageView>
 

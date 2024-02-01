@@ -41,6 +41,8 @@
                     android:layout_marginStart="7dp"
                     android:gravity="center"
                     android:text="@string/app_name"
+                    android:letterSpacing="0"
+                    android:fontFamily="@font/lexend"
                     android:textColor="?attr/colorSecondaryVariant"
                     android:textSize="30sp"
                     android:textStyle="bold" />
@@ -230,7 +232,7 @@
                         android:layout_height="20dp"
                         android:layout_margin="10dp"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/final_google_icon" />
+                        android:src="@drawable/final_regular_google_icon" />
 
                     <TextView
                         android:id="@+id/googleText"

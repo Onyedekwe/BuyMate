@@ -21,7 +21,6 @@ public class ShopDatabase extends SQLiteOpenHelper {
         db.execSQL("create Table NoteTable(_id INTEGER primary key autoincrement,heading TEXT, content TEXT, date TEXT)");
         db.execSQL("create Table SuggestTable(_id INTEGER primary key autoincrement, itemName TEXT)");
         db.execSQL("create Table SuggestUnitTable(_id INTEGER primary key autoincrement, itemUnit TEXT)");
-        db.execSQL("create Table PhotoUrlTable(_id INTEGER primary key autoincrement, photoUrl TEXT)");
     }
 
     @Override
@@ -78,13 +77,7 @@ public class ShopDatabase extends SQLiteOpenHelper {
         return result != -1;
     }
 
-    public boolean insertPhotoUrl(String photoUrl) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("photoUrl", photoUrl);
-        long result = db.insert("PhotoUrlTable", null, contentValues);
-        return result != -1;
-    }
+
 
 
     public boolean updateItem(String category, String description, String temp_description) {
@@ -225,14 +218,6 @@ public class ShopDatabase extends SQLiteOpenHelper {
     }
 
 
-    public void deletePhotoUrl(String photoUrl) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        @SuppressLint("Recycle") Cursor cursor = db.rawQuery("select * from PhotoUrlTable where photoUrl = ?", new String[]{photoUrl});
-        if (cursor.getCount() > 0) {
-            long result = db.delete("PhotoUrlTable", "photoUrl = ?", new String[]{photoUrl});
-            db.close();
-        }
-    }
 
 
     public void deleteAllList() {
@@ -296,11 +281,6 @@ public class ShopDatabase extends SQLiteOpenHelper {
     public Cursor getSuggestUnit() {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.rawQuery("SELECT * FROM SuggestUnitTable ", null);
-    }
-
-    public Cursor getPhotoUrl() {
-        SQLiteDatabase db = this.getWritableDatabase();
-        return db.rawQuery("SELECT * FROM PhotoUrlTable ", null);
     }
 
 

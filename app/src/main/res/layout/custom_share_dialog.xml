@@ -79,7 +79,7 @@
                 android:layout_height="37dp"
                 android:layout_gravity="center"
                 android:contentDescription="@string/edit_item_copy_icon_content_description"
-                android:src="@drawable/final_share_text_icon">
+                android:src="@drawable/final_regular_share_text_icon">
 
             </ImageView>
 
@@ -117,7 +117,7 @@
                 android:layout_height="37dp"
                 android:layout_gravity="center"
                 android:contentDescription="@string/edit_item_copy_icon_content_description"
-                android:src="@drawable/final_share_pdf_icon">
+                android:src="@drawable/final_regular_share_pdf_icon">
 
             </ImageView>
 

@@ -17,7 +17,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/final_back_icon"
+        app:navigationIcon="@drawable/final_regular_back_icon"
         app:title="Premium"
         app:titleTextColor="?attr/textFillColor" />
 
@@ -49,9 +49,8 @@
                 android:id="@+id/header"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:fontFamily="@font/lexend"
                 android:gravity="center"
-                android:text="Buymate premium gives you access to:"
+                android:text="Purchasing premium gives you access to:"
                 android:textAlignment="center"
                 android:layout_marginHorizontal="50dp"
                 android:textColor="?attr/textFillColor"

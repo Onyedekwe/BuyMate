@@ -277,7 +277,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                     editor.putString(UserSettings.IS_FAV_EYE_DISABLED, settings.getIsFavEyeDisabled());
                     editor.apply();
                     getSum();
-                    eyeView.setImageResource(R.drawable.final_eye);
+                    eyeView.setImageResource(R.drawable.final_regular_eye);
 
                 } else {
                     settings.setIsFavEyeDisabled(UserSettings.YES_FAV_EYE_DISABLED);
@@ -286,7 +286,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                     editor.apply();
                     getSum();
 
-                    eyeView.setImageResource(R.drawable.final_eye_slash);
+                    eyeView.setImageResource(R.drawable.final_regular_eye_slash_icon);
 
                 }
 
@@ -406,10 +406,10 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                 int visibility_status = price_quantity_layout.getVisibility();
                 if (visibility_status == View.GONE) {
                     price_quantity_layout.setVisibility(View.VISIBLE);
-                    more_image.setImageResource(R.drawable.final_arrow_drop_down_icon);
+                    more_image.setImageResource(R.drawable.final_regular_arrow_drop_down_icon);
                 } else if (visibility_status == View.VISIBLE) {
                     price_quantity_layout.setVisibility(View.GONE);
-                    more_image.setImageResource(R.drawable.final_arrow_drop_up_icon);
+                    more_image.setImageResource(R.drawable.final_regular_arrow_drop_up_icon);
                 }
             }
         });
@@ -881,7 +881,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
             recyclerView.setVisibility(View.GONE);
             emptyFavLayout.setVisibility(View.VISIBLE);
             favSumLayout.setVisibility(View.GONE);
-
+            ((AppCompatActivity) getContext()).supportInvalidateOptionsMenu();
 
         } else {
             getSum();
@@ -1077,9 +1077,9 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
         res.close();
 
         if (temp_fav == 1) {
-            favouritesIcon.setImageResource(R.drawable.final_favourites_colored_icon);
+            favouritesIcon.setImageResource(R.drawable.final_regular_favourites_colored_icon);
         } else {
-            favouritesIcon.setImageResource(R.drawable.final_star_icon);
+            favouritesIcon.setImageResource(R.drawable.final_regular_star_icon);
         }
 
         String finalPhotourl = photourl;
@@ -1163,13 +1163,13 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                 res.close();
 
                 if (temp_fav == 1) {
-                    favouritesIcon.setImageResource(R.drawable.final_star_icon);
+                    favouritesIcon.setImageResource(R.drawable.final_regular_star_icon);
                     db.updateFavourites(category.get(position), temp, 0);
                     Toast.makeText(context, R.string.removed_from_starred, Toast.LENGTH_SHORT).show();
-                    adapter.notifyItemChanged(position);
+
 
                 } else {
-                    favouritesIcon.setImageResource(R.drawable.final_favourites_colored_icon);
+                    favouritesIcon.setImageResource(R.drawable.final_regular_favourites_colored_icon);
                     db.updateFavourites(category.get(position), temp, 1);
                     Toast.makeText(context, R.string.added_to_starred, Toast.LENGTH_SHORT).show();
                 }
@@ -1258,8 +1258,9 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
             @Override
             public void onDismiss(DialogInterface dialog) {
                 db.updateQuantity(category.get(position), temp, quantity.getText().toString().trim(), unit.getText().toString().trim());
+                displayData();
                 adapter.notifyDataSetChanged();
-                getSum();
+
             }
         });
 
@@ -1278,7 +1279,6 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
         dialog.setContentView(R.layout.edit_item_layout);
 
         LinearLayout addImageLayout = dialog.findViewById(R.id.addImage);
-        ImageView addImagePremiumIcon = dialog.findViewById(R.id.add_image_premium_icon);
         LinearLayout renameLayout = dialog.findViewById(R.id.editName);
         LinearLayout copyLayout = dialog.findViewById(R.id.copy);
         copyLayout.setVisibility(View.GONE);
@@ -1362,9 +1362,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
             addImageText.setText("Update image");
         }
 
-        if (settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)) {
-            addImagePremiumIcon.setVisibility(View.INVISIBLE);
-        }
+
 
         addImageLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1417,7 +1415,8 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                     if (itemFavourites.isEmpty()) {
                         recyclerView.setVisibility(View.GONE);
                         emptyFavLayout.setVisibility(View.VISIBLE);
-                        favSumLayout.setVisibility(View.INVISIBLE);
+                        favSumLayout.setVisibility(View.GONE);
+                        ((AppCompatActivity) getContext()).supportInvalidateOptionsMenu();
                     } else {
                         getSum();
                     }
@@ -1473,18 +1472,15 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
             @Override
             public void onClick(View v) {
 
-                if (settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)) {
-                    dialog.dismiss();
                     FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                    if (firebaseUser != null) {
-                        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    dialog.dismiss();
+                if (firebaseUser != null) {
+                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                         startActivityForResult(cameraIntent, CAMERA_REQUEST);
                     } else {
-                        StyleableToast.makeText(context, "You must be logged in to add images", R.style.custom_toast_2).show();
+                    StyleableToast.makeText(context, "You must be logged in to add images", R.style.custom_toast_2).show();
                     }
-                } else {
-                    showUpgradeRequiredDialog();
-                }
+
 
             }
         });
@@ -1492,9 +1488,9 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
         uploadPictureLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)) {
-                    dialog.dismiss();
+
                     FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                    dialog.dismiss();
                     if (firebaseUser != null) {
                         Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
                         galleryIntent.setType("image/*");
@@ -1502,9 +1498,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                     } else {
                         StyleableToast.makeText(context, "You must be logged in to add images", R.style.custom_toast_2).show();
                     }
-                } else {
-                    showUpgradeRequiredDialog();
-                }
+
             }
         });
 
@@ -1586,7 +1580,6 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                         }
 
                         db.updatePhoto(temp_category, temp_item, path);
-                        db.insertPhotoUrl(path);
 
                         ArrayList<String> total_url = new ArrayList<>();
 
@@ -1659,7 +1652,6 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                             }
 
                             db.updatePhoto(temp_category, temp_item, path);
-                            db.insertPhotoUrl(path);
 
                             ArrayList<String> total_url = new ArrayList<>();
 
@@ -3006,9 +2998,9 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
         }
 
         if (settings.getIsFavEyeDisabled().equals(UserSettings.NO_FAV_EYE_NOT_DISABLED)) {
-            eyeView.setImageResource(R.drawable.final_eye);
+            eyeView.setImageResource(R.drawable.final_regular_eye);
         } else if (settings.getIsFavEyeDisabled().equals(UserSettings.YES_FAV_EYE_DISABLED)) {
-            eyeView.setImageResource(R.drawable.final_eye_slash);
+            eyeView.setImageResource(R.drawable.final_regular_eye_slash_icon);
         }
 
         currency_textbox.setText(settings.getCurrency());

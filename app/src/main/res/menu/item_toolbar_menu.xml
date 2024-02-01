@@ -5,7 +5,7 @@
 
     <item
         android:id="@+id/search"
-        android:icon="@drawable/final_search_icon"
+        android:icon="@drawable/final_regular_search_icon"
         android:title="@string/item_toolbar_search_text"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="always" />
@@ -14,7 +14,7 @@
         android:id="@+id/voice"
         android:title="Voice typinc"
         app:showAsAction="always"
-        android:icon="@drawable/final_voice_icon"/>
+        android:icon="@drawable/final_regular_voice_icon"/>
 
     <item
         android:id="@+id/rename"

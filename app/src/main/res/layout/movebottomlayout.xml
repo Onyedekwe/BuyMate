@@ -34,7 +34,7 @@
         app:iconifiedByDefault="false"
         app:queryBackground="@android:color/transparent"
         app:queryHint="@string/fragment_home_search_view_hint"
-        app:searchIcon="@drawable/final_search_icon_2" />
+        app:searchIcon="@drawable/final_regular_search_icon_2" />
 
     <Button
         android:id="@+id/create_new_list"

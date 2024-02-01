@@ -147,7 +147,8 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
     TextView emptyText1;
     TextView emptyText2;
     TextView emptyText3;
-    ImageView sortBy;
+    LinearLayout sortBy;
+    TextView sortByText;
     TextView pageDescriptionText;
     DrawerLayout drawerLayout;
     NavigationView navigationView;
@@ -299,7 +300,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         appBarLayout = rootView.findViewById(R.id.app_bar);
         collapsingToolbarLayout = rootView.findViewById(R.id.collapsing_Toolbar);
         toolBarText_2 = rootView.findViewById(R.id.toolbar_text_2);
-        toolbar.setNavigationIcon(R.drawable.final_nav_menu_icon);
+        toolbar.setNavigationIcon(R.drawable.final_regular_nav_menu_icon);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -367,6 +368,8 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                 showSortByDialog();
             }
         });
+
+        sortByText = rootView.findViewById(R.id.sortBy_text);
         db = new ShopDatabase(context);
 
         category_list = new ArrayList<>();
@@ -402,16 +405,8 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         recyclerLayoutIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 boolean isGridEnabled = UserSettings.isGridLockEnabled(getContext());
-                if (isGridEnabled) {
-                    UserSettings.setGridLayoutEnabled(getContext(), false);
-                    recyclerLayoutIcon.setImageResource(R.drawable.final_grid_icon);
-                } else {
-                    UserSettings.setGridLayoutEnabled(getContext(), true);
-                    recyclerLayoutIcon.setImageResource(R.drawable.final_linear_icon);
-                }
+                UserSettings.setGridLayoutEnabled(getContext(), !isGridEnabled);
 
                 updateRecyclerView();
 
@@ -476,9 +471,9 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                 Collections.sort(category_list);
             } else if (settings.getCustomCategorySort().equals(UserSettings.NAME_DESCENDING)) {
                 Collections.sort(category_list, Collections.reverseOrder());
-            }else if(settings.getCustomCategorySort().equals(UserSettings.DATE_DESCENDING)){
-               Collections.reverse(category_list);
-            }else if (settings.getCustomCategorySort().equals(UserSettings.PRICE_ASCENDING)) {
+            } else if (settings.getCustomCategorySort().equals(UserSettings.DATE_DESCENDING)) {
+                Collections.reverse(category_list);
+            } else if (settings.getCustomCategorySort().equals(UserSettings.PRICE_ASCENDING)) {
                 ArrayList<Integer> intValuesOfCategoryList = new ArrayList<>();
                 for (String item : category_list) {
                     ArrayList<String> intTempCount = new ArrayList<>();
@@ -701,38 +696,15 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         } else {
             collapsingToolbarLayout.setTitle(getString(R.string.app_name));
 
-            if (!settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)) {
-                inflater.inflate(R.menu.category_toolbar_menu, menu);
-                menu.findItem(R.id.ads).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(@NonNull MenuItem item) {
-                        Intent intent = new Intent(context, PremiumActivity.class);
-                        startActivity(intent);
-                        return true;
-                    }
-                });
-
-                menu.findItem(R.id.setting).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(@NonNull MenuItem item) {
-                        Intent intent = new Intent(context, SettingsActivity.class);
-                        startActivity(intent);
-                        return true;
-                    }
-                });
-            } else {
-                inflater.inflate(R.menu.category_toolbar_subscribed_menu, menu);
-
-
-                menu.findItem(R.id.setting).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(@NonNull MenuItem item) {
-                        Intent intent = new Intent(context, SettingsActivity.class);
-                        startActivity(intent);
-                        return true;
-                    }
-                });
-            }
+            inflater.inflate(R.menu.category_toolbar_menu, menu);
+            menu.findItem(R.id.setting).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(@NonNull MenuItem item) {
+                    Intent intent = new Intent(context, SettingsActivity.class);
+                    startActivity(intent);
+                    return true;
+                }
+            });
 
         }
         super.onCreateOptionsMenu(menu, inflater);
@@ -839,10 +811,10 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                 int visibility_status = price_quantity_layout.getVisibility();
                 if (visibility_status == View.GONE) {
                     price_quantity_layout.setVisibility(View.VISIBLE);
-                    more_image.setImageResource(R.drawable.final_arrow_drop_down_icon);
+                    more_image.setImageResource(R.drawable.final_regular_arrow_drop_down_icon);
                 } else if (visibility_status == View.VISIBLE) {
                     price_quantity_layout.setVisibility(View.GONE);
-                    more_image.setImageResource(R.drawable.final_arrow_drop_up_icon);
+                    more_image.setImageResource(R.drawable.final_regular_arrow_drop_up_icon);
                 }
             }
         });
@@ -2240,11 +2212,9 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         boolean isGridEnabled = UserSettings.isGridLockEnabled(getContext());
         if (isGridEnabled) {
             recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-            recyclerLayoutIcon.setImageResource(R.drawable.final_linear_icon);
 
         } else {
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            recyclerLayoutIcon.setImageResource(R.drawable.final_grid_icon);
         }
 
         recyclerView.setAdapter(adapter);
@@ -2330,6 +2300,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
             emptyText2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             emptyText3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             empty_create_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            sortByText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.mini_text));
             toolBarText_2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
         }
 
@@ -2341,6 +2312,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
             emptyText2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             emptyText3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             empty_create_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            sortByText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             toolBarText_2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_text));
         }
 
@@ -2352,6 +2324,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
             emptyText2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             emptyText3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             empty_create_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            sortByText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
             toolBarText_2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_max_text));
 
 

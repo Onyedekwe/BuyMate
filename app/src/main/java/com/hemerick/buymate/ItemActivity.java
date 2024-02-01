@@ -286,7 +286,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                     editor.putString(UserSettings.IS_ITEM_EYE_DISABLED, settings.getIsItemEyeDisabled());
                     editor.apply();
                     getsum();
-                    eyeView.setImageResource(R.drawable.final_eye);
+                    eyeView.setImageResource(R.drawable.final_regular_eye);
 
                 } else {
                     settings.setIsItemEyeDisabled(UserSettings.YES_ITEM_EYE_DISABLED);
@@ -295,7 +295,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                     editor.apply();
                     getsum();
 
-                    eyeView.setImageResource(R.drawable.final_eye_slash);
+                    eyeView.setImageResource(R.drawable.final_regular_eye_slash_icon);
 
                 }
 
@@ -1118,10 +1118,10 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                 int visibility_status = price_quantity_layout.getVisibility();
                 if (visibility_status == View.GONE) {
                     price_quantity_layout.setVisibility(View.VISIBLE);
-                    more_image.setImageResource(R.drawable.final_arrow_drop_down_icon);
+                    more_image.setImageResource(R.drawable.final_regular_arrow_drop_down_icon);
                 } else if (visibility_status == View.VISIBLE) {
                     price_quantity_layout.setVisibility(View.GONE);
-                    more_image.setImageResource(R.drawable.final_arrow_drop_up_icon);
+                    more_image.setImageResource(R.drawable.final_regular_arrow_drop_up_icon);
                 }
             }
         });
@@ -1215,6 +1215,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             db.insertSuggestUnit(unit);
         }
 
+
     }
 
     public void showEditDialog(String prevTask, int position) {
@@ -1225,7 +1226,6 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
 
         LinearLayout addImageLayout = edit_dialog.findViewById(R.id.addImage);
-        ImageView addImagePremiumIcon = edit_dialog.findViewById(R.id.add_image_premium_icon);
         LinearLayout renameLayout = edit_dialog.findViewById(R.id.editName);
         LinearLayout copyLayout = edit_dialog.findViewById(R.id.copy);
         LinearLayout moveLayout = edit_dialog.findViewById(R.id.move);
@@ -1307,9 +1307,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             addImageText.setText("Update image");
         }
 
-        if (settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)) {
-            addImagePremiumIcon.setVisibility(View.INVISIBLE);
-        }
+
         //end of configuration
 
         addImageLayout.setOnClickListener(new View.OnClickListener() {
@@ -1431,30 +1429,23 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         takePictureLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)) {
-                    add_image_dialog.dismiss();
-                    FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                    if (firebaseUser != null) {
-                        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                add_image_dialog.dismiss();
+                if (firebaseUser != null) {
+                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                         startActivityForResult(cameraIntent, CAMERA_REQUEST);
                     } else {
-                        StyleableToast.makeText(ItemActivity.this, "You must be logged in to add images", R.style.custom_toast_2).show();
+                    StyleableToast.makeText(ItemActivity.this, "You must be logged in to add images", R.style.custom_toast_2).show();
                     }
-
-                } else {
-                    showUpgradeRequiredDialog();
                 }
-
-            }
         });
 
         uploadPictureLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)) {
-                    add_image_dialog.dismiss();
                     FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                    add_image_dialog.dismiss();
                     if (firebaseUser != null) {
                         Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
                         galleryIntent.setType("image/*");
@@ -1462,9 +1453,6 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                     } else {
                         StyleableToast.makeText(ItemActivity.this, "You must be logged in to add images", R.style.custom_toast_2).show();
                     }
-                } else {
-                    showUpgradeRequiredDialog();
-                }
             }
         });
 
@@ -1551,7 +1539,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                         }
 
                         db.updatePhoto(category, temp_item, path);
-                        db.insertPhotoUrl(path);
+
 
 
                         ArrayList<String> total_url = new ArrayList<>();
@@ -1624,7 +1612,6 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                             }
 
                             db.updatePhoto(category, temp_item, path);
-                            db.insertPhotoUrl(path);
 
                             ArrayList<String> total_url = new ArrayList<>();
 
@@ -2106,9 +2093,9 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         res.close();
 
         if (temp_fav == 1) {
-            favouritesIcon.setImageResource(R.drawable.final_favourites_colored_icon);
+            favouritesIcon.setImageResource(R.drawable.final_regular_favourites_colored_icon);
         } else {
-            favouritesIcon.setImageResource(R.drawable.final_star_icon);
+            favouritesIcon.setImageResource(R.drawable.final_regular_star_icon);
         }
 
         String finalPhotourl = photourl;
@@ -2190,12 +2177,12 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                 res.close();
 
                 if (temp_fav == 1) {
-                    favouritesIcon.setImageResource(R.drawable.final_star_icon);
+                    favouritesIcon.setImageResource(R.drawable.final_regular_star_icon);
                     db.updateFavourites(category, temp, 0);
                     Toast.makeText(getApplicationContext(), R.string.removed_from_starred, Toast.LENGTH_SHORT).show();
 
                 } else {
-                    favouritesIcon.setImageResource(R.drawable.final_favourites_colored_icon);
+                    favouritesIcon.setImageResource(R.drawable.final_regular_favourites_colored_icon);
                     db.updateFavourites(category, temp, 1);
                     Toast.makeText(getApplicationContext(), R.string.added_to_starred, Toast.LENGTH_SHORT).show();
                 }
@@ -3795,9 +3782,9 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         }
 
         if (settings.getIsItemEyeDisabled().equals(UserSettings.NO_ITEM_EYE_NOT_DISABLED)) {
-            eyeView.setImageResource(R.drawable.final_eye);
+            eyeView.setImageResource(R.drawable.final_regular_eye);
         } else if (settings.getIsItemEyeDisabled().equals(UserSettings.YES_ITEM_EYE_DISABLED)) {
-            eyeView.setImageResource(R.drawable.final_eye_slash);
+            eyeView.setImageResource(R.drawable.final_regular_eye_slash_icon);
         }
 
         currency_textbox.setText(settings.getCurrency());
@@ -3886,8 +3873,8 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                 wakeLock.acquire();
             }
         }
-        //  displayData();
-        //  shopItemAdapter.notifyDataSetChanged();
+        displayData();
+        shopItemAdapter.notifyDataSetChanged();
     }
 
     private void filterList(String text) {

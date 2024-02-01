@@ -161,7 +161,7 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.MyView
                 holder.itemImage.setPadding(0, 0, 0, 0);
 
             } else {
-                holder.itemImage.setImageResource(R.drawable.final_add_photo_text_icon);
+                holder.itemImage.setImageResource(R.drawable.final_regular_add_photo_text_icon);
                 holder.itemImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 holder.itemImage.setPadding(10, 0, 10, 0);
                 holder.itemImage.setBackgroundColor(backgroundColor);
@@ -204,7 +204,7 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.MyView
         }
         res.close();
         if (fav == 1) {
-            newIconResource = R.drawable.final_favourites_colored_icon;
+            newIconResource = R.drawable.final_regular_favourites_colored_icon;
 
         }
         return newIconResource;
@@ -346,6 +346,8 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.MyView
 
             currencyBox.setText(settings.getCurrency());
 
+
+
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -364,8 +366,11 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.MyView
                     ((AppCompatActivity) context).supportInvalidateOptionsMenu();
                     itemActivity.getsum();
 
+
                 }
             });
+
+
 
             options.setOnClickListener(new View.OnClickListener() {
                 @Override

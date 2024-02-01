@@ -1,18 +1,13 @@
 package com.hemerick.buymate.Widget;
 
 
-import static com.hemerick.buymate.Widget.ShoppingWidgetProvider.EXTRA_ITEM_POSITION;
-
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.graphics.Paint;
-import android.os.Bundle;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
-import android.widget.TextView;
 
 import com.hemerick.buymate.Database.ShopDatabase;
 import com.hemerick.buymate.R;
@@ -25,14 +20,12 @@ public class ShoppingWidgetService extends RemoteViewsService {
     public static final String SHARED_PRES = "prefs";
     public static final String KEY_BUTTON_TEXT = "keyButtonText";
 
-    private final int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
     String buttonText;
-
 
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        return new ShoppingWidgetItemFactory(this.getApplicationContext(), intent);
+        return new ShoppingWidgetItemFactory(this, intent);
     }
 
     class ShoppingWidgetItemFactory implements RemoteViewsService.RemoteViewsFactory {
@@ -40,9 +33,12 @@ public class ShoppingWidgetService extends RemoteViewsService {
         private final Context context;
         private final int appWidgetId;
 
+        String month, day, time;
+
         List<String> Items = new ArrayList<>();
 
         List<String> Items_Date = new ArrayList<>();
+
 
         ShoppingWidgetItemFactory(Context context, Intent intent) {
             this.context = context;
@@ -53,19 +49,48 @@ public class ShoppingWidgetService extends RemoteViewsService {
         @Override
         public void onCreate() {
             //connect to data source
+            SharedPreferences prefs = context.getSharedPreferences(SHARED_PRES, Context.MODE_PRIVATE);
+            buttonText = prefs.getString(KEY_BUTTON_TEXT + appWidgetId, "Press me");
+
+            ShopDatabase db = new ShopDatabase(context);
+            Cursor res = db.getItems(buttonText, context);
+            while (res.moveToNext()) {
+
+                if (res.getInt(3) == 1) {
+                    Items.add(res.getString(2) + " ☑");
+                } else {
+                    Items.add(res.getString(2) + " □");
+                }
+
+
+                month = res.getString(5);
+                day = res.getString(7);
+                time = res.getString(8);
+
+                String full_date = "Added " + day + ", " + month + ", " + time;
+                Items_Date.add(full_date);
+            }
+            res.close();
+            db.close();
+
+        }
+
+        @Override
+        public void onDataSetChanged() {
 
             SharedPreferences prefs = context.getSharedPreferences(SHARED_PRES, Context.MODE_PRIVATE);
             buttonText = prefs.getString(KEY_BUTTON_TEXT + appWidgetId, "Press me");
 
-            String month, year, day, time;
-
-            ShopDatabase db = new ShopDatabase(getApplicationContext());
-            Cursor res = db.getItems(buttonText, getApplicationContext());
+            ShopDatabase db = new ShopDatabase(context);
+            //refresh data
+            Items.clear();
+            Items_Date.clear();
+            Cursor res = db.getItems(buttonText, context);
             while (res.moveToNext()) {
 
-                if(res.getInt(3) == 1){
+                if (res.getInt(3) == 1) {
                     Items.add(res.getString(2) + " \u2611");
-                }else{
+                } else {
                     Items.add(res.getString(2));
                 }
 
@@ -78,19 +103,21 @@ public class ShoppingWidgetService extends RemoteViewsService {
             }
             res.close();
 
+            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+
+            RemoteViews views2 = new RemoteViews(context.getPackageName(), R.layout.shopping_widget_provider);
+            views2.setTextViewText(R.id.item_count_text_view, "[" + Items.size() + "]");
+
+            appWidgetManager.updateAppWidget(appWidgetId, views2);
+
+
             db.close();
 
 
         }
 
         @Override
-        public void onDataSetChanged() {
-
-        }
-
-        @Override
         public void onDestroy() {
-
             //close the connection to data source
         }
 
@@ -107,14 +134,14 @@ public class ShoppingWidgetService extends RemoteViewsService {
             views.setTextViewText(R.id.shopping_widget_item_date_text, Items_Date.get(position));
 
 
-            Bundle extras = new Bundle();
-            extras.putInt(EXTRA_ITEM_POSITION, position);
-
-
             Intent fillIntent = new Intent();
-            fillIntent.putExtras(extras);
 
+            fillIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+            fillIntent.putExtra("CATEGORY", buttonText);
+            fillIntent.putExtra("POSITION", position);
+            fillIntent.putExtra("SIZE", Items.size());
             views.setOnClickFillInIntent(R.id.shopping_widget_item_layout, fillIntent);
+
             //since our stack view contains only one text view, its our rootview, thats why we passed it here!
 
 
@@ -138,7 +165,7 @@ public class ShoppingWidgetService extends RemoteViewsService {
 
         @Override
         public boolean hasStableIds() {
-            return false;
+            return true;
         }
     }
 }

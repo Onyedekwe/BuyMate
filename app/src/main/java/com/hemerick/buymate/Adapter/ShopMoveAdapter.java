@@ -153,12 +153,12 @@ public class ShopMoveAdapter extends RecyclerView.Adapter<ShopMoveAdapter.MyMove
             }
         }
         int checkEmpty = itemActivity.getListCount();
+        itemActivity.finish();
         if (checkEmpty == 0) {
             Intent intent = new Intent(context, HomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             context.startActivity(intent);
         } else {
-
             Toast.makeText(context, context.getString(R.string.moved) + " " + selectedCategory, Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(context, ItemActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

@@ -1,6 +1,7 @@
 package com.hemerick.buymate.Widget;
 
-import static com.hemerick.buymate.Widget.ShoppingWidgetProvider.ACTION_TOAST;
+import static com.hemerick.buymate.Widget.ShoppingWidgetProvider.ACTION_REFRESH;
+import static com.hemerick.buymate.Widget.ShoppingWidgetProvider.ACTION_UPDATE_MY_WIDGET;
 
 import android.app.Activity;
 import android.app.PendingIntent;
@@ -17,7 +18,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RemoteViews;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,7 +27,6 @@ import com.hemerick.buymate.Database.ShopDatabase;
 import com.hemerick.buymate.Database.UserSettings;
 import com.hemerick.buymate.HomeActivity;
 import com.hemerick.buymate.InsertPasscodeActivity;
-import com.hemerick.buymate.ItemActivity;
 import com.hemerick.buymate.R;
 import com.hemerick.buymate.SignUpActivity;
 
@@ -176,8 +175,8 @@ public class ShoppingWidgetProviderConfigureActivity extends Activity implements
     }
 
     public void confirmConfiguration() {
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
 
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
 
         if (settings.getIsAuthenticated().equals(UserSettings.NOT_AUTHENTICATED)) {
             buttonIntent = new Intent(ShoppingWidgetProviderConfigureActivity.this, SignUpActivity.class);
@@ -192,22 +191,28 @@ public class ShoppingWidgetProviderConfigureActivity extends Activity implements
         PendingIntent buttonPendingIntent = PendingIntent.getActivity(this, 0, buttonIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
 
 
-
         Intent serviceIntent = new Intent(this, ShoppingWidgetService.class);
         serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         serviceIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
 
         Intent clickIntent = new Intent(this, ShoppingWidgetProvider.class);
-        clickIntent.setAction(ACTION_TOAST);
+        clickIntent.setAction(ACTION_REFRESH);
         clickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-        PendingIntent clickPendingIntent = PendingIntent.getBroadcast(this, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
+        PendingIntent clickPendingIntent = PendingIntent.getBroadcast(this, appWidgetId, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
 
+
+        Intent refreshIntent = new Intent(this, ShoppingWidgetProvider.class);
+        refreshIntent.setAction(ACTION_UPDATE_MY_WIDGET);
+        refreshIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        PendingIntent refreshPendingIntent = PendingIntent.getBroadcast(this, appWidgetId, refreshIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
 
 
         RemoteViews views = new RemoteViews(this.getPackageName(), R.layout.shopping_widget_provider);
         views.setOnClickPendingIntent(R.id.widget_add_icon, buttonPendingIntent);
+        views.setOnClickPendingIntent(R.id.widget_sync_icon, refreshPendingIntent);
 
-        views.setRemoteAdapter(appWidgetId, R.id.item_widget_stack_view, serviceIntent);
+        views.setRemoteAdapter(R.id.item_widget_stack_view, serviceIntent);
+        // views.setRemoteAdapter(appWidgetId, R.id.item_widget_stack_view, serviceIntent);
 
         views.setEmptyView(R.id.item_widget_stack_view, R.id.item_widget_empty_view);
 
@@ -217,7 +222,6 @@ public class ShoppingWidgetProviderConfigureActivity extends Activity implements
         views.setPendingIntentTemplate(R.id.item_widget_stack_view, clickPendingIntent);
 
 
-
         SharedPreferences prefs = getSharedPreferences(SHARED_PRES, MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(KEY_BUTTON_TEXT + appWidgetId, list_text);
@@ -225,12 +229,11 @@ public class ShoppingWidgetProviderConfigureActivity extends Activity implements
         editor.apply();
 
 
-        appWidgetManager.updateAppWidget(appWidgetId, views);
-
-
         Intent resultValue = new Intent();
         resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         setResult(RESULT_OK, resultValue);
+
+        appWidgetManager.updateAppWidget(appWidgetId, views);
         finish();
 
 

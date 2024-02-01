@@ -208,10 +208,10 @@ public class MoreFragment extends Fragment {
 
         if (firebaseUser == null) {
             account_text.setText("Sign in");
-            account_icon.setImageResource(R.drawable.final_log_in_icon);
+            account_icon.setImageResource(R.drawable.final_regular_log_in_icon);
         } else {
             account_text.setText("Account");
-            account_icon.setImageResource(R.drawable.final_account_icon);
+            account_icon.setImageResource(R.drawable.final_regular_account_icon);
         }
 
         loadSharedPreferences();
@@ -330,7 +330,7 @@ public class MoreFragment extends Fragment {
         }
 
         if (settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)) {
-            backup_premium_icon.setImageResource(R.drawable.final_open_icon);
+            backup_premium_icon.setImageResource(R.drawable.final_regular_open_icon);
         }
     }
 
@@ -354,10 +354,10 @@ public class MoreFragment extends Fragment {
 
         if (firebaseUser == null) {
             account_text.setText("Sign in");
-            account_icon.setImageResource(R.drawable.final_log_in_icon);
+            account_icon.setImageResource(R.drawable.final_regular_log_in_icon);
         } else {
             account_text.setText("Account");
-            account_icon.setImageResource(R.drawable.final_account_icon);
+            account_icon.setImageResource(R.drawable.final_regular_account_icon);
         }
 
 

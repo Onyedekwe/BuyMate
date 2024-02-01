@@ -16,7 +16,8 @@
         <item name="android:statusBarColor">?attr/backgroundColor</item>
 
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
-        <item name="fontFamily">@font/lexend</item>
+        <!-- <item name="fontFamily">@font/lexend</item> -->
+        <item name="android:letterSpacing">0.04</item>
 
         <!-- Customize your theme here. -->
         <item name="backgroundColor">#F2F3F7</item>

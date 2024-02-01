@@ -43,7 +43,6 @@ public class WidgetConfigAdapter extends RecyclerView.Adapter<WidgetConfigAdapte
     }
 
 
-
     @SuppressLint("NotifyDataSetChanged")
     public void setFilterList(ArrayList<String> filterList) {
         this.shop_id = filterList;
@@ -108,12 +107,9 @@ public class WidgetConfigAdapter extends RecyclerView.Adapter<WidgetConfigAdapte
     }
 
 
-
-
     public boolean isSelected() {
         return isEnable;
     }
-
 
 
     public interface OnNoteListener {
@@ -161,12 +157,11 @@ public class WidgetConfigAdapter extends RecyclerView.Adapter<WidgetConfigAdapte
             }
 
 
-
         }
 
         @Override
         public void onClick(View v) {
-                onNoteListener.onNoteClick(getAdapterPosition());
+            onNoteListener.onNoteClick(getAdapterPosition());
         }
 
         @Override

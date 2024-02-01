@@ -21,6 +21,9 @@
             android:textColor="?attr/textFillColor"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -32,7 +35,10 @@
             android:layout_height="30dp"
             android:layout_marginEnd="3dp"
             android:contentDescription="@string/info_layout_favourites_icon_content_description"
-            android:src="@drawable/final_star_icon"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:src="@drawable/final_regular_star_icon"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -120,8 +126,11 @@
                 android:layout_height="38dp"
                 android:layout_gravity="start"
                 android:layout_marginEnd="5dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
                 android:contentDescription="@string/info_layout_minus_icon_content_description"
-                android:src="@drawable/final_minus_icon" />
+                android:src="@drawable/final_regular_minus_icon" />
 
 
             <LinearLayout
@@ -159,8 +168,10 @@
                     android:maxLines="1"
                     android:maxWidth="100dp"
                     android:ellipsize="end"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
                     android:layout_marginStart="3dp"
-                    android:text="Piecemzdcxkjsclkaskcjsckncjkjzdkcz"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/increase"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -173,8 +184,11 @@
                 android:layout_height="38dp"
                 android:layout_gravity="end"
                 android:layout_marginStart="5dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
                 android:contentDescription="@string/info_layout_plus_icon_content_description"
-                android:src="@drawable/final_plus_icon" />
+                android:src="@drawable/final_regular_plus_icon" />
         </LinearLayout>
 
 
@@ -262,7 +276,10 @@
                 android:layout_width="150dp"
                 android:layout_height="200dp"
                 android:visibility="gone"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"/>
 
             <ImageView
                 android:id="@+id/item_image_null"
@@ -271,7 +288,7 @@
                 android:padding="10dp"
                 android:visibility="gone"
                 android:background="@drawable/bg_stroke_curve_corner_premium"
-                android:src="@drawable/final_add_photo_text_icon"
+                android:src="@drawable/final_regular_add_photo_text_icon"
                 android:scaleType="fitCenter" />
 
             <ProgressBar

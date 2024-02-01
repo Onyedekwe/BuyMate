@@ -4,13 +4,18 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.util.TypedValue;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -24,13 +29,21 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.hemerick.buymate.R;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import io.github.muddz.styleabletoast.StyleableToast;
 
@@ -45,12 +58,13 @@ public class Firebase {
 
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
-    boolean no_record = true;
 
     String email;
     Context context;
 
     Dialog cloud_dialog;
+
+    ArrayList<String> PHOTOURL;
 
 
     boolean isFirstStart;
@@ -554,7 +568,7 @@ public class Firebase {
     }
 
 
-    public boolean backupData() {
+    public void backupData() {
 
         cloud_dialog = new Dialog(context);
         cloud_dialog.setContentView(R.layout.cloud_dialog_popup);
@@ -567,14 +581,11 @@ public class Firebase {
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
             percent.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.small_text));
             info.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.small_text));
-
         }
-
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
             percent.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.medium_text));
             info.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.medium_text));
         }
-
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
             percent.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.large_text));
             info.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.large_text));
@@ -584,6 +595,26 @@ public class Firebase {
         info.setText("Please wait for backup to complete");
 
         cloud_dialog.show();
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageReference = storage.getReference().child(email);
+
+        storageReference.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
+            @Override
+            public void onSuccess(ListResult listResult) {
+                for (StorageReference item : listResult.getItems()) {
+                    item.delete();
+                }
+                storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Toast.makeText(context, "Folder deleted successfully", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -618,7 +649,7 @@ public class Firebase {
                     quantity.add(res.getString(9));
                     favourites.add(res.getInt(10));
                     unit.add(res.getString(11));
-                    photourl.add(" ");
+                    photourl.add(res.getString(12));
                 }
 
                 res = db.getNoteHeading();
@@ -629,7 +660,6 @@ public class Firebase {
                 }
 
                 res.close();
-
 
                 for (int i = 0; i < categories.size(); i++) {
 
@@ -643,11 +673,38 @@ public class Firebase {
                     insertNote(heading.get(j), content.get(j), date.get(j));
                 }
 
+
+                StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+
+                for (String url : photourl) {
+                    if (!url.trim().isEmpty()) {
+
+                        File directory = new File(context.getFilesDir(), "Buymate_Images");
+                        if (!directory.exists()) {
+                            directory.mkdir();
+                        }
+                        File imageFile = new File(directory, url);
+
+                        Bitmap imageBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+                        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                        byte[] data = baos.toByteArray();
+
+                        StorageReference imageRef = storageRef.child(email);
+                        StorageReference image = imageRef.child(url);
+
+                        UploadTask uploadTask = image.putBytes(data);
+
+                    }
+                }
                 cloud_dialog.dismiss();
                 StyleableToast.makeText(context, "Backup complete", R.style.custom_toast_2).show();
+
             }
         }, 3000);
-        return true;
+
+
     }
 
     public void getAllList() {
@@ -658,6 +715,8 @@ public class Firebase {
 
         TextView percent = cloud_dialog.findViewById(R.id.percent);
         TextView info = cloud_dialog.findViewById(R.id.info);
+
+        PHOTOURL = new ArrayList<>();
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
             percent.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.small_text));
@@ -720,6 +779,7 @@ public class Firebase {
                                 int favourites = itemSnapshot.child("favourites").getValue(Integer.class);
                                 String unit = itemSnapshot.child("unit").getValue(String.class);
                                 String photourl = itemSnapshot.child("photourl").getValue(String.class);
+                                PHOTOURL.add(photourl);
                                 db.insertItem(category, description, status, price, month, year, day, time, quantity, unit);
                                 db.updateFavourites(category, description, favourites);
                                 db.updatePhoto(category, description, photourl);
@@ -744,6 +804,8 @@ public class Firebase {
                         Toast.makeText(context, "Error: " + error.getMessage(), Toast.LENGTH_SHORT);
                     }
                 });
+
+
             }
         }, 3000);
 
@@ -751,6 +813,7 @@ public class Firebase {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+
                 getAllNotes();
             }
         }, 2000);
@@ -770,10 +833,9 @@ public class Firebase {
 
                         db.insertNote(heading, content, date);
                     }
-                    cloud_dialog.dismiss();
                     StyleableToast.makeText(context, "Notes Restored", R.style.custom_toast_2).show();
                 } else {
-                    cloud_dialog.dismiss();
+
                     Toast.makeText(context, "No Notes Found", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -784,8 +846,57 @@ public class Firebase {
             }
         });
 
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                retrieveImages();
+            }
+        }, 2000);
+
     }
 
+    public void retrieveImages() {
+
+        ArrayList<String> myPhotoUrl = new ArrayList<>();
+        Cursor res = db.getCategory(context);
+        while (res.moveToNext()) {
+            myPhotoUrl.add(res.getString(12));
+        }
+        res.close();
+
+        for (String uri : myPhotoUrl) {
+            if (!uri.trim().isEmpty()) {
+
+
+                String imageName = uri;
+
+                StorageReference imageRef = FirebaseStorage.getInstance().getReference().child(email);
+                StorageReference image = imageRef.child(imageName);
+
+
+                File directory = new File(context.getFilesDir(), "Buymate_Images");
+                if (!directory.exists()) {
+                    directory.mkdirs();
+                }
+
+                File imageFile = new File(directory, imageName);
+
+                image.getFile(imageFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        Toast.makeText(context, "Image Retrieved Successfully", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(context, "Error Retrieving Image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            }
+        }
+        cloud_dialog.dismiss();
+    }
 
     public void deleteData() {
 
@@ -802,5 +913,4 @@ public class Firebase {
         });
 
     }
-
 }

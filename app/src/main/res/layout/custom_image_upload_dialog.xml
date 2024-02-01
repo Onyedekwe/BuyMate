@@ -64,7 +64,7 @@
                 android:layout_height="37dp"
                 android:layout_gravity="center"
                 android:contentDescription="@string/edit_item_copy_icon_content_description"
-                android:src="@drawable/final_camera_icon">
+                android:src="@drawable/final_regular_camera_icon">
 
             </ImageView>
 
@@ -102,7 +102,7 @@
                 android:layout_height="37dp"
                 android:layout_gravity="center"
                 android:contentDescription="@string/edit_item_copy_icon_content_description"
-                android:src="@drawable/final_image_icon">
+                android:src="@drawable/final_regular_image_icon">
 
             </ImageView>
 

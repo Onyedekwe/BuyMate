@@ -18,7 +18,7 @@
             android:background="?attr/backgroundColor"
             app:collapsedTitleTextColor="?attr/textFillColor"
             app:contentScrim="?attr/backgroundColor"
-            app:expandedTitleMarginStart="20dp"
+            app:expandedTitleMarginStart="15dp"
             app:expandedTitleTextColor="?attr/textFillColor"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
@@ -167,7 +167,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
                         android:layout_marginStart="20dp"
-                        android:src="@drawable/final_account_icon"
+                        android:src="@drawable/final_regular_account_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -201,7 +201,7 @@
                         android:layout_gravity="center"
                         android:layout_marginEnd="30dp"
                         android:contentDescription="@string/open_icon_content_description"
-                        android:src="@drawable/final_open_icon"
+                        android:src="@drawable/final_regular_open_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -228,7 +228,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
                         android:layout_marginStart="20dp"
-                        android:src="@drawable/final_message_icon"
+                        android:src="@drawable/final_regular_message_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -253,7 +253,7 @@
                         android:layout_gravity="center"
                         android:layout_marginEnd="30dp"
                         android:contentDescription="@string/open_icon_content_description"
-                        android:src="@drawable/final_open_icon"
+                        android:src="@drawable/final_regular_open_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -280,7 +280,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
                         android:layout_marginStart="20dp"
-                        android:src="@drawable/final_cloud_icon"
+                        android:src="@drawable/final_regular_cloud_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -301,12 +301,12 @@
 
                     <ImageView
                         android:id="@+id/backup_premium_icon"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
                         android:layout_gravity="center"
-                        android:layout_marginEnd="25dp"
+                        android:layout_marginEnd="30dp"
                         android:contentDescription="@string/open_icon_content_description"
-                        android:src="@drawable/final_diamond_filled_icon"
+                        android:src="@drawable/final_regular_diamond_filled_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -333,7 +333,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
                         android:layout_marginStart="20dp"
-                        android:src="@drawable/final_diamond_icon"
+                        android:src="@drawable/final_regular_diamond_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -358,7 +358,7 @@
                         android:layout_gravity="center"
                         android:layout_marginEnd="30dp"
                         android:contentDescription="@string/open_icon_content_description"
-                        android:src="@drawable/final_open_icon"
+                        android:src="@drawable/final_regular_open_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -385,7 +385,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
                         android:layout_marginStart="20dp"
-                        android:src="@drawable/final_website_icon"
+                        android:src="@drawable/final_regular_website_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -410,7 +410,7 @@
                         android:layout_gravity="center"
                         android:layout_marginEnd="30dp"
                         android:contentDescription="@string/open_icon_content_description"
-                        android:src="@drawable/final_open_icon"
+                        android:src="@drawable/final_regular_open_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -437,7 +437,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
                         android:layout_marginStart="20dp"
-                        android:src="@drawable/final_share_icon"
+                        android:src="@drawable/final_regular_forward_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -462,7 +462,7 @@
                         android:layout_gravity="center"
                         android:layout_marginEnd="30dp"
                         android:contentDescription="@string/open_icon_content_description"
-                        android:src="@drawable/final_open_icon"
+                        android:src="@drawable/final_regular_open_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -540,7 +540,7 @@
                         android:layout_gravity="center"
                         android:layout_marginEnd="30dp"
                         android:contentDescription="@string/open_icon_content_description"
-                        android:src="@drawable/final_open_icon"
+                        android:src="@drawable/final_regular_open_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -567,7 +567,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
                         android:layout_marginStart="20dp"
-                        android:src="@drawable/final_twitter_icon"
+                        android:src="@drawable/final_regular_twitter_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -592,7 +592,7 @@
                         android:layout_gravity="center"
                         android:layout_marginEnd="30dp"
                         android:contentDescription="@string/open_icon_content_description"
-                        android:src="@drawable/final_open_icon"
+                        android:src="@drawable/final_regular_open_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -621,7 +621,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
                         android:layout_marginStart="20dp"
-                        android:src="@drawable/final_settings_icon"
+                        android:src="@drawable/final_regular_settings_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -646,7 +646,7 @@
                         android:layout_gravity="center"
                         android:layout_marginEnd="30dp"
                         android:contentDescription="@string/open_icon_content_description"
-                        android:src="@drawable/final_open_icon"
+                        android:src="@drawable/final_regular_open_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -675,7 +675,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
                         android:layout_marginStart="22dp"
-                        android:src="@drawable/final_info_circle_icon"
+                        android:src="@drawable/final_regular_info_circle_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -700,7 +700,7 @@
                         android:layout_gravity="center"
                         android:layout_marginEnd="30dp"
                         android:contentDescription="@string/open_icon_content_description"
-                        android:src="@drawable/final_open_icon"
+                        android:src="@drawable/final_regular_open_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />

@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/share"
-        android:icon="@drawable/final_share_icon"
+        android:icon="@drawable/final_regular_share_icon"
         android:title="@string/note_toolbar_share_text"
         app:showAsAction="ifRoom" />
 
@@ -12,11 +12,11 @@
         android:id="@+id/voice"
         android:title="Voice typinc"
         app:showAsAction="always"
-        android:icon="@drawable/final_voice_icon"/>
+        android:icon="@drawable/final_regular_voice_icon"/>
 
     <item
         android:id="@+id/save"
-        android:icon="@drawable/final_done_icon"
+        android:icon="@drawable/final_regular_done_icon"
         android:title="@string/note_toolbar_save_text"
         android:visible="false"
         app:showAsAction="always" />

@@ -17,7 +17,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/final_back_icon"
+        app:navigationIcon="@drawable/final_regular_back_icon"
         app:title="Account"
         app:titleTextColor="?attr/textFillColor" />
 
@@ -149,7 +149,7 @@
                     android:layout_gravity="center"
                     android:layout_marginEnd="30dp"
                     android:contentDescription="@string/open_icon_content_description"
-                    android:src="@drawable/final_open_icon"
+                    android:src="@drawable/final_regular_open_icon"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -197,7 +197,7 @@
                     android:layout_gravity="center"
                     android:layout_marginEnd="30dp"
                     android:contentDescription="@string/open_icon_content_description"
-                    android:src="@drawable/final_open_icon"
+                    android:src="@drawable/final_regular_open_icon"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -243,7 +243,7 @@
                     android:layout_gravity="center"
                     android:layout_marginEnd="30dp"
                     android:contentDescription="@string/open_icon_content_description"
-                    android:src="@drawable/final_log_out_icon"
+                    android:src="@drawable/final_regular_log_out_icon"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -289,7 +289,7 @@
                     android:layout_gravity="center"
                     android:layout_marginEnd="30dp"
                     android:contentDescription="@string/open_icon_content_description"
-                    android:src="@drawable/final_trash_icon"
+                    android:src="@drawable/final_regular_trash_icon"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

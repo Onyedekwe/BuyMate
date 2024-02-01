@@ -126,7 +126,7 @@
             android:foreground="?attr/selectableItemBackground"
             android:padding="3dp"
             android:layout_marginEnd="5dp"
-            android:src="@drawable/final_more_vertical_icon" />
+            android:src="@drawable/final_regular_more_vertical_icon" />
 
     </LinearLayout>
 

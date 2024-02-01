@@ -154,7 +154,7 @@ public class ShopFavouritesAdapter extends RecyclerView.Adapter<ShopFavouritesAd
                 holder.itemImage.setPadding(0, 0, 0, 0);
 
             } else {
-                holder.itemImage.setImageResource(R.drawable.final_add_photo_text_icon);
+                holder.itemImage.setImageResource(R.drawable.final_regular_add_photo_text_icon);
                 holder.itemImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 holder.itemImage.setPadding(10, 0, 10, 0);
                 holder.itemImage.setBackgroundColor(backgroundColor);
@@ -204,7 +204,7 @@ public class ShopFavouritesAdapter extends RecyclerView.Adapter<ShopFavouritesAd
         }
         res.close();
         if (fav == 1) {
-            newIconResource = R.drawable.final_favourites_colored_icon;
+            newIconResource = R.drawable.final_regular_favourites_colored_icon;
 
         }
         return newIconResource;

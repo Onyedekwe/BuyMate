@@ -19,7 +19,7 @@
             android:background="?attr/backgroundColor"
             app:collapsedTitleTextColor="?attr/textFillColor"
             app:contentScrim="?attr/backgroundColor"
-            app:expandedTitleMarginStart="20dp"
+            app:expandedTitleMarginStart="15dp"
             app:expandedTitleTextColor="?attr/textFillColor"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
@@ -91,7 +91,7 @@
                     android:layout_height="40dp"
                     android:contentDescription="@string/item_activity_currency_icon_content_description"
                     android:padding="8dp"
-                    android:src="@drawable/final_eye"
+                    android:src="@drawable/final_regular_eye"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/text2"
                     app:layout_constraintTop_toTopOf="parent" />

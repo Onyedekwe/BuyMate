@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:background="?attr/backgroundColor"
         android:elevation="1dp"
-        app:navigationIcon="@drawable/final_back_icon"
+        app:navigationIcon="@drawable/final_regular_back_icon"
         app:title="Detailed list sharing"
         app:titleTextColor="?attr/textFillColor" />
 

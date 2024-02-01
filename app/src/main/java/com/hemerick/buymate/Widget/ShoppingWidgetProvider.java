@@ -10,16 +10,20 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
+import com.hemerick.buymate.Database.ShopDatabase;
 import com.hemerick.buymate.Database.UserSettings;
 import com.hemerick.buymate.HomeActivity;
 import com.hemerick.buymate.InsertPasscodeActivity;
 import com.hemerick.buymate.R;
 import com.hemerick.buymate.SignUpActivity;
+
+import java.util.ArrayList;
 
 /**
  * Implementation of App Widget functionality.
@@ -27,9 +31,9 @@ import com.hemerick.buymate.SignUpActivity;
  */
 public class ShoppingWidgetProvider extends AppWidgetProvider {
 
-    public static final String ACTION_TOAST = "actionToast";
+    public static final String ACTION_REFRESH = "actionRefresh";
+    public static final String ACTION_UPDATE_MY_WIDGET = "actionUPDATE";
     //preferable, use the name of the package+the_action_String
-    public static final String EXTRA_ITEM_POSITION = "extraItemPosition";
 
     UserSettings settings = new UserSettings();
 
@@ -64,22 +68,29 @@ public class ShoppingWidgetProvider extends AppWidgetProvider {
             String count = prefs.getString(KEY_BUTTON_TEXT + appWidgetIds[i] + KEY_COUNT, "0");
 
 
-
-
             Intent serviceIntent = new Intent(context, ShoppingWidgetService.class);
             serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetIds[i]);
             serviceIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
 
             Intent clickIntent = new Intent(context, ShoppingWidgetProvider.class);
-            clickIntent.setAction(ACTION_TOAST);
+            clickIntent.setAction(ACTION_REFRESH);
             clickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetIds[i]);
             PendingIntent clickPendingIntent = PendingIntent.getBroadcast(context,
-                    0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
+                    appWidgetIds[i], clickIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
+
+
+            Intent refreshIntent = new Intent(context, ShoppingWidgetProvider.class);
+            refreshIntent.setAction(ACTION_UPDATE_MY_WIDGET);
+            refreshIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetIds[i]);
+            PendingIntent refreshPendingIntent = PendingIntent.getBroadcast(context, appWidgetIds[i], refreshIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
+
 
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.shopping_widget_provider);
             views.setOnClickPendingIntent(R.id.widget_add_icon, buttonPendingIntent);
+            views.setOnClickPendingIntent(R.id.widget_sync_icon, refreshPendingIntent);
 
-            views.setRemoteAdapter(appWidgetIds[i], R.id.item_widget_stack_view, serviceIntent);
+            views.setRemoteAdapter(R.id.item_widget_stack_view, serviceIntent);
+            //  views.setRemoteAdapter(appWidgetIds[i], R.id.item_widget_stack_view, serviceIntent);
             views.setEmptyView(R.id.item_widget_stack_view, R.id.item_widget_empty_view);
 
             views.setTextViewText(R.id.category_text_view, buttonText);
@@ -89,6 +100,7 @@ public class ShoppingWidgetProvider extends AppWidgetProvider {
             views.setPendingIntentTemplate(R.id.item_widget_stack_view, clickPendingIntent);
 
             appWidgetManager.updateAppWidget(appWidgetIds[i], views);
+            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds[i], R.id.item_widget_stack_view);
         }
         super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
@@ -136,12 +148,42 @@ public class ShoppingWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        AppWidgetManager mgr = AppWidgetManager.getInstance(context);
 
-        if (ACTION_TOAST.equals(intent.getAction())) {
-            int appwidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-            int clickedPosition = intent.getIntExtra( EXTRA_ITEM_POSITION, 0);
-            Toast.makeText(context, "Clicked position: " + clickedPosition, Toast.LENGTH_SHORT).show();
+
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+
+        if (ACTION_REFRESH.equals(intent.getAction())) {
+
+            ArrayList<String> Items = new ArrayList<>();
+
+            int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+            int position = intent.getIntExtra("POSITION", 0);
+            String category = intent.getStringExtra("CATEGORY");
+
+            ShopDatabase db = new ShopDatabase(context);
+            Cursor res = db.getItems(category, context);
+            while (res.moveToNext()) {
+                Items.add(res.getString(2));
+            }
+            String actual_item = Items.get(position);
+
+            int status = 0;
+            res = db.getStatus(category, actual_item);
+            while (res.moveToNext()) {
+                status = res.getInt(3);
+            }
+
+            if (status == 1) {
+                db.updateStatus(category, actual_item, 0);
+            } else if (status == 0) {
+                db.updateStatus(category, actual_item, 1);
+            }
+            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.item_widget_stack_view);
+        } else if (ACTION_UPDATE_MY_WIDGET.equals(intent.getAction())) {
+
+            int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+
+            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.item_widget_stack_view);
         }
         super.onReceive(context, intent);
     }

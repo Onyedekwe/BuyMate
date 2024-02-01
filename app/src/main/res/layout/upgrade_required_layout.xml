@@ -10,7 +10,7 @@
         android:layout_height="120dp"
         android:layout_gravity="center"
         android:layout_marginTop="40dp"
-        android:src="@drawable/final_diamond_filled_icon" />
+        android:src="@drawable/final_regular_diamond_filled_icon" />
 
     <LinearLayout
         android:id="@+id/emptyTextLayout"

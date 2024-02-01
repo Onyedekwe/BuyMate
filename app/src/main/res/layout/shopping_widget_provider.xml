@@ -53,11 +53,17 @@
                 android:gravity="end">
 
                 <ImageView
+                    android:id="@+id/widget_sync_icon"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_marginHorizontal="15dp"
+                    android:src="@drawable/final_regular_sync_icon" />
+                <ImageView
                     android:id="@+id/widget_add_icon"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/final_widget_enter_app_icon" />
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+
+                    android:src="@drawable/final_regular_log_in_icon" />
             </LinearLayout>
         </LinearLayout>
 
@@ -102,6 +108,7 @@
                 android:layout_marginStart="7dp"
                 android:gravity="center"
                 android:text="@string/app_name"
+                android:letterSpacing="0"
                 android:fontFamily="@font/lexend"
                 android:textColor="#026EAA"
                 android:textSize="18sp"

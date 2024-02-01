@@ -20,7 +20,7 @@
             android:background="?attr/backgroundColor"
             app:collapsedTitleTextColor="?attr/textFillColor"
             app:contentScrim="?attr/backgroundColor"
-            app:expandedTitleMarginStart="20dp"
+            app:expandedTitleMarginStart="15dp"
             app:expandedTitleTextColor="?attr/textFillColor"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
@@ -45,11 +45,11 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="10dp"
             android:layout_weight="1"
-            android:background="@drawable/bg_stroke_curve_corner"
+            android:background="@drawable/bg_search_view_curve_corner"
             app:iconifiedByDefault="false"
             app:queryBackground="@android:color/transparent"
             app:queryHint="@string/item_search_hint"
-            app:searchIcon="@drawable/final_search_icon_2" />
+            app:searchIcon="@drawable/final_regular_search_icon_2" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -142,7 +142,7 @@
         android:layout_marginBottom="30dp"
         android:contentDescription="@string/fragment_notes_fab_content_description"
         android:focusable="true"
-        android:src="@drawable/final_add_icon"
+        android:src="@drawable/final_regular_add_icon"
         android:textColor="@color/white"
         app:backgroundTint="?attr/buttonTint"
         app:iconTint="@color/white"

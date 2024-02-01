@@ -24,6 +24,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.cardview.widget.CardView;
 
 import com.android.billingclient.api.BillingClient;
@@ -474,13 +475,10 @@ public class SignUpActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                             if (isPremium) {
-                                Toast.makeText(getApplicationContext(), "Premium is enabled", Toast.LENGTH_SHORT).show();
                                 settings.setIsLifetimePurchased(UserSettings.YES_LIFETIME_PURCHASED);
                                 SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
                                 editor.putString(UserSettings.IS_LIFETIME_PURCHASED, settings.getIsLifetimePurchased());
                                 editor.apply();
-                            } else {
-                                Toast.makeText(getApplicationContext(), "Premium is not enabled", Toast.LENGTH_SHORT).show();
                             }
 
                         });
