@@ -80,13 +80,13 @@ public class MoreFragment extends Fragment {
         share_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String shareMessage = "Check out this awesome shopping app! I highly recommend it.\nDownload it on Google Play.";
-                String appLink = "https://play.google.com/store/apps/details?id=" + getContext().getPackageName();
+                String shareMessage = getString(R.string.MoreFragment__shareBtmText1);
+                String appLink = getString(R.string.app_link) + getContext().getPackageName();
 
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
                 shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage + "\n" + appLink);
-                startActivity(Intent.createChooser(shareIntent, "Share via:"));
+                startActivity(Intent.createChooser(shareIntent, getString(R.string.MoreFragment__shareVia)));
             }
         });
         premium_layout = rootView.findViewById(R.id.premiumLayout);
@@ -111,7 +111,7 @@ public class MoreFragment extends Fragment {
         rate_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Uri uri = Uri.parse("https://play.google.com/store/apps/details?id=" + getContext().getPackageName());
+                Uri uri = Uri.parse(getString(R.string.app_link) + getContext().getPackageName());
                 Intent intent1 = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent1);
             }
@@ -127,33 +127,33 @@ public class MoreFragment extends Fragment {
                     FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
 
-                    String[] app_email = new String[]{"hemerickservices@gmail.com"};
+                    String[] app_email = new String[]{getString(R.string.app_email)};
 
                     String asterics = "*******";
-                    String subject = getString(R.string.app_name) + " Feedback";
+                    String subject = getString(R.string.app_name) +" "+ getString(R.string.MoreFragment__feedback);
                     String email = firebaseUser.getEmail();
                     String app_version = getString(R.string.app_version);
 
                     String deviceInfo = asterics + "\n" +
-                            "Account Email: " + email + "\n" +
-                            "App Version: " + app_version + "\n" +
-                            "Device: " + Build.DEVICE + "\n" +
-                            "Model: " + Build.MODEL + "\n" +
-                            "Brand: " + Build.BRAND + "\n" +
-                            "OS Version: " + Build.VERSION.RELEASE + "\n" +
-                            "SDK Version: " + Build.VERSION.SDK_INT + "\n" +
+                            getString(R.string.MoreFragment__accountEmail) + email + "\n" +
+                            getString(R.string.MoreFragment__appVersion) + app_version + "\n" +
+                            getString(R.string.MoreFragment__device) + Build.DEVICE + "\n" +
+                            getString(R.string.MoreFragment__model) + Build.MODEL + "\n" +
+                            getString(R.string.MoreFragment__brand) + Build.BRAND + "\n" +
+                            getString(R.string.MoreFragment__osVersion) + Build.VERSION.RELEASE + "\n" +
+                            getString(R.string.MoreFragment__sdkVersion) + Build.VERSION.SDK_INT + "\n" +
                             asterics + "\n";
 
 
                     Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
-                    emailIntent.setData(Uri.parse("mailto:"));
+                    emailIntent.setData(Uri.parse(getString(R.string.MoreFragment__mailTo)));
                     emailIntent.putExtra(Intent.EXTRA_EMAIL, app_email);
                     emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
                     emailIntent.putExtra(Intent.EXTRA_TEXT, deviceInfo);
                     if (emailIntent.resolveActivity(getContext().getPackageManager()) != null) {
                         startActivity(emailIntent);
                     } else {
-                        Toast.makeText(getContext(), "No email client found", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), getString(R.string.MoreFragment__mailError), Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     showLogInWarningDialog();
@@ -207,10 +207,10 @@ public class MoreFragment extends Fragment {
 
 
         if (firebaseUser == null) {
-            account_text.setText("Sign in");
+            account_text.setText(getString(R.string.MoreFragment__signIn));
             account_icon.setImageResource(R.drawable.final_regular_log_in_icon);
         } else {
-            account_text.setText("Account");
+            account_text.setText(getString(R.string.MoreFragment__account));
             account_icon.setImageResource(R.drawable.final_regular_account_icon);
         }
 
@@ -229,8 +229,8 @@ public class MoreFragment extends Fragment {
         Button backup = dialog.findViewById(R.id.backup);
         TextView okBtn = dialog.findViewById(R.id.okBtn);
 
-        alertText.setText("Please login to Buymate to be able to message us.");
-        backup.setText("Login");
+        alertText.setText(getString(R.string.MoreFragment__loginPrompt));
+        backup.setText(getString(R.string.MoreFragment__login));
 
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
@@ -353,10 +353,10 @@ public class MoreFragment extends Fragment {
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
         if (firebaseUser == null) {
-            account_text.setText("Sign in");
+            account_text.setText(getString(R.string.MoreFragment__signIn));
             account_icon.setImageResource(R.drawable.final_regular_log_in_icon);
         } else {
-            account_text.setText("Account");
+            account_text.setText(getString(R.string.MoreFragment__account));
             account_icon.setImageResource(R.drawable.final_regular_account_icon);
         }
 

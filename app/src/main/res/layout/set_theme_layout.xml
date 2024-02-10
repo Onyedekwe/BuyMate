@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="300dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center|top"
-    android:background="?attr/backgroundColor"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/bg_bottom_popup"
     android:orientation="vertical">
 
-
     <TextView
-        android:id="@+id/edit_title"
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
-        android:layout_marginStart="15dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="10dp"
-        android:text="Theme"
+        android:text="Dark mode"
         android:textColor="?attr/textFillColor"
         android:textSize="16sp"
         android:textStyle="bold" />
@@ -28,7 +27,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="10dp"
         android:orientation="horizontal">
@@ -41,7 +39,7 @@
                 android:id="@+id/radio_button_default"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="System"
+                android:text="Use system"
                 android:textColor="?attr/textFillColor"
                 android:textSize="16sp" />
 
@@ -49,7 +47,7 @@
                 android:id="@+id/radio_button_off"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Light"
+                android:text="Off"
                 android:textColor="?attr/textFillColor"
                 android:textSize="16sp" />
 
@@ -57,21 +55,41 @@
                 android:id="@+id/radio_button_on"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Dark"
+                android:text="On"
                 android:textColor="?attr/textFillColor"
                 android:textSize="16sp" />
-
-
-            <RadioButton
-                android:id="@+id/radio_button_dim"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Dim"
-                android:textColor="?attr/textFillColor"
-                android:textSize="16sp" />
-
         </RadioGroup>
 
     </LinearLayout>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/dim_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:id="@+id/dimText"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="5dp"
+            android:text="Dim"
+            android:textColor="?attr/textFillColor"
+            android:textSize="25sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/dimSwitcher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="15dp"
+            app:buttonTint="?attr/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

@@ -56,7 +56,7 @@ public class ShopFavouritesAdapter extends RecyclerView.Adapter<ShopFavouritesAd
     }
 
     public static String formatNumber(double number, String unit) {
-        if (number == 1.0) {
+        if (number == 1.0 && unit.trim().isEmpty()) {
             return " ";
         } else {
 
@@ -79,15 +79,6 @@ public class ShopFavouritesAdapter extends RecyclerView.Adapter<ShopFavouritesAd
         }
     }
 
-    public static String formatNumberV2(double number) {
-        if (number == (long) number) {
-            return String.format("%.0f", number);
-        } else {
-            DecimalFormat decimalFormat = new DecimalFormat("0.00");
-            return decimalFormat.format(number);
-
-        }
-    }
 
     public static String formatNumberV3(double number) {
         return String.format("%,.2f", number);
@@ -362,12 +353,12 @@ public class ShopFavouritesAdapter extends RecyclerView.Adapter<ShopFavouritesAd
                     if (isChecked) {
                         db.updateStatus(cateBox.getText().toString(), textBox.getText().toString(), 1);
                         if (settings.getIsCrossDisabled().equals(UserSettings.NO_CROSS_NOT_DISABLED)) {
-                            textBox.setPaintFlags(textBox.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                            textBox.setForeground(context.getDrawable(R.drawable.bg_strike_through));
                         }
                     } else {
                         db.updateStatus(cateBox.getText().toString(), textBox.getText().toString(), 0);
                         if (settings.getIsCrossDisabled().equals(UserSettings.NO_CROSS_NOT_DISABLED)) {
-                            textBox.setPaintFlags(textBox.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
+                            textBox.setForeground(null);
                         }
 
                     }
@@ -379,9 +370,7 @@ public class ShopFavouritesAdapter extends RecyclerView.Adapter<ShopFavouritesAd
             options.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (isEnable) {
-
-                    } else {
+                    if (!isEnable) {
                         onNoteListener.onOptionClick(getAdapterPosition());
                     }
                 }

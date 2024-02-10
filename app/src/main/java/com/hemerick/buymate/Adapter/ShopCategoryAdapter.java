@@ -59,7 +59,6 @@ public class ShopCategoryAdapter extends RecyclerView.Adapter<ShopCategoryAdapte
     public void setFilterList(ArrayList<String> filterList) {
         this.shop_id = filterList;
         notifyDataSetChanged();
-
     }
 
     @NonNull
@@ -67,7 +66,6 @@ public class ShopCategoryAdapter extends RecyclerView.Adapter<ShopCategoryAdapte
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(context).inflate(R.layout.category_layout, parent, false);
         return new MyViewHolder(v, onNoteListener);
-
     }
 
     @SuppressLint("SetTextI18n")
@@ -167,14 +165,6 @@ public class ShopCategoryAdapter extends RecyclerView.Adapter<ShopCategoryAdapte
         return isEnable;
     }
 
-    public void removeItemFromSelectList(int position) {
-        selectList.remove(shop_id.get(position));
-        if (selectList.isEmpty()) {
-            isEnable = false;
-            isSelectAll = false;
-        }
-        ((AppCompatActivity) getContext()).supportInvalidateOptionsMenu();
-    }
 
     public void disableSelection() {
         isEnable = false;

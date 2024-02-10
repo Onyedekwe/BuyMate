@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.TypedValue;
@@ -60,7 +59,7 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.MyView
     }
 
     public static String formatNumber(double number, String unit) {
-        if (number == 1.0) {
+        if (number == 1.0 && unit.trim().isEmpty()) {
             return " ";
         } else {
 
@@ -87,17 +86,6 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.MyView
         return String.format("%,.2f", number);
     }
 
-
-    public static String formatNumberV2(double number) {
-
-        if (number == (long) number) {
-            return String.format("%.0f", number);
-        } else {
-            DecimalFormat decimalFormat = new DecimalFormat("0.00");
-            return decimalFormat.format(number);
-
-        }
-    }
 
     public void setFilterList(ArrayList<String> filterList) {
         this.shop_id = filterList;
@@ -231,9 +219,6 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.MyView
         shop_id.remove(position);
     }
 
-    public void longClick(int position) {
-        onNoteListener.onOptionClick(position);
-    }
 
     public void checkEmpty() {
         if (shop_id.isEmpty()) {
@@ -347,19 +332,18 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.MyView
             currencyBox.setText(settings.getCurrency());
 
 
-
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
                         db.updateStatus(category, textBox.getText().toString(), 1);
                         if (settings.getIsCrossDisabled().equals(UserSettings.NO_CROSS_NOT_DISABLED)) {
-                            textBox.setPaintFlags(textBox.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                            textBox.setForeground(context.getDrawable(R.drawable.bg_strike_through));
                         }
                     } else {
                         db.updateStatus(category, textBox.getText().toString(), 0);
                         if (settings.getIsCrossDisabled().equals(UserSettings.NO_CROSS_NOT_DISABLED)) {
-                            textBox.setPaintFlags(textBox.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
+                            textBox.setForeground(null);
                         }
 
                     }
@@ -371,13 +355,10 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.MyView
             });
 
 
-
             options.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (isEnable) {
-
-                    } else {
+                    if (!isEnable) {
                         onNoteListener.onOptionClick(getAdapterPosition());
                     }
                 }

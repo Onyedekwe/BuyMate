@@ -5,10 +5,12 @@ import static com.hemerick.buymate.Widget.ShoppingWidgetProvider.ACTION_UPDATE_M
 
 import android.app.Activity;
 import android.app.PendingIntent;
+import android.app.UiModeManager;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -65,9 +67,25 @@ public class ShoppingWidgetProviderConfigureActivity extends Activity implements
         SharedPreferences sharedPreferences_theme = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
         String theme = sharedPreferences_theme.getString(UserSettings.CUSTOM_THEME, UserSettings.LIGHT_THEME);
         settings.setCustomTheme(theme);
+        String dim = sharedPreferences_theme.getString(UserSettings.IS_DIM_THEME_ENABLED, UserSettings.NO_DIM_THEME_NOT_ENABLED);
+        settings.setIsDimThemeEnabled(dim);
 
-        if (settings.getCustomTheme().equals(UserSettings.DIM_THEME)) {
-            setTheme(R.style.Dynamic_Dim);
+        if (settings.getCustomTheme().equals(UserSettings.DEFAULT_THEME)) {
+            int currentNightMode = this.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+
+            if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
+
+
+                if (settings.getIsDimThemeEnabled().equals(UserSettings.YES_DIM_THEME_ENABLED)) {
+                    setTheme(R.style.Dynamic_Dim);
+                }
+            }
+
+        } else if (settings.getCustomTheme().equals(UserSettings.DARK_THEME)) {
+
+            if (settings.getIsDimThemeEnabled().equals(UserSettings.YES_DIM_THEME_ENABLED)) {
+                setTheme(R.style.Dynamic_Dim);
+            }
         }
         setContentView(R.layout.shopping_widget_provider_configure);
 
@@ -212,7 +230,6 @@ public class ShoppingWidgetProviderConfigureActivity extends Activity implements
         views.setOnClickPendingIntent(R.id.widget_sync_icon, refreshPendingIntent);
 
         views.setRemoteAdapter(R.id.item_widget_stack_view, serviceIntent);
-        // views.setRemoteAdapter(appWidgetId, R.id.item_widget_stack_view, serviceIntent);
 
         views.setEmptyView(R.id.item_widget_stack_view, R.id.item_widget_empty_view);
 
@@ -251,9 +268,7 @@ public class ShoppingWidgetProviderConfigureActivity extends Activity implements
         if (settings.getCustomTheme().equals(UserSettings.DARK_THEME)) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
-        if (settings.getCustomTheme().equals(UserSettings.DIM_THEME)) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        }
+
 
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {

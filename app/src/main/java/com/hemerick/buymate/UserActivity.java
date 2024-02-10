@@ -1,9 +1,11 @@
 package com.hemerick.buymate;
 
 import android.app.Dialog;
+import android.app.UiModeManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -45,7 +47,7 @@ import com.google.firebase.storage.StorageReference;
 import com.hemerick.buymate.Database.Firebase;
 import com.hemerick.buymate.Database.ShopDatabase;
 import com.hemerick.buymate.Database.UserSettings;
-import com.hemerick.buymate.NetworkUtils.Network;
+import com.hemerick.buymate.NetworkUtils.ConnectivityUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -83,11 +85,26 @@ public class UserActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences_theme = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
         String theme = sharedPreferences_theme.getString(UserSettings.CUSTOM_THEME, UserSettings.LIGHT_THEME);
         settings.setCustomTheme(theme);
+        String dim = sharedPreferences_theme.getString(UserSettings.IS_DIM_THEME_ENABLED, UserSettings.NO_DIM_THEME_NOT_ENABLED);
+        settings.setIsDimThemeEnabled(dim);
 
-        if (settings.getCustomTheme().equals(UserSettings.DIM_THEME)) {
-            setTheme(R.style.Dynamic_Dim);
+        if (settings.getCustomTheme().equals(UserSettings.DEFAULT_THEME)) {
+            int currentNightMode = this.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+
+            if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
+
+
+                if (settings.getIsDimThemeEnabled().equals(UserSettings.YES_DIM_THEME_ENABLED)) {
+                    setTheme(R.style.Dynamic_Dim);
+                }
+            }
+
+        } else if (settings.getCustomTheme().equals(UserSettings.DARK_THEME)) {
+
+            if (settings.getIsDimThemeEnabled().equals(UserSettings.YES_DIM_THEME_ENABLED)) {
+                setTheme(R.style.Dynamic_Dim);
+            }
         }
-
         setContentView(R.layout.activity_user);
 
         toolbar = findViewById(R.id.account_title);
@@ -454,76 +471,81 @@ public class UserActivity extends AppCompatActivity {
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-                if (Network.isNetworkAvailable(UserActivity.this)) {
-                    FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                    progressBar.setVisibility(View.VISIBLE);
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            ArrayList<String> total_url = new ArrayList<>();
-
-                            Cursor res = db.getCategory(UserActivity.this);
-                            while (res.moveToNext()) {
-                                total_url.add(res.getString(12));
-                            }
-                            res.close();
-
-                            for (String check : total_url) {
-                                if (!check.trim().isEmpty()) {
-                                    FirebaseStorage storage = FirebaseStorage.getInstance();
-                                    StorageReference storageReference = storage.getReference().child(check);
-                                    storageReference.delete();
-                                }
-                            }
-                            firebase = new Firebase(UserActivity.this);
-                            firebase.deleteData();
-
-                            firebaseUser.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                progressBar.setVisibility(View.VISIBLE);
+                ConnectivityUtils.checkInternetConnectivity(UserActivity.this, new ConnectivityUtils.InternetCheckListener() {
+                    @Override
+                    public void onInternetCheckComplete(boolean isInternetAvailable) {
+                        if(isInternetAvailable){
+                            progressBar.setVisibility(View.GONE);
+                            FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                            progressBar.setVisibility(View.VISIBLE);
+                            new Handler().postDelayed(new Runnable() {
                                 @Override
-                                public void onSuccess(Void unused) {
-                                    StyleableToast.makeText(UserActivity.this, "Account deleted", R.style.custom_toast).show();
+                                public void run() {
 
-                                    settings.setIsAuthenticated(UserSettings.NOT_AUTHENTICATED);
-                                    settings.setUsername("User");
+                                    ArrayList<String> total_url = new ArrayList<>();
 
-                                    SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
-                                    editor.putString(UserSettings.IS_AUTHENTICATED, settings.getIsAuthenticated());
-                                    editor.putString(UserSettings.USER_NAME, settings.getUsername());
-                                    editor.apply();
-
-                                    progressBar.setVisibility(View.INVISIBLE);
-
-                                    Intent intent = new Intent(UserActivity.this, SignUpActivity.class);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    startActivity(intent);
-
-                                    GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(UserActivity.this);
-                                    if (account != null) {
-                                        googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-
-                                            }
-                                        });
+                                    Cursor res = db.getCategory(UserActivity.this);
+                                    while (res.moveToNext()) {
+                                        total_url.add(res.getString(12));
                                     }
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    progressBar.setVisibility(View.INVISIBLE);
-                                    StyleableToast.makeText(UserActivity.this, "Error: " + e.getMessage(), R.style.custom_toast).show();
-                                }
-                            });
+                                    res.close();
 
+                                    for (String check : total_url) {
+                                        if (!check.trim().isEmpty()) {
+                                            FirebaseStorage storage = FirebaseStorage.getInstance();
+                                            StorageReference storageReference = storage.getReference().child(check);
+                                            storageReference.delete();
+                                        }
+                                    }
+                                    firebase = new Firebase(UserActivity.this);
+                                    firebase.deleteData();
+
+                                    firebaseUser.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            StyleableToast.makeText(UserActivity.this, "Account deleted", R.style.custom_toast).show();
+
+                                            settings.setIsAuthenticated(UserSettings.NOT_AUTHENTICATED);
+                                            settings.setUsername("User");
+
+                                            SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
+                                            editor.putString(UserSettings.IS_AUTHENTICATED, settings.getIsAuthenticated());
+                                            editor.putString(UserSettings.USER_NAME, settings.getUsername());
+                                            editor.apply();
+
+                                            progressBar.setVisibility(View.INVISIBLE);
+
+                                            Intent intent = new Intent(UserActivity.this, SignUpActivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            startActivity(intent);
+
+                                            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(UserActivity.this);
+                                            if (account != null) {
+                                                googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            progressBar.setVisibility(View.INVISIBLE);
+                                            StyleableToast.makeText(UserActivity.this, "Error: " + e.getMessage(), R.style.custom_toast).show();
+                                        }
+                                    });
+
+                                }
+                            }, 2000);
+                        }else{
+                            progressBar.setVisibility(View.GONE);
+                            showNoNetworkDialog();
                         }
-                    }, 2000);
-                } else {
-                    showNoNetworkDialog();
-                }
-
+                    }
+                });
             }
         });
 

@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.text.Editable;
@@ -34,7 +35,6 @@ import io.github.muddz.styleabletoast.StyleableToast;
 public class InsertPasscodeActivity extends AppCompatActivity {
 
     private UserSettings settings;
-    private PowerManager.WakeLock wakeLock;
 
 
     private Executor executor;
@@ -58,9 +58,25 @@ public class InsertPasscodeActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences_theme = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
         String theme = sharedPreferences_theme.getString(UserSettings.CUSTOM_THEME, UserSettings.LIGHT_THEME);
         settings.setCustomTheme(theme);
+        String dim = sharedPreferences_theme.getString(UserSettings.IS_DIM_THEME_ENABLED, UserSettings.NO_DIM_THEME_NOT_ENABLED);
+        settings.setIsDimThemeEnabled(dim);
 
-        if (settings.getCustomTheme().equals(UserSettings.DIM_THEME)) {
-            setTheme(R.style.Dynamic_Dim);
+        if (settings.getCustomTheme().equals(UserSettings.DEFAULT_THEME)) {
+            int currentNightMode = this.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+
+            if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
+
+
+                if (settings.getIsDimThemeEnabled().equals(UserSettings.YES_DIM_THEME_ENABLED)) {
+                    setTheme(R.style.Dynamic_Dim);
+                }
+            }
+
+        } else if (settings.getCustomTheme().equals(UserSettings.DARK_THEME)) {
+
+            if (settings.getIsDimThemeEnabled().equals(UserSettings.YES_DIM_THEME_ENABLED)) {
+                setTheme(R.style.Dynamic_Dim);
+            }
         }
 
         setContentView(R.layout.activity_insert_passcode);
@@ -83,15 +99,15 @@ public class InsertPasscodeActivity extends AppCompatActivity {
                 if (!(text.length() < 4)) {
                     inputMethodManager.showSoftInput(pinView, InputMethodManager.HIDE_IMPLICIT_ONLY);
                     if (settings.getPassword().equals(text.trim())) {
-                        StyleableToast.makeText(InsertPasscodeActivity.this, "Success", R.style.custom_toast).show();
+                        StyleableToast.makeText(InsertPasscodeActivity.this, getString(R.string.InsertPasscodeActivity__success), R.style.custom_toast).show();
                         Intent intent = new Intent(InsertPasscodeActivity.this, HomeActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                     } else {
-                        StyleableToast.makeText(InsertPasscodeActivity.this, "Wrong pin", R.style.custom_toast_2).show();
+                        StyleableToast.makeText(InsertPasscodeActivity.this, getString(R.string.InsertPasscodeActivity__wrongPin), R.style.custom_toast_2).show();
                     }
                 } else {
-                    StyleableToast.makeText(InsertPasscodeActivity.this, "Insert 4 digit password", R.style.custom_toast_2).show();
+                    StyleableToast.makeText(InsertPasscodeActivity.this, getString(R.string.InsertPasscodeActivity__insertPin), R.style.custom_toast_2).show();
                 }
 
                 return true;
@@ -112,12 +128,12 @@ public class InsertPasscodeActivity extends AppCompatActivity {
 
                     inputMethodManager.showSoftInput(pinView, InputMethodManager.HIDE_IMPLICIT_ONLY);
                     if (settings.getPassword().equals(text.trim())) {
-                        StyleableToast.makeText(InsertPasscodeActivity.this, "Success", R.style.custom_toast).show();
+                        StyleableToast.makeText(InsertPasscodeActivity.this, getString(R.string.InsertPasscodeActivity__success), R.style.custom_toast).show();
                         Intent intent = new Intent(InsertPasscodeActivity.this, HomeActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                     } else {
-                        StyleableToast.makeText(InsertPasscodeActivity.this, "Wrong pin", R.style.custom_toast_2).show();
+                        StyleableToast.makeText(InsertPasscodeActivity.this, getString(R.string.InsertPasscodeActivity__wrongPin), R.style.custom_toast_2).show();
                     }
                 }
             }
@@ -175,15 +191,15 @@ public class InsertPasscodeActivity extends AppCompatActivity {
 
                     switch (biometricManager.canAuthenticate()) {
                         case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
-                            StyleableToast.makeText(InsertPasscodeActivity.this, "Device Not Supported", R.style.custom_toast).show();
+                            StyleableToast.makeText(InsertPasscodeActivity.this, getString(R.string.InsertPasscodeActivity__notSupported), R.style.custom_toast).show();
                             break;
 
                         case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
-                            StyleableToast.makeText(InsertPasscodeActivity.this, "Hardware Unavailable", R.style.custom_toast).show();
+                            StyleableToast.makeText(InsertPasscodeActivity.this, getString(R.string.InsertPasscodeActivity__hardwareNotAvailable), R.style.custom_toast).show();
                             break;
 
                         case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
-                            StyleableToast.makeText(InsertPasscodeActivity.this, "Fingerprint not set for this device", R.style.custom_toast).show();
+                            StyleableToast.makeText(InsertPasscodeActivity.this, getString(R.string.InsertPasscodeActivity__fingerprintNotSet), R.style.custom_toast).show();
                             break;
 
                         case BiometricManager.BIOMETRIC_SUCCESS:
@@ -203,7 +219,7 @@ public class InsertPasscodeActivity extends AppCompatActivity {
                         @Override
                         public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                             super.onAuthenticationSucceeded(result);
-                            StyleableToast.makeText(InsertPasscodeActivity.this, "Success", R.style.custom_toast).show();
+                            StyleableToast.makeText(InsertPasscodeActivity.this, getString(R.string.InsertPasscodeActivity__success), R.style.custom_toast).show();
                             Intent intent = new Intent(InsertPasscodeActivity.this, HomeActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
@@ -217,8 +233,8 @@ public class InsertPasscodeActivity extends AppCompatActivity {
                     });
 
                     promptInfo = new BiometricPrompt.PromptInfo.Builder()
-                            .setTitle("Verify fingerprint")
-                            .setNegativeButtonText("Use password")
+                            .setTitle(getString(R.string.InsertPasscodeActivity__verifyFingerprint))
+                            .setNegativeButtonText(getString(R.string.InsertPasscodeActivity__usePassword))
                             .build();
                     biometricPrompt.authenticate(promptInfo);
                 }
@@ -271,7 +287,7 @@ public class InsertPasscodeActivity extends AppCompatActivity {
         boolean wakeLockEnabled = UserSettings.isWakeLockEnabled(this);
         if (wakeLockEnabled) {
             PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-            wakeLock = powerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "MyApp:KeepScreeOn");
+            PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "MyApp:KeepScreeOn");
             wakeLock.acquire();
         }
 

@@ -50,7 +50,7 @@ public class ShoppingWidgetService extends RemoteViewsService {
         public void onCreate() {
             //connect to data source
             SharedPreferences prefs = context.getSharedPreferences(SHARED_PRES, Context.MODE_PRIVATE);
-            buttonText = prefs.getString(KEY_BUTTON_TEXT + appWidgetId, "Press me");
+            buttonText = prefs.getString(KEY_BUTTON_TEXT + appWidgetId, "-- --");
 
             ShopDatabase db = new ShopDatabase(context);
             Cursor res = db.getItems(buttonText, context);
@@ -59,7 +59,7 @@ public class ShoppingWidgetService extends RemoteViewsService {
                 if (res.getInt(3) == 1) {
                     Items.add(res.getString(2) + " ☑");
                 } else {
-                    Items.add(res.getString(2) + " □");
+                    Items.add(res.getString(2));
                 }
 
 
@@ -67,7 +67,7 @@ public class ShoppingWidgetService extends RemoteViewsService {
                 day = res.getString(7);
                 time = res.getString(8);
 
-                String full_date = "Added " + day + ", " + month + ", " + time;
+                String full_date = context.getString(R.string.ShoppingWidgetService__added) + " " + day + " " + month + " " + time;
                 Items_Date.add(full_date);
             }
             res.close();
@@ -79,7 +79,7 @@ public class ShoppingWidgetService extends RemoteViewsService {
         public void onDataSetChanged() {
 
             SharedPreferences prefs = context.getSharedPreferences(SHARED_PRES, Context.MODE_PRIVATE);
-            buttonText = prefs.getString(KEY_BUTTON_TEXT + appWidgetId, "Press me");
+            buttonText = prefs.getString(KEY_BUTTON_TEXT + appWidgetId, "-- --");
 
             ShopDatabase db = new ShopDatabase(context);
             //refresh data
@@ -89,7 +89,7 @@ public class ShoppingWidgetService extends RemoteViewsService {
             while (res.moveToNext()) {
 
                 if (res.getInt(3) == 1) {
-                    Items.add(res.getString(2) + " \u2611");
+                    Items.add(res.getString(2) + " ☑");
                 } else {
                     Items.add(res.getString(2));
                 }
@@ -98,7 +98,7 @@ public class ShoppingWidgetService extends RemoteViewsService {
                 day = res.getString(7);
                 time = res.getString(8);
 
-                String full_date = "Added " + day + ", " + month + ", " + time;
+                String full_date = context.getString(R.string.ShoppingWidgetService__added) + day + " " + month + " " + time;
                 Items_Date.add(full_date);
             }
             res.close();

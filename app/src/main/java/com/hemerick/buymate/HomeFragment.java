@@ -153,10 +153,6 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     View headerView;
-    TextView headerTextView1;
-    TextView headerTextView2;
-    TextView userName;
-    TextView userEmail;
 
     ProgressBar progressBar;
 
@@ -208,8 +204,6 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
                 int itemId = item.getItemId();
                 if (itemId == R.id.nav_home) {
@@ -242,7 +236,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                     Intent intent = new Intent(context, SettingsActivity.class);
                     startActivity(intent);
                 } else if (itemId == R.id.nav_rate_us) {
-                    Uri uri = Uri.parse("https://play.google.com/store/apps/details?id=" + context.getPackageName());
+                    Uri uri = Uri.parse(getString(R.string.app_link) + context.getPackageName());
                     Intent intent1 = new Intent(Intent.ACTION_VIEW, uri);
                     startActivity(intent1);
                 } else if (itemId == R.id.nav_message) {
@@ -250,33 +244,33 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
 
-                        String[] app_email = new String[]{"hemerickservices@gmail.com"};
+                        String[] app_email = new String[]{getString(R.string.app_email)};
 
                         String asterics = "*******";
-                        String subject = getString(R.string.app_name) + " Feedback";
+                        String subject = getString(R.string.app_name) +" "+ getString(R.string.HomeFragment__feedback);
                         String email = firebaseUser.getEmail();
                         String app_version = getString(R.string.app_version);
 
                         String deviceInfo = asterics + "\n" +
-                                "Account Email: " + email + "\n" +
-                                "App Version: " + app_version + "\n" +
-                                "Device: " + Build.DEVICE + "\n" +
-                                "Model: " + Build.MODEL + "\n" +
-                                "Brand: " + Build.BRAND + "\n" +
-                                "OS Version: " + Build.VERSION.RELEASE + "\n" +
-                                "SDK Version: " + Build.VERSION.SDK_INT + "\n" +
+                                getString(R.string.HomeFragment__accountEmail) + email + "\n" +
+                                getString(R.string.HomeFragment__appVersion) + app_version + "\n" +
+                                getString(R.string.HomeFragment__device) + Build.DEVICE + "\n" +
+                                getString(R.string.HomeFragment__model) + Build.MODEL + "\n" +
+                                getString(R.string.HomeFragment__brand) + Build.BRAND + "\n" +
+                                getString(R.string.HomeFragment__osVersion) + Build.VERSION.RELEASE + "\n" +
+                                getString(R.string.HomeFragment__sdkVersion) + Build.VERSION.SDK_INT + "\n" +
                                 asterics + "\n";
 
 
                         Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
-                        emailIntent.setData(Uri.parse("mailto:"));
+                        emailIntent.setData(Uri.parse(getString(R.string.HomeFragment__mailTo)));
                         emailIntent.putExtra(Intent.EXTRA_EMAIL, app_email);
                         emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
                         emailIntent.putExtra(Intent.EXTRA_TEXT, deviceInfo);
                         if (emailIntent.resolveActivity(getContext().getPackageManager()) != null) {
                             startActivity(emailIntent);
                         } else {
-                            Toast.makeText(getContext(), "No email client found", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), getString(R.string.HomeFragment__mailError), Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         showLogInWarningDialog();
@@ -291,7 +285,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         });
 
         headerView = navigationView.getHeaderView(0);
-        toggle = new ActionBarDrawerToggle(getActivity(), drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        toggle = new ActionBarDrawerToggle(getActivity(), drawerLayout, R.string.HomeFragment__navigation_drawer_open, R.string.HomeFragment__navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -322,11 +316,11 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                     } else {
                         String first_name;
                         if (settings.getUsername().equals(UserSettings.USER_NAME_NOT_SET)) {
-                            first_name = "User";
+                            first_name = getString(R.string.HomeFragment__defaultName);
                         } else {
                             first_name = settings.getUsername().trim();
                         }
-                        collapsingToolbarLayout.setTitle("Hi, " + first_name + "!");
+                        collapsingToolbarLayout.setTitle(getString(R.string.HomeFragment__hiText) + first_name + getString(R.string.HomeFragment__exclam));
                     }
                 }
             }
@@ -337,7 +331,6 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-
                 return true;
             }
 
@@ -420,7 +413,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
     }
 
     public void displayData() {
-        Cursor resCategory = db.getCategory(getActivity());
+        Cursor resCategory = db.getCategory(context);
         if (resCategory.getCount() == 0) {
 
             SharedPreferences sharedPreferences = context.getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
@@ -452,7 +445,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
 
             emptyTextLayout.setVisibility(View.VISIBLE);
             emptyView.setVisibility(View.VISIBLE);
-            searchView.setQueryHint("No list to search");
+            searchView.setQueryHint(getString(R.string.HomeFragment__emptySearch));
         } else {
             LinkedHashSet<String> hash = new LinkedHashSet<>();
             while (resCategory.moveToNext()) {
@@ -662,7 +655,6 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                                 db.deleteCategory(finalSelectList.get(i));
 
                             }
-                            StyleableToast.makeText(context, "List Deleted", R.style.custom_toast).show();
                             adapter.disableSelection();
                             searchEditText.setText("");
 
@@ -794,14 +786,14 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
             addItemIllustrationLayout.setVisibility(View.VISIBLE);
         } else {
             addItemTextHeader.setVisibility(View.VISIBLE);
-            addItemTextHeader.setText("Add an item to your list");
+            addItemTextHeader.setText(getString(R.string.HomeFragment__addItemToList));
             addItemTextHeader2.setVisibility(View.GONE);
             addItemIllustrationLayout.setVisibility(View.VISIBLE);
         }
         Cursor res = db.getCategory(context);
         itemCheck.clear();
         while (res.moveToNext()) {
-            itemCheck.add(res.getString(1).trim());
+            itemCheck.add(res.getString(1).trim().toLowerCase());
         }
         res.close();
 
@@ -839,7 +831,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                 if (!descText.getText().toString().trim().isEmpty()) {
                     description = descText.getText().toString().trim();
                     if (descPrice.getText().toString().trim().isEmpty()) {
-                        if (!itemCheck.contains(descText.getText().toString().trim())) {
+                        if (!itemCheck.contains(descText.getText().toString().trim().toLowerCase())) {
                             if (descQuantity.getText().toString().isEmpty()) {
                                 double quant = 1;
                                 double temp_price = 0;
@@ -855,7 +847,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                             StyleableToast.makeText(context, getString(R.string.list_exist_already), R.style.custom_toast_2).show();
                         }
                     } else {
-                        if (!itemCheck.contains(descText.getText().toString().trim())) {
+                        if (!itemCheck.contains(descText.getText().toString().trim().toLowerCase())) {
                             if (descQuantity.getText().toString().isEmpty()) {
                                 double quant = 1;
                                 double p = Double.parseDouble(descPrice.getText().toString().trim());
@@ -1111,7 +1103,8 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
             cancelButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
         }
 
-        delete_heading.setText(getString(R.string.remove) + " " + temp);
+        String temp_text = getString(R.string.remove) + " " + temp;
+        delete_heading.setText(temp_text);
 
         delete_message.setText(getString(R.string.remove_item_warning));
 
@@ -1186,7 +1179,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
     }
 
     public void showLogInWarningDialog() {
-        login_warning_dialog = new Dialog(getContext());
+        login_warning_dialog = new Dialog(context);
         login_warning_dialog.setContentView(R.layout.custom_logout_warning_dialog);
         login_warning_dialog.getWindow().setBackgroundDrawable(getContext().getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
         login_warning_dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -1196,8 +1189,8 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         Button backup = login_warning_dialog.findViewById(R.id.backup);
         TextView okBtn = login_warning_dialog.findViewById(R.id.okBtn);
 
-        alertText.setText("Please login to Buymate to be able to message us.");
-        backup.setText("Login");
+        alertText.setText(getString(R.string.HomeFragment__loginPrompt));
+        backup.setText(getString(R.string.HomeFragment__login));
 
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
@@ -1356,12 +1349,12 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         CheckBox checkPriceAscend = show_sort_dialog.findViewById(R.id.check_price_ascend);
         checkPriceAscend.setClickable(false);
         TextView priceTextAscend = show_sort_dialog.findViewById(R.id.price_text_ascend);
-        priceTextAscend.setText(getString(R.string.sort_price_text));
+        priceTextAscend.setText(getString(R.string.HomeFragment__sortPriceText));
         LinearLayout priceDescend = show_sort_dialog.findViewById(R.id.price_descend);
         CheckBox checkPriceDescend = show_sort_dialog.findViewById(R.id.check_price_descend);
         checkPriceDescend.setClickable(false);
         TextView priceTextDescend = show_sort_dialog.findViewById(R.id.price_text_descend);
-        priceTextDescend.setText(getString(R.string.sort_price_text));
+        priceTextDescend.setText(getString(R.string.HomeFragment__sortPriceText));
         LinearLayout quantityAscend = show_sort_dialog.findViewById(R.id.quantity_ascend);
         quantityAscend.setVisibility(View.GONE);
         LinearLayout quantityDescend = show_sort_dialog.findViewById(R.id.quantity_descend);
@@ -1634,10 +1627,10 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
 
         }
 
-        String appLink = "https://play.google.com/store/apps/details?id=" + getContext().getPackageName();
+        String appLink = getString(R.string.app_link) + getContext().getPackageName();
 
-        result.append("\n\n\n").append("Improve your shopping experience with Buymate.");
-        result.append("\n\n").append("Download Buymate on Google Play:");
+        result.append("\n\n\n").append(context.getString(R.string.HomeFragment__shareBtmText1));
+        result.append("\n\n").append(context.getString(R.string.HomeFragment__shareBtmText2));
         result.append("\n").append(appLink);
 
 
@@ -1795,17 +1788,17 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                     table.setFontSize(18f);
                     table.setFontColor(itextBlack);
 
-                    table.addCell(new Cell().add(new Paragraph("NO")).setTextAlignment(TextAlignment.LEFT).setBold().setPaddingLeft(8f).setCharacterSpacing(1.5f).setFontColor(itextBlack));
-                    table.addCell(new Cell().add(new Paragraph("ITEM")).setTextAlignment(TextAlignment.LEFT).setBold().setPaddingLeft(8f).setCharacterSpacing(1.5f).setFontColor(itextBlack));
+                    table.addCell(new Cell().add(new Paragraph(getString(R.string.HomeFragment__no))).setTextAlignment(TextAlignment.LEFT).setBold().setPaddingLeft(8f).setCharacterSpacing(1.5f).setFontColor(itextBlack));
+                    table.addCell(new Cell().add(new Paragraph(getString(R.string.HomeFragment__item))).setTextAlignment(TextAlignment.LEFT).setBold().setPaddingLeft(8f).setCharacterSpacing(1.5f).setFontColor(itextBlack));
 
 
                     if (settings.getIsShareQuantityDisabled().equals(UserSettings.NO_SHARE_QUANTITY_NOT_DISABLED)) {
-                        table.addCell(new Cell().add(new Paragraph("QUANTITY")).setTextAlignment(TextAlignment.CENTER).setBold().setCharacterSpacing(1.5f).setFontColor(itextBlack));
-                        table.addCell(new Cell().add(new Paragraph("UNIT")).setTextAlignment(TextAlignment.CENTER).setBold().setCharacterSpacing(1.5f).setFontColor(itextBlack));
+                        table.addCell(new Cell().add(new Paragraph(getString(R.string.HomeFragment__quantity))).setTextAlignment(TextAlignment.CENTER).setBold().setCharacterSpacing(1.5f).setFontColor(itextBlack));
+                        table.addCell(new Cell().add(new Paragraph(getString(R.string.HomeFragment__unit))).setTextAlignment(TextAlignment.CENTER).setBold().setCharacterSpacing(1.5f).setFontColor(itextBlack));
                     }
 
                     if (settings.getIsSharePriceDisabled().equals(UserSettings.NO_SHARE_PRICE_NOT_DISABLED)) {
-                        table.addCell(new Cell().add(new Paragraph("PRICE" + "(" + currency + ")")).setTextAlignment(TextAlignment.CENTER).setBold().setCharacterSpacing(1.5f).setFontColor(itextBlack).setFont(font));
+                        table.addCell(new Cell().add(new Paragraph(getString(R.string.HomeFragment__price) + "(" + currency + ")")).setTextAlignment(TextAlignment.CENTER).setBold().setCharacterSpacing(1.5f).setFontColor(itextBlack).setFont(font));
                     }
 
 
@@ -1829,16 +1822,16 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
 
                         if (count == 2) {
 
-                            table.addCell(new Cell(1, 1).add(new Paragraph("Total:")).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
+                            table.addCell(new Cell(1, 1).add(new Paragraph(getString(R.string.HomeFragment__Total))).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
                             table.addCell(new Cell(1, 1).add(new Paragraph(currency + " " + formatNumberV3(total))).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
 
                         } else if (count == 3) {
-                            table.addCell(new Cell(1, 1).add(new Paragraph("Total:")).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
+                            table.addCell(new Cell(1, 1).add(new Paragraph(getString(R.string.HomeFragment__Total))).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
                             table.addCell(new Cell(1, 2).add(new Paragraph(currency + " " + formatNumberV3(total))).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
 
 
                         } else if (count == 5) {
-                            table.addCell(new Cell(1, 2).add(new Paragraph("Total:")).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
+                            table.addCell(new Cell(1, 2).add(new Paragraph(getString(R.string.HomeFragment__Total))).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
                             table.addCell(new Cell(1, 3).add(new Paragraph(currency + " " + formatNumberV3(total))).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
 
                         }
@@ -1847,7 +1840,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                     document.add(table);
 
 
-                    Paragraph contact = new Paragraph("Contact us at:")
+                    Paragraph contact = new Paragraph(getString(R.string.HomeFragment__contactUs))
                             .setTextAlignment(TextAlignment.CENTER)
                             .setHorizontalAlignment(HorizontalAlignment.CENTER)
                             .setFontSize(15)
@@ -1872,7 +1865,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
 
                     document.add(dashedLine);
 
-                    Paragraph close_text = new Paragraph("Improve your shopping experience with Buymate.")
+                    Paragraph close_text = new Paragraph(getString(R.string.HomeFragment__shareBtmText1))
                             .setTextAlignment(TextAlignment.CENTER)
                             .setHorizontalAlignment(HorizontalAlignment.CENTER)
                             .setFontSize(15)
@@ -1884,7 +1877,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                     document.close();
                     progressBar.setVisibility(View.GONE);
                     show_share_dialog.dismiss();
-                    Toast.makeText(context, "PDF downloaded to" + directory, Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, getString(R.string.HomeFragment__pdfDownloadedTo) + directory, Toast.LENGTH_LONG).show();
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -2135,7 +2128,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                 emptyText2.setVisibility(View.GONE);
                 emptyText3.setVisibility(View.GONE);
                 empty_create_btn.setVisibility(View.GONE);
-                emptyText1.setText("No list found");
+                emptyText1.setText(getString(R.string.HomeFragment__noListFound));
 
             }
         }
@@ -2173,7 +2166,8 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
 
         TextView title = show_share_dialog.findViewById(R.id.title);
         TextView title_2 = show_share_dialog.findViewById(R.id.title_2);
-        title_2.setText("(" + temp_item + ")");
+        String temp_text = "(" + temp_item + ")";
+        title_2.setText(temp_text);
 
 
         TextView textText = show_share_dialog.findViewById(R.id.asText);
@@ -2353,9 +2347,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
 
         String firstname = sharedPreferences.getString(UserSettings.USER_NAME, UserSettings.USER_NAME_NOT_SET);
         settings.setUsername(firstname);
-
-        String premium_subscribed = sharedPreferences.getString(UserSettings.IS_PREMIUM_SUBSCRIBED, UserSettings.NOT_SUBSCRIBED);
-        settings.setIsPremiumSubscribed(premium_subscribed);
+        
 
         String multiply_disabled = sharedPreferences.getString(UserSettings.IS_MULTIPLY_DISABLED, UserSettings.YES_MULTIPLY_DISABLED);
         settings.setIsMultiplyDisabled(multiply_disabled);

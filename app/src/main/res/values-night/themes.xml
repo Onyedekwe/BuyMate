@@ -22,7 +22,7 @@
         <item name="backgroundColor">#121212</item>
         <item name="colorSurface">#212124</item>
         <item name="trackColor">#6E7780</item>
-        <item name="colorError">@color/light_red</item>
+        <item name="colorError">#DD6868</item>
         <item name="textFillColor">#FFFFFF</item>
         <item name="android:shadowColor">#3A4447</item>
         <item name="color">#161618</item>
@@ -49,7 +49,7 @@
         <item name="backgroundColor">#2d383c</item>
         <item name="colorSurface">#424D52</item>
         <item name="trackColor">#6E7780</item>
-        <item name="colorError">@color/light_red</item>
+        <item name="colorError">#DD6868</item>
         <item name="textFillColor">#FFFFFF</item>
         <item name="android:shadowColor">#3A4447</item>
         <item name="color">#3C464A</item>

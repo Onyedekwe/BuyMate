@@ -25,10 +25,6 @@ import com.hemerick.buymate.SignUpActivity;
 
 import java.util.ArrayList;
 
-/**
- * Implementation of App Widget functionality.
- * App Widget Configuration implemented in {@link ShoppingWidgetProviderConfigureActivity ShoppingWidgetProviderConfigureActivity}
- */
 public class ShoppingWidgetProvider extends AppWidgetProvider {
 
     public static final String ACTION_REFRESH = "actionRefresh";
@@ -64,7 +60,7 @@ public class ShoppingWidgetProvider extends AppWidgetProvider {
             PendingIntent buttonPendingIntent = PendingIntent.getActivity(context, 0, buttonIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
 
             SharedPreferences prefs = context.getSharedPreferences(SHARED_PRES, Context.MODE_PRIVATE);
-            String buttonText = prefs.getString(KEY_BUTTON_TEXT + appWidgetIds[i], "Press me");
+            String buttonText = prefs.getString(KEY_BUTTON_TEXT + appWidgetIds[i], "-- --");
             String count = prefs.getString(KEY_BUTTON_TEXT + appWidgetIds[i] + KEY_COUNT, "0");
 
 
@@ -75,8 +71,7 @@ public class ShoppingWidgetProvider extends AppWidgetProvider {
             Intent clickIntent = new Intent(context, ShoppingWidgetProvider.class);
             clickIntent.setAction(ACTION_REFRESH);
             clickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetIds[i]);
-            PendingIntent clickPendingIntent = PendingIntent.getBroadcast(context,
-                    appWidgetIds[i], clickIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
+            PendingIntent clickPendingIntent = PendingIntent.getBroadcast(context, appWidgetIds[i], clickIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
 
 
             Intent refreshIntent = new Intent(context, ShoppingWidgetProvider.class);
@@ -90,7 +85,6 @@ public class ShoppingWidgetProvider extends AppWidgetProvider {
             views.setOnClickPendingIntent(R.id.widget_sync_icon, refreshPendingIntent);
 
             views.setRemoteAdapter(R.id.item_widget_stack_view, serviceIntent);
-            //  views.setRemoteAdapter(appWidgetIds[i], R.id.item_widget_stack_view, serviceIntent);
             views.setEmptyView(R.id.item_widget_stack_view, R.id.item_widget_empty_view);
 
             views.setTextViewText(R.id.category_text_view, buttonText);
@@ -109,25 +103,6 @@ public class ShoppingWidgetProvider extends AppWidgetProvider {
     @Override
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.shopping_widget_provider);
-
-        int minWidth = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
-        int maxWidth = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH);
-        int minHeight = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
-        int maxHeight = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT);
-
-        String dimensions = "Min width: " + minWidth + "\nMax width: " + maxWidth
-                + "\nMin height: " + minHeight + "\nMax height: " + maxHeight;
-
-        Toast.makeText(context, dimensions, Toast.LENGTH_LONG).show();
-
-        //     if(maxHeight > 100){
-        //       views.setViewVisibility(R.id.example_widget_text, View.VISIBLE);
-        //     views.setViewVisibility(R.id.example_widget_button, View.VISIBLE);
-        // }else{
-        //    views.setViewVisibility(R.id.example_widget_text, View.GONE);
-        //   views.setViewVisibility(R.id.example_widget_button, View.GONE);
-        //}
-
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 

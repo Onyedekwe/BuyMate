@@ -25,8 +25,7 @@ public class ShopDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (newVersion > oldVersion)
-            onCreate(db);
+        if (newVersion > oldVersion) onCreate(db);
     }
 
     public void insertItem(String category, String description, int status, String price, String month, String year, String day, String time, String quantity, String unit) {
@@ -76,8 +75,6 @@ public class ShopDatabase extends SQLiteOpenHelper {
         long result = db.insert("SuggestUnitTable", null, contentValues);
         return result != -1;
     }
-
-
 
 
     public boolean updateItem(String category, String description, String temp_description) {
@@ -218,8 +215,6 @@ public class ShopDatabase extends SQLiteOpenHelper {
     }
 
 
-
-
     public void deleteAllList() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete("ShopTable", null, null);
@@ -354,11 +349,6 @@ public class ShopDatabase extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public Cursor getNoteDate(String heading) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("select * from NoteTable where heading = ?", new String[]{heading});
-        return cursor;
-    }
 
     public Cursor getFavourites(String category, String description) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -379,11 +369,6 @@ public class ShopDatabase extends SQLiteOpenHelper {
     }
 
     public Cursor getPrice(String category, String description) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        return db.rawQuery("select * from ShopTable where category = ? AND description = ?", new String[]{category, description});
-    }
-
-    public Cursor getFullDate(String category, String description) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.rawQuery("select * from ShopTable where category = ? AND description = ?", new String[]{category, description});
     }

@@ -2,6 +2,7 @@ package com.hemerick.buymate;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.util.TypedValue;
@@ -20,7 +21,6 @@ public class DetailListShareSettingActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     private UserSettings settings;
-    private PowerManager.WakeLock wakeLock;
 
     private SwitchCompat shareWithPriceSwitch, shareWithQuantitySwitch, shareWithTotalSwitch;
     private TextView shareWithPriceText, shareWithQuantityText, shareWithTotalText;
@@ -34,11 +34,26 @@ public class DetailListShareSettingActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences_theme = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
         String theme = sharedPreferences_theme.getString(UserSettings.CUSTOM_THEME, UserSettings.LIGHT_THEME);
         settings.setCustomTheme(theme);
+        String dim = sharedPreferences_theme.getString(UserSettings.IS_DIM_THEME_ENABLED, UserSettings.NO_DIM_THEME_NOT_ENABLED);
+        settings.setIsDimThemeEnabled(dim);
 
-        if (settings.getCustomTheme().equals(UserSettings.DIM_THEME)) {
-            setTheme(R.style.Dynamic_Dim);
+        if (settings.getCustomTheme().equals(UserSettings.DEFAULT_THEME)) {
+            int currentNightMode = this.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+
+            if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
+
+
+                if (settings.getIsDimThemeEnabled().equals(UserSettings.YES_DIM_THEME_ENABLED)) {
+                    setTheme(R.style.Dynamic_Dim);
+                }
+            }
+
+        } else if (settings.getCustomTheme().equals(UserSettings.DARK_THEME)) {
+
+            if (settings.getIsDimThemeEnabled().equals(UserSettings.YES_DIM_THEME_ENABLED)) {
+                setTheme(R.style.Dynamic_Dim);
+            }
         }
-
         setContentView(R.layout.activity_detail_list_share_setting);
 
 
@@ -123,23 +138,30 @@ public class DetailListShareSettingActivity extends AppCompatActivity {
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
             shareWithPriceText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-            shareWithQuantityText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-            shareWithTotalText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             shareWithPriceSubText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            shareWithQuantityText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            shareWithQuantitySubText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            shareWithTotalText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            shareWithTotalSubText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+
 
 
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
             shareWithPriceText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            shareWithPriceSubText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             shareWithQuantityText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            shareWithQuantitySubText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             shareWithTotalText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             shareWithTotalSubText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
             shareWithPriceText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            shareWithPriceSubText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             shareWithQuantityText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            shareWithQuantitySubText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             shareWithTotalText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             shareWithTotalSubText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
         }
@@ -163,7 +185,7 @@ public class DetailListShareSettingActivity extends AppCompatActivity {
         boolean wakeLockEnabled = UserSettings.isWakeLockEnabled(this);
         if (wakeLockEnabled) {
             PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-            wakeLock = powerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "MyApp:KeepScreeOn");
+            PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "MyApp:KeepScreeOn");
             wakeLock.acquire();
         }
 

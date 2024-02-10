@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -196,9 +197,25 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         SharedPreferences sharedPreferences_theme = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
         String theme = sharedPreferences_theme.getString(UserSettings.CUSTOM_THEME, UserSettings.LIGHT_THEME);
         settings.setCustomTheme(theme);
+        String dim = sharedPreferences_theme.getString(UserSettings.IS_DIM_THEME_ENABLED, UserSettings.NO_DIM_THEME_NOT_ENABLED);
+        settings.setIsDimThemeEnabled(dim);
 
-        if (settings.getCustomTheme().equals(UserSettings.DIM_THEME)) {
-            setTheme(R.style.Dynamic_Dim);
+        if (settings.getCustomTheme().equals(UserSettings.DEFAULT_THEME)) {
+            int currentNightMode = this.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+
+            if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
+
+
+                if (settings.getIsDimThemeEnabled().equals(UserSettings.YES_DIM_THEME_ENABLED)) {
+                    setTheme(R.style.Dynamic_Dim);
+                }
+            }
+
+        } else if (settings.getCustomTheme().equals(UserSettings.DARK_THEME)) {
+
+            if (settings.getIsDimThemeEnabled().equals(UserSettings.YES_DIM_THEME_ENABLED)) {
+                setTheme(R.style.Dynamic_Dim);
+            }
         }
 
         setContentView(R.layout.activity_item);
@@ -417,9 +434,9 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                     Button cancelButton = menu_delete_dialog.findViewById(R.id.cancel_button);
 
                     if (finalSelectList.size() > 1) {
-                        delete_heading.setText(getString(R.string.multiple_remove));
+                        delete_heading.setText(getString(R.string.ItemActivity__deleteTheseItems));
                     } else {
-                        delete_heading.setText(getString(R.string.single_remove));
+                        delete_heading.setText(getString(R.string.ItemActivity__deleteThisItem));
                     }
                     delete_message.setText(items_selected.toString());
 
@@ -490,7 +507,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                     TextView emptyTEXT1 = menu_move_dialog.findViewById(R.id.emptyTEXT1);
                     LinearLayout emptyNotesLayout = menu_move_dialog.findViewById(R.id.emptyNotesLayout);
                     TextView textView = menu_move_dialog.findViewById(R.id.item_move_title);
-                    textView.setText(getString(R.string.move_to));
+                    textView.setText(getString(R.string.ItemActivity__moveTo));
                     SearchView searchView = menu_move_dialog.findViewById(R.id.search_bar);
                     EditText searchEditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
                     Button button = menu_move_dialog.findViewById(R.id.create_new_list);
@@ -578,7 +595,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                     LinearLayout emptyNotesLayout = menu_copy_dialog.findViewById(R.id.emptyNotesLayout);
                     TextView emptyTEXT1 = menu_copy_dialog.findViewById(R.id.emptyTEXT1);
                     TextView textView = menu_copy_dialog.findViewById(R.id.item_move_title);
-                    textView.setText(getString(R.string.copy_to));
+                    textView.setText(getString(R.string.ItemActivity__copyTo));
                     SearchView searchView = menu_copy_dialog.findViewById(R.id.search_bar);
                     EditText searchEditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
                     Button button = menu_copy_dialog.findViewById(R.id.create_new_list);
@@ -692,9 +709,9 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                     Button deleteButton = menu_unstar_dialog.findViewById(R.id.delete_button);
                     Button cancelButton = menu_unstar_dialog.findViewById(R.id.cancel_button);
 
-                    delete_heading.setText(getString(R.string.single_unstar));
+                    delete_heading.setText(getString(R.string.ItemActivity__unstarred));
                     delete_message.setText(items_selected.toString());
-                    deleteButton.setText("Remove");
+                    deleteButton.setText(getString(R.string.ItemActivity__unstar));
                     cancelButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -780,7 +797,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             menu.findItem(R.id.search).setOnActionExpandListener(onActionExpandListener);
             searchView = (SearchView) menu.findItem(R.id.search).getActionView();
             searchEditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
-            searchView.setQueryHint(getString(R.string.item_search_hint));
+            searchView.setQueryHint(getString(R.string.ItemActivity__searchHint));
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
                 @Override
@@ -916,7 +933,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         }
 
 
-        Items_list_size_textbox.setText(getString(R.string.total_items_text) + " " + "(" + checked_count + "/" + Items.size() + ")");
+        Items_list_size_textbox.setText(getString(R.string.ItemActivity__itemsChecked) + " " + "(" + checked_count + "/" + Items.size() + ")");
 
         Cursor resItemName = db.getSuggestName();
         while (resItemName.moveToNext()) {
@@ -987,7 +1004,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             Total_Summation_Textbox.setText("*****");
         }
 
-        Items_list_size_textbox.setText(getString(R.string.total_items_text) + " " + "(" + checked_count + "/" + Items.size() + ")");
+        Items_list_size_textbox.setText(getString(R.string.ItemActivity__itemsChecked) + " " + "(" + checked_count + "/" + Items.size() + ")");
 
     }
 
@@ -1101,14 +1118,14 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         }
 
         addItemIllustrationLayout.setVisibility(View.VISIBLE);
-        add_Item_Text_Header_1.setText("Add an item to your list");
+        add_Item_Text_Header_1.setText(getString(R.string.ItemActivity__addItemToList));
         add_Item_Text_Header_2.setVisibility(View.GONE);
 
 
         Items_Check.clear();
         Cursor res = db.getItems(category, ItemActivity.this);
         while (res.moveToNext()) {
-            Items_Check.add(res.getString(2));
+            Items_Check.add(res.getString(2).toLowerCase());
         }
         res.close();
 
@@ -1149,7 +1166,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                 if (!item_name_box.getText().toString().trim().isEmpty()) {
                     String description = item_name_box.getText().toString().trim();
                     if (item_price_box.getText().toString().trim().isEmpty()) {
-                        if (!Items_Check.contains(item_name_box.getText().toString().trim())) {
+                        if (!Items_Check.contains(item_name_box.getText().toString().trim().toLowerCase())) {
                             if (item_quantity_box.getText().toString().isEmpty()) {
                                 double temp_quantity = 1;
                                 double temp_price = 0;
@@ -1162,10 +1179,10 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                                 bottom_dialog.dismiss();
                             }
                         } else {
-                            Toast.makeText(ItemActivity.this, getString(R.string.item_exist_already), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ItemActivity.this, getString(R.string.ItemActivity__alreadyExist), Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        if (!Items_Check.contains(item_name_box.getText().toString().trim())) {
+                        if (!Items_Check.contains(item_name_box.getText().toString().trim().toLowerCase())) {
                             if (item_quantity_box.getText().toString().isEmpty()) {
                                 double temp_quantity = 1;
                                 double temp_price = Double.parseDouble(item_price_box.getText().toString().trim());
@@ -1178,11 +1195,11 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                                 bottom_dialog.dismiss();
                             }
                         } else {
-                            Toast.makeText(ItemActivity.this, getString(R.string.item_exist_already), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ItemActivity.this, getString(R.string.ItemActivity__alreadyExist), Toast.LENGTH_SHORT).show();
                         }
                     }
                 } else {
-                    Toast.makeText(ItemActivity.this, getString(R.string.insert_item_name), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ItemActivity.this, getString(R.string.ItemActivity__emptyName), Toast.LENGTH_SHORT).show();
                 }
                 shopItemAdapter.notifyItemInserted(Items.size() + 1);
                 getsum();
@@ -1296,15 +1313,15 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             url = res.getString(12);
         }
         if (temp_fav == 1) {
-            optionFavourites.setText(R.string.remove_from_starred);
+            optionFavourites.setText(R.string.ItemActivity__unstar);
         } else {
-            optionFavourites.setText(R.string.add_to_starred);
+            optionFavourites.setText(R.string.ItemActivity__starItem);
         }
 
         if (url.trim().isEmpty()) {
-            addImageText.setText("Add image");
+            addImageText.setText(getString(R.string.ItemActivity__addPhoto));
         } else {
-            addImageText.setText("Update image");
+            addImageText.setText(getString(R.string.ItemActivity__updatePhoto));
         }
 
 
@@ -1372,11 +1389,11 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
                 if (temp_fav == 1) {
                     db.updateFavourites(category, prevTask, 0);
-                    Toast.makeText(ItemActivity.this, R.string.removed_from_starred, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ItemActivity.this, R.string.ItemActivity__unstarred, Toast.LENGTH_SHORT).show();
                 } else {
 
                     db.updateFavourites(category, prevTask, 1);
-                    Toast.makeText(ItemActivity.this, R.string.added_to_starred, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ItemActivity.this, R.string.ItemActivity__itemStarred, Toast.LENGTH_SHORT).show();
 
                 }
                 edit_dialog.dismiss();
@@ -1435,7 +1452,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                     Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                         startActivityForResult(cameraIntent, CAMERA_REQUEST);
                     } else {
-                    StyleableToast.makeText(ItemActivity.this, "You must be logged in to add images", R.style.custom_toast_2).show();
+                    StyleableToast.makeText(ItemActivity.this, getString(R.string.ItemActivity__loginPrompt), R.style.custom_toast_2).show();
                     }
                 }
         });
@@ -1451,7 +1468,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                         galleryIntent.setType("image/*");
                         startActivityForResult(galleryIntent, GALLERY_REQUEST);
                     } else {
-                        StyleableToast.makeText(ItemActivity.this, "You must be logged in to add images", R.style.custom_toast_2).show();
+                        StyleableToast.makeText(ItemActivity.this, getString(R.string.ItemActivity__loginPrompt), R.style.custom_toast_2).show();
                     }
             }
         });
@@ -1459,11 +1476,12 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
         TextView title = add_image_dialog.findViewById(R.id.image_title);
         TextView title_2 = add_image_dialog.findViewById(R.id.image_title_2);
-        title_2.setText("(" + temp_item + ")");
+        String temp_text = "(" + temp_item + ")";
+        title_2.setText(temp_text);
         if (!is_photo_url_empty) {
-            title.setText("Update image");
+            title.setText(getString(R.string.ItemActivity__updatePhoto));
         } else {
-            title.setText("Add image");
+            title.setText(getString(R.string.ItemActivity__addPhoto));
         }
         TextView takePictureText = add_image_dialog.findViewById(R.id.takePictureText);
         TextView uploadPictureText = add_image_dialog.findViewById(R.id.uploadPictureText);
@@ -1561,7 +1579,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                         main_progress_bar.setVisibility(View.INVISIBLE);
                         shopItemAdapter.notifyDataSetChanged();
                     } else {
-                        Toast.makeText(ItemActivity.this, "Error: Couldn't insert image", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ItemActivity.this, getString(R.string.ItemActivity__insertImageFailed), Toast.LENGTH_SHORT).show();
                     }
                 }
             }, 1000);
@@ -1631,7 +1649,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                             main_progress_bar.setVisibility(View.GONE);
                             shopItemAdapter.notifyDataSetChanged();
                         } else {
-                            Toast.makeText(ItemActivity.this, "Error: Couldn't insert image", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ItemActivity.this, getString(R.string.ItemActivity__insertImageFailed), Toast.LENGTH_SHORT).show();
                         }
 
 
@@ -1640,7 +1658,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
 
             } catch (Exception e) {
-                Toast.makeText(ItemActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ItemActivity.this, getString(R.string.ItemActivity__error) + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
         }
@@ -1700,19 +1718,17 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                     if (!Items_Check.contains(newName)) {
                         boolean checkEditData = db.updateItem(category, newName, prevName);
                         if (!checkEditData) {
-                            Toast.makeText(shopItemAdapter.getContext(), getString(R.string.rename_fail), Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(shopItemAdapter.getContext(), getString(R.string.rename_success), Toast.LENGTH_SHORT).show();
                             rename_dialog_2.dismiss();
                             shopItemAdapter.refreshUpdate(newName, position);
                             shopItemAdapter.notifyItemChanged(position);
                             getsum();
                         }
                     } else {
-                        Toast.makeText(shopItemAdapter.getContext(), getString(R.string.item_exist_already), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(shopItemAdapter.getContext(), getString(R.string.ItemActivity__alreadyExist), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(shopItemAdapter.getContext(), getString(R.string.insert_item_name), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(shopItemAdapter.getContext(), getString(R.string.ItemActivity__emptyName), Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -1774,12 +1790,11 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                 if (!priceValue.getText().toString().trim().isEmpty()) {
                     String NewPrice = priceValue.getText().toString().trim();
                     db.updatePrice(category, description, NewPrice);
-                    Toast.makeText(ItemActivity.this, getString(R.string.price_change_success), Toast.LENGTH_SHORT).show();
                     shopItemAdapter.notifyItemChanged(position);
                     getsum();
                     price_dialog.dismiss();
                 } else {
-                    Toast.makeText(ItemActivity.this, getString(R.string.please_insert_price), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ItemActivity.this, getString(R.string.ItemActivity__emptyPrice), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -1853,12 +1868,11 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                     String NewQuantity = quantityValue.getText().toString().trim();
                     String NewUnit = unitText.getText().toString().trim();
                     db.updateQuantity(category, description, NewQuantity, NewUnit);
-                    Toast.makeText(ItemActivity.this, getString(R.string.quantity_change_success), Toast.LENGTH_SHORT).show();
                     shopItemAdapter.notifyItemChanged(position);
                     getsum();
                     quantity_dialog.dismiss();
                 } else {
-                    Toast.makeText(ItemActivity.this, getString(R.string.please_insert_quantity), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ItemActivity.this, getString(R.string.ItemActivity__emptyQuantity), Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -1910,10 +1924,10 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             deleteButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             cancelButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
         }
+        String temp_text = getString(R.string.ItemActivity__delete) + " " + temp;
+        delete_heading.setText(temp_text);
 
-        delete_heading.setText(getString(R.string.remove) + " " + temp);
-
-        delete_message.setText(getString(R.string.remove_item_warning));
+        delete_message.setText(getString(R.string.ItemActivity__deleteWarning));
 
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -2127,7 +2141,8 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
         unit.setText(temp_unit.trim());
         day.setText(temp_day);
-        date.setText(temp_month + ", " + temp_year);
+        String temp_text = temp_month + ", " + temp_year;
+        date.setText(temp_text);
         time.setText(temp_time);
 
         if (settings.getIsMultiplyDisabled().equals(UserSettings.NO_MULTIPLY_NOT_DISABLED)) {
@@ -2179,12 +2194,12 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                 if (temp_fav == 1) {
                     favouritesIcon.setImageResource(R.drawable.final_regular_star_icon);
                     db.updateFavourites(category, temp, 0);
-                    Toast.makeText(getApplicationContext(), R.string.removed_from_starred, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.ItemActivity__unstarred, Toast.LENGTH_SHORT).show();
 
                 } else {
                     favouritesIcon.setImageResource(R.drawable.final_regular_favourites_colored_icon);
                     db.updateFavourites(category, temp, 1);
-                    Toast.makeText(getApplicationContext(), R.string.added_to_starred, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.ItemActivity__itemStarred, Toast.LENGTH_SHORT).show();
                 }
                 shopItemAdapter.notifyItemChanged(position);
             }
@@ -2311,7 +2326,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                     startActivity(intent);
 
                 } else {
-                    Toast.makeText(ItemActivity.this, getString(R.string.no_alarm_app), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ItemActivity.this, getString(R.string.ItemActivity__noAlarmApp), Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -2374,9 +2389,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                         if (!Items_Check.contains(newName)) {
                             boolean checkEditData = db.updateCategory(newName, category);
                             if (!checkEditData) {
-                                Toast.makeText(ItemActivity.this, R.string.rename_fail, Toast.LENGTH_SHORT).show();
                             } else {
-                                Toast.makeText(ItemActivity.this, getString(R.string.list_rename_success), Toast.LENGTH_SHORT).show();
                                 itemToolbar.setTitle(newName);
                                 category = newName;
                                 rename_dialog.dismiss();
@@ -2391,9 +2404,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                             }
                             boolean checkEditData = db.updateCategory(newItem, category);
                             if (!checkEditData) {
-                                Toast.makeText(ItemActivity.this, R.string.rename_fail, Toast.LENGTH_SHORT).show();
                             } else {
-                                Toast.makeText(ItemActivity.this, getString(R.string.list_rename_success), Toast.LENGTH_SHORT).show();
                                 itemToolbar.setTitle(newName);
                                 category = newName;
                                 rename_dialog.dismiss();
@@ -2401,7 +2412,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                             }
                         }
                     } else {
-                        Toast.makeText(ItemActivity.this, getString(R.string.please_insert_name), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ItemActivity.this, getString(R.string.ItemActivity__emptyName), Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -2473,10 +2484,10 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             result.append("\n").append(getString(R.string.share_list_total)).append("       ").append(formatNumber(total));
         }
 
-        String appLink = "https://play.google.com/store/apps/details?id=" + this.getPackageName();
+        String appLink = getString(R.string.app_link) + this.getPackageName();
 
-        result.append("\n\n\n").append("Improve your shopping experience with Buymate.");
-        result.append("\n\n").append("Download Buymate on Google Play:");
+        result.append("\n\n\n").append(getString(R.string.ItemActivity__shareBtmText1));
+        result.append("\n\n").append(getString(R.string.ItemActivity__shareBtmText2));
         result.append("\n").append(appLink);
 
         String items = result.toString();
@@ -2485,7 +2496,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_TEXT, category.toUpperCase() + "\n" + " \n" + items + "\n");
 
-        String chooserTitle = getString(R.string.send_message_via);
+        String chooserTitle = getString(R.string.ItemActivity__shareIntentText);
         Intent chosenIntent = Intent.createChooser(intent, chooserTitle);
         startActivity(chosenIntent);
 
@@ -2629,17 +2640,17 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                     table.setFontSize(18f);
                     table.setFontColor(itextBlack);
 
-                    table.addCell(new Cell().add(new Paragraph("NO")).setTextAlignment(TextAlignment.LEFT).setBold().setPaddingLeft(8f).setCharacterSpacing(1.5f).setFontColor(itextBlack));
-                    table.addCell(new Cell().add(new Paragraph("ITEM")).setTextAlignment(TextAlignment.LEFT).setBold().setPaddingLeft(8f).setCharacterSpacing(1.5f).setFontColor(itextBlack));
+                    table.addCell(new Cell().add(new Paragraph(getString(R.string.ItemActivity__no))).setTextAlignment(TextAlignment.LEFT).setBold().setPaddingLeft(8f).setCharacterSpacing(1.5f).setFontColor(itextBlack));
+                    table.addCell(new Cell().add(new Paragraph(getString(R.string.ItemActivity__item))).setTextAlignment(TextAlignment.LEFT).setBold().setPaddingLeft(8f).setCharacterSpacing(1.5f).setFontColor(itextBlack));
 
 
                     if (settings.getIsShareQuantityDisabled().equals(UserSettings.NO_SHARE_QUANTITY_NOT_DISABLED)) {
-                        table.addCell(new Cell().add(new Paragraph("QUANTITY")).setTextAlignment(TextAlignment.CENTER).setBold().setCharacterSpacing(1.5f).setFontColor(itextBlack));
-                        table.addCell(new Cell().add(new Paragraph("UNIT")).setTextAlignment(TextAlignment.CENTER).setBold().setCharacterSpacing(1.5f).setFontColor(itextBlack));
+                        table.addCell(new Cell().add(new Paragraph(getString(R.string.ItemActivity__quantity))).setTextAlignment(TextAlignment.CENTER).setBold().setCharacterSpacing(1.5f).setFontColor(itextBlack));
+                        table.addCell(new Cell().add(new Paragraph(getString(R.string.ItemActivity__unit))).setTextAlignment(TextAlignment.CENTER).setBold().setCharacterSpacing(1.5f).setFontColor(itextBlack));
                     }
 
                     if (settings.getIsSharePriceDisabled().equals(UserSettings.NO_SHARE_PRICE_NOT_DISABLED)) {
-                        table.addCell(new Cell().add(new Paragraph("PRICE" + "(" + currency + ")")).setTextAlignment(TextAlignment.CENTER).setBold().setCharacterSpacing(1.5f).setFontColor(itextBlack).setFont(font));
+                        table.addCell(new Cell().add(new Paragraph(getString(R.string.ItemActivity__price) + "(" + currency + ")")).setTextAlignment(TextAlignment.CENTER).setBold().setCharacterSpacing(1.5f).setFontColor(itextBlack).setFont(font));
                     }
 
 
@@ -2663,16 +2674,16 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
                         if (count == 2) {
 
-                            table.addCell(new Cell(1, 1).add(new Paragraph("Total:")).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
+                            table.addCell(new Cell(1, 1).add(new Paragraph(getString(R.string.ItemActivity__Total))).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
                             table.addCell(new Cell(1, 1).add(new Paragraph(currency + " " + formatNumberV3(total))).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
 
                         } else if (count == 3) {
-                            table.addCell(new Cell(1, 1).add(new Paragraph("Total:")).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
+                            table.addCell(new Cell(1, 1).add(new Paragraph(getString(R.string.ItemActivity__Total))).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
                             table.addCell(new Cell(1, 2).add(new Paragraph(currency + " " + formatNumberV3(total))).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
 
 
                         } else if (count == 5) {
-                            table.addCell(new Cell(1, 2).add(new Paragraph("Total:")).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
+                            table.addCell(new Cell(1, 2).add(new Paragraph(getString(R.string.ItemActivity__Total))).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
                             table.addCell(new Cell(1, 3).add(new Paragraph(currency + " " + formatNumberV3(total))).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
 
                         }
@@ -2681,7 +2692,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                     document.add(table);
 
 
-                    Paragraph contact = new Paragraph("Contact us at:")
+                    Paragraph contact = new Paragraph(getString(R.string.ItemActivity__contactUs))
                             .setTextAlignment(TextAlignment.CENTER)
                             .setHorizontalAlignment(HorizontalAlignment.CENTER)
                             .setFontSize(15)
@@ -2706,7 +2717,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
                     document.add(dashedLine);
 
-                    Paragraph close_text = new Paragraph("Improve your shopping experience with Buymate.")
+                    Paragraph close_text = new Paragraph(getString(R.string.ItemActivity__shareBtmText1))
                             .setTextAlignment(TextAlignment.CENTER)
                             .setHorizontalAlignment(HorizontalAlignment.CENTER)
                             .setFontSize(15)
@@ -2718,7 +2729,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                     document.close();
                     progressBar.setVisibility(View.GONE);
                     show_share_dialog.dismiss();
-                    Toast.makeText(ItemActivity.this, "PDF downloaded to" + directory, Toast.LENGTH_LONG).show();
+                    Toast.makeText(ItemActivity.this, getString(R.string.ItemActivity__pdfDownloadedTo) + directory, Toast.LENGTH_LONG).show();
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -3259,10 +3270,18 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             @Override
             public void onClick(View v) {
 
-                if (!Items.contains(voice_text)) {
+                ArrayList<String> descriptions = new ArrayList<>();
+
+                for(String item : Items){
+                    descriptions.add(item.toLowerCase());
+                }
+
+                if (!descriptions.contains(voice_text.toLowerCase())) {
                     getDateNdTime();
                     insertItem(category, voice_text, 0, 0, month, year, day, time, 1, " ");
                     voice_input_dialog.dismiss();
+                }else {
+                    Toast.makeText(ItemActivity.this, getString(R.string.ItemActivity__alreadyExist), Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -3280,7 +3299,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
     public void showGoogleVoiceDialog() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Listening...");
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, getString(R.string.ItemActivity__voicePrompt));
         startActivityForResult(intent, 8080);
     }
 
@@ -3320,7 +3339,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         }
 
 
-        textView.setText(getString(R.string.move_to));
+        textView.setText(getString(R.string.ItemActivity__moveTo));
 
 
         displayCategoryData();
@@ -3628,7 +3647,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
                     }
                 } else {
-                    Toast.makeText(ItemActivity.this, getString(R.string.please_insert_name), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ItemActivity.this, getString(R.string.ItemActivity__emptyNameCate), Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -3696,57 +3715,6 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         return String.format("%,.2f", number);
     }
 
-    public void showNoNetworkDialog() {
-
-        noNetworkDialog = new Dialog(ItemActivity.this);
-        noNetworkDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        noNetworkDialog.setContentView(R.layout.no_connection_layout);
-
-        TextView no_connection_Text1 = noNetworkDialog.findViewById(R.id.no_connection_text_1);
-        TextView no_connection_Text2 = noNetworkDialog.findViewById(R.id.no_connection_text_2);
-        TextView no_connection_Text3 = noNetworkDialog.findViewById(R.id.no_connection_text_3);
-        Button try_again_btn = noNetworkDialog.findViewById(R.id.try_again);
-
-        if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
-
-            no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-            no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-            no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-            try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-
-        }
-
-        if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
-
-            no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-            no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-            no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-            try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-        }
-
-        if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
-
-            no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-            no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-            no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-            try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-
-        }
-
-
-        try_again_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                noNetworkDialog.dismiss();
-            }
-        });
-
-        noNetworkDialog.show();
-        noNetworkDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        noNetworkDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        noNetworkDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
-        noNetworkDialog.getWindow().setGravity(Gravity.BOTTOM);
-    }
 
     private void updateView() {
 
@@ -3941,17 +3909,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         return markList;
     }
 
-    public ArrayList<String> showCheckAll() {
-        ArrayList<String> status = new ArrayList<>();
-        for (int i = 0; i < Items.size(); i++) {
-            Cursor res = db.getStatus(category, Items.get(i));
-            while (res.moveToNext()) {
-                status.add(String.valueOf(res.getInt(3)));
-            }
-            res.close();
-        }
-        return status;
-    }
+
 
     public int getListCount() {
         return shopItemAdapter.getItemCount();

@@ -101,8 +101,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
 
-import io.github.muddz.styleabletoast.StyleableToast;
-
 
 public class FavouritesFragment extends Fragment implements ShopFavouritesAdapter.OnNoteListener {
 
@@ -388,15 +386,15 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
         }
 
         addItemIllustrationLayout.setVisibility(View.VISIBLE);
-        add_Item_Text_Header_1.setText("Add an item to your list");
+        add_Item_Text_Header_1.setText(getString(R.string.FavouritesFragment__addItemToList));
         add_Item_Text_Header_2.setVisibility(View.GONE);
 
-        String CATEGORY = "Untitled";
+        String CATEGORY = getString(R.string.FavouritesFragment__untitled);
 
         itemCheck.clear();
         Cursor res = db.getItems(CATEGORY, context);
         while (res.moveToNext()) {
-            itemCheck.add(res.getString(2));
+            itemCheck.add(res.getString(2).toLowerCase());
         }
         res.close();
 
@@ -436,7 +434,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                 if (!item_name_box.getText().toString().trim().isEmpty()) {
                     String description = item_name_box.getText().toString().trim();
                     if (item_price_box.getText().toString().trim().isEmpty()) {
-                        if (!itemCheck.contains(item_name_box.getText().toString().trim())) {
+                        if (!itemCheck.contains(item_name_box.getText().toString().toLowerCase().trim())) {
                             if (item_quantity_box.getText().toString().isEmpty()) {
                                 double temp_quantity = 1;
                                 double temp_price = 0;
@@ -449,7 +447,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                                 dialog.dismiss();
                             }
                         } else {
-                            Toast.makeText(context, getString(R.string.item_exist_already), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, getString(R.string.FavouritesFragment__alreadyExist), Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         if (!itemCheck.contains(item_name_box.getText().toString().trim())) {
@@ -465,11 +463,11 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                                 dialog.dismiss();
                             }
                         } else {
-                            Toast.makeText(context, getString(R.string.item_exist_already), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, getString(R.string.FavouritesFragment__alreadyExist), Toast.LENGTH_SHORT).show();
                         }
                     }
                 } else {
-                    Toast.makeText(context, getString(R.string.insert_item_name), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, getString(R.string.FavouritesFragment__emptyName), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -533,7 +531,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         if (itemFavourites.isEmpty()) {
-            collapsingToolbarLayout.setTitle(getString(R.string.fragment_favourites_toolbar_title));
+            collapsingToolbarLayout.setTitle(getString(R.string.FavouritesFragment__toolbarStarred));
         } else {
             boolean checkSelected = adapter.isSelected();
             if (checkSelected) {
@@ -596,9 +594,9 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                         Button cancelButton = dialog.findViewById(R.id.cancel_button);
 
                         if (finalSelectList.size() > 1) {
-                            delete_heading.setText(getString(R.string.multiple_remove));
+                            delete_heading.setText(getString(R.string.FavouritesFragment__multipleDelete));
                         } else {
-                            delete_heading.setText(getString(R.string.single_remove));
+                            delete_heading.setText(getString(R.string.FavouritesFragment__singleDelete));
                         }
                         delete_message.setText(items_selected.toString());
 
@@ -690,9 +688,9 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                         Button deleteButton = menu_unstar_dialog.findViewById(R.id.delete_button);
                         Button cancelButton = menu_unstar_dialog.findViewById(R.id.cancel_button);
 
-                        delete_heading.setText(getString(R.string.single_unstar));
+                        delete_heading.setText(getString(R.string.FavouritesFragment__removeFromStarred));
                         delete_message.setText(items_selected.toString());
-                        deleteButton.setText("Remove");
+                        deleteButton.setText(getString(R.string.FavouritesFragment__remove));
                         cancelButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -728,7 +726,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                 });
 
             } else {
-                collapsingToolbarLayout.setTitle(getString(R.string.fragment_favourites_toolbar_title));
+                collapsingToolbarLayout.setTitle(getString(R.string.FavouritesFragment__toolbarStarred));
                 inflater.inflate(R.menu.favourites_toolbar_menu, menu);
 
                 if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
@@ -819,21 +817,6 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.share) {
-            Toast.makeText(context, "Share Clicked", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.sort) {
-            Toast.makeText(context, "Check Clicked", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.remove) {
-            Toast.makeText(context, "Remove Clicked", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.mark) {
-            Toast.makeText(context, "Mark Clicked", Toast.LENGTH_SHORT).show();
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     public void displayData() {
         itemFavourites.clear();
@@ -932,7 +915,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
         }
 
 
-        totalItems.setText(getString(R.string.total_items_text) + " " + "(" + checked_count + "/" + itemFavourites.size() + ")");
+        totalItems.setText(getString(R.string.FavouritesFragment__itemsChecked) + " " + "(" + checked_count + "/" + itemFavourites.size() + ")");
 
         if (settings.getIsFavEyeDisabled().equals(UserSettings.NO_FAV_EYE_NOT_DISABLED)) {
             total.setText(formatNumber(su));
@@ -1165,13 +1148,13 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                 if (temp_fav == 1) {
                     favouritesIcon.setImageResource(R.drawable.final_regular_star_icon);
                     db.updateFavourites(category.get(position), temp, 0);
-                    Toast.makeText(context, R.string.removed_from_starred, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.FavouritesFragment__itemUnstarred, Toast.LENGTH_SHORT).show();
 
 
                 } else {
                     favouritesIcon.setImageResource(R.drawable.final_regular_favourites_colored_icon);
                     db.updateFavourites(category.get(position), temp, 1);
-                    Toast.makeText(context, R.string.added_to_starred, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.FavouritesFragment__itemStarred, Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -1352,16 +1335,15 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
         }
 
         if (fav == 1) {
-            optionFavourites.setText(R.string.remove_from_starred);
+            optionFavourites.setText(R.string.FavouritesFragment__unstar);
         } else if (fav == 0) {
-            optionFavourites.setText(R.string.add_to_starred);
+            optionFavourites.setText(R.string.FavouritesFragment__star);
         }
         if (url.trim().isEmpty()) {
-            addImageText.setText("Add image");
+            addImageText.setText(getString(R.string.FavouritesFragment__addPhoto));
         } else {
-            addImageText.setText("Update image");
+            addImageText.setText(getString(R.string.FavouritesFragment__updatePhoto));
         }
-
 
 
         addImageLayout.setOnClickListener(new View.OnClickListener() {
@@ -1409,7 +1391,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
 
                 if (fav == 1) {
                     db.updateFavourites(category.get(position), prevTask, 0);
-                    Toast.makeText(adapter.getContext(), R.string.removed_from_starred, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(adapter.getContext(), R.string.FavouritesFragment__itemUnstarred, Toast.LENGTH_SHORT).show();
                     itemFavourites.remove(position);
                     category.remove(position);
                     if (itemFavourites.isEmpty()) {
@@ -1472,14 +1454,14 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
             @Override
             public void onClick(View v) {
 
-                    FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                    dialog.dismiss();
+                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                dialog.dismiss();
                 if (firebaseUser != null) {
                     Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(cameraIntent, CAMERA_REQUEST);
-                    } else {
-                    StyleableToast.makeText(context, "You must be logged in to add images", R.style.custom_toast_2).show();
-                    }
+                    startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                } else {
+                    Toast.makeText(context, getString(R.string.FavouritesFragment__loginPrompt), Toast.LENGTH_SHORT).show();
+                }
 
 
             }
@@ -1489,15 +1471,15 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
             @Override
             public void onClick(View v) {
 
-                    FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                    dialog.dismiss();
-                    if (firebaseUser != null) {
-                        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-                        galleryIntent.setType("image/*");
-                        startActivityForResult(galleryIntent, GALLERY_REQUEST);
-                    } else {
-                        StyleableToast.makeText(context, "You must be logged in to add images", R.style.custom_toast_2).show();
-                    }
+                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                dialog.dismiss();
+                if (firebaseUser != null) {
+                    Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+                    galleryIntent.setType("image/*");
+                    startActivityForResult(galleryIntent, GALLERY_REQUEST);
+                } else {
+                    Toast.makeText(context, getString(R.string.FavouritesFragment__loginPrompt), Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -1505,11 +1487,12 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
 
         TextView title = dialog.findViewById(R.id.image_title);
         TextView title_2 = dialog.findViewById(R.id.image_title_2);
-        title_2.setText("(" + temp_item + ")");
+        String temp_text = "(" + temp_item + ")";
+        title_2.setText(temp_text);
         if (!is_photo_url_empty) {
-            title.setText("Update image");
+            title.setText(getString(R.string.FavouritesFragment__updatePhoto));
         } else {
-            title.setText("Add image");
+            title.setText(getString(R.string.FavouritesFragment__addPhoto));
         }
         TextView takePictureText = dialog.findViewById(R.id.takePictureText);
         TextView uploadPictureText = dialog.findViewById(R.id.uploadPictureText);
@@ -1599,7 +1582,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                         main_progress_bar.setVisibility(View.INVISIBLE);
                         adapter.notifyDataSetChanged();
                     } else {
-                        Toast.makeText(context, "Error: Couldn't insert image", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, getString(R.string.FavouritesFragment__insertImageFailed), Toast.LENGTH_SHORT).show();
                     }
                 }
             }, 1000);
@@ -1671,13 +1654,13 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                             main_progress_bar.setVisibility(View.GONE);
                             adapter.notifyDataSetChanged();
                         } else {
-                            Toast.makeText(context, "Error: Couldn't insert image", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, getString(R.string.FavouritesFragment__insertImageFailed), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }, 1000);
 
             } catch (Exception e) {
-                Toast.makeText(context, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, getString(R.string.FavouritesFragment__error) + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
         }
@@ -1736,19 +1719,17 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                     if (!itemCheck.contains(newName)) {
                         boolean checkEditData = db.updateItem(category.get(position), newName, prevName);
                         if (checkEditData) {
-                            Toast.makeText(adapter.getContext(), getString(R.string.rename_success), Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(adapter.getContext(), getString(R.string.rename_fail), Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
                             adapter.refreshUpdate(newName, position);
                             adapter.notifyItemChanged(position);
                             getSum();
                         }
                     } else {
-                        Toast.makeText(adapter.getContext(), getString(R.string.item_exist_already), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(adapter.getContext(), getString(R.string.FavouritesFragment__alreadyExist), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(adapter.getContext(), getString(R.string.please_insert_name), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(adapter.getContext(), getString(R.string.FavouritesFragment__emptyName), Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -1810,12 +1791,11 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                 if (!priceValue.getText().toString().trim().isEmpty()) {
                     String NewPrice = priceValue.getText().toString().trim();
                     db.updatePrice(category.get(position), description, NewPrice);
-                    Toast.makeText(context, getString(R.string.price_change_success), Toast.LENGTH_SHORT).show();
                     adapter.notifyItemChanged(position);
                     getSum();
                     dialog.dismiss();
                 } else {
-                    Toast.makeText(context, getString(R.string.please_insert_price), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, getString(R.string.FavouritesFragment__emptyPrice), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -1876,12 +1856,19 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ArrayList<String> descriptions = new ArrayList<>();
 
-                if (!itemFavourites.contains(voice_text)) {
-                    String CATEGORY = "Untitled";
+                for(String item : itemFavourites){
+                    descriptions.add(item.toLowerCase());
+                }
+
+                if (!descriptions.contains(voice_text.toLowerCase())) {
+                    String CATEGORY = getString(R.string.FavouritesFragment__untitled);
                     getDateNdTime();
                     insertItem(CATEGORY, voice_text, 0, 0, month, year, day, time, 1, " ");
                     voice_input_dialog.dismiss();
+                }else {
+                    Toast.makeText(context, getString(R.string.FavouritesFragment__alreadyExist), Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -1899,7 +1886,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
     public void showGoogleVoiceDialog() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Listening...");
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, getString(R.string.FavouritesFragment__voicePrompt));
         startActivityForResult(intent, 8080);
     }
 
@@ -1959,12 +1946,11 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                     String NewQuantity = quantityValue.getText().toString().trim();
                     String NewUnit = unitText.getText().toString().trim();
                     db.updateQuantity(category.get(position), description, NewQuantity, NewUnit);
-                    Toast.makeText(context, getString(R.string.quantity_change_success), Toast.LENGTH_SHORT).show();
                     adapter.notifyItemChanged(position);
                     getSum();
                     dialog.dismiss();
                 } else {
-                    Toast.makeText(context, getString(R.string.please_insert_quantity), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, getString(R.string.FavouritesFragment__emptyQuantity), Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -2434,22 +2420,22 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
         }
 
         if (settings.getIsShareTotalDisabled().equals(UserSettings.NO_SHARE_TOTAL_NOT_DISABLED)) {
-            result.append("\n").append(getString(R.string.share_list_total)).append("       ").append(formatNumber(total));
+            result.append("\n").append(getString(R.string.FavouritesFragment__Total)).append("       ").append(formatNumber(total));
         }
 
         String appLink = "https://play.google.com/store/apps/details?id=" + getContext().getPackageName();
 
-        result.append("\n\n\n").append("Improve your shopping experience with Buymate.");
-        result.append("\n\n").append("Download Buymate on Google Play:");
+        result.append("\n\n\n").append(getString(R.string.FavouritesFragment__shareBtmText1));
+        result.append("\n\n").append(getString(R.string.FavouritesFragment__shareBtmText2));
         result.append("\n").append(appLink);
 
         String items = result.toString();
 
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_TEXT, "STARRED".toUpperCase() + "\n" + " \n" + items + "\n");
+        intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.FavouritesFragment__toolbarStarred) + "\n" + " \n" + items + "\n");
 
-        String chooserTitle = getString(R.string.send_message_via);
+        String chooserTitle = getString(R.string.FavouritesFragment__shareIntentText);
         Intent chosenIntent = Intent.createChooser(intent, chooserTitle);
         startActivity(chosenIntent);
 
@@ -2600,17 +2586,17 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                     table.setFontSize(18f);
                     table.setFontColor(itextBlack);
 
-                    table.addCell(new Cell().add(new Paragraph("NO")).setTextAlignment(TextAlignment.LEFT).setBold().setPaddingLeft(8f).setCharacterSpacing(1.5f).setFontColor(itextBlack));
-                    table.addCell(new Cell().add(new Paragraph("ITEM")).setTextAlignment(TextAlignment.LEFT).setBold().setPaddingLeft(8f).setCharacterSpacing(1.5f).setFontColor(itextBlack));
+                    table.addCell(new Cell().add(new Paragraph(getString(R.string.FavouritesFragment__no))).setTextAlignment(TextAlignment.LEFT).setBold().setPaddingLeft(8f).setCharacterSpacing(1.5f).setFontColor(itextBlack));
+                    table.addCell(new Cell().add(new Paragraph(getString(R.string.FavouritesFragment__item))).setTextAlignment(TextAlignment.LEFT).setBold().setPaddingLeft(8f).setCharacterSpacing(1.5f).setFontColor(itextBlack));
 
 
                     if (settings.getIsShareQuantityDisabled().equals(UserSettings.NO_SHARE_QUANTITY_NOT_DISABLED)) {
-                        table.addCell(new Cell().add(new Paragraph("QUANTITY")).setTextAlignment(TextAlignment.CENTER).setBold().setCharacterSpacing(1.5f).setFontColor(itextBlack));
-                        table.addCell(new Cell().add(new Paragraph("UNIT")).setTextAlignment(TextAlignment.CENTER).setBold().setCharacterSpacing(1.5f).setFontColor(itextBlack));
+                        table.addCell(new Cell().add(new Paragraph(getString(R.string.FavouritesFragment__quantity))).setTextAlignment(TextAlignment.CENTER).setBold().setCharacterSpacing(1.5f).setFontColor(itextBlack));
+                        table.addCell(new Cell().add(new Paragraph(getString(R.string.FavouritesFragment__unit))).setTextAlignment(TextAlignment.CENTER).setBold().setCharacterSpacing(1.5f).setFontColor(itextBlack));
                     }
 
                     if (settings.getIsSharePriceDisabled().equals(UserSettings.NO_SHARE_PRICE_NOT_DISABLED)) {
-                        table.addCell(new Cell().add(new Paragraph("PRICE" + "(" + currency + ")")).setTextAlignment(TextAlignment.CENTER).setBold().setCharacterSpacing(1.5f).setFontColor(itextBlack).setFont(font));
+                        table.addCell(new Cell().add(new Paragraph(getString(R.string.FavouritesFragment__price) + "(" + currency + ")")).setTextAlignment(TextAlignment.CENTER).setBold().setCharacterSpacing(1.5f).setFontColor(itextBlack).setFont(font));
                     }
 
 
@@ -2634,16 +2620,16 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
 
                         if (count == 2) {
 
-                            table.addCell(new Cell(1, 1).add(new Paragraph("Total:")).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
+                            table.addCell(new Cell(1, 1).add(new Paragraph(getString(R.string.FavouritesFragment__Total))).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
                             table.addCell(new Cell(1, 1).add(new Paragraph(currency + " " + formatNumberV3(total))).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
 
                         } else if (count == 3) {
-                            table.addCell(new Cell(1, 1).add(new Paragraph("Total:")).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
+                            table.addCell(new Cell(1, 1).add(new Paragraph(getString(R.string.FavouritesFragment__Total))).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
                             table.addCell(new Cell(1, 2).add(new Paragraph(currency + " " + formatNumberV3(total))).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
 
 
                         } else if (count == 5) {
-                            table.addCell(new Cell(1, 2).add(new Paragraph("Total:")).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
+                            table.addCell(new Cell(1, 2).add(new Paragraph(getString(R.string.FavouritesFragment__Total))).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
                             table.addCell(new Cell(1, 3).add(new Paragraph(currency + " " + formatNumberV3(total))).setTextAlignment(TextAlignment.CENTER).setFontSize(20).setBold().setCharacterSpacing(2f).setFontColor(itextWhite).setBackgroundColor(itextBlue).setFont(font).setPadding(8f));
 
                         }
@@ -2652,7 +2638,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                     document.add(table);
 
 
-                    Paragraph contact = new Paragraph("Contact us at:")
+                    Paragraph contact = new Paragraph(getString(R.string.FavouritesFragment__contactUs))
                             .setTextAlignment(TextAlignment.CENTER)
                             .setHorizontalAlignment(HorizontalAlignment.CENTER)
                             .setFontSize(15)
@@ -2677,7 +2663,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
 
                     document.add(dashedLine);
 
-                    Paragraph close_text = new Paragraph("Improve your shopping experience with Buymate.")
+                    Paragraph close_text = new Paragraph(getString(R.string.FavouritesFragment__shareBtmText1))
                             .setTextAlignment(TextAlignment.CENTER)
                             .setHorizontalAlignment(HorizontalAlignment.CENTER)
                             .setFontSize(15)
@@ -2689,7 +2675,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                     document.close();
                     progressBar.setVisibility(View.GONE);
                     show_share_dialog.dismiss();
-                    Toast.makeText(context, "PDF downloaded to" + directory, Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, getString(R.string.FavouritesFragment__pdfDownloadedTo) + directory, Toast.LENGTH_LONG).show();
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -2828,9 +2814,10 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
             cancelButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
         }
 
-        delete_heading.setText(getString(R.string.remove) + " " + temp);
+        String temp_text = getString(R.string.FavouritesFragment__singleDelete) + " " + temp;
+        delete_heading.setText(temp_text);
 
-        delete_message.setText(getString(R.string.remove_item_warning));
+        delete_message.setText(getString(R.string.FavouritesFragment__deleteWarning));
 
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override

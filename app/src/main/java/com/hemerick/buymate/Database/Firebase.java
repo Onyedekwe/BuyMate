@@ -8,14 +8,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.util.TypedValue;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -38,23 +35,20 @@ import com.hemerick.buymate.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import io.github.muddz.styleabletoast.StyleableToast;
 
 public class Firebase {
 
-    private static DatabaseReference databaseReference;
     private static DatabaseReference idRef;
     private static DatabaseReference shoppingListRef;
     ShopDatabase db;
 
     UserSettings settings;
+
 
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
@@ -86,7 +80,7 @@ public class Firebase {
         }
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("Users");
+        DatabaseReference databaseReference = firebaseDatabase.getReference("Users");
         idRef = databaseReference.child(email.replace(".", "_"));
         shoppingListRef = idRef.child("shoppingLists");
         db = new ShopDatabase(context);
@@ -591,8 +585,8 @@ public class Firebase {
             info.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.large_text));
         }
 
-        percent.setText("Backing up data...");
-        info.setText("Please wait for backup to complete");
+        percent.setText(R.string.Firebase__backup_text_heading);
+        info.setText(R.string.Firebase__backup_text_subheading);
 
         cloud_dialog.show();
 
@@ -608,7 +602,6 @@ public class Firebase {
                 storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        Toast.makeText(context, "Folder deleted successfully", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -663,10 +656,7 @@ public class Firebase {
 
                 for (int i = 0; i < categories.size(); i++) {
 
-                    insertNewData(categories.get(i), descriptions.get(i),
-                            status.get(i), price.get(i), month.get(i),
-                            year.get(i), day.get(i), time.get(i),
-                            quantity.get(i), favourites.get(i), photourl.get(i), unit.get(i));
+                    insertNewData(categories.get(i), descriptions.get(i), status.get(i), price.get(i), month.get(i), year.get(i), day.get(i), time.get(i), quantity.get(i), favourites.get(i), photourl.get(i), unit.get(i));
                 }
 
                 for (int j = 0; j < heading.size(); j++) {
@@ -699,7 +689,7 @@ public class Firebase {
                     }
                 }
                 cloud_dialog.dismiss();
-                StyleableToast.makeText(context, "Backup complete", R.style.custom_toast_2).show();
+                StyleableToast.makeText(context, context.getString(R.string.Firebase__backup_successful), R.style.custom_toast_2).show();
 
             }
         }, 3000);
@@ -734,8 +724,8 @@ public class Firebase {
             info.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.large_text));
         }
 
-        percent.setText("Restoring data...");
-        info.setText("Please wait for restore to complete");
+        percent.setText(R.string.Firebase__restore_text_heading);
+        info.setText(R.string.Firebase__restore_text_subheading);
 
 
         cloud_dialog.show();
@@ -786,7 +776,6 @@ public class Firebase {
 
                             }
 
-                            StyleableToast.makeText(context, "List Restored", R.style.custom_toast_2).show();
                             if (isFirstStart) {
                                 settings.setFirstStart(false);
                                 SharedPreferences.Editor editor = context.getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
@@ -795,13 +784,13 @@ public class Firebase {
                             }
 
                         } else {
-                            Toast.makeText(context, "No List Found", Toast.LENGTH_SHORT).show();
+                            StyleableToast.makeText(context, context.getString(R.string.Firebase__restore_no_list_found), R.style.custom_toast_2).show();
                         }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(context, "Error: " + error.getMessage(), Toast.LENGTH_SHORT);
+                        Toast.makeText(context, context.getString(R.string.Firebase__error) + error.getMessage(), Toast.LENGTH_SHORT);
                     }
                 });
 
@@ -833,16 +822,14 @@ public class Firebase {
 
                         db.insertNote(heading, content, date);
                     }
-                    StyleableToast.makeText(context, "Notes Restored", R.style.custom_toast_2).show();
                 } else {
-
-                    Toast.makeText(context, "No Notes Found", Toast.LENGTH_SHORT).show();
+                    StyleableToast.makeText(context, context.getString(R.string.Firebase__restore_no_notes_found), R.style.custom_toast_2).show();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(context, "Error: " + error.getMessage(), Toast.LENGTH_SHORT);
+                Toast.makeText(context, context.getString(R.string.Firebase__error) + error.getMessage(), Toast.LENGTH_SHORT);
             }
         });
 
@@ -867,11 +854,8 @@ public class Firebase {
         for (String uri : myPhotoUrl) {
             if (!uri.trim().isEmpty()) {
 
-
-                String imageName = uri;
-
                 StorageReference imageRef = FirebaseStorage.getInstance().getReference().child(email);
-                StorageReference image = imageRef.child(imageName);
+                StorageReference image = imageRef.child(uri);
 
 
                 File directory = new File(context.getFilesDir(), "Buymate_Images");
@@ -879,23 +863,22 @@ public class Firebase {
                     directory.mkdirs();
                 }
 
-                File imageFile = new File(directory, imageName);
+                File imageFile = new File(directory, uri);
 
                 image.getFile(imageFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        Toast.makeText(context, "Image Retrieved Successfully", Toast.LENGTH_SHORT).show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(context, "Error Retrieving Image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
-
             }
         }
         cloud_dialog.dismiss();
+        StyleableToast.makeText(context, context.getString(R.string.Firebase__restore_completed), R.style.custom_toast_2).show();
+
     }
 
     public void deleteData() {
@@ -908,7 +891,7 @@ public class Firebase {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(context, "Error: " + e.getMessage(), Toast.LENGTH_SHORT);
+                Toast.makeText(context, context.getString(R.string.Firebase__error) + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 

@@ -1,16 +1,22 @@
 package com.hemerick.buymate;
 
 import android.app.Dialog;
+import android.app.UiModeManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -30,18 +36,11 @@ import com.hemerick.buymate.Database.UserSettings;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    TextView generalText, advancedText, securityText, removeAdsText, removeAdsSubText,
-            darkModeText, keepScreenBrightText,
-            textSizeText, lockAppText, swipeActionText, swipeActionSubText1, swipeActionSubText2,
-            detailedListShareText, detailedListShareSubText, disablePriceText, multiplyText, multiplySubText, strikeText,
-            currencyText, currencySubText, itemSuggestionText;
+    TextView generalText, advancedText, securityText, removeAdsText, removeAdsSubText, darkModeText, keepScreenBrightText, textSizeText, lockAppText, swipeActionText, swipeActionSubText1, swipeActionSubText2, detailedListShareText, detailedListShareSubText, disablePriceText, multiplyText, multiplySubText, strikeText, currencyText, currencySubText, itemSuggestionText;
     Toolbar toolbar;
-    Boolean clear = false;
     SharedPreferences sharedPreferences;
     private SwitchCompat keepScreenBrightSwitch, disablePriceSwitch, multiplySwitch;
-    private ConstraintLayout DarkModeLayout, RemoveAdsLayout, TextSizeLayout, SwipeActionLayout,
-            DetailedSharingLayout, DisablePriceLayout, MultiplyLayout, StrikeLayout, CurrencyLayout,
-            AppLockLayout, ItemSuggestionLayout;
+    private ConstraintLayout DarkModeLayout, RemoveAdsLayout, TextSizeLayout, SwipeActionLayout, DetailedSharingLayout, DisablePriceLayout, MultiplyLayout, StrikeLayout, CurrencyLayout, AppLockLayout, ItemSuggestionLayout;
     private UserSettings settings = new UserSettings();
     private PowerManager.WakeLock wakeLock;
 
@@ -50,12 +49,29 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         settings = new UserSettings();
+
         SharedPreferences sharedPreferences_theme = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
         String theme = sharedPreferences_theme.getString(UserSettings.CUSTOM_THEME, UserSettings.LIGHT_THEME);
         settings.setCustomTheme(theme);
+        String dim = sharedPreferences_theme.getString(UserSettings.IS_DIM_THEME_ENABLED, UserSettings.NO_DIM_THEME_NOT_ENABLED);
+        settings.setIsDimThemeEnabled(dim);
 
-        if (settings.getCustomTheme().equals(UserSettings.DIM_THEME)) {
-            setTheme(R.style.Dynamic_Dim);
+        if (settings.getCustomTheme().equals(UserSettings.DEFAULT_THEME)) {
+            int currentNightMode = this.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+
+            if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
+
+
+                if (settings.getIsDimThemeEnabled().equals(UserSettings.YES_DIM_THEME_ENABLED)) {
+                    setTheme(R.style.Dynamic_Dim);
+                }
+            }
+
+        } else if (settings.getCustomTheme().equals(UserSettings.DARK_THEME)) {
+
+            if (settings.getIsDimThemeEnabled().equals(UserSettings.YES_DIM_THEME_ENABLED)) {
+                setTheme(R.style.Dynamic_Dim);
+            }
         }
 
         setContentView(R.layout.activity_settings);
@@ -330,17 +346,19 @@ public class SettingsActivity extends AppCompatActivity {
 
 
     public void showDarkThemeDialog() {
-        Dialog dialog = new Dialog(SettingsActivity.this);
-        dialog.setContentView(R.layout.custom_dark_theme_dialog);
-        dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.set_theme_layout);
 
-        TextView header = dialog.findViewById(R.id.edit_title);
+        TextView header = dialog.findViewById(R.id.title);
 
         RadioButton on = dialog.findViewById(R.id.radio_button_on);
         RadioButton off = dialog.findViewById(R.id.radio_button_off);
         RadioButton as_on_device = dialog.findViewById(R.id.radio_button_default);
-        RadioButton dim = dialog.findViewById(R.id.radio_button_dim);
+
+        ConstraintLayout dim_layout = dialog.findViewById(R.id.dim_layout);
+        TextView dim_text = dialog.findViewById(R.id.dimText);
+        SwitchCompat dim_switch = dialog.findViewById(R.id.dimSwitcher);
 
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
@@ -349,38 +367,38 @@ public class SettingsActivity extends AppCompatActivity {
             on.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             off.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             as_on_device.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-            dim.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            dim_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+
         } else if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
 
             header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             on.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             off.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             as_on_device.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-            dim.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            dim_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+
         } else if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
 
             header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             on.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             off.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             as_on_device.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-            dim.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            dim_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+
         }
 
         if (settings.getCustomTheme().equals(UserSettings.DEFAULT_THEME)) {
             as_on_device.setChecked(true);
         }
-
         if (settings.getCustomTheme().equals(UserSettings.LIGHT_THEME)) {
             off.setChecked(true);
-
         }
-
         if (settings.getCustomTheme().equals(UserSettings.DARK_THEME)) {
             on.setChecked(true);
         }
 
-        if (settings.getCustomTheme().equals(UserSettings.DIM_THEME)) {
-            dim.setChecked(true);
+        if (settings.getIsDimThemeEnabled().equals(UserSettings.YES_DIM_THEME_ENABLED)) {
+            dim_switch.setChecked(true);
         }
 
 
@@ -392,9 +410,10 @@ public class SettingsActivity extends AppCompatActivity {
                 editor.putString(UserSettings.CUSTOM_THEME, settings.getCustomTheme());
                 editor.apply();
                 dialog.dismiss();
-                startActivity(new Intent(SettingsActivity.this, SettingsActivity.class));
+                Intent intent = new Intent(SettingsActivity.this, SettingsActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
                 finish();
-                clear = true;
 
             }
 
@@ -408,8 +427,10 @@ public class SettingsActivity extends AppCompatActivity {
                 editor.putString(UserSettings.CUSTOM_THEME, settings.getCustomTheme());
                 editor.apply();
                 dialog.dismiss();
-                updateView();
-                clear = true;
+                Intent intent = new Intent(SettingsActivity.this, SettingsActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
             }
         });
 
@@ -421,26 +442,49 @@ public class SettingsActivity extends AppCompatActivity {
                 editor.putString(UserSettings.CUSTOM_THEME, settings.getCustomTheme());
                 editor.apply();
                 dialog.dismiss();
-                updateView();
-                clear = true;
+                Intent intent = new Intent(SettingsActivity.this, SettingsActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
             }
         });
 
-        dim.setOnClickListener(new View.OnClickListener() {
+
+        dim_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                settings.setCustomTheme(UserSettings.DIM_THEME);
-                SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, MODE_PRIVATE).edit();
-                editor.putString(UserSettings.CUSTOM_THEME, settings.getCustomTheme());
-                editor.apply();
-                dialog.dismiss();
-                startActivity(new Intent(SettingsActivity.this, SettingsActivity.class));
-                finish();
-                clear = true;
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    settings.setIsDimThemeEnabled(UserSettings.YES_DIM_THEME_ENABLED);
+                    SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, MODE_PRIVATE).edit();
+                    editor.putString(UserSettings.IS_DIM_THEME_ENABLED, settings.getIsDimThemeEnabled());
+                    editor.apply();
+                    dialog.dismiss();
+                    if(!off.isChecked()){
+                        recreate();
+                    }
+
+
+                } else {
+                    settings.setIsDimThemeEnabled(UserSettings.NO_DIM_THEME_NOT_ENABLED);
+                    SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, MODE_PRIVATE).edit();
+                    editor.putString(UserSettings.IS_DIM_THEME_ENABLED, settings.getIsDimThemeEnabled());
+                    editor.apply();
+                    dialog.dismiss();
+                    if(!off.isChecked()){
+                        recreate();
+                    }
+
+                }
+
             }
         });
+
 
         dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
     public void showCurrencyDialog() {
@@ -524,9 +568,7 @@ public class SettingsActivity extends AppCompatActivity {
         if (settings.getCustomTheme().equals(UserSettings.DARK_THEME)) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
-        if (settings.getCustomTheme().equals(UserSettings.DIM_THEME)) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        }
+
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
 
@@ -704,6 +746,9 @@ public class SettingsActivity extends AppCompatActivity {
 
         String theme = sharedPreferences.getString(UserSettings.CUSTOM_THEME, UserSettings.LIGHT_THEME);
         settings.setCustomTheme(theme);
+
+        String dim = sharedPreferences.getString(UserSettings.IS_DIM_THEME_ENABLED, UserSettings.NO_DIM_THEME_NOT_ENABLED);
+        settings.setIsDimThemeEnabled(dim);
 
 
         String textSize = sharedPreferences.getString(UserSettings.CUSTOM_TEXT_SIZE, UserSettings.TEXT_MEDIUM);

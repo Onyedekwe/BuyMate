@@ -152,8 +152,7 @@ public class ShopCopyAdapter extends RecyclerView.Adapter<ShopCopyAdapter.MyCopy
             }
         }
 
-        Toast.makeText(context, context.getString(R.string.copied) + " " + selectedCategory, Toast.LENGTH_SHORT).show();
-
+        Toast.makeText(context, context.getString(R.string.ShopCopyAdapter__copy_successful) + " " + selectedCategory, Toast.LENGTH_SHORT).show();
 
         Intent intent = new Intent(context, ItemActivity.class);
         intent.putExtra("ITEM", previousCategory);
@@ -161,9 +160,7 @@ public class ShopCopyAdapter extends RecyclerView.Adapter<ShopCopyAdapter.MyCopy
         context.startActivity(intent);
     }
 
-    public String getClicked() {
-        return category;
-    }
+
 
     @Override
     public int getItemCount() {

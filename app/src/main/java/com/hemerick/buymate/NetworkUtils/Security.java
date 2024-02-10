@@ -1,9 +1,8 @@
 package com.hemerick.buymate.NetworkUtils;
 
-import static com.google.firebase.crashlytics.buildtools.reloc.com.google.common.base.Verify.verify;
-
 import android.text.TextUtils;
 import android.util.Base64;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
@@ -19,47 +18,45 @@ public class Security {
     private static final String TAG = "IABUtil/Security";
     private static final String KEY_FACTORY_ALGORITHM = "RSA";
     private static final String SIGNATURE_ALGORITHM = "SHA1withRSA";
-    public static boolean verifyPurchase(String base64PublicKey, String signedData, String signature) throws IOException{
-        if(TextUtils.isEmpty(signedData) || TextUtils.isEmpty(base64PublicKey) || TextUtils.isEmpty(signature)){
+
+    public static boolean verifyPurchase(String base64PublicKey, String signedData, String signature) throws IOException {
+        if (TextUtils.isEmpty(signedData) || TextUtils.isEmpty(base64PublicKey) || TextUtils.isEmpty(signature)) {
             return false;
         }
         PublicKey key = generatePublicKey(base64PublicKey);
-        return verify(key,signedData,signature);
+        return verify(key, signedData, signature);
     }
 
     private static PublicKey generatePublicKey(String base64PublicKey) throws IOException {
-        try{
+        try {
             byte[] decodedKey = Base64.decode(base64PublicKey, Base64.DEFAULT);
             KeyFactory keyFactory = KeyFactory.getInstance(KEY_FACTORY_ALGORITHM);
             return keyFactory.generatePublic(new X509EncodedKeySpec(decodedKey));
-        }catch (NoSuchAlgorithmException e){
+        } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
-        }catch (InvalidKeySpecException e){
+        } catch (InvalidKeySpecException e) {
             String msg = "Invalid key specification: " + e;
             throw new IOException(msg);
         }
     }
 
-    public static boolean verify(PublicKey publicKey, String signedData, String signature){
+    public static boolean verify(PublicKey publicKey, String signedData, String signature) {
         byte[] signatureBytes;
-        try{
+        try {
             signatureBytes = Base64.decode(signature, Base64.DEFAULT);
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             return false;
         }
         try {
             Signature signatureAlgorithm = Signature.getInstance(SIGNATURE_ALGORITHM);
             signatureAlgorithm.initVerify(publicKey);
             signatureAlgorithm.update(signedData.getBytes());
-            if(!signatureAlgorithm.verify(signatureBytes)){
-                return false;
-            }
-            return true;
-        }catch (NoSuchAlgorithmException e){
+            return signatureAlgorithm.verify(signatureBytes);
+        } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
-        }catch (InvalidKeyException e){
+        } catch (InvalidKeyException e) {
 
-        }catch (SignatureException e){
+        } catch (SignatureException e) {
 
         }
         return false;

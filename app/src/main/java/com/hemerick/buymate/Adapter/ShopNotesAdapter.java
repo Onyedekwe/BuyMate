@@ -114,15 +114,6 @@ public class ShopNotesAdapter extends RecyclerView.Adapter<ShopNotesAdapter.MyVi
         return dates_id.get(position);
     }
 
-    public void refreshRemoved(int position) {
-        heading_id.remove(position);
-        content_id.remove(position);
-
-    }
-
-    public int getItemPosition(String item) {
-        return heading_id.indexOf(item);
-    }
 
     @SuppressLint("NotifyDataSetChanged")
     public void setFilterList(ArrayList<String> filterList, ArrayList<String> filterList2, ArrayList<String> filterList3) {
@@ -132,17 +123,11 @@ public class ShopNotesAdapter extends RecyclerView.Adapter<ShopNotesAdapter.MyVi
         notifyDataSetChanged();
     }
 
-    public void longClick(int position) {
-        onNoteListener.onOptionClick(position);
-    }
 
     public boolean checkEmpty() {
         return heading_id.isEmpty();
     }
 
-    public void refreshUpdate(String task, int position) {
-        content_id.set(position, task);
-    }
 
     public boolean isSelected() {
         return isEnable;
@@ -152,16 +137,6 @@ public class ShopNotesAdapter extends RecyclerView.Adapter<ShopNotesAdapter.MyVi
         return selectListHeading;
     }
 
-    public void setSelectListHeading(int position) {
-        selectListHeading.remove(heading_id.get(position));
-        selectListContent.remove(content_id.get(position));
-        selectListDate.remove(dates_id.get(position));
-        if (selectListHeading.isEmpty()) {
-            isEnable = false;
-            isSelectAll = false;
-        }
-        ((AppCompatActivity) getContext()).supportInvalidateOptionsMenu();
-    }
 
     public ArrayList<String> getSelectListContent() {
         return selectListContent;
@@ -171,16 +146,7 @@ public class ShopNotesAdapter extends RecyclerView.Adapter<ShopNotesAdapter.MyVi
         return selectListDate;
     }
 
-    public void removeItemFromSelectList(int position) {
-        selectListHeading.remove(heading_id.get(position));
-        selectListContent.remove(content_id.get(position));
-        selectListDate.remove(dates_id.get(position));
-        if (selectListHeading.isEmpty()) {
-            isEnable = false;
-            isSelectAll = false;
-        }
-        ((AppCompatActivity) getContext()).supportInvalidateOptionsMenu();
-    }
+
 
     public void setSelectAll() {
         if (selectListHeading.size() == heading_id.size()) {

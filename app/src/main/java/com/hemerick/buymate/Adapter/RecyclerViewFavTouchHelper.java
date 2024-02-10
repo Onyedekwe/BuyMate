@@ -15,7 +15,6 @@ import com.hemerick.buymate.FavouritesFragment;
 
 public class RecyclerViewFavTouchHelper extends ItemTouchHelper.SimpleCallback {
 
-
     private final ShopFavouritesAdapter adapter;
     FavouritesFragment favouritesFragment;
     ShopDatabase db;
@@ -139,25 +138,25 @@ public class RecyclerViewFavTouchHelper extends ItemTouchHelper.SimpleCallback {
 
     public void changePrice(int position) {
         String temp = adapter.getItemName(position);
-        String temp_category = adapter.getCateName(position);
+        // String temp_category = adapter.getCateName(position);
         favouritesFragment.showPriceDialog(temp, position);
     }
 
     public void rename(int position) {
         String temp = adapter.getItemName(position);
-        String temp_category = adapter.getCateName(position);
+        // String temp_category = adapter.getCateName(position);
         favouritesFragment.showRenameDialog(temp, position);
     }
 
     public void changeQuantity(int position) {
         String temp = adapter.getItemName(position);
-        String temp_category = adapter.getCateName(position);
+        // String temp_category = adapter.getCateName(position);
         favouritesFragment.showQuantityDialog(temp, position);
     }
 
     public void show_options(int position) {
         String temp = adapter.getItemName(position);
-        String temp_category = adapter.getCateName(position);
+        // String temp_category = adapter.getCateName(position);
         favouritesFragment.showEditDialog(temp, position);
     }
 

@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -19,7 +20,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -48,8 +48,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.hemerick.buymate.Database.UserSettings;
-import com.hemerick.buymate.NetworkUtils.Network;
-
+import com.hemerick.buymate.NetworkUtils.ConnectivityUtils;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -59,7 +58,6 @@ import io.github.muddz.styleabletoast.StyleableToast;
 public class LogInActivity extends AppCompatActivity {
 
     private UserSettings settings;
-    private PowerManager.WakeLock wakeLock;
 
     SharedPreferences sharedPreferences;
 
@@ -90,9 +88,25 @@ public class LogInActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences_theme = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
         String theme = sharedPreferences_theme.getString(UserSettings.CUSTOM_THEME, UserSettings.LIGHT_THEME);
         settings.setCustomTheme(theme);
+        String dim = sharedPreferences_theme.getString(UserSettings.IS_DIM_THEME_ENABLED, UserSettings.NO_DIM_THEME_NOT_ENABLED);
+        settings.setIsDimThemeEnabled(dim);
 
-        if (settings.getCustomTheme().equals(UserSettings.DIM_THEME)) {
-            setTheme(R.style.Dynamic_Dim);
+        if (settings.getCustomTheme().equals(UserSettings.DEFAULT_THEME)) {
+            int currentNightMode = this.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+
+            if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
+
+
+                if (settings.getIsDimThemeEnabled().equals(UserSettings.YES_DIM_THEME_ENABLED)) {
+                    setTheme(R.style.Dynamic_Dim);
+                }
+            }
+
+        } else if (settings.getCustomTheme().equals(UserSettings.DARK_THEME)) {
+
+            if (settings.getIsDimThemeEnabled().equals(UserSettings.YES_DIM_THEME_ENABLED)) {
+                setTheme(R.style.Dynamic_Dim);
+            }
         }
 
         setContentView(R.layout.activity_log_in);
@@ -183,59 +197,68 @@ public class LogInActivity extends AppCompatActivity {
 
 
     public void loginUserGoogle() {
-        if (Network.isNetworkAvailable(LogInActivity.this)) {
-            Intent intent = googleSignInClient.getSignInIntent();
-            startActivityForResult(intent, RC_SIGN_IN);
-        } else {
-            final Dialog dialog = new Dialog(LogInActivity.this);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setContentView(R.layout.no_connection_layout);
+        progressBar.setVisibility(View.VISIBLE);
+        ConnectivityUtils.checkInternetConnectivity(this, new ConnectivityUtils.InternetCheckListener() {
+            @Override
+            public void onInternetCheckComplete(boolean isInternetAvailable) {
 
-            TextView no_connection_Text1 = dialog.findViewById(R.id.no_connection_text_1);
-            TextView no_connection_Text2 = dialog.findViewById(R.id.no_connection_text_2);
-            TextView no_connection_Text3 = dialog.findViewById(R.id.no_connection_text_3);
-            Button try_again_btn = dialog.findViewById(R.id.try_again);
+                if(isInternetAvailable){
+                    progressBar.setVisibility(View.GONE);
+                    Intent intent = googleSignInClient.getSignInIntent();
+                    startActivityForResult(intent, RC_SIGN_IN);
+                }else {
+                    progressBar.setVisibility(View.GONE);
+                    final Dialog dialog = new Dialog(LogInActivity.this);
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.setContentView(R.layout.no_connection_layout);
 
-            if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
+                    TextView no_connection_Text1 = dialog.findViewById(R.id.no_connection_text_1);
+                    TextView no_connection_Text2 = dialog.findViewById(R.id.no_connection_text_2);
+                    TextView no_connection_Text3 = dialog.findViewById(R.id.no_connection_text_3);
+                    Button try_again_btn = dialog.findViewById(R.id.try_again);
 
-                no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-                no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-                no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-                try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                    if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
 
-            }
+                        no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                        no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                        no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                        try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
 
-            if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
+                    }
 
-                no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-                no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-                no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-                try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-            }
+                    if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
 
-            if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
+                        no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                        no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                        no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                        try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                    }
 
-                no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-                no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-                no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-                try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                    if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
 
-            }
+                        no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                        no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                        no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                        try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+
+                    }
 
 
-            try_again_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
+                    try_again_btn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    dialog.show();
+                    dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
+                    dialog.getWindow().setGravity(Gravity.BOTTOM);
                 }
-            });
-
-            dialog.show();
-            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
-            dialog.getWindow().setGravity(Gravity.BOTTOM);
-        }
+            }
+        });
 
     }
 
@@ -271,9 +294,6 @@ public class LogInActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-
-
-                                    StyleableToast.makeText(LogInActivity.this, "Sign up successful", R.style.custom_toast).show();
 
                                     settings.setIsAuthenticated(UserSettings.IS_AUTHENTICATED);
 
@@ -328,13 +348,10 @@ public class LogInActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                             if (isPremium) {
-                                Toast.makeText(getApplicationContext(), "Premium is enabled", Toast.LENGTH_SHORT).show();
                                 settings.setIsLifetimePurchased(UserSettings.YES_LIFETIME_PURCHASED);
                                 SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
                                 editor.putString(UserSettings.IS_LIFETIME_PURCHASED, settings.getIsLifetimePurchased());
                                 editor.apply();
-                            } else {
-                                Toast.makeText(getApplicationContext(), "Premium is not enabled", Toast.LENGTH_SHORT).show();
                             }
 
                         });
@@ -354,115 +371,118 @@ public class LogInActivity extends AppCompatActivity {
     }
 
     public void loginUser() {
+        progressBar.setVisibility(View.VISIBLE);
+        ConnectivityUtils.checkInternetConnectivity(this, new ConnectivityUtils.InternetCheckListener() {
+            @Override
+            public void onInternetCheckComplete(boolean isInternetAvailable) {
+                if(isInternetAvailable){
+                    progressBar.setVisibility(View.GONE);
+                    String emailText = emailbox.getText().toString().trim();
+                    String passwordText = passwordbox.getText().toString().trim();
 
-        if (Network.isNetworkAvailable(LogInActivity.this)) {
-            String emailText = emailbox.getText().toString().trim();
-            String passwordText = passwordbox.getText().toString().trim();
+                    if (!emailText.isEmpty()) {
+                        if (!passwordText.isEmpty()) {
+                            if (isValidEmail(emailText)) {
 
-            if (!emailText.isEmpty()) {
-                if (!passwordText.isEmpty()) {
-                    if (isValidEmail(emailText)) {
-
-                        firebaseAuth.signInWithEmailAndPassword(emailText, passwordText)
-                                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                                    @Override
-                                    public void onSuccess(AuthResult authResult) {
-                                        progressBar.setVisibility(View.VISIBLE);
-                                        new Handler().postDelayed(new Runnable() {
+                                firebaseAuth.signInWithEmailAndPassword(emailText, passwordText)
+                                        .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                                             @Override
-                                            public void run() {
+                                            public void onSuccess(AuthResult authResult) {
+                                                progressBar.setVisibility(View.VISIBLE);
+                                                new Handler().postDelayed(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+
+                                                        settings.setIsAuthenticated(UserSettings.IS_AUTHENTICATED);
+
+                                                        SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
+                                                        editor.putString(UserSettings.IS_AUTHENTICATED, settings.getIsAuthenticated());
+                                                        editor.apply();
+
+                                                        checkIfLifetimeSubscribed();
+
+                                                        progressBar.setVisibility(View.INVISIBLE);
+
+                                                        Intent intent = new Intent(LogInActivity.this, HomeActivity.class);
+                                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                        startActivity(intent);
 
 
-                                                StyleableToast.makeText(LogInActivity.this, "Log in successful", R.style.custom_toast).show();
-                                                settings.setIsAuthenticated(UserSettings.IS_AUTHENTICATED);
-
-                                                SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
-                                                editor.putString(UserSettings.IS_AUTHENTICATED, settings.getIsAuthenticated());
-                                                editor.apply();
-
-                                                checkIfLifetimeSubscribed();
-
-                                                progressBar.setVisibility(View.INVISIBLE);
-
-                                                Intent intent = new Intent(LogInActivity.this, HomeActivity.class);
-                                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                startActivity(intent);
-
+                                                    }
+                                                }, 2000);
 
                                             }
-                                        }, 2000);
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                StyleableToast.makeText(LogInActivity.this, getString(R.string.LoginActivity__error) + e.getMessage(), R.style.custom_toast).show();
 
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        StyleableToast.makeText(LogInActivity.this, "Error: " + e.getMessage(), R.style.custom_toast).show();
+                                            }
+                                        });
 
-                                    }
-                                });
-
+                            } else {
+                                emailLayout.setError(getString(R.string.LoginActivity__emailError));
+                            }
+                        } else {
+                            passwordLayout.setError(getString(R.string.LoginActivity__passwordError));
+                        }
                     } else {
-                        emailLayout.setError("Not a valid email address");
+                        emailLayout.setError(getString(R.string.LoginActivity__emptyEmailError));
                     }
-                } else {
-                    passwordLayout.setError("Insert password");
+                }else {
+                    progressBar.setVisibility(View.GONE);
+                    final Dialog dialog = new Dialog(LogInActivity.this);
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.setContentView(R.layout.no_connection_layout);
+
+                    TextView no_connection_Text1 = dialog.findViewById(R.id.no_connection_text_1);
+                    TextView no_connection_Text2 = dialog.findViewById(R.id.no_connection_text_2);
+                    TextView no_connection_Text3 = dialog.findViewById(R.id.no_connection_text_3);
+                    Button try_again_btn = dialog.findViewById(R.id.try_again);
+
+                    if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
+
+                        no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                        no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                        no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                        try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+
+                    }
+
+                    if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
+
+                        no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                        no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                        no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                        try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                    }
+
+                    if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
+
+                        no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                        no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                        no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                        try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+
+                    }
+
+
+                    try_again_btn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    dialog.show();
+                    dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
+                    dialog.getWindow().setGravity(Gravity.BOTTOM);
                 }
-            } else {
-                emailLayout.setError("Enter email address");
             }
-        } else {
-            final Dialog dialog = new Dialog(LogInActivity.this);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setContentView(R.layout.no_connection_layout);
-
-            TextView no_connection_Text1 = dialog.findViewById(R.id.no_connection_text_1);
-            TextView no_connection_Text2 = dialog.findViewById(R.id.no_connection_text_2);
-            TextView no_connection_Text3 = dialog.findViewById(R.id.no_connection_text_3);
-            Button try_again_btn = dialog.findViewById(R.id.try_again);
-
-            if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
-
-                no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-                no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-                no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-                try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-
-            }
-
-            if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
-
-                no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-                no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-                no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-                try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-            }
-
-            if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
-
-                no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-                no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-                no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-                try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-
-            }
-
-
-            try_again_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                }
-            });
-
-            dialog.show();
-            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
-            dialog.getWindow().setGravity(Gravity.BOTTOM);
-        }
-
-
+        });
     }
 
     private boolean isValidEmail(String email) {
@@ -513,7 +533,7 @@ public class LogInActivity extends AppCompatActivity {
         boolean wakeLockEnabled = UserSettings.isWakeLockEnabled(this);
         if (wakeLockEnabled) {
             PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-            wakeLock = powerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "MyApp:KeepScreeOn");
+            PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "MyApp:KeepScreeOn");
             wakeLock.acquire();
         }
 

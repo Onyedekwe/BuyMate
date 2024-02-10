@@ -21,12 +21,15 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottombar"
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:layout_gravity="bottom"
         app:itemActiveIndicatorStyle="@style/bottomNavBarStyle"
+        app:itemIconTint="?attr/colorSecondaryVariant"
+        app:itemTextColor="?attr/colorSecondaryVariant"
         android:background="?attr/backgroundColor"
         app:menu="@menu/bottom_bar_menu" />
 

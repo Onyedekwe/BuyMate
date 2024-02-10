@@ -1,8 +1,10 @@
 package com.hemerick.buymate;
 
 import android.app.Dialog;
+import android.app.UiModeManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
@@ -36,7 +38,7 @@ import com.android.billingclient.api.QueryPurchasesParams;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.ImmutableList;
 import com.hemerick.buymate.Database.UserSettings;
-import com.hemerick.buymate.NetworkUtils.Network;
+import com.hemerick.buymate.NetworkUtils.ConnectivityUtils;
 import com.hemerick.buymate.NetworkUtils.Security;
 
 import java.io.IOException;
@@ -91,9 +93,25 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
         SharedPreferences sharedPreferences_theme = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
         String theme = sharedPreferences_theme.getString(UserSettings.CUSTOM_THEME, UserSettings.LIGHT_THEME);
         settings.setCustomTheme(theme);
+        String dim = sharedPreferences_theme.getString(UserSettings.IS_DIM_THEME_ENABLED, UserSettings.NO_DIM_THEME_NOT_ENABLED);
+        settings.setIsDimThemeEnabled(dim);
 
-        if (settings.getCustomTheme().equals(UserSettings.DIM_THEME)) {
-            setTheme(R.style.Dynamic_Dim);
+        if (settings.getCustomTheme().equals(UserSettings.DEFAULT_THEME)) {
+            int currentNightMode = this.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+
+            if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
+
+
+                if (settings.getIsDimThemeEnabled().equals(UserSettings.YES_DIM_THEME_ENABLED)) {
+                    setTheme(R.style.Dynamic_Dim);
+                }
+            }
+
+        } else if (settings.getCustomTheme().equals(UserSettings.DARK_THEME)) {
+
+            if (settings.getIsDimThemeEnabled().equals(UserSettings.YES_DIM_THEME_ENABLED)) {
+                setTheme(R.style.Dynamic_Dim);
+            }
         }
 
         setContentView(R.layout.activity_premium);
@@ -172,65 +190,71 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                progressBar.setVisibility(View.VISIBLE);
+                ConnectivityUtils.checkInternetConnectivity(PremiumActivity.this, new ConnectivityUtils.InternetCheckListener() {
+                    @Override
+                    public void onInternetCheckComplete(boolean isInternetAvailable) {
+                        if(isInternetAvailable){
+                            progressBar.setVisibility(View.GONE);
+                            billingClient = BillingClient.newBuilder(PremiumActivity.this)
+                                    .enablePendingPurchases().setListener(PremiumActivity.this).build();
+                            billingClient.startConnection(new BillingClientStateListener() {
+                                @Override
+                                public void onBillingServiceDisconnected() {
 
-                if (Network.isNetworkAvailable(PremiumActivity.this)) {
-                    billingClient = BillingClient.newBuilder(PremiumActivity.this)
-                            .enablePendingPurchases().setListener(PremiumActivity.this).build();
-                    billingClient.startConnection(new BillingClientStateListener() {
-                        @Override
-                        public void onBillingServiceDisconnected() {
+                                }
 
-                        }
+                                @Override
+                                public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
+                                    if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                                        ExecutorService executorService = Executors.newSingleThreadExecutor();
+                                        executorService.execute(() -> {
+                                            try {
+                                                billingClient.queryPurchasesAsync(
+                                                        QueryPurchasesParams.newBuilder()
+                                                                .setProductType(BillingClient.ProductType.INAPP)
+                                                                .build(),
+                                                        ((billingResult1, list) -> {
+                                                            for (Purchase purchase : list) {
+                                                                if (purchase != null && purchase.isAcknowledged()) {
+                                                                    isPremium = true;
+                                                                }
+                                                            }
+                                                        }));
+                                            } catch (Exception ex) {
+                                                isPremium = false;
+                                            }
+                                            runOnUiThread(() -> {
+                                                try {
+                                                    Thread.sleep(1000);
+                                                } catch (InterruptedException e) {
+                                                    e.printStackTrace();
+                                                }
+                                                if (isPremium) {
+                                                    Toast.makeText(getApplicationContext(), "Premium is enabled", Toast.LENGTH_SHORT).show();
+                                                    price_details_container.setVisibility(View.GONE);
+                                                    progressBar.setVisibility(View.INVISIBLE);
 
-                        @Override
-                        public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
-                            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                                ExecutorService executorService = Executors.newSingleThreadExecutor();
-                                executorService.execute(() -> {
-                                    try {
-                                        billingClient.queryPurchasesAsync(
-                                                QueryPurchasesParams.newBuilder()
-                                                        .setProductType(BillingClient.ProductType.INAPP)
-                                                        .build(),
-                                                ((billingResult1, list) -> {
-                                                    for (Purchase purchase : list) {
-                                                        if (purchase != null && purchase.isAcknowledged()) {
-                                                            isPremium = true;
-                                                        }
-                                                    }
-                                                }));
-                                    } catch (Exception ex) {
-                                        isPremium = false;
+                                                } else {
+                                                    Toast.makeText(getApplicationContext(), "Premium is not enabled", Toast.LENGTH_SHORT).show();
+                                                    getPrice();
+                                                    progressBar.setVisibility(View.INVISIBLE);
+                                                }
+
+                                            });
+
+                                        });
                                     }
-                                    runOnUiThread(() -> {
-                                        try {
-                                            Thread.sleep(1000);
-                                        } catch (InterruptedException e) {
-                                            e.printStackTrace();
-                                        }
-                                        if (isPremium) {
-                                            Toast.makeText(getApplicationContext(), "Premium is enabled", Toast.LENGTH_SHORT).show();
-                                            price_details_container.setVisibility(View.GONE);
-                                            progressBar.setVisibility(View.INVISIBLE);
-
-                                        } else {
-                                            Toast.makeText(getApplicationContext(), "Premium is not enabled", Toast.LENGTH_SHORT).show();
-                                            getPrice();
-                                            progressBar.setVisibility(View.INVISIBLE);
-                                        }
-
-                                    });
-
-                                });
-                            }
+                                }
+                            });
+                        }else{
+                            progressBar.setVisibility(View.GONE);
+                            no_network_layout.setVisibility(View.VISIBLE);
+                            price_details_container.setVisibility(View.GONE);
+                            progressBar.setVisibility(View.INVISIBLE);
                         }
-                    });
-                } else {
-                    no_network_layout.setVisibility(View.VISIBLE);
-                    price_details_container.setVisibility(View.GONE);
-                    progressBar.setVisibility(View.INVISIBLE);
-                }
-
+                    }
+                });
             }
         }, 1000);
 

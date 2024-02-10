@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -23,7 +24,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
-import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesUpdatedListener;
@@ -33,11 +33,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.hemerick.buymate.Database.Firebase;
 import com.hemerick.buymate.Database.ShopDatabase;
 import com.hemerick.buymate.Database.UserSettings;
-import com.hemerick.buymate.NetworkUtils.Network;
-
+import com.hemerick.buymate.NetworkUtils.ConnectivityUtils;
 import java.util.List;
-
-import io.github.muddz.styleabletoast.StyleableToast;
 
 public class BackupActivity extends AppCompatActivity {
 
@@ -48,13 +45,10 @@ public class BackupActivity extends AppCompatActivity {
 
 
     TextView backup_text, restore_text, backup_text_2, restore_text_2;
-    private PowerManager.WakeLock wakeLock;
 
     CardView backup_card, restore_card;
 
     ProgressBar progressBar;
-
-    private BillingClient billingClient;
 
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
@@ -65,11 +59,26 @@ public class BackupActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences_theme = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
         String theme = sharedPreferences_theme.getString(UserSettings.CUSTOM_THEME, UserSettings.LIGHT_THEME);
         settings.setCustomTheme(theme);
+        String dim = sharedPreferences_theme.getString(UserSettings.IS_DIM_THEME_ENABLED, UserSettings.NO_DIM_THEME_NOT_ENABLED);
+        settings.setIsDimThemeEnabled(dim);
 
-        if (settings.getCustomTheme().equals(UserSettings.DIM_THEME)) {
-            setTheme(R.style.Dynamic_Dim);
+        if (settings.getCustomTheme().equals(UserSettings.DEFAULT_THEME)) {
+            int currentNightMode = this.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+
+            if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
+
+
+                if (settings.getIsDimThemeEnabled().equals(UserSettings.YES_DIM_THEME_ENABLED)) {
+                    setTheme(R.style.Dynamic_Dim);
+                }
+            }
+
+        } else if (settings.getCustomTheme().equals(UserSettings.DARK_THEME)) {
+
+            if (settings.getIsDimThemeEnabled().equals(UserSettings.YES_DIM_THEME_ENABLED)) {
+                setTheme(R.style.Dynamic_Dim);
+            }
         }
-
         setContentView(R.layout.activity_backup);
 
         toolbar = findViewById(R.id.backupToolbar);
@@ -98,16 +107,7 @@ public class BackupActivity extends AppCompatActivity {
         backup_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int code = 1;
-                if (Network.isNetworkAvailable(BackupActivity.this)) {
-                    if (settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)) {
-                        backupData();
-                    } else {
-                        showUpgradeRequiredDialog();
-                    }
-                } else {
-                    showNoNetworkDialog();
-                }
+                backupData();
             }
         });
 
@@ -115,22 +115,11 @@ public class BackupActivity extends AppCompatActivity {
         restore_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int code = 2;
-                if (Network.isNetworkAvailable(BackupActivity.this)) {
-                    if (settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)) {
-                        restoreData();
-                    } else {
-                        showUpgradeRequiredDialog();
-                    }
-                } else {
-                    showNoNetworkDialog();
-                }
+                restoreData();
             }
         });
 
         loadSharedPreferences();
-
-        billingClient = BillingClient.newBuilder(BackupActivity.this).setListener(purchasesUpdatedListener).enablePendingPurchases().build();
 
     }
 
@@ -143,31 +132,68 @@ public class BackupActivity extends AppCompatActivity {
 
 
     public void backupData() {
+        progressBar.setVisibility(View.VISIBLE);
 
+        ConnectivityUtils.checkInternetConnectivity(this, new ConnectivityUtils.InternetCheckListener() {
+            @Override
+            public void onInternetCheckComplete(boolean isInternetAvailable) {
+                if(isInternetAvailable == true){
+                    progressBar.setVisibility(View.GONE);
+                    if (settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)) {
+                        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                        if (firebaseUser != null) {
+                            Firebase firebase = new Firebase(BackupActivity.this);
+                            firebase.deleteData();
+                            firebase.backupData();
 
-        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-        if (firebaseUser != null) {
-            Firebase firebase = new Firebase(BackupActivity.this);
-            firebase.deleteData();
-            firebase.backupData();
+                        } else {
+                            showLoginDialog(getString(R.string.BackupActivity__loginBeforeBackup));
+                        }
 
-        } else {
-            StyleableToast.makeText(BackupActivity.this, "You must be logged in before backup", R.style.custom_toast_2).show();
-        }
+                    } else {
+                        showUpgradeRequiredDialog();
+                    }
+                }else{
+                    int code = 1;
+                    progressBar.setVisibility(View.GONE);
+                    showNoNetworkDialog(code);
+                }
+            }
+        });
 
     }
+
+
 
     public void restoreData() {
-        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-        if (firebaseUser != null) {
-            showLogoutWarningDialog();
-        } else {
-            StyleableToast.makeText(BackupActivity.this, "You must be logged in to restore data", R.style.custom_toast_2).show();
-        }
+
+        progressBar.setVisibility(View.VISIBLE);
+        ConnectivityUtils.checkInternetConnectivity(this, new ConnectivityUtils.InternetCheckListener() {
+            @Override
+            public void onInternetCheckComplete(boolean isInternetAvailable) {
+                if(isInternetAvailable == true){
+                    progressBar.setVisibility(View.GONE);
+                    if (settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)) {
+                        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                        if (firebaseUser != null) {
+                            showRestoreWarningDialog();
+                        } else {
+                            showLoginDialog(getString(R.string.BackupActivity__loginBeforeRestore));
+                        }
+                    } else {
+                        showUpgradeRequiredDialog();
+                    }
+                }else{
+                    int code = 2;
+                    progressBar.setVisibility(View.GONE);
+                    showNoNetworkDialog(code);
+                }
+            }
+        });
     }
 
 
-    public void showNoNetworkDialog() {
+    public void showNoNetworkDialog(int code) {
         final Dialog dialog = new Dialog(BackupActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.no_connection_layout);
@@ -208,6 +234,11 @@ public class BackupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+                if(code == 1){
+                    backupData();
+                }else if(code == 2){
+                    restoreData();
+                }
             }
         });
 
@@ -277,7 +308,7 @@ public class BackupActivity extends AppCompatActivity {
 
     }
 
-    public void showLogoutWarningDialog() {
+    public void showRestoreWarningDialog() {
         Dialog dialog = new Dialog(BackupActivity.this);
         dialog.setContentView(R.layout.custom_logout_warning_dialog);
         dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
@@ -288,9 +319,9 @@ public class BackupActivity extends AppCompatActivity {
         Button backup = dialog.findViewById(R.id.backup);
         TextView okBtn = dialog.findViewById(R.id.okBtn);
 
-        alertText.setText("Restoring a backup will replace your current data with the previously backed up data. Any unsaved changes will be lost. Are you sure you want to proceed?");
-        backup.setText("Proceed");
-        okBtn.setText("Cancel");
+        alertText.setText(getString(R.string.BackupActivity__restoreWarning));
+        backup.setText(getString(R.string.BackupActivity__restoreProceedBtn));
+        okBtn.setText(getString(R.string.BackupActivity__restoreCancelBtn));
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
             header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
@@ -323,6 +354,60 @@ public class BackupActivity extends AppCompatActivity {
         });
 
         okBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
+    public void showLoginDialog(String text){
+        Dialog dialog = new Dialog(BackupActivity.this);
+        dialog.setContentView(R.layout.custom_login_dialog);
+        dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        TextView header = dialog.findViewById(R.id.header);
+        TextView loginText = dialog.findViewById(R.id.login_text);
+        Button loginBtn = dialog.findViewById(R.id.login_btn);
+        TextView cancelBtn = dialog.findViewById(R.id.cancel_btn);
+
+        loginText.setText(text);
+
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
+            header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            loginText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            loginBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            cancelBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+        }
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
+            header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            loginText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            loginBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            cancelBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+        }
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
+            header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            loginText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            loginBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            cancelBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+        }
+
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                startActivity(new Intent(BackupActivity.this, LogInActivity.class));
+                finish();
+            }
+        });
+
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
@@ -366,7 +451,7 @@ public class BackupActivity extends AppCompatActivity {
         boolean wakeLockEnabled = UserSettings.isWakeLockEnabled(this);
         if (wakeLockEnabled) {
             PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-            wakeLock = powerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "MyApp:KeepScreeOn");
+            PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "MyApp:KeepScreeOn");
             wakeLock.acquire();
         }
 

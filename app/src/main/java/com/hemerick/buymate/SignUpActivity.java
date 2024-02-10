@@ -1,9 +1,11 @@
 package com.hemerick.buymate;
 
 import android.app.Dialog;
+import android.app.UiModeManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -49,7 +51,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.hemerick.buymate.Database.UserSettings;
-import com.hemerick.buymate.NetworkUtils.Network;
+import com.hemerick.buymate.NetworkUtils.ConnectivityUtils;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -89,11 +91,26 @@ public class SignUpActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences_theme = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
         String theme = sharedPreferences_theme.getString(UserSettings.CUSTOM_THEME, UserSettings.LIGHT_THEME);
         settings.setCustomTheme(theme);
+        String dim = sharedPreferences_theme.getString(UserSettings.IS_DIM_THEME_ENABLED, UserSettings.NO_DIM_THEME_NOT_ENABLED);
+        settings.setIsDimThemeEnabled(dim);
 
-        if (settings.getCustomTheme().equals(UserSettings.DIM_THEME)) {
-            setTheme(R.style.Dynamic_Dim);
+        if (settings.getCustomTheme().equals(UserSettings.DEFAULT_THEME)) {
+            int currentNightMode = this.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+
+            if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
+
+
+                if (settings.getIsDimThemeEnabled().equals(UserSettings.YES_DIM_THEME_ENABLED)) {
+                    setTheme(R.style.Dynamic_Dim);
+                }
+            }
+
+        } else if (settings.getCustomTheme().equals(UserSettings.DARK_THEME)) {
+
+            if (settings.getIsDimThemeEnabled().equals(UserSettings.YES_DIM_THEME_ENABLED)) {
+                setTheme(R.style.Dynamic_Dim);
+            }
         }
-
         setContentView(R.layout.activity_signup);
 
 
@@ -181,205 +198,216 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     public void authenticateUser() {
+        progressBar.setVisibility(View.VISIBLE);
+        ConnectivityUtils.checkInternetConnectivity(this, new ConnectivityUtils.InternetCheckListener() {
+            @Override
+            public void onInternetCheckComplete(boolean isInternetAvailable) {
+                if(isInternetAvailable){
+                    progressBar.setVisibility(View.GONE);
+                    String fullnameText = fullnamebox.getText().toString().trim();
+                    String emailText = emailbox.getText().toString().trim();
+                    String passwordText = passwordbox.getText().toString().trim();
+                    String confirm_passwordText = confirmpasswordbox.getText().toString().trim();
 
-        if (Network.isNetworkAvailable(SignUpActivity.this)) {
-            String fullnameText = fullnamebox.getText().toString().trim();
-            String emailText = emailbox.getText().toString().trim();
-            String passwordText = passwordbox.getText().toString().trim();
-            String confirm_passwordText = confirmpasswordbox.getText().toString().trim();
+                    if (!fullnameText.isEmpty()) {
 
-            if (!fullnameText.isEmpty()) {
+                        if (!emailText.isEmpty()) {
+                            if (!passwordText.isEmpty()) {
+                                if (!confirm_passwordText.isEmpty()) {
+                                    if (isValidEmail(emailText)) {
+                                        if (passwordText.length() >= 6) {
+                                            if (passwordText.equals(confirm_passwordText)) {
+                                                progressBar.setVisibility(View.VISIBLE);
+                                                new Handler().postDelayed(new Runnable() {
 
-                if (!emailText.isEmpty()) {
-                    if (!passwordText.isEmpty()) {
-                        if (!confirm_passwordText.isEmpty()) {
-                            if (isValidEmail(emailText)) {
-                                if (passwordText.length() >= 6) {
-                                    if (passwordText.equals(confirm_passwordText)) {
-                                        progressBar.setVisibility(View.VISIBLE);
-                                        new Handler().postDelayed(new Runnable() {
-
-                                            @Override
-                                            public void run() {
-
-                                                firebaseAuth.createUserWithEmailAndPassword(emailText, passwordText).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                                     @Override
-                                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                                    public void run() {
 
-                                                        if (task.isSuccessful()) {
-                                                            StyleableToast.makeText(SignUpActivity.this, "Sign up successful", R.style.custom_toast).show();
+                                                        firebaseAuth.createUserWithEmailAndPassword(emailText, passwordText).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<AuthResult> task) {
 
-                                                            settings.setIsAuthenticated(UserSettings.IS_AUTHENTICATED);
-                                                            settings.setUsername(fullnameText);
+                                                                if (task.isSuccessful()) {
+                                                                    StyleableToast.makeText(SignUpActivity.this, "Sign up successful", R.style.custom_toast).show();
 
-                                                            SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
-                                                            editor.putString(UserSettings.IS_AUTHENTICATED, settings.getIsAuthenticated());
-                                                            editor.putString(UserSettings.USER_NAME, settings.getUsername());
-                                                            editor.apply();
+                                                                    settings.setIsAuthenticated(UserSettings.IS_AUTHENTICATED);
+                                                                    settings.setUsername(fullnameText);
 
-                                                            checkIfLifetimeSubscribed();
+                                                                    SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
+                                                                    editor.putString(UserSettings.IS_AUTHENTICATED, settings.getIsAuthenticated());
+                                                                    editor.putString(UserSettings.USER_NAME, settings.getUsername());
+                                                                    editor.apply();
 
-                                                            progressBar.setVisibility(View.INVISIBLE);
+                                                                    checkIfLifetimeSubscribed();
+
+                                                                    progressBar.setVisibility(View.INVISIBLE);
 
 
-                                                            Intent intent = new Intent(SignUpActivity.this, HomeActivity.class);
-                                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                            startActivity(intent);
-                                                        } else {
-                                                            StyleableToast.makeText(SignUpActivity.this, "Sign up failed", R.style.custom_toast).show();
-                                                        }
+                                                                    Intent intent = new Intent(SignUpActivity.this, HomeActivity.class);
+                                                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                    startActivity(intent);
+                                                                } else {
+                                                                    StyleableToast.makeText(SignUpActivity.this, "Sign up failed", R.style.custom_toast).show();
+                                                                }
+                                                            }
+                                                        }).addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull Exception e) {
+                                                                if (e instanceof FirebaseAuthUserCollisionException) {
+                                                                    progressBar.setVisibility(View.INVISIBLE);
+                                                                    emailLayout.setError("Email already registered");
+                                                                }
+                                                            }
+                                                        });
+
                                                     }
-                                                }).addOnFailureListener(new OnFailureListener() {
-                                                    @Override
-                                                    public void onFailure(@NonNull Exception e) {
-                                                        if (e instanceof FirebaseAuthUserCollisionException) {
-                                                            progressBar.setVisibility(View.INVISIBLE);
-                                                            emailLayout.setError("Email already registered");
-                                                        }
-                                                    }
-                                                });
+                                                }, 2000);
 
+
+                                            } else {
+                                                confirmPasswordLayout.setError("Password does not match");
                                             }
-                                        }, 2000);
 
+                                        } else {
+                                            passwordLayout.setError("Password must be at least 6 characters long");
+                                        }
 
                                     } else {
-                                        confirmPasswordLayout.setError("Password does not match");
+                                        emailLayout.setError("Not a valid email address");
+
                                     }
 
                                 } else {
-                                    passwordLayout.setError("Password must be at least 6 characters long");
+                                    confirmPasswordLayout.setError("Retype password to proceed");
                                 }
 
                             } else {
-                                emailLayout.setError("Not a valid email address");
-
+                                passwordLayout.setError("Insert password");
                             }
 
                         } else {
-                            confirmPasswordLayout.setError("Retype password to proceed");
+                            emailLayout.setError("Enter email address");
                         }
-
                     } else {
-                        passwordLayout.setError("Insert password");
+                        fullnameLayout.setError("Enter your username to proceed");
+                    }
+                }else{
+                    progressBar.setVisibility(View.GONE);
+                    final Dialog dialog = new Dialog(SignUpActivity.this);
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.setContentView(R.layout.no_connection_layout);
+
+                    TextView no_connection_Text1 = dialog.findViewById(R.id.no_connection_text_1);
+                    TextView no_connection_Text2 = dialog.findViewById(R.id.no_connection_text_2);
+                    TextView no_connection_Text3 = dialog.findViewById(R.id.no_connection_text_3);
+                    Button try_again_btn = dialog.findViewById(R.id.try_again);
+
+                    if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
+
+                        no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                        no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                        no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                        try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+
                     }
 
-                } else {
-                    emailLayout.setError("Enter email address");
+                    if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
+
+                        no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                        no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                        no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                        try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                    }
+
+                    if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
+
+                        no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                        no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                        no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                        try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+
+                    }
+
+
+                    try_again_btn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    dialog.show();
+                    dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
+                    dialog.getWindow().setGravity(Gravity.BOTTOM);
                 }
-            } else {
-                fullnameLayout.setError("Enter your username to proceed");
             }
-        } else {
-            final Dialog dialog = new Dialog(SignUpActivity.this);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setContentView(R.layout.no_connection_layout);
-
-            TextView no_connection_Text1 = dialog.findViewById(R.id.no_connection_text_1);
-            TextView no_connection_Text2 = dialog.findViewById(R.id.no_connection_text_2);
-            TextView no_connection_Text3 = dialog.findViewById(R.id.no_connection_text_3);
-            Button try_again_btn = dialog.findViewById(R.id.try_again);
-
-            if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
-
-                no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-                no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-                no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-                try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-
-            }
-
-            if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
-
-                no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-                no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-                no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-                try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-            }
-
-            if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
-
-                no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-                no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-                no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-                try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-
-            }
-
-
-            try_again_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                }
-            });
-
-            dialog.show();
-            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
-            dialog.getWindow().setGravity(Gravity.BOTTOM);
-        }
-
-
+        });
     }
 
     public void authenticateUserGoogle() {
+        progressBar.setVisibility(View.VISIBLE);
+        ConnectivityUtils.checkInternetConnectivity(this, new ConnectivityUtils.InternetCheckListener() {
+            @Override
+            public void onInternetCheckComplete(boolean isInternetAvailable) {
+                if(isInternetAvailable){
+                    progressBar.setVisibility(View.GONE);
+                    Intent intent = googleSignInClient.getSignInIntent();
+                    startActivityForResult(intent, RC_SIGN_IN);
+                }else{
+                    progressBar.setVisibility(View.GONE);
+                    final Dialog dialog = new Dialog(SignUpActivity.this);
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.setContentView(R.layout.no_connection_layout);
 
-        if (Network.isNetworkAvailable(SignUpActivity.this)) {
-            Intent intent = googleSignInClient.getSignInIntent();
-            startActivityForResult(intent, RC_SIGN_IN);
-        } else {
-            final Dialog dialog = new Dialog(SignUpActivity.this);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setContentView(R.layout.no_connection_layout);
+                    TextView no_connection_Text1 = dialog.findViewById(R.id.no_connection_text_1);
+                    TextView no_connection_Text2 = dialog.findViewById(R.id.no_connection_text_2);
+                    TextView no_connection_Text3 = dialog.findViewById(R.id.no_connection_text_3);
+                    Button try_again_btn = dialog.findViewById(R.id.try_again);
 
-            TextView no_connection_Text1 = dialog.findViewById(R.id.no_connection_text_1);
-            TextView no_connection_Text2 = dialog.findViewById(R.id.no_connection_text_2);
-            TextView no_connection_Text3 = dialog.findViewById(R.id.no_connection_text_3);
-            Button try_again_btn = dialog.findViewById(R.id.try_again);
+                    if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
 
-            if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
+                        no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                        no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                        no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                        try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
 
-                no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-                no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-                no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-                try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                    }
 
-            }
+                    if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
 
-            if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
+                        no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                        no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                        no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                        try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                    }
 
-                no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-                no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-                no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-                try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-            }
+                    if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
 
-            if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
+                        no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                        no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                        no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                        try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
 
-                no_connection_Text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-                no_connection_Text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-                no_connection_Text3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-                try_again_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-
-            }
+                    }
 
 
-            try_again_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
+                    try_again_btn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    dialog.show();
+                    dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
+                    dialog.getWindow().setGravity(Gravity.BOTTOM);
                 }
-            });
-
-            dialog.show();
-            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
-            dialog.getWindow().setGravity(Gravity.BOTTOM);
-        }
-
+            }
+        });
     }
 
     @Override

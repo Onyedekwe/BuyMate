@@ -186,9 +186,9 @@ public class NotesFragment extends Fragment implements ShopNotesAdapter.OnNoteLi
                     Button cancelButton = menu_delete_dialog.findViewById(R.id.cancel_button);
 
                     if (finalSelectListHeading.size() > 1) {
-                        delete_heading.setText(getString(R.string.multiple_notes_remove));
+                        delete_heading.setText(getString(R.string.NotesFragment__multipleDelete));
                     } else {
-                        delete_heading.setText(getString(R.string.single_note_remove));
+                        delete_heading.setText(getString(R.string.NotesFragment__singleDelete));
                     }
                     delete_message.setText(items_selected.toString());
 
@@ -210,7 +210,7 @@ public class NotesFragment extends Fragment implements ShopNotesAdapter.OnNoteLi
                                     emptyNotesLayout.setVisibility(View.VISIBLE);
                                 }
                             }
-                            StyleableToast.makeText(context, "Note Deleted", R.style.custom_toast).show();
+
                             shopNotesAdapter.disableSelection();
                             searchEditText.setText("");
 
@@ -245,7 +245,7 @@ public class NotesFragment extends Fragment implements ShopNotesAdapter.OnNoteLi
                 }
             });
         } else {
-            collapsingToolbarLayout.setTitle(getString(R.string.fragment_notes_toolbar_title));
+            collapsingToolbarLayout.setTitle(getString(R.string.NotesFragment__toolbarTitle));
         }
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -259,7 +259,7 @@ public class NotesFragment extends Fragment implements ShopNotesAdapter.OnNoteLi
         if (res.getCount() == 0) {
             recyclerView.setVisibility(View.GONE);
             emptyNotesLayout.setVisibility(View.VISIBLE);
-            searchView.setQueryHint("No note to search");
+            searchView.setQueryHint(getString(R.string.NotesFragment__emptyNoteSearchView));
         } else {
             while (res.moveToNext()) {
                 note_heading_list.add(res.getString(1));
@@ -302,7 +302,6 @@ public class NotesFragment extends Fragment implements ShopNotesAdapter.OnNoteLi
 
     @Override
     public void onOptionClick(int position) {
-
     }
 
     private void filterList(String text) {
@@ -335,7 +334,7 @@ public class NotesFragment extends Fragment implements ShopNotesAdapter.OnNoteLi
             emptyTEXT1.setVisibility(View.GONE);
             emptyTEXT2.setVisibility(View.GONE);
             emptyTEXT3.setVisibility(View.GONE);
-            emptyTEXT1.setText("No note found");
+            emptyTEXT1.setText(getString(R.string.NotesFragment__emptyNoteRecyclerView));
 
             if (filterList.isEmpty()) {
                 emptyImageView.setImageResource(R.drawable.illustration_no_search_data);
@@ -347,7 +346,7 @@ public class NotesFragment extends Fragment implements ShopNotesAdapter.OnNoteLi
                 emptyTEXT1.setVisibility(View.VISIBLE);
                 emptyTEXT2.setVisibility(View.GONE);
                 emptyTEXT3.setVisibility(View.GONE);
-                emptyTEXT1.setText("No note found");
+                emptyTEXT1.setText(getString(R.string.NotesFragment__emptyNoteRecyclerView));
 
             }
         }

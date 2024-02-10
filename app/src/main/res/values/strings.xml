@@ -1,14 +1,241 @@
 <resources>
     <string name="app_name">Buymate</string>
     <string name="app_version">1.0.1</string>
+    <string name="app_link">https://play.google.com/store/apps/details?id=</string>
     <string name="app_email">hemerickservices@gmail.com</string>
     <string name="default_web_client_id" translatable="false">401382920363-u289nhkse3o3fi2tevrq68m7oic9vaj6.apps.googleusercontent.com</string>
 
 
+
+    //ShopCopyAdapter
+    <string name="ShopCopyAdapter__copy_successful">Item copied to</string>
+
+    //ShopMoveAdapter
+    <string name="ShopMoveAdapter__move_successful">Item moved to</string>
+
+
+
+    //Firebase
+    <string name="Firebase__backup_text_heading">Backing up to the cloud</string>
+    <string name="Firebase__backup_text_subheading">Please wait…</string>
+    <string name="Firebase__backup_successful">Backup successful</string>
+    <string name="Firebase__restore_text_heading">Restoring data from the cloud</string>
+    <string name="Firebase__restore_text_subheading">Please wait…</string>
+    <string name="Firebase__restore_no_list_found">No list found</string>
+    <string name="Firebase__restore_no_notes_found">No notes found</string>
+    <string name="Firebase__restore_completed">Restore completed</string>
+    <string name="Firebase__error">Error: </string>
+
+    //ShoppingWidgetService
+    <string name="ShoppingWidgetService__added">Added </string>
+
+
+    //BackupActivity
+    <string name="BackupActivity__loginBeforeBackup">Please log in before proceeding to backup</string>
+    <string name="BackupActivity__loginBeforeRestore">Please ensure you\'re logged in before restoring data</string>
+    <string name="BackupActivity__restoreWarning">This action will replace your current data with the last backed up data. Any unsaved changes will be lost. Are you sure you want to proceed?</string>
+    <string name="BackupActivity__restoreProceedBtn">Proceed</string>
+    <string name="BackupActivity__restoreCancelBtn">Cancel</string>
+
+
+    //ChangePasswordActivity
+    <string name="ChangePasswordActivity__passwordUpdateSuccess">Password updated</string>
+    <string name="ChangePasswordActivity__passwordUpdateFailed">Password update failed</string>
+    <string name="ChangePasswordActivity__error">Error: </string>
+    <string name="ChangePasswordActivity__passwordNotMatched">Password does not match</string>
+    <string name="ChangePasswordActivity__passwordLengthFailed">Password must be at least 6 characters long</string>
+    <string name="ChangePasswordActivity__retypePassword">Retype password to proceed</string>
+    <string name="ChangePasswordActivity__enterNewPassword">Enter your new password</string>
+    <string name="ChangePasswordActivity__enterCurrentPassword">Enter your current password</string>
+
+
+    //ConfigurePasscodeActivity
+    <string name="ConfigurePasscodeActivity__deviceNotSupported">Device not supported</string>
+    <string name="ConfigurePasscodeActivity__hardwareUnavailable">Hardware unavailable</string>
+    <string name="ConfigurePasscodeActivity__fingerprintNotSet">Fingerprint not set for this device</string>
+    <string name="ConfigurePasscodeActivity__verifyFingerprint">Verify fingerprint</string>
+    <string name="ConfigurePasscodeActivity__usePassword">Use password</string>
+    <string name="ConfigurePasscodeActivity__insert4digitPassword">Insert 4 digit password</string>
+    <string name="ConfigurePasscodeActivity__confirmPassword">Confirm password</string>
+    <string name="ConfigurePasscodeActivity__retypePassword">Retype password to proceed</string>
+    <string name="ConfigurePasscodeActivity__success">Success</string>
+    <string name="ConfigurePasscodeActivity__passwordNotMatched">Password does not match</string>
+    <string name="ConfigurePasscodeActivity__insertPassword">Insert password</string>
+    <string name="ConfigurePasscodeActivity__letsVerifyYou">Help us verify that it is actually you, insert your current password</string>
+    <string name="ConfigurePasscodeActivity__appLockRemoved">App lock removed</string>
+    <string name="ConfigurePasscodeActivity__wrongPassword">Wrong password</string>
+    <string name="ConfigurePasscodeActivity__fingerprintEnabled">Fingerprint enabled</string>
+    <string name="ConfigurePasscodeActivity__setupPassword">Set up password</string>
+    <string name="ConfigurePasscodeActivity__changePassword">Change password</string>
+
+
+    //CreateNoteActivity
+    <string name="CreateNoteActivity__untitled">Untitled</string>
+    <string name="CreateNoteActivity__deleteNote">Delete</string>
+    <string name="CreateNoteActivity__deleteWarning">This action cannot be undone</string>
+    <string name="CreateNoteActivity__voicePrompt">Listening</string>
+
+    //FavouritesFragment
+    <string name="FavouritesFragment__addItemToList">Add an item to your list</string>
+    <string name="FavouritesFragment__untitled">Untitled</string>
+    <string name="FavouritesFragment__alreadyExist">Item already exist</string>
+    <string name="FavouritesFragment__emptyName">Item name field is empty</string>
+    <string name="FavouritesFragment__toolbarStarred">Starred</string>
+    <string name="FavouritesFragment__multipleDelete">Delete these items</string>
+    <string name="FavouritesFragment__singleDelete">Delete this item</string>
+    <string name="FavouritesFragment__deleteWarning">This action cannot be undone</string>
+    <string name="FavouritesFragment__removeFromStarred">Remove from starred</string>
+    <string name="FavouritesFragment__remove">Remove</string>
+    <string name="FavouritesFragment__unstar">Unstar</string>
+    <string name="FavouritesFragment__star">Star item</string>
+    <string name="FavouritesFragment__itemsChecked">Items checked</string>
+    <string name="FavouritesFragment__itemStarred">Item starred</string>
+    <string name="FavouritesFragment__itemUnstarred">Item unstarred</string>
+    <string name="FavouritesFragment__addPhoto">Add image</string>
+    <string name="FavouritesFragment__updatePhoto">Update image</string>
+    <string name="FavouritesFragment__loginPrompt">Please login before you can proceed</string>
+    <string name="FavouritesFragment__insertImageFailed">Error: Couldn\'t insert image</string>
+    <string name="FavouritesFragment__error">Error: </string>
+    <string name="FavouritesFragment__emptyPrice">Item price field is empty</string>
+    <string name="FavouritesFragment__voicePrompt">Listening</string>
+    <string name="FavouritesFragment__emptyQuantity">Item quantity field is empty</string>
+    <string name="FavouritesFragment__Total">TOTAL:</string>
+    <string name="FavouritesFragment__shareBtmText1">Improve your shopping experience with Buymate.</string>
+    <string name="FavouritesFragment__shareBtmText2">Download Buymate on Google Play:</string>
+    <string name="FavouritesFragment__shareIntentText">Send message via</string>
+    <string name="FavouritesFragment__no">NO</string>
+    <string name="FavouritesFragment__item">ITEM</string>
+    <string name="FavouritesFragment__quantity">QUANTITY</string>
+    <string name="FavouritesFragment__unit">UNIT</string>
+    <string name="FavouritesFragment__price">PRICE</string>
+    <string name="FavouritesFragment__contactUs">Contact us at:</string>
+    <string name="FavouritesFragment__pdfDownloadedTo">PDF downloaded to</string>
+
+    //HomeActivity
+    <string name="HomeActivity__pressBack">Press back again to exit app</string>
+
     //HomeFragment
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="sort_price_text">Size</string>
+    <string name="HomeFragment__feedback">Feedback</string>
+    <string name="HomeFragment__accountEmail">Account Email: </string>
+    <string name="HomeFragment__appVersion">App Version: </string>
+    <string name="HomeFragment__device">Device: </string>
+    <string name="HomeFragment__model">Model: </string>
+    <string name="HomeFragment__brand">Brand: </string>
+    <string name="HomeFragment__osVersion">OS Version: </string>
+    <string name="HomeFragment__sdkVersion">SDK Version: </string>
+    <string name="HomeFragment__mailTo">Mail to:</string>
+    <string name="HomeFragment__mailError">No email client found</string>
+    <string name="HomeFragment__navigation_drawer_open">Open navigation drawer</string>
+    <string name="HomeFragment__navigation_drawer_close">Close navigation drawer</string>
+    <string name="HomeFragment__defaultName">User</string>
+    <string name="HomeFragment__hiText">Hi, </string>
+    <string name="HomeFragment__exclam">!</string>
+    <string name="HomeFragment__emptySearch">No list to search</string>
+    <string name="HomeFragment__addItemToList">Add an item to your list</string>
+    <string name="HomeFragment__loginPrompt">Please login before you can proceed</string>
+    <string name="HomeFragment__login">Login</string>
+    <string name="HomeFragment__shareBtmText1">Improve your shopping experience with Buymate.</string>
+    <string name="HomeFragment__shareBtmText2">Download Buymate on Google Play:</string>
+    <string name="HomeFragment__no">NO</string>
+    <string name="HomeFragment__item">ITEM</string>
+    <string name="HomeFragment__quantity">QUANTITY</string>
+    <string name="HomeFragment__unit">UNIT</string>
+    <string name="HomeFragment__price">PRICE</string>
+    <string name="HomeFragment__contactUs">Contact us at:</string>
+    <string name="HomeFragment__pdfDownloadedTo">PDF downloaded to</string>
+    <string name="HomeFragment__Total">TOTAL:</string>
+    <string name="HomeFragment__noListFound">No list found</string>
+    <string name="HomeFragment__sortPriceText">Size</string>
+
+    //InsertPasscodeActivity
+    <string name="InsertPasscodeActivity__success">Success</string>
+    <string name="InsertPasscodeActivity__wrongPin">Wrong pin</string>
+    <string name="InsertPasscodeActivity__insertPin">Insert 4 digit password</string>
+    <string name="InsertPasscodeActivity__notSupported">Device Not Supported</string>
+    <string name="InsertPasscodeActivity__hardwareNotAvailable">Hardware Unavailable</string>
+    <string name="InsertPasscodeActivity__fingerprintNotSet">Fingerprint not set for this device</string>
+    <string name="InsertPasscodeActivity__verifyFingerprint">Verify fingerprint</string>
+    <string name="InsertPasscodeActivity__usePassword">Use password</string>
+
+
+    //ItemActivity
+    <string name="ItemActivity__deleteTheseItems">Delete these items</string>
+    <string name="ItemActivity__deleteThisItem">Delete this item</string>
+    <string name="ItemActivity__moveTo">Move to:</string>
+    <string name="ItemActivity__copyTo">Copy to:</string>
+    <string name="ItemActivity__unstarred">Unstarred</string>
+    <string name="ItemActivity__unstar">Unstar</string>
+    <string name="ItemActivity__itemStarred">Item starred</string>
+    <string name="ItemActivity__searchHint">Search in list</string>
+    <string name="ItemActivity__itemsChecked">Items checked:</string>
+    <string name="ItemActivity__addItemToList">Add an item to your list</string>
+    <string name="ItemActivity__alreadyExist">Item already exist</string>
+    <string name="ItemActivity__emptyName">Item name field is empty</string>
+    <string name="ItemActivity__emptyNameCate">Name field is empty</string>
+    <string name="ItemActivity__starItem">Star item</string>
+    <string name="ItemActivity__addPhoto">Add image</string>
+    <string name="ItemActivity__updatePhoto">Update image</string>
+    <string name="ItemActivity__loginPrompt">Please login before you can proceed</string>
+    <string name="ItemActivity__insertImageFailed">Error: Couldn\'t insert image</string>
+    <string name="ItemActivity__error">Error: </string>
+    <string name="ItemActivity__emptyPrice">Item price field is empty</string>
+    <string name="ItemActivity__emptyQuantity">Item quantity field is empty</string>
+    <string name="ItemActivity__delete">Delete</string>
+    <string name="ItemActivity__deleteWarning">This action cannot be undone</string>
+    <string name="ItemActivity__noAlarmApp">No app to perform this action</string>
+    <string name="ItemActivity__Total">TOTAL:</string>
+    <string name="ItemActivity__shareBtmText1">Improve your shopping experience with Buymate.</string>
+    <string name="ItemActivity__shareBtmText2">Download Buymate on Google Play:</string>
+    <string name="ItemActivity__shareIntentText">Send message via</string>
+    <string name="ItemActivity__no">NO</string>
+    <string name="ItemActivity__item">ITEM</string>
+    <string name="ItemActivity__quantity">QUANTITY</string>
+    <string name="ItemActivity__unit">UNIT</string>
+    <string name="ItemActivity__price">PRICE</string>
+    <string name="ItemActivity__contactUs">Contact us at:</string>
+    <string name="ItemActivity__pdfDownloadedTo">PDF downloaded to</string>
+    <string name="ItemActivity__voicePrompt">Listening</string>
+
+
+    //LoginActivity
+    <string name="LoginActivity__error">Error: </string>
+    <string name="LoginActivity__emailError">Not a valid email address</string>
+    <string name="LoginActivity__passwordError">Insert password</string>
+    <string name="LoginActivity__emptyEmailError">Enter email address</string>
+
+
+    //MoreFragment
+    <string name="MoreFragment__shareBtmText1">Check out this awesome shopping app! I highly recommend it. Download it on Google Play.</string>
+    <string name="MoreFragment__shareVia">Share via:</string>
+    <string name="MoreFragment__feedback">Feedback</string>
+    <string name="MoreFragment__accountEmail">Account Email: </string>
+    <string name="MoreFragment__appVersion">App Version: </string>
+    <string name="MoreFragment__device">Device: </string>
+    <string name="MoreFragment__model">Model: </string>
+    <string name="MoreFragment__brand">Brand: </string>
+    <string name="MoreFragment__osVersion">OS Version: </string>
+    <string name="MoreFragment__sdkVersion">SDK Version: </string>
+    <string name="MoreFragment__mailTo">Mail to:</string>
+    <string name="MoreFragment__mailError">No email client found</string>
+    <string name="MoreFragment__signIn">Sign in</string>
+    <string name="MoreFragment__account">Account</string>
+    <string name="MoreFragment__loginPrompt">Please login before you can proceed</string>
+    <string name="MoreFragment__login">Login</string>
+
+
+    //NotesFragment
+    <string name="NotesFragment__multipleDelete">Delete these notes</string>
+    <string name="NotesFragment__singleDelete">Delete this note</string>
+    <string name="NotesFragment__toolbarTitle">Notes</string>
+    <string name="NotesFragment__emptyNoteSearchView">No note to search</string>
+    <string name="NotesFragment__emptyNoteRecyclerView">No note found</string>
+
+    //PaymentSuccessfulActivity
+
+    ///////////////////////////////////////////////
+
+
+
 
     //ItemActivity
     <string name="itemActivityFAB">Add item</string>
@@ -301,6 +528,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
 
     <string-array name="units">
         <item>Bottle</item>

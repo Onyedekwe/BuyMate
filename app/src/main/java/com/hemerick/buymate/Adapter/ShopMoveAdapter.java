@@ -155,11 +155,12 @@ public class ShopMoveAdapter extends RecyclerView.Adapter<ShopMoveAdapter.MyMove
         int checkEmpty = itemActivity.getListCount();
         itemActivity.finish();
         if (checkEmpty == 0) {
+            Toast.makeText(context, context.getString(R.string.ShopMoveAdapter__move_successful) + " " + selectedCategory, Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(context, HomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             context.startActivity(intent);
         } else {
-            Toast.makeText(context, context.getString(R.string.moved) + " " + selectedCategory, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.ShopMoveAdapter__move_successful) + " " + selectedCategory, Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(context, ItemActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra("ITEM", previousCategory);
@@ -168,9 +169,6 @@ public class ShopMoveAdapter extends RecyclerView.Adapter<ShopMoveAdapter.MyMove
     }
 
 
-    public String getClicked() {
-        return category;
-    }
 
     @Override
     public int getItemCount() {

@@ -27,9 +27,7 @@ public class WidgetConfigAdapter extends RecyclerView.Adapter<WidgetConfigAdapte
     private final Context context;
     private final OnNoteListener onNoteListener;
     ShopDatabase db;
-    boolean isEnable = false;
-    boolean isSelectAll = false;
-    ArrayList<String> selectList = new ArrayList<>();
+
     UserSettings settings;
     private ArrayList<String> shop_id;
 
@@ -42,13 +40,6 @@ public class WidgetConfigAdapter extends RecyclerView.Adapter<WidgetConfigAdapte
         db = new ShopDatabase(context.getApplicationContext());
     }
 
-
-    @SuppressLint("NotifyDataSetChanged")
-    public void setFilterList(ArrayList<String> filterList) {
-        this.shop_id = filterList;
-        notifyDataSetChanged();
-
-    }
 
     @NonNull
     @Override
@@ -107,9 +98,6 @@ public class WidgetConfigAdapter extends RecyclerView.Adapter<WidgetConfigAdapte
     }
 
 
-    public boolean isSelected() {
-        return isEnable;
-    }
 
 
     public interface OnNoteListener {

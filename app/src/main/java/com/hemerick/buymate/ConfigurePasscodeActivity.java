@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -19,11 +20,11 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.biometric.BiometricManager;
 import androidx.biometric.BiometricPrompt;
@@ -40,14 +41,13 @@ import io.github.muddz.styleabletoast.StyleableToast;
 public class ConfigurePasscodeActivity extends AppCompatActivity {
 
     private UserSettings settings;
-    private PowerManager.WakeLock wakeLock;
     Toolbar toolbar;
 
     boolean allowUncheckMethod = false;
     boolean allowCheckMethod = false;
 
     ConstraintLayout passwordLayout, removePasswordLayout;
-    Switch fingerprintSwitcher;
+    SwitchCompat fingerprintSwitcher;
     TextView passwordText, fingerPrintText, removePasswordText;
 
     boolean fingerprintSet = false;
@@ -65,9 +65,25 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences_theme = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
         String theme = sharedPreferences_theme.getString(UserSettings.CUSTOM_THEME, UserSettings.LIGHT_THEME);
         settings.setCustomTheme(theme);
+        String dim = sharedPreferences_theme.getString(UserSettings.IS_DIM_THEME_ENABLED, UserSettings.NO_DIM_THEME_NOT_ENABLED);
+        settings.setIsDimThemeEnabled(dim);
 
-        if (settings.getCustomTheme().equals(UserSettings.DIM_THEME)) {
-            setTheme(R.style.Dynamic_Dim);
+        if (settings.getCustomTheme().equals(UserSettings.DEFAULT_THEME)) {
+            int currentNightMode = this.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+
+            if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
+
+
+                if (settings.getIsDimThemeEnabled().equals(UserSettings.YES_DIM_THEME_ENABLED)) {
+                    setTheme(R.style.Dynamic_Dim);
+                }
+            }
+
+        } else if (settings.getCustomTheme().equals(UserSettings.DARK_THEME)) {
+
+            if (settings.getIsDimThemeEnabled().equals(UserSettings.YES_DIM_THEME_ENABLED)) {
+                setTheme(R.style.Dynamic_Dim);
+            }
         }
 
         setContentView(R.layout.activity_configure_passcode);
@@ -124,19 +140,19 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
 
                             switch (biometricManager.canAuthenticate()) {
                                 case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
-                                    StyleableToast.makeText(ConfigurePasscodeActivity.this, "Device Not Supported", R.style.custom_toast).show();
+                                    StyleableToast.makeText(ConfigurePasscodeActivity.this, getString(R.string.ConfigurePasscodeActivity__deviceNotSupported), R.style.custom_toast).show();
                                     allowUncheckMethod = false;
                                     fingerprintSwitcher.setChecked(false);
                                     break;
 
                                 case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
-                                    StyleableToast.makeText(ConfigurePasscodeActivity.this, "Hardware Unavailable", R.style.custom_toast).show();
+                                    StyleableToast.makeText(ConfigurePasscodeActivity.this, getString(R.string.ConfigurePasscodeActivity__hardwareUnavailable), R.style.custom_toast).show();
                                     allowUncheckMethod = false;
                                     fingerprintSwitcher.setChecked(false);
                                     break;
 
                                 case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
-                                    StyleableToast.makeText(ConfigurePasscodeActivity.this, "Fingerprint not set for this device", R.style.custom_toast).show();
+                                    StyleableToast.makeText(ConfigurePasscodeActivity.this, getString(R.string.ConfigurePasscodeActivity__fingerprintNotSet), R.style.custom_toast).show();
                                     allowUncheckMethod = false;
                                     fingerprintSwitcher.setChecked(false);
                                     break;
@@ -176,10 +192,7 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
                                 }
                             });
 
-                            promptInfo = new BiometricPrompt.PromptInfo.Builder()
-                                    .setTitle("Verify fingerprint")
-                                    .setNegativeButtonText("Use password")
-                                    .build();
+                            promptInfo = new BiometricPrompt.PromptInfo.Builder().setTitle(getString(R.string.ConfigurePasscodeActivity__verifyFingerprint)).setNegativeButtonText(getString(R.string.ConfigurePasscodeActivity__usePassword)).build();
                             biometricPrompt.authenticate(promptInfo);
                         }
 
@@ -193,21 +206,21 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
 
                         switch (biometricManager.canAuthenticate()) {
                             case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
-                                StyleableToast.makeText(ConfigurePasscodeActivity.this, "Device Not Supported", R.style.custom_toast).show();
+                                StyleableToast.makeText(ConfigurePasscodeActivity.this, getString(R.string.ConfigurePasscodeActivity__deviceNotSupported), R.style.custom_toast).show();
                                 allowUncheckMethod = false;
                                 fingerprintSwitcher.setChecked(false);
                                 allowUncheckMethod = true;
                                 break;
 
                             case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
-                                StyleableToast.makeText(ConfigurePasscodeActivity.this, "Hardware Unavailable", R.style.custom_toast).show();
+                                StyleableToast.makeText(ConfigurePasscodeActivity.this, getString(R.string.ConfigurePasscodeActivity__hardwareUnavailable), R.style.custom_toast).show();
                                 allowUncheckMethod = false;
                                 fingerprintSwitcher.setChecked(false);
                                 allowUncheckMethod = true;
                                 break;
 
                             case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
-                                StyleableToast.makeText(ConfigurePasscodeActivity.this, "Fingerprint not set for this device", R.style.custom_toast).show();
+                                StyleableToast.makeText(ConfigurePasscodeActivity.this, getString(R.string.ConfigurePasscodeActivity__fingerprintNotSet), R.style.custom_toast).show();
                                 allowUncheckMethod = false;
                                 fingerprintSwitcher.setChecked(false);
                                 allowUncheckMethod = true;
@@ -249,10 +262,7 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
                             }
                         });
 
-                        promptInfo = new BiometricPrompt.PromptInfo.Builder()
-                                .setTitle("Verify fingerprint")
-                                .setNegativeButtonText("Use password")
-                                .build();
+                        promptInfo = new BiometricPrompt.PromptInfo.Builder().setTitle(getString(R.string.ConfigurePasscodeActivity__verifyFingerprint)).setNegativeButtonText(getString(R.string.ConfigurePasscodeActivity__usePassword)).build();
                         biometricPrompt.authenticate(promptInfo);
                     }
 
@@ -290,7 +300,7 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
                     inputMethodManager.showSoftInput(pinView, InputMethodManager.HIDE_IMPLICIT_ONLY);
                     confirm_passcode_Dialog(text);
                 } else {
-                    StyleableToast.makeText(ConfigurePasscodeActivity.this, "Insert 4 digit password", R.style.custom_toast_2).show();
+                    StyleableToast.makeText(ConfigurePasscodeActivity.this, getString(R.string.ConfigurePasscodeActivity__insert4digitPassword), R.style.custom_toast_2).show();
                 }
 
                 return true;
@@ -366,9 +376,9 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
 
 
         TextView Header = dialog.findViewById(R.id.header);
-        Header.setText("Confirm Password");
+        Header.setText(getString(R.string.ConfigurePasscodeActivity__confirmPassword));
         TextView subHeader = dialog.findViewById(R.id.sub_header);
-        subHeader.setText("Re-insert password to proceed");
+        subHeader.setText(getString(R.string.ConfigurePasscodeActivity__retypePassword));
         PinView pinView = dialog.findViewById(R.id.password_pin);
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         pinView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -384,13 +394,13 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString(UserSettings.PASSWORD, settings.getPassword());
                         editor.apply();
-                        StyleableToast.makeText(ConfigurePasscodeActivity.this, "Success", R.style.custom_toast).show();
+                        StyleableToast.makeText(ConfigurePasscodeActivity.this, getString(R.string.ConfigurePasscodeActivity__success), R.style.custom_toast).show();
                         removePasswordLayout.setVisibility(View.VISIBLE);
                     } else {
-                        StyleableToast.makeText(ConfigurePasscodeActivity.this, "Password does not match", R.style.custom_toast_2).show();
+                        StyleableToast.makeText(ConfigurePasscodeActivity.this, getString(R.string.ConfigurePasscodeActivity__passwordNotMatched), R.style.custom_toast_2).show();
                     }
                 } else {
-                    StyleableToast.makeText(ConfigurePasscodeActivity.this, "Insert 4 digit password", R.style.custom_toast_2).show();
+                    StyleableToast.makeText(ConfigurePasscodeActivity.this, getString(R.string.ConfigurePasscodeActivity__insert4digitPassword), R.style.custom_toast_2).show();
                 }
                 return true;
             }
@@ -418,7 +428,7 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
                         removePasswordLayout.setVisibility(View.VISIBLE);
 
                     } else {
-                        StyleableToast.makeText(ConfigurePasscodeActivity.this, "Password does not match", R.style.custom_toast_2).show();
+                        StyleableToast.makeText(ConfigurePasscodeActivity.this, getString(R.string.ConfigurePasscodeActivity__passwordNotMatched), R.style.custom_toast_2).show();
                     }
 
                 }
@@ -478,9 +488,9 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
 
 
         TextView Header = dialog.findViewById(R.id.header);
-        Header.setText("Insert Password");
+        Header.setText(getString(R.string.ConfigurePasscodeActivity__insertPassword));
         TextView subHeader = dialog.findViewById(R.id.sub_header);
-        subHeader.setText("Help us verify that it is actually you, insert your current password");
+        subHeader.setText(getString(R.string.ConfigurePasscodeActivity__letsVerifyYou));
         PinView pinView = dialog.findViewById(R.id.password_pin);
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         pinView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -499,7 +509,7 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
                             editor.putString(UserSettings.IS_FINGERPRINT_DISABLED, settings.getIsFingerPrintDisabled());
                             editor.apply();
                             removePasswordLayout.setVisibility(View.GONE);
-                            StyleableToast.makeText(ConfigurePasscodeActivity.this, "App lock removed", R.style.custom_toast).show();
+                            StyleableToast.makeText(ConfigurePasscodeActivity.this, getString(R.string.ConfigurePasscodeActivity__appLockRemoved), R.style.custom_toast).show();
                             ConfigurePasscodeActivity.super.onBackPressed();
                             dialog.dismiss();
                             inputMethodManager.showSoftInput(pinView, InputMethodManager.HIDE_IMPLICIT_ONLY);
@@ -510,11 +520,11 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
                             input_passcode_Dialog();
                         }
                     } else {
-                        StyleableToast.makeText(ConfigurePasscodeActivity.this, "Wrong Password", R.style.custom_toast_2).show();
+                        StyleableToast.makeText(ConfigurePasscodeActivity.this, getString(R.string.ConfigurePasscodeActivity__wrongPassword), R.style.custom_toast_2).show();
                     }
 
                 } else {
-                    StyleableToast.makeText(ConfigurePasscodeActivity.this, "Insert 4 digit password", R.style.custom_toast_2).show();
+                    StyleableToast.makeText(ConfigurePasscodeActivity.this, getString(R.string.ConfigurePasscodeActivity__insert4digitPassword), R.style.custom_toast_2).show();
                 }
 
                 return true;
@@ -593,7 +603,7 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
                     inputMethodManager.showSoftInput(pinView, InputMethodManager.HIDE_IMPLICIT_ONLY);
                     confirm_fingerSet_passcode_Dialog(text);
                 } else {
-                    StyleableToast.makeText(ConfigurePasscodeActivity.this, "Insert 4 digit password", R.style.custom_toast_2).show();
+                    StyleableToast.makeText(ConfigurePasscodeActivity.this, getString(R.string.ConfigurePasscodeActivity__insert4digitPassword), R.style.custom_toast_2).show();
                 }
 
                 return true;
@@ -675,9 +685,9 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
 
 
         TextView Header = dialog.findViewById(R.id.header);
-        Header.setText("Confirm Password");
+        Header.setText(getString(R.string.ConfigurePasscodeActivity__confirmPassword));
         TextView subHeader = dialog.findViewById(R.id.sub_header);
-        subHeader.setText("Re-insert password to proceed");
+        subHeader.setText(getString(R.string.ConfigurePasscodeActivity__retypePassword));
         PinView pinView = dialog.findViewById(R.id.password_pin);
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         pinView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -697,16 +707,16 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
                         editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
                         editor.putString(UserSettings.IS_FINGERPRINT_DISABLED, settings.getIsFingerPrintDisabled());
                         editor.apply();
-                        StyleableToast.makeText(ConfigurePasscodeActivity.this, "Fingerprint Enabled", R.style.custom_toast).show();
+                        StyleableToast.makeText(ConfigurePasscodeActivity.this, getString(R.string.ConfigurePasscodeActivity__fingerprintEnabled), R.style.custom_toast).show();
                         fingerprintSet = true;
                         fingerprintSwitcher.setChecked(true);
                         dialog.dismiss();
                         removePasswordLayout.setVisibility(View.VISIBLE);
                     } else {
-                        StyleableToast.makeText(ConfigurePasscodeActivity.this, "Password does not match", R.style.custom_toast_2).show();
+                        StyleableToast.makeText(ConfigurePasscodeActivity.this, getString(R.string.ConfigurePasscodeActivity__passwordNotMatched), R.style.custom_toast_2).show();
                     }
                 } else {
-                    StyleableToast.makeText(ConfigurePasscodeActivity.this, "Insert 4 digit password", R.style.custom_toast_2).show();
+                    StyleableToast.makeText(ConfigurePasscodeActivity.this, getString(R.string.ConfigurePasscodeActivity__insert4digitPassword), R.style.custom_toast_2).show();
                 }
                 return true;
             }
@@ -741,7 +751,7 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
                         dialog.dismiss();
                         removePasswordLayout.setVisibility(View.VISIBLE);
                     } else {
-                        StyleableToast.makeText(ConfigurePasscodeActivity.this, "Password does not match", R.style.custom_toast_2).show();
+                        StyleableToast.makeText(ConfigurePasscodeActivity.this, getString(R.string.ConfigurePasscodeActivity__passwordNotMatched), R.style.custom_toast_2).show();
                     }
 
                 }
@@ -818,10 +828,10 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
         }
 
         if (settings.getPassword().equals(UserSettings.NOT_SET_PASSWORD)) {
-            passwordText.setText("Set up password");
+            passwordText.setText(getString(R.string.ConfigurePasscodeActivity__setupPassword));
             removePasswordLayout.setVisibility(View.GONE);
         } else {
-            passwordText.setText("Change password");
+            passwordText.setText(getString(R.string.ConfigurePasscodeActivity__changePassword));
         }
 
         fingerprintSwitcher.setChecked(settings.getIsFingerPrintDisabled().equals(UserSettings.NO_FINGERPRINT_NOT_DISABLED));
@@ -835,7 +845,7 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
         boolean wakeLockEnabled = UserSettings.isWakeLockEnabled(this);
         if (wakeLockEnabled) {
             PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-            wakeLock = powerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "MyApp:KeepScreeOn");
+            PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "MyApp:KeepScreeOn");
             wakeLock.acquire();
         }
 

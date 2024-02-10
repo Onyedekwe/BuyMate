@@ -12,8 +12,21 @@ public class UserSettings extends Application {
     public static final String DEFAULT_THEME = "defaultTheme";
     public static final String LIGHT_THEME = "lightTheme";
     public static final String DARK_THEME = "darkTheme";
-    public static final String DIM_THEME = "dimTheme";
     private String customTheme;
+
+
+    public static final String IS_DIM_THEME_ENABLED = "isDimThemeEnabled";
+    public static final String YES_DIM_THEME_ENABLED = "yesDimThemeEnabled";
+    public static final String NO_DIM_THEME_NOT_ENABLED = "noDimThemeNotEnabled";
+    private String isDimThemeEnabled;
+
+    public String getIsDimThemeEnabled() {
+        return isDimThemeEnabled;
+    }
+
+    public void setIsDimThemeEnabled(String isDimThemeEnabled) {
+        this.isDimThemeEnabled = isDimThemeEnabled;
+    }
 
     //keepScreenBright
     public static final String WAKE_LOCK_ENABLED = "wakeLockEnabled";
@@ -113,19 +126,6 @@ public class UserSettings extends Application {
     public static final String NO_PRICE_NOT_DISABLED = "noPriceNotDisabled";
     private String isPriceDisabled;
 
-    public static final String IS_PREMIUM_SUBSCRIBED = "isPremiumSubscribed";
-    public static final String YES_SUBSCRIBED = "yesSubscribed";
-    public static final String NOT_SUBSCRIBED = "notSubscribed";
-    private String isPremiumSubscribed;
-
-    public String getIsPremiumSubscribed() {
-        return isPremiumSubscribed;
-    }
-
-
-    public void setIsPremiumSubscribed(String isPremiumSubscribed) {
-        this.isPremiumSubscribed = isPremiumSubscribed;
-    }
 
     public static final String IS_LIFETIME_PURCHASED = "isLifetimePurchased";
     public static final String YES_LIFETIME_PURCHASED = "yesLifetimePurchased";
