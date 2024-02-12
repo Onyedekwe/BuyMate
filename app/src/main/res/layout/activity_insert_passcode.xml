@@ -19,7 +19,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/final_regular_back_icon"
-        app:title="Sign in"
+        app:title="@string/activity_insert_passcode__toolbarText"
         app:titleTextColor="?attr/textFillColor" />
 
     <androidx.core.widget.NestedScrollView
@@ -54,7 +54,8 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_marginStart="2dp"
-                    android:src="@drawable/buymate_icon" />
+                    android:src="@drawable/buymate_icon"
+                    android:importantForAccessibility="no" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -75,10 +76,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:gravity="center"
-                android:text="Welcome Back!"
+                android:text="@string/activity_insert_passcode__welcomeBack"
                 android:layout_gravity="center"
                 android:textColor="?attr/textFillColor"
-                android:textSize="23sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -93,9 +93,8 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:gravity="center"
-                android:text="Insert 4 digit pin"
+                android:text="@string/activity_insert_passcode__insertPinPrompt"
                 android:textColor="?attr/textFillColor"
-                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/header" />
@@ -130,9 +129,8 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:gravity="center"
-                android:text="Login with fingerprint"
-                android:textColor="?attr/textFillColor"
-                android:textSize="16sp" />
+                android:text="@string/activity_insert_passcode__loginWithFingerprint"
+                android:textColor="?attr/textFillColor"/>
 
             <ImageView
                 android:id="@+id/fingerPrintImage"
@@ -140,7 +138,8 @@
                 android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:src="@drawable/final_regular_fingerprint_icon" />
+                android:src="@drawable/final_regular_fingerprint_icon"
+                android:importantForAccessibility="no" />
 
             <TextView
                 android:id="@+id/fingerprint_subheader"
@@ -150,7 +149,7 @@
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="50dp"
                 android:gravity="center"
-                android:text="Tap the fingerprint icon to proceed"
+                android:text="@string/activity_insert_passcode__loginWithFingerprintDescription"
                 android:textColor="?attr/textFillColor"
                 android:textSize="16sp" />
 

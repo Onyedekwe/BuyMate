@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/final_regular_back_icon"
-        app:title="App lock"
+        app:title="@string/activity_configure_passcode__toolbarText"
         app:titleTextColor="?attr/textFillColor" />
 
 
@@ -48,9 +48,9 @@
                 android:id="@+id/passwordTextHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Set up password"
+                android:text="@string/activity_configure_passcode__setPassword"
                 android:textColor="?attr/textFillColor"
-                android:textSize="16dp" />
+                />
 
         </LinearLayout>
 
@@ -91,9 +91,8 @@
                 android:id="@+id/fingerprint_TextHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Log in with Fingerprint"
-                android:textColor="?attr/textFillColor"
-                android:textSize="16sp" />
+                android:text="@string/activity_configure_passcode__fingerprintLogin"
+                android:textColor="?attr/textFillColor"/>
 
         </LinearLayout>
 
@@ -144,9 +143,8 @@
                 android:id="@+id/remove_passwordTextHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Remove app lock"
-                android:textColor="?attr/textFillColor"
-                android:textSize="16dp" />
+                android:text="@string/activity_configure_passcode__removeAppLock"
+                android:textColor="?attr/textFillColor"/>
 
         </LinearLayout>
 

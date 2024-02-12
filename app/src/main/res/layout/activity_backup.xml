@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/final_regular_back_icon"
-        app:title="Backup"
+        app:title="@string/activity_backup__toolbarText"
         app:titleTextColor="?attr/textFillColor" />
 
 
@@ -57,15 +57,15 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/final_regular_backup_icon" />
+                    android:src="@drawable/final_regular_backup_icon"
+                    android:importantForAccessibility="no" />
 
                 <TextView
                     android:id="@+id/backup_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Backup"
+                    android:text="@string/activity_backup__backupText"
                     android:textColor="@color/white"
-                    android:textSize="25sp"
                     android:textStyle="bold"
                     android:layout_gravity="center" />
             </LinearLayout>
@@ -80,7 +80,7 @@
             android:gravity="center"
             android:layout_marginHorizontal="40dp"
             android:layout_marginVertical="10dp"
-            android:text="Create a backup of your shopping list and restore them when needed" />
+            android:text="@string/activity_backup__backupDescription" />
 
 
         <LinearLayout
@@ -115,15 +115,15 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/final_regular_restore_icon" />
+                    android:src="@drawable/final_regular_restore_icon"
+                    android:importantForAccessibility="no" />
 
                 <TextView
                     android:id="@+id/restore_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Restore"
+                    android:text="@string/activity_backup__restoreText"
                     android:textColor="@color/white"
-                    android:textSize="25sp"
                     android:textStyle="bold"
                     android:layout_gravity="center" />
             </LinearLayout>
@@ -139,7 +139,7 @@
             android:layout_marginHorizontal="40dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="50dp"
-            android:text="Changed your phone? Recover data from a previously exported backup" />
+            android:text="@string/activity_backup__restoreDescription" />
 
 
     </LinearLayout>

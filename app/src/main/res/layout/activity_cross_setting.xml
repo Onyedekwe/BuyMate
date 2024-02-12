@@ -15,7 +15,7 @@
         android:background="?attr/backgroundColor"
         android:elevation="1dp"
         app:navigationIcon="@drawable/final_regular_back_icon"
-        app:title="Cross off items"
+        app:title="@string/activity_cross_setting__toolbarText"
         app:titleTextColor="?attr/textFillColor" />
 
 
@@ -46,9 +46,8 @@
                 android:id="@+id/crossDisableTextHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Disable cross off"
-                android:textColor="?attr/textFillColor"
-                android:textSize="25dp" />
+                android:text="@string/activity_cross_setting__disableSwitchText"
+                android:textColor="?attr/textFillColor"/>
 
         </LinearLayout>
 
@@ -68,8 +67,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="15dp"
         android:layout_marginTop="10dp"
-        android:text="When Disable cross off is enabled items get crossed off when checked"
-        android:textColor="?attr/itemTextAppearanceInactive"
-        android:textSize="17dp" />
+        android:text="@string/activity_cross_setting__disableCrossDescription"
+        android:textColor="?attr/itemTextAppearanceInactive"/>
 
 </LinearLayout>

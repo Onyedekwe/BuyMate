@@ -15,7 +15,7 @@
         android:background="?attr/backgroundColor"
         android:elevation="1dp"
         app:navigationIcon="@drawable/final_regular_back_icon"
-        app:title="Detailed list sharing"
+        app:title="@string/activity_detail_list_share_setting__toolbarText"
         app:titleTextColor="?attr/textFillColor" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -38,17 +38,15 @@
                 android:id="@+id/shareWithPriceTextHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Share with price"
-                android:textColor="?attr/textFillColor"
-                android:textSize="18sp" />
+                android:text="@string/activity_detail_list_share_setting__shareWithPrice"
+                android:textColor="?attr/textFillColor"/>
 
             <TextView
                 android:id="@+id/shareWithPriceSubTextHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Include item prices while sharing"
-                android:textColor="?attr/itemTextAppearanceInactive"
-                android:textSize="15sp" />
+                android:text="@string/activity_detail_list_share_setting__shareWithPriceDescription"
+                android:textColor="?attr/itemTextAppearanceInactive"/>
 
         </LinearLayout>
 
@@ -90,17 +88,15 @@
                 android:id="@+id/shareWithQuantityTextHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Share with quantity"
-                android:textColor="?attr/textFillColor"
-                android:textSize="18sp" />
+                android:text="@string/activity_detail_list_share_setting__shareWithQuantity"
+                android:textColor="?attr/textFillColor"/>
 
             <TextView
                 android:id="@+id/shareWithQuantitySubTextHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Include item quantities while sharing"
-                android:textColor="?attr/itemTextAppearanceInactive"
-                android:textSize="15dp" />
+                android:text="@string/activity_detail_list_share_setting__shareWithQuantityDescription"
+                android:textColor="?attr/itemTextAppearanceInactive"/>
 
         </LinearLayout>
 
@@ -142,17 +138,15 @@
                 android:id="@+id/shareWithTotalTextHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Share with total"
-                android:textColor="?attr/textFillColor"
-                android:textSize="18sp" />
+                android:text="@string/activity_detail_list_share_setting__shareWithTotal"
+                android:textColor="?attr/textFillColor"/>
 
             <TextView
                 android:id="@+id/shareWithTotalSubTextHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Include list total while sharing"
-                android:textColor="?attr/itemTextAppearanceInactive"
-                android:textSize="15sp" />
+                android:text="@string/activity_detail_list_share_setting__shareWithTotalDescription"
+                android:textColor="?attr/itemTextAppearanceInactive"/>
 
         </LinearLayout>
 

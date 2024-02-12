@@ -80,6 +80,7 @@
 
     <style name="bottomNavBarStyle" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
         <item name="android:color">#DFE7EB</item>
+
     </style>
 
 

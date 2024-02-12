@@ -335,10 +335,76 @@
     <string name="UserActivity__deleteAccText2">will be removed from the cloud permanently.</string>
     <string name="UserActivity__accountDeleted">Account deleted</string>
 
+    ///////////////////////////////////////////////
+
+
 
     //activity_about
+    <string name="activity_about__toolbarText">About</string>
+    <string name="activity_about__version">App version</string>
+    <string name="activity_about__privacyPolicy">Privacy policy</string>
+    <string name="activity_about__credits">Credits</string>
+    <string name="activity_about__open_icon_content_description">Open</string>
+
+    //activity_acknowledgments
+    <string name="activity_acknowledgments__toolbarText">Credits</string>
+    <string name="activity_acknowledgments__open_link_content_description">Open link</string>
+
+    //activity_backup
+    <string name="activity_backup__toolbarText">Backup</string>
+    <string name="activity_backup__backupText">Backup</string>
+    <string name="activity_backup__backupDescription">Create a backup of your shopping list and restore them when needed</string>
+    <string name="activity_backup__restoreText">Restore</string>
+    <string name="activity_backup__restoreDescription">Changed your phone? Recover data from a previously exported backup</string>
+
+    //activity_change_password
+    <string name="activity_change_password__toolbarText">Change password</string>
+    <string name="activity_change_password__currentPasswordHint">Enter current password</string>
+    <string name="activity_change_password__newPasswordHint">Enter new password</string>
+    <string name="activity_change_password__confirmPasswordHint">Confirm new password</string>
+    <string name="activity_change_password__forgotPasswordText">Forgot your password?</string>
+    <string name="activity_change_password__doneBtnText">Done</string>
 
 
+    //activity_configure_passcode
+    <string name="activity_configure_passcode__toolbarText">App lock</string>
+    <string name="activity_configure_passcode__setPassword">Set up password</string>
+    <string name="activity_configure_passcode__fingerprintLogin">Log in with Fingerprint</string>
+    <string name="activity_configure_passcode__removeAppLock">Remove app lock</string>
+
+
+    //activity_create_note
+    <string name="activity_create_note__toolbarText">Notes</string>
+    <string name="activity_create_note__titleHint">Title</string>
+    <string name="activity_create_note__descriptionHint">Note something down</string>
+
+
+    //activity_cross_setting
+    <string name="activity_cross_setting__toolbarText">Cross off items</string>
+    <string name="activity_cross_setting__disableSwitchText">Disable cross off</string>
+    <string name="activity_cross_setting__disableCrossDescription">if enabled, items get crossed off when checked</string>
+
+    //activity_detail_list_share_setting
+    <string name="activity_detail_list_share_setting__toolbarText">Detailed list sharing</string>
+    <string name="activity_detail_list_share_setting__shareWithPrice">Share with price</string>
+    <string name="activity_detail_list_share_setting__shareWithPriceDescription">Include item prices while sharing</string>
+    <string name="activity_detail_list_share_setting__shareWithQuantity">Share with quantity</string>
+    <string name="activity_detail_list_share_setting__shareWithQuantityDescription">Include item quantities while sharing</string>
+    <string name="activity_detail_list_share_setting__shareWithTotal">Share with total</string>
+    <string name="activity_detail_list_share_setting__shareWithTotalDescription">Include list total while sharing</string>
+
+
+    //activity_insert_passcode
+    <string name="activity_insert_passcode__toolbarText">Sign in</string>
+    <string name="activity_insert_passcode__welcomeBack">Welcome Back!</string>
+    <string name="activity_insert_passcode__insertPinPrompt">Insert 4 digit pin</string>
+    <string name="activity_insert_passcode__loginWithFingerprint">Login with fingerprint</string>
+    <string name="activity_insert_passcode__loginWithFingerprintDescription">Tap the fingerprint icon to proceed</string>
+
+
+    //activity_item
+
+    
 
     ///////////////////////////////////////////////
 
