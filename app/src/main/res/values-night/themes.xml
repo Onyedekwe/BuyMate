@@ -45,7 +45,7 @@
 
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/backgroundColor</item>
-        <item name="fontFamily">@font/lexend</item>
+        <!-- <item name="fontFamily">@font/lexend</item> -->
         <item name="backgroundColor">#2d383c</item>
         <item name="colorSurface">#424D52</item>
         <item name="trackColor">#6E7780</item>

@@ -1,7 +1,6 @@
 package com.hemerick.buymate;
 
 import android.app.Dialog;
-import android.app.UiModeManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -59,7 +58,6 @@ public class UserActivity extends AppCompatActivity {
     Toolbar toolbar;
 
     private UserSettings settings;
-    private PowerManager.WakeLock wakeLock;
 
     TextView userNameText, emailText, editNameText, changePasswordText, logoutText, deleteAccountText;
     ConstraintLayout editNameLayout, changePasswordLayout, logOutLayout, deleteAccountLayout;
@@ -250,7 +248,7 @@ public class UserActivity extends AppCompatActivity {
         String first_name;
 
         if (settings.getUsername().equals(UserSettings.USER_NAME_NOT_SET)) {
-            first_name = "User";
+            first_name = getString(R.string.UserActivity__user);
         } else {
             first_name = settings.getUsername().trim();
         }
@@ -288,7 +286,7 @@ public class UserActivity extends AppCompatActivity {
 
 
                 } else {
-                    StyleableToast.makeText(UserActivity.this, "Name field cannot be empty", R.style.custom_toast).show();
+                    StyleableToast.makeText(UserActivity.this, getString(R.string.UserActivity__emptyName), R.style.custom_toast).show();
 
                 }
 
@@ -306,95 +304,36 @@ public class UserActivity extends AppCompatActivity {
 
         TextView header = dialog.findViewById(R.id.header);
         TextView alertText = dialog.findViewById(R.id.alert_text);
-        Button backup = dialog.findViewById(R.id.backup);
-        TextView okBtn = dialog.findViewById(R.id.okBtn);
+        Button logOut = dialog.findViewById(R.id.backup);
+        TextView cancelBtn = dialog.findViewById(R.id.okBtn);
+        ProgressBar progressBar = dialog.findViewById(R.id.progress_bar);
 
-        alertText.setText("Be sure to back up your data before you log out.");
+        String temp_text = getString(R.string.UserActivity__logoutPrompt) +"\n"+ "\uD83D\uDE0A";
+        alertText.setText(temp_text);
 
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
             header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             alertText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-            backup.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-            okBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            logOut.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            cancelBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
             header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             alertText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-            backup.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-            okBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            logOut.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            cancelBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
             header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             alertText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-            backup.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-            okBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-        }
-
-        backup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                Intent intent = new Intent(UserActivity.this, BackupActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        okBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                showLogoutDialog();
-            }
-        });
-
-        dialog.show();
-    }
-
-    public void showLogoutDialog() {
-        Dialog dialog = new Dialog(UserActivity.this);
-        dialog.setContentView(R.layout.custom_alert_logout_dialog);
-        dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-        TextView header = dialog.findViewById(R.id.header);
-        TextView logout_text = dialog.findViewById(R.id.logout_text);
-        Button cancelBtn = dialog.findViewById(R.id.logoutCancelButton);
-        Button saveBtn = dialog.findViewById(R.id.logoutBtnSave);
-        ProgressBar progressBar = dialog.findViewById(R.id.progress_bar);
-
-        if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
-            header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-            logout_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-            cancelBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-            saveBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-
-        }
-
-        if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
-            header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-            logout_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-            cancelBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-            saveBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-        }
-
-        if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
-            header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-            logout_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            logOut.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             cancelBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-            saveBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
         }
 
-        cancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        saveBtn.setOnClickListener(new View.OnClickListener() {
+        logOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 progressBar.setVisibility(View.VISIBLE);
@@ -421,8 +360,16 @@ public class UserActivity extends AppCompatActivity {
             }
         });
 
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               dialog.dismiss();
+            }
+        });
+
         dialog.show();
     }
+
 
     public void showDeleteAccountDialog() {
         Dialog dialog = new Dialog(UserActivity.this);
@@ -459,7 +406,8 @@ public class UserActivity extends AppCompatActivity {
         }
 
         String current_email = firebaseUser.getEmail().trim();
-        delete_account_alert_text.setText("All list and other data for " + current_email + " will be removed from the cloud permanently.");
+        String temp_text = getString(R.string.UserActivity__deleteAccText1) + " "+ current_email+" "+ getString(R.string.UserActivity__deleteAccText2);
+        delete_account_alert_text.setText(temp_text);
 
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -504,10 +452,10 @@ public class UserActivity extends AppCompatActivity {
                                     firebaseUser.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void unused) {
-                                            StyleableToast.makeText(UserActivity.this, "Account deleted", R.style.custom_toast).show();
+                                            StyleableToast.makeText(UserActivity.this, getString(R.string.UserActivity__accountDeleted), R.style.custom_toast).show();
 
                                             settings.setIsAuthenticated(UserSettings.NOT_AUTHENTICATED);
-                                            settings.setUsername("User");
+                                            settings.setUsername(getString(R.string.UserActivity__user));
 
                                             SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
                                             editor.putString(UserSettings.IS_AUTHENTICATED, settings.getIsAuthenticated());
@@ -534,7 +482,7 @@ public class UserActivity extends AppCompatActivity {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
                                             progressBar.setVisibility(View.INVISIBLE);
-                                            StyleableToast.makeText(UserActivity.this, "Error: " + e.getMessage(), R.style.custom_toast).show();
+                                            StyleableToast.makeText(UserActivity.this, getString(R.string.UserActivity__error) + e.getMessage(), R.style.custom_toast).show();
                                         }
                                     });
 
@@ -655,7 +603,7 @@ public class UserActivity extends AppCompatActivity {
         boolean wakeLockEnabled = UserSettings.isWakeLockEnabled(this);
         if (wakeLockEnabled) {
             PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-            wakeLock = powerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "MyApp:KeepScreeOn");
+            PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "MyApp:KeepScreeOn");
             wakeLock.acquire();
         }
 

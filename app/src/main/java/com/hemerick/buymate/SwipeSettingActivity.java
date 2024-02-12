@@ -2,7 +2,6 @@ package com.hemerick.buymate;
 
 
 import android.app.Dialog;
-import android.app.UiModeManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -15,10 +14,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -31,10 +30,9 @@ public class SwipeSettingActivity extends AppCompatActivity {
     ConstraintLayout swipe_left_layout, swipe_right_layout, swipe_disable_layout;
     TextView swipeLeftHeader, swipeLeftSubHeader, swipeRightHeader,
             swipeRightSubHeader, swipeDisableTextHeader, swipeDescription;
-    Switch swipeDisableSwitch;
+    SwitchCompat swipeDisableSwitch;
     Button swipeLeftCustomButton, swipeRightCustomButton;
     private UserSettings settings;
-    private PowerManager.WakeLock wakeLock;
 
 
     @Override
@@ -254,7 +252,7 @@ public class SwipeSettingActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
                 editor.putString(UserSettings.CUSTOM_LEFT_SWIPE_ACTION, settings.getCustomLeftSwipeAction());
                 editor.apply();
-                swipeLeftSubHeader.setText("Rename");
+                swipeLeftSubHeader.setText(getString(R.string.SwipeSettingActivity__rename));
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -271,7 +269,7 @@ public class SwipeSettingActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
                 editor.putString(UserSettings.CUSTOM_LEFT_SWIPE_ACTION, settings.getCustomLeftSwipeAction());
                 editor.apply();
-                swipeLeftSubHeader.setText("Check & uncheck item");
+                swipeLeftSubHeader.setText(getString(R.string.SwipeSettingActivity__checkAndUncheckItem));
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -288,7 +286,7 @@ public class SwipeSettingActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
                 editor.putString(UserSettings.CUSTOM_LEFT_SWIPE_ACTION, settings.getCustomLeftSwipeAction());
                 editor.apply();
-                swipeLeftSubHeader.setText("Change price");
+                swipeLeftSubHeader.setText(getString(R.string.SwipeSettingActivity__changePrice));
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -305,7 +303,7 @@ public class SwipeSettingActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
                 editor.putString(UserSettings.CUSTOM_LEFT_SWIPE_ACTION, settings.getCustomLeftSwipeAction());
                 editor.apply();
-                swipeLeftSubHeader.setText("Change quantity");
+                swipeLeftSubHeader.setText(getString(R.string.SwipeSettingActivity__changeQuantity));
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -322,7 +320,7 @@ public class SwipeSettingActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
                 editor.putString(UserSettings.CUSTOM_LEFT_SWIPE_ACTION, settings.getCustomLeftSwipeAction());
                 editor.apply();
-                swipeLeftSubHeader.setText("Star & unstar item");
+                swipeLeftSubHeader.setText(getString(R.string.SwipeSettingActivity__starAndUnstar));
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -339,7 +337,7 @@ public class SwipeSettingActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
                 editor.putString(UserSettings.CUSTOM_LEFT_SWIPE_ACTION, settings.getCustomLeftSwipeAction());
                 editor.apply();
-                swipeLeftSubHeader.setText("Delete");
+                swipeLeftSubHeader.setText(getString(R.string.SwipeSettingActivity__delete));
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -356,7 +354,7 @@ public class SwipeSettingActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
                 editor.putString(UserSettings.CUSTOM_LEFT_SWIPE_ACTION, settings.getCustomLeftSwipeAction());
                 editor.apply();
-                swipeLeftSubHeader.setText("Show options");
+                swipeLeftSubHeader.setText(getString(R.string.SwipeSettingActivity__showOptions));
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -373,7 +371,7 @@ public class SwipeSettingActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
                 editor.putString(UserSettings.CUSTOM_LEFT_SWIPE_ACTION, settings.getCustomLeftSwipeAction());
                 editor.apply();
-                swipeLeftSubHeader.setText("Do nothing");
+                swipeLeftSubHeader.setText(getString(R.string.SwipeSettingActivity__doNothing));
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -474,7 +472,7 @@ public class SwipeSettingActivity extends AppCompatActivity {
                 editor.putString(UserSettings.CUSTOM_RIGHT_SWIPE_ACTION, settings.getCustomRightSwipeAction());
                 editor.apply();
 
-                swipeRightSubHeader.setText("Rename");
+                swipeRightSubHeader.setText(getString(R.string.SwipeSettingActivity__rename));
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -491,7 +489,7 @@ public class SwipeSettingActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
                 editor.putString(UserSettings.CUSTOM_RIGHT_SWIPE_ACTION, settings.getCustomRightSwipeAction());
                 editor.apply();
-                swipeRightSubHeader.setText("Check & uncheck item");
+                swipeRightSubHeader.setText(getString(R.string.SwipeSettingActivity__checkAndUncheckItem));
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -508,7 +506,7 @@ public class SwipeSettingActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
                 editor.putString(UserSettings.CUSTOM_RIGHT_SWIPE_ACTION, settings.getCustomRightSwipeAction());
                 editor.apply();
-                swipeRightSubHeader.setText("Change price");
+                swipeRightSubHeader.setText(getString(R.string.SwipeSettingActivity__changePrice));
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -525,7 +523,7 @@ public class SwipeSettingActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
                 editor.putString(UserSettings.CUSTOM_RIGHT_SWIPE_ACTION, settings.getCustomRightSwipeAction());
                 editor.apply();
-                swipeRightSubHeader.setText("Change quantity");
+                swipeRightSubHeader.setText(getString(R.string.SwipeSettingActivity__changeQuantity));
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -542,7 +540,7 @@ public class SwipeSettingActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
                 editor.putString(UserSettings.CUSTOM_RIGHT_SWIPE_ACTION, settings.getCustomRightSwipeAction());
                 editor.apply();
-                swipeRightSubHeader.setText("Star & unstar item");
+                swipeRightSubHeader.setText(getString(R.string.SwipeSettingActivity__starAndUnstar));
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -559,7 +557,7 @@ public class SwipeSettingActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
                 editor.putString(UserSettings.CUSTOM_RIGHT_SWIPE_ACTION, settings.getCustomRightSwipeAction());
                 editor.apply();
-                swipeRightSubHeader.setText("Delete");
+                swipeRightSubHeader.setText(getString(R.string.SwipeSettingActivity__delete));
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -576,7 +574,7 @@ public class SwipeSettingActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
                 editor.putString(UserSettings.CUSTOM_RIGHT_SWIPE_ACTION, settings.getCustomRightSwipeAction());
                 editor.apply();
-                swipeRightSubHeader.setText("Show options");
+                swipeRightSubHeader.setText(getString(R.string.SwipeSettingActivity__showOptions));
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -593,7 +591,7 @@ public class SwipeSettingActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
                 editor.putString(UserSettings.CUSTOM_RIGHT_SWIPE_ACTION, settings.getCustomRightSwipeAction());
                 editor.apply();
-                swipeRightSubHeader.setText("Do nothing");
+                swipeRightSubHeader.setText(getString(R.string.SwipeSettingActivity__doNothing));
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -649,55 +647,55 @@ public class SwipeSettingActivity extends AppCompatActivity {
 
         switch (settings.getCustomLeftSwipeAction()) {
             case UserSettings.SWIPE_RENAME:
-                swipeLeftSubHeader.setText("Rename");
+                swipeLeftSubHeader.setText(getString(R.string.SwipeSettingActivity__renameSwipeLeft));
                 break;
             case UserSettings.SWIPE_CHECK:
-                swipeLeftSubHeader.setText("Check & uncheck item");
+                swipeLeftSubHeader.setText(getString(R.string.SwipeSettingActivity__checkAndUncheckLeft));
                 break;
             case UserSettings.SWIPE_CHANGE_PRICE:
-                swipeLeftSubHeader.setText("Change price");
+                swipeLeftSubHeader.setText(getString(R.string.SwipeSettingActivity__changePriceSwipeLeft));
                 break;
             case UserSettings.SWIPE_CHANGE_QUANTITY:
-                swipeLeftSubHeader.setText("Change quantity");
+                swipeLeftSubHeader.setText(getString(R.string.SwipeSettingActivity__changeQuantitySwipeLeft));
                 break;
             case UserSettings.SWIPE_STAR_ITEM:
-                swipeLeftSubHeader.setText("Star & unstar item");
+                swipeLeftSubHeader.setText(getString(R.string.SwipeSettingActivity__starAndUnstarLeft));
                 break;
             case UserSettings.SWIPE_DELETE_ITEM:
-                swipeLeftSubHeader.setText("Delete");
+                swipeLeftSubHeader.setText(getString(R.string.SwipeSettingActivity__deleteSwipeLeft));
                 break;
             case UserSettings.SWIPE_SHOW_OPTIONS:
-                swipeLeftSubHeader.setText("Show options");
+                swipeLeftSubHeader.setText(getString(R.string.SwipeSettingActivity__showOptionsSwipeLeft));
                 break;
             case UserSettings.SWIPE_DO_NOTHING:
-                swipeLeftSubHeader.setText("Do nothing");
+                swipeLeftSubHeader.setText(getString(R.string.SwipeSettingActivity__doNothingSwipeLeft));
                 break;
         }
 
         switch (settings.getCustomRightSwipeAction()) {
             case UserSettings.SWIPE_RENAME:
-                swipeRightSubHeader.setText("Rename");
+                swipeRightSubHeader.setText(getString(R.string.SwipeSettingActivity__renameSwipeRight));
                 break;
             case UserSettings.SWIPE_CHECK:
-                swipeRightSubHeader.setText("Check & uncheck item");
+                swipeRightSubHeader.setText(getString(R.string.SwipeSettingActivity__checkAndUncheckRight));
                 break;
             case UserSettings.SWIPE_CHANGE_PRICE:
-                swipeRightSubHeader.setText("Change price");
+                swipeRightSubHeader.setText(getString(R.string.SwipeSettingActivity__changePriceSwipeRight));
                 break;
             case UserSettings.SWIPE_CHANGE_QUANTITY:
-                swipeRightSubHeader.setText("Change quantity");
+                swipeRightSubHeader.setText(getString(R.string.SwipeSettingActivity__changeQuantitySwipeRight));
                 break;
             case UserSettings.SWIPE_STAR_ITEM:
-                swipeRightSubHeader.setText("Star & unstar item");
+                swipeRightSubHeader.setText(getString(R.string.SwipeSettingActivity__starAndUnstarRight));
                 break;
             case UserSettings.SWIPE_DELETE_ITEM:
-                swipeRightSubHeader.setText("Delete");
+                swipeRightSubHeader.setText(getString(R.string.SwipeSettingActivity__deleteSwipeRight));
                 break;
             case UserSettings.SWIPE_SHOW_OPTIONS:
-                swipeRightSubHeader.setText("Show options");
+                swipeRightSubHeader.setText(getString(R.string.SwipeSettingActivity__showOptionsSwipeRight));
                 break;
             case UserSettings.SWIPE_DO_NOTHING:
-                swipeRightSubHeader.setText("Do nothing");
+                swipeRightSubHeader.setText(getString(R.string.SwipeSettingActivity__doNothingSwipeRight));
                 break;
 
         }
@@ -725,7 +723,7 @@ public class SwipeSettingActivity extends AppCompatActivity {
         boolean wakeLockEnabled = UserSettings.isWakeLockEnabled(this);
         if (wakeLockEnabled) {
             PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-            wakeLock = powerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "MyApp:KeepScreeOn");
+            PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "MyApp:KeepScreeOn");
             wakeLock.acquire();
         }
 

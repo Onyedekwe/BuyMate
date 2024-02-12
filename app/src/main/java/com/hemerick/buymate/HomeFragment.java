@@ -320,7 +320,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                         } else {
                             first_name = settings.getUsername().trim();
                         }
-                        collapsingToolbarLayout.setTitle(getString(R.string.HomeFragment__hiText) + first_name + getString(R.string.HomeFragment__exclam));
+                        collapsingToolbarLayout.setTitle(getString(R.string.HomeFragment__hiText) +" "+ first_name + getString(R.string.HomeFragment__exclam));
                     }
                 }
             }
@@ -1640,7 +1640,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_TEXT, prevTask.toUpperCase() + "\n" + " \n" + items + "\n");
 
-        String chooserTitle = getString(R.string.send_message_via);
+        String chooserTitle = getString(R.string.HomeFragment__send_message_via);
         Intent chosenIntent = Intent.createChooser(intent, chooserTitle);
         startActivity(chosenIntent);
 

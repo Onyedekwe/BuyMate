@@ -1,7 +1,6 @@
 package com.hemerick.buymate;
 
 import android.app.Dialog;
-import android.app.UiModeManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -40,7 +39,16 @@ public class SettingsActivity extends AppCompatActivity {
     Toolbar toolbar;
     SharedPreferences sharedPreferences;
     private SwitchCompat keepScreenBrightSwitch, disablePriceSwitch, multiplySwitch;
-    private ConstraintLayout DarkModeLayout, RemoveAdsLayout, TextSizeLayout, SwipeActionLayout, DetailedSharingLayout, DisablePriceLayout, MultiplyLayout, StrikeLayout, CurrencyLayout, AppLockLayout, ItemSuggestionLayout;
+    private ConstraintLayout RemoveAdsLayout;
+    private ConstraintLayout TextSizeLayout;
+    private ConstraintLayout SwipeActionLayout;
+    private ConstraintLayout DetailedSharingLayout;
+    private ConstraintLayout DisablePriceLayout;
+    private ConstraintLayout MultiplyLayout;
+    private ConstraintLayout StrikeLayout;
+    private ConstraintLayout CurrencyLayout;
+    private ConstraintLayout AppLockLayout;
+    private ConstraintLayout ItemSuggestionLayout;
     private UserSettings settings = new UserSettings();
     private PowerManager.WakeLock wakeLock;
 
@@ -80,7 +88,7 @@ public class SettingsActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.settingToolbar);
 
 
-        DarkModeLayout = findViewById(R.id.themeLayout);
+        ConstraintLayout darkModeLayout = findViewById(R.id.themeLayout);
         RemoveAdsLayout = findViewById(R.id.RemoveAdsLayout);
         TextSizeLayout = findViewById(R.id.textSizeLayout);
         generalText = findViewById(R.id.generalHeaderText);
@@ -142,7 +150,7 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
 
-        DarkModeLayout.setOnClickListener(new View.OnClickListener() {
+        darkModeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDarkThemeDialog();
@@ -546,10 +554,10 @@ public class SettingsActivity extends AppCompatActivity {
                     SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
                     editor.putString(UserSettings.CURRENCY, settings.getCurrency());
                     editor.apply();
-                    Toast.makeText(SettingsActivity.this, "Currency updated", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SettingsActivity.this, getString(R.string.SettingsActivity__currencyUpdated), Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                 } else {
-                    Toast.makeText(SettingsActivity.this, "Currency field is empty", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SettingsActivity.this, getString(R.string.SettingsActivity__currencyFieldEmpty), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -646,76 +654,76 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         if (settings.getIsSwipeDisabled().equals(UserSettings.YES_DISABLED)) {
-            swipeActionSubText1.setText("Disabled");
+            swipeActionSubText1.setText(getString(R.string.SettingsActivity__disabled));
             swipeActionSubText2.setVisibility(View.GONE);
         } else {
 
             switch (settings.getCustomLeftSwipeAction()) {
                 case UserSettings.SWIPE_RENAME:
-                    swipeActionSubText1.setText("Rename: swipe left");
+                    swipeActionSubText1.setText(getString(R.string.SettingsActivity__renameSwipeLeft));
                     break;
 
                 case UserSettings.SWIPE_CHANGE_PRICE:
-                    swipeActionSubText1.setText("Change price: swipe left");
+                    swipeActionSubText1.setText(getString(R.string.SettingsActivity__changePriceSwipeLeft));
                     break;
 
                 case UserSettings.SWIPE_CHANGE_QUANTITY:
-                    swipeActionSubText1.setText("Change quantity: swipe left");
+                    swipeActionSubText1.setText(getString(R.string.SettingsActivity__changeQuantitySwipeLeft));
                     break;
 
                 case UserSettings.SWIPE_STAR_ITEM:
-                    swipeActionSubText1.setText("Star & unstar item: swipe left");
+                    swipeActionSubText1.setText(getString(R.string.SettingsActivity__starAndUnstarLeft));
                     break;
 
                 case UserSettings.SWIPE_DELETE_ITEM:
-                    swipeActionSubText1.setText("Delete: swipe left");
+                    swipeActionSubText1.setText(getString(R.string.SettingsActivity__deleteSwipeLeft));
                     break;
 
                 case UserSettings.SWIPE_CHECK:
-                    swipeActionSubText1.setText("Check & uncheck item: swipe left");
+                    swipeActionSubText1.setText(getString(R.string.SettingsActivity__checkAndUncheckLeft));
                     break;
 
                 case UserSettings.SWIPE_SHOW_OPTIONS:
-                    swipeActionSubText1.setText("Show options: swipe left");
+                    swipeActionSubText1.setText(getString(R.string.SettingsActivity__showOptionsSwipeLeft));
                     break;
 
                 case UserSettings.SWIPE_DO_NOTHING:
-                    swipeActionSubText1.setText("Do nothing: swipe left");
+                    swipeActionSubText1.setText(getString(R.string.SettingsActivity__doNothingSwipeLeft));
                     break;
 
             }
 
             switch (settings.getCustomRightSwipeAction()) {
                 case UserSettings.SWIPE_RENAME:
-                    swipeActionSubText2.setText("Rename: swipe right");
+                    swipeActionSubText2.setText(getString(R.string.SettingsActivity__renameSwipeRight));
                     break;
 
                 case UserSettings.SWIPE_CHANGE_PRICE:
-                    swipeActionSubText2.setText("Change price: swipe right");
+                    swipeActionSubText2.setText(getString(R.string.SettingsActivity__changePriceSwipeRight));
                     break;
 
                 case UserSettings.SWIPE_CHANGE_QUANTITY:
-                    swipeActionSubText2.setText("Change quantity: swipe right");
+                    swipeActionSubText2.setText(getString(R.string.SettingsActivity__changeQuantitySwipeRight));
                     break;
 
                 case UserSettings.SWIPE_STAR_ITEM:
-                    swipeActionSubText2.setText("Star & unstar item: swipe right");
+                    swipeActionSubText2.setText(getString(R.string.SettingsActivity__starAndUnstarRight));
                     break;
 
                 case UserSettings.SWIPE_CHECK:
-                    swipeActionSubText2.setText("Check & uncheck item: swipe right");
+                    swipeActionSubText2.setText(getString(R.string.SettingsActivity__checkAndUncheckRight));
                     break;
 
                 case UserSettings.SWIPE_DELETE_ITEM:
-                    swipeActionSubText2.setText("Delete: swipe right");
+                    swipeActionSubText2.setText(getString(R.string.SettingsActivity__deleteSwipeRight));
                     break;
 
                 case UserSettings.SWIPE_SHOW_OPTIONS:
-                    swipeActionSubText2.setText("Show options: swipe right");
+                    swipeActionSubText2.setText(getString(R.string.SettingsActivity__showOptionsSwipeRight));
                     break;
 
                 case UserSettings.SWIPE_DO_NOTHING:
-                    swipeActionSubText2.setText("Do nothing: swipe right");
+                    swipeActionSubText2.setText(getString(R.string.SettingsActivity__doNothingSwipeRight));
                     break;
 
             }
@@ -804,7 +812,7 @@ public class SettingsActivity extends AppCompatActivity {
         settings.setIsSwipeDisabled(disables_swipe);
 
         if (settings.getIsSwipeDisabled().equals(UserSettings.YES_DISABLED)) {
-            swipeActionSubText1.setText("Disabled");
+            swipeActionSubText1.setText(getString(R.string.SettingsActivity__disabled));
             swipeActionSubText2.setVisibility(View.GONE);
         } else {
             swipeActionSubText2.setVisibility(View.VISIBLE);
@@ -817,68 +825,68 @@ public class SettingsActivity extends AppCompatActivity {
 
             switch (settings.getCustomLeftSwipeAction()) {
                 case UserSettings.SWIPE_RENAME:
-                    swipeActionSubText1.setText("Rename: swipe left");
+                    swipeActionSubText1.setText(getString(R.string.SettingsActivity__renameSwipeLeft));
                     break;
 
                 case UserSettings.SWIPE_CHECK:
-                    swipeActionSubText1.setText("Check & uncheck item: swipe left");
+                    swipeActionSubText1.setText(getString(R.string.SettingsActivity__checkAndUncheckLeft));
                     break;
 
                 case UserSettings.SWIPE_CHANGE_PRICE:
-                    swipeActionSubText1.setText("Change price: swipe left");
+                    swipeActionSubText1.setText(getString(R.string.SettingsActivity__changePriceSwipeLeft));
                     break;
 
                 case UserSettings.SWIPE_CHANGE_QUANTITY:
-                    swipeActionSubText1.setText("Change quantity: swipe left");
+                    swipeActionSubText1.setText(getString(R.string.SettingsActivity__changeQuantitySwipeLeft));
                     break;
 
                 case UserSettings.SWIPE_STAR_ITEM:
-                    swipeActionSubText1.setText("Star & unstar item: swipe left");
+                    swipeActionSubText1.setText(getString(R.string.SettingsActivity__starAndUnstarLeft));
                     break;
 
                 case UserSettings.SWIPE_DELETE_ITEM:
-                    swipeActionSubText1.setText("Delete: swipe left");
+                    swipeActionSubText1.setText(getString(R.string.SettingsActivity__deleteSwipeLeft));
                     break;
 
                 case UserSettings.SWIPE_SHOW_OPTIONS:
-                    swipeActionSubText1.setText("Show options: swipe left");
+                    swipeActionSubText1.setText(getString(R.string.SettingsActivity__showOptionsSwipeLeft));
                     break;
                 case UserSettings.SWIPE_DO_NOTHING:
-                    swipeActionSubText1.setText("Do nothing: swipe left");
+                    swipeActionSubText1.setText(getString(R.string.SettingsActivity__doNothingSwipeLeft));
                     break;
 
             }
 
             switch (settings.getCustomRightSwipeAction()) {
                 case UserSettings.SWIPE_RENAME:
-                    swipeActionSubText2.setText("Rename: swipe right");
+                    swipeActionSubText2.setText(getString(R.string.SettingsActivity__renameSwipeRight));
                     break;
 
                 case UserSettings.SWIPE_CHECK:
-                    swipeActionSubText2.setText("Check & uncheck item: swipe right");
+                    swipeActionSubText2.setText(getString(R.string.SettingsActivity__checkAndUncheckRight));
                     break;
 
                 case UserSettings.SWIPE_CHANGE_PRICE:
-                    swipeActionSubText2.setText("Change price: swipe right");
+                    swipeActionSubText2.setText(getString(R.string.SettingsActivity__changePriceSwipeRight));
                     break;
 
                 case UserSettings.SWIPE_CHANGE_QUANTITY:
-                    swipeActionSubText2.setText("Change quantity: swipe right");
+                    swipeActionSubText2.setText(getString(R.string.SettingsActivity__changeQuantitySwipeRight));
                     break;
 
                 case UserSettings.SWIPE_STAR_ITEM:
-                    swipeActionSubText2.setText("Star & unstar item: swipe right");
+                    swipeActionSubText2.setText(getString(R.string.SettingsActivity__starAndUnstarRight));
                     break;
 
                 case UserSettings.SWIPE_DELETE_ITEM:
-                    swipeActionSubText2.setText("Delete: swipe right");
+                    swipeActionSubText2.setText(getString(R.string.SettingsActivity__deleteSwipeRight));
                     break;
 
                 case UserSettings.SWIPE_SHOW_OPTIONS:
-                    swipeActionSubText2.setText("Show options: swipe right");
+                    swipeActionSubText2.setText(getString(R.string.SettingsActivity__showOptionsSwipeRight));
                     break;
                 case UserSettings.SWIPE_DO_NOTHING:
-                    swipeActionSubText2.setText("Do nothing: swipe right");
+                    swipeActionSubText2.setText(getString(R.string.SettingsActivity__doNothingSwipeRight));
                     break;
 
             }

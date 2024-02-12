@@ -2,7 +2,6 @@ package com.hemerick.buymate;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.UiModeManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,8 +25,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -262,7 +259,7 @@ public class UpdateNoteActivity extends AppCompatActivity {
             itemCheck.remove(prev_heading);
             String new_heading;
             if (heading_box.getText().toString().trim().isEmpty()) {
-                new_heading = "Untitled";
+                new_heading = getString(R.string.UpdateNoteActivity__untitled);
             } else {
                 new_heading = heading_box.getText().toString();
             }
@@ -282,16 +279,13 @@ public class UpdateNoteActivity extends AppCompatActivity {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(content_box.getWindowToken(), 0);
                 if (update) {
-                    Toast.makeText(getApplicationContext(), "Inserted", Toast.LENGTH_SHORT).show();
                     prev_heading = new_heading;
                     prev_content = content_box.getText().toString();
                     date_box.setText(full_date);
-                } else {
-                    Toast.makeText(getApplicationContext(), "Insert Failed", Toast.LENGTH_SHORT).show();
                 }
             } else {
                 if (heading_box.getText().toString().trim().isEmpty()) {
-                    new_heading = "Untitled";
+                    new_heading = getString(R.string.UpdateNoteActivity__untitled);
                 } else {
                     new_heading = heading_box.getText().toString();
                 }
@@ -314,12 +308,9 @@ public class UpdateNoteActivity extends AppCompatActivity {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(content_box.getWindowToken(), 0);
                 if (update) {
-                    Toast.makeText(getApplicationContext(), "Inserted", Toast.LENGTH_SHORT).show();
                     prev_heading = new_heading;
                     prev_content = content_box.getText().toString();
                     date_box.setText(full_date);
-                } else {
-                    Toast.makeText(getApplicationContext(), "Insert Failed", Toast.LENGTH_SHORT).show();
                 }
             }
         } else if (item.getItemId() == R.id.share) {
@@ -337,8 +328,8 @@ public class UpdateNoteActivity extends AppCompatActivity {
             Button deleteButton = dialog.findViewById(R.id.delete_button);
             Button cancelButton = dialog.findViewById(R.id.cancel_button);
 
-            delete_heading.setText(getString(R.string.single_note_remove));
-            delete_message.setText(getString(R.string.remove_item_warning));
+            delete_heading.setText(getString(R.string.UpdateNoteActivity__deleteNote));
+            delete_message.setText(getString(R.string.UpdateNoteActivity__deleteWarning));
 
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -374,7 +365,8 @@ public class UpdateNoteActivity extends AppCompatActivity {
             if (previous_text.isEmpty()) {
                 content_box.setText(new_text);
             } else {
-                content_box.setText(previous_text + " " + new_text);
+                String temp_text = previous_text + " " + new_text;
+                content_box.setText(temp_text);
             }
 
         } else if (heading_box.hasFocus()) {
@@ -383,7 +375,8 @@ public class UpdateNoteActivity extends AppCompatActivity {
             if (previous_text.isEmpty()) {
                 heading_box.setText(new_text);
             } else {
-                heading_box.setText(previous_text + " " + new_text);
+                String temp_text = previous_text + " " + new_text;
+                heading_box.setText(temp_text);
             }
         } else {
             previous_text = content_box.getText().toString().trim();
@@ -391,7 +384,8 @@ public class UpdateNoteActivity extends AppCompatActivity {
             if (previous_text.isEmpty()) {
                 content_box.setText(new_text);
             } else {
-                content_box.setText(previous_text + " " + new_text);
+                String temp_text = previous_text + " " + new_text;
+                content_box.setText(temp_text);
             }
         }
 
@@ -400,7 +394,7 @@ public class UpdateNoteActivity extends AppCompatActivity {
     public void showGoogleVoiceDialog() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Listening...");
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, getString(R.string.UpdateNoteActivity__voicePrompt));
         startActivityForResult(intent, 8080);
     }
 
@@ -486,7 +480,7 @@ public class UpdateNoteActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_TEXT, heading_box.getText().toString().toUpperCase() + "\n" + " \n" + items + "\n");
-        String chooserTitle = getString(R.string.send_message_via);
+        String chooserTitle = getString(R.string.UpdateNoteActivity__send_message_via);
         Intent chosenIntent = Intent.createChooser(intent, chooserTitle);
         startActivity(chosenIntent);
 
@@ -514,7 +508,7 @@ public class UpdateNoteActivity extends AppCompatActivity {
                 itemCheck.remove(prev_heading);
                 String new_heading;
                 if (heading_box.getText().toString().trim().isEmpty()) {
-                    new_heading = "Untitled";
+                    new_heading = getString(R.string.UpdateNoteActivity__untitled);
                 } else {
                     new_heading = heading_box.getText().toString();
                 }
@@ -522,11 +516,6 @@ public class UpdateNoteActivity extends AppCompatActivity {
                     boolean update = db.updateNote(prev_heading, new_heading, content_box.getText().toString(), date_box.getText().toString());
                     prev_heading = new_heading;
                     prev_content = content_box.getText().toString();
-                    if (update) {
-
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Update failed", Toast.LENGTH_SHORT).show();
-                    }
                 } else {
                     int count = 1;
                     String newItem = new_heading + " (" + count + ")";
@@ -537,10 +526,6 @@ public class UpdateNoteActivity extends AppCompatActivity {
                     boolean update = db.updateNote(prev_heading, newItem, content_box.getText().toString(), date_box.getText().toString());
                     prev_heading = newItem;
                     prev_content = content_box.getText().toString();
-                    if (update) {
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Update Failed", Toast.LENGTH_SHORT).show();
-                    }
                 }
             }
         } else {

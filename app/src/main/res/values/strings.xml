@@ -3,6 +3,7 @@
     <string name="app_version">1.0.1</string>
     <string name="app_link">https://play.google.com/store/apps/details?id=</string>
     <string name="app_email">hemerickservices@gmail.com</string>
+    <string name="app_lifetime_product_id">com.hemerick.lifetime_subscription</string>
     <string name="default_web_client_id" translatable="false">401382920363-u289nhkse3o3fi2tevrq68m7oic9vaj6.apps.googleusercontent.com</string>
 
 
@@ -74,6 +75,7 @@
     <string name="CreateNoteActivity__deleteNote">Delete</string>
     <string name="CreateNoteActivity__deleteWarning">This action cannot be undone</string>
     <string name="CreateNoteActivity__voicePrompt">Listening</string>
+    <string name="CreateNoteActivity__send_message_via">Send message via:</string>
 
     //FavouritesFragment
     <string name="FavouritesFragment__addItemToList">Add an item to your list</string>
@@ -128,7 +130,7 @@
     <string name="HomeFragment__navigation_drawer_open">Open navigation drawer</string>
     <string name="HomeFragment__navigation_drawer_close">Close navigation drawer</string>
     <string name="HomeFragment__defaultName">User</string>
-    <string name="HomeFragment__hiText">Hi, </string>
+    <string name="HomeFragment__hiText">Hi,</string>
     <string name="HomeFragment__exclam">!</string>
     <string name="HomeFragment__emptySearch">No list to search</string>
     <string name="HomeFragment__addItemToList">Add an item to your list</string>
@@ -146,6 +148,7 @@
     <string name="HomeFragment__Total">TOTAL:</string>
     <string name="HomeFragment__noListFound">No list found</string>
     <string name="HomeFragment__sortPriceText">Size</string>
+    <string name="HomeFragment__send_message_via">Send message via:</string>
 
     //InsertPasscodeActivity
     <string name="InsertPasscodeActivity__success">Success</string>
@@ -231,6 +234,111 @@
     <string name="NotesFragment__emptyNoteRecyclerView">No note found</string>
 
     //PaymentSuccessfulActivity
+    <string name="PaymentSuccessfulActivity__error">Error: </string>
+    <string name="PaymentSuccessfulActivity__itemOwnedAlready">ITEM_ALREADY_OWNED</string>
+    <string name="PaymentSuccessfulActivity__featureNotSupported">FEATURE_NOT_SUPPORTED</string>
+    <string name="PaymentSuccessfulActivity__userCancelled">USER_CANCELED</string>
+    <string name="PaymentSuccessfulActivity__developerError">DEVELOPER_ERROR</string>
+    <string name="PaymentSuccessfulActivity__itemUnavailable">ITEM_UNAVAILABLE</string>
+    <string name="PaymentSuccessfulActivity__networkError">NETWORK_ERROR</string>
+    <string name="PaymentSuccessfulActivity__serviceDisconnected">SERVICE_DISCONNECTED</string>
+    <string name="PaymentSuccessfulActivity__errorInvalidPurchase">Error: invalid purchase</string>
+
+
+    //RecoverPasswordActivity
+    <string name="RecoverPasswordActivity__emailNotRegistered">Email not registered. Please sign up.</string>
+    <string name="RecoverPasswordActivity__resetLinkSent">Reset link sent to email</string>
+    <string name="RecoverPasswordActivity__error">Error: </string>
+    <string name="RecoverPasswordActivity__invalidEmail">Not a valid email address</string>
+    <string name="RecoverPasswordActivity__recoveryEmail">Enter your recovery email</string>
+
+
+    //SettingsActivity
+    <string name="SettingsActivity__currencyUpdated">Currency updated</string>
+    <string name="SettingsActivity__currencyFieldEmpty">Currency field is empty</string>
+    <string name="SettingsActivity__disabled">Disabled</string>
+
+    <string name="SettingsActivity__renameSwipeLeft">Rename: swipe left</string>
+    <string name="SettingsActivity__changePriceSwipeLeft">Change price: swipe left</string>
+    <string name="SettingsActivity__changeQuantitySwipeLeft">Change quantity: swipe left</string>
+    <string name="SettingsActivity__starAndUnstarLeft">Star &amp; unstar item: swipe left</string>
+    <string name="SettingsActivity__deleteSwipeLeft">Delete: swipe left</string>
+    <string name="SettingsActivity__checkAndUncheckLeft">Check &amp; uncheck item: swipe left</string>
+    <string name="SettingsActivity__showOptionsSwipeLeft">Show options: swipe left</string>
+    <string name="SettingsActivity__doNothingSwipeLeft">Do nothing: swipe left</string>
+
+    <string name="SettingsActivity__renameSwipeRight">Rename: swipe right</string>
+    <string name="SettingsActivity__changePriceSwipeRight">Change price: swipe right</string>
+    <string name="SettingsActivity__changeQuantitySwipeRight">Change quantity: swipe right</string>
+    <string name="SettingsActivity__starAndUnstarRight">Star &amp; unstar item: swipe right</string>
+    <string name="SettingsActivity__deleteSwipeRight">Delete: swipe right</string>
+    <string name="SettingsActivity__checkAndUncheckRight">Check &amp; uncheck item: swipe right</string>
+    <string name="SettingsActivity__showOptionsSwipeRight">Show options: swipe right</string>
+    <string name="SettingsActivity__doNothingSwipeRight">Do nothing: swipe right</string>
+
+
+    //SignUpActivity
+    <string name="SignUpActivity__emailAlreadyRegistered">Email already registered</string>
+    <string name="SignUpActivity__confirmPasswordError">Password does not match</string>
+    <string name="SignUpActivity__passwordLengthError">Password must be at least 6 characters long</string>
+    <string name="SignUpActivity__invalidEmail">Not a valid email address</string>
+    <string name="SignUpActivity__confirmPassword">Retype password to proceed</string>
+    <string name="SignUpActivity__insertPassword">Insert password</string>
+    <string name="SignUpActivity__insertEmail">Enter email address</string>
+    <string name="SignUpActivity__enterName">Enter your username to proceed</string>
+
+
+    //SwipeSettingActivity
+    <string name="SwipeSettingActivity__rename">Rename</string>
+    <string name="SwipeSettingActivity__checkAndUncheckItem">Check &amp; uncheck item</string>
+    <string name="SwipeSettingActivity__changePrice">Change price</string>
+    <string name="SwipeSettingActivity__changeQuantity">Change quantity</string>
+    <string name="SwipeSettingActivity__starAndUnstar">Star &amp; unstar item</string>
+    <string name="SwipeSettingActivity__delete">Delete</string>
+    <string name="SwipeSettingActivity__showOptions">Show options</string>
+    <string name="SwipeSettingActivity__doNothing">Do nothing</string>
+
+
+    <string name="SwipeSettingActivity__renameSwipeLeft">Rename: swipe left</string>
+    <string name="SwipeSettingActivity__changePriceSwipeLeft">Change price: swipe left</string>
+    <string name="SwipeSettingActivity__changeQuantitySwipeLeft">Change quantity: swipe left</string>
+    <string name="SwipeSettingActivity__starAndUnstarLeft">Star &amp; unstar item: swipe left</string>
+    <string name="SwipeSettingActivity__deleteSwipeLeft">Delete: swipe left</string>
+    <string name="SwipeSettingActivity__checkAndUncheckLeft">Check &amp; uncheck item: swipe left</string>
+    <string name="SwipeSettingActivity__showOptionsSwipeLeft">Show options: swipe left</string>
+    <string name="SwipeSettingActivity__doNothingSwipeLeft">Do nothing: swipe left</string>
+
+    <string name="SwipeSettingActivity__renameSwipeRight">Rename: swipe right</string>
+    <string name="SwipeSettingActivity__changePriceSwipeRight">Change price: swipe right</string>
+    <string name="SwipeSettingActivity__changeQuantitySwipeRight">Change quantity: swipe right</string>
+    <string name="SwipeSettingActivity__starAndUnstarRight">Star &amp; unstar item: swipe right</string>
+    <string name="SwipeSettingActivity__deleteSwipeRight">Delete: swipe right</string>
+    <string name="SwipeSettingActivity__checkAndUncheckRight">Check &amp; uncheck item: swipe right</string>
+    <string name="SwipeSettingActivity__showOptionsSwipeRight">Show options: swipe right</string>
+    <string name="SwipeSettingActivity__doNothingSwipeRight">Do nothing: swipe right</string>
+
+
+    //UpdateNoteActivity
+    <string name="UpdateNoteActivity__untitled">Untitled</string>
+    <string name="UpdateNoteActivity__deleteNote">Delete</string>
+    <string name="UpdateNoteActivity__deleteWarning">This action cannot be undone</string>
+    <string name="UpdateNoteActivity__voicePrompt">Listening</string>
+    <string name="UpdateNoteActivity__send_message_via">Send message via:</string>
+
+
+    //UserActivity
+    <string name="UserActivity__user">User</string>
+    <string name="UserActivity__error">Error: </string>
+    <string name="UserActivity__emptyName">Please insert username to proceed</string>
+    <string name="UserActivity__logoutPrompt">We can\'t wait to have you back!</string>
+    <string name="UserActivity__deleteAccText1">All list and other data for</string>
+    <string name="UserActivity__deleteAccText2">will be removed from the cloud permanently.</string>
+    <string name="UserActivity__accountDeleted">Account deleted</string>
+
+
+    //activity_about
+
+
 
     ///////////////////////////////////////////////
 
@@ -514,7 +622,7 @@
     <string name="list_exist_already">This list already exists</string>
     <string name="insert_item_name">Item name field is empty</string>
     <string name="share_list_total">TOTAL:</string>
-    <string name="send_message_via">Send message via:</string>
+
     <string name="list_rename_success">List renamed</string>
     <string name="item_search_hint">Search in list</string>
     <string name="move_to">Move to:</string>
@@ -526,22 +634,18 @@
     <string name="star">"\u2606""\u2606""\u2606"</string>
 
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
 
     <string-array name="units">
-        <item>Bottle</item>
         <item>oz</item>
         <item>lb</item>
         <item>gal</item>
         <item>qt</item>
         <item>pkg</item>
-        <item>Can</item>
-        <item>Pack</item>
-        <item>Box</item>
-        <item>Piece</item>
-        <item>Bag</item>
+        <item>can</item>
+        <item>pack</item>
+        <item>box</item>
+        <item>piece</item>
+        <item>bag</item>
     </string-array>
 
     <string-array name="currency">

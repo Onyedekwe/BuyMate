@@ -1,6 +1,5 @@
 package com.hemerick.buymate;
 
-import android.app.UiModeManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -32,7 +31,6 @@ import io.github.muddz.styleabletoast.StyleableToast;
 public class RecoverPasswordActivity extends AppCompatActivity {
 
     private UserSettings settings;
-    private PowerManager.WakeLock wakeLock;
 
     SharedPreferences sharedPreferences;
 
@@ -113,26 +111,26 @@ public class RecoverPasswordActivity extends AppCompatActivity {
                                         if (task.isSuccessful()) {
                                             if (task.getResult().getSignInMethods().isEmpty()) {
                                                 progressBar.setVisibility(View.INVISIBLE);
-                                                StyleableToast.makeText(RecoverPasswordActivity.this, "Email not registered. Please sign up.", R.style.custom_toast).show();
+                                                StyleableToast.makeText(RecoverPasswordActivity.this, getString(R.string.RecoverPasswordActivity__emailNotRegistered), R.style.custom_toast).show();
                                             } else {
                                                 firebaseAuth.sendPasswordResetEmail(email).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                     @Override
                                                     public void onSuccess(Void unused) {
                                                         progressBar.setVisibility(View.INVISIBLE);
-                                                        StyleableToast.makeText(RecoverPasswordActivity.this, "Reset link sent to email", R.style.custom_toast).show();
+                                                        StyleableToast.makeText(RecoverPasswordActivity.this, getString(R.string.RecoverPasswordActivity__resetLinkSent), R.style.custom_toast).show();
                                                         RecoverPasswordActivity.super.onBackPressed();
                                                     }
                                                 }).addOnFailureListener(new OnFailureListener() {
                                                     @Override
                                                     public void onFailure(@NonNull Exception e) {
                                                         progressBar.setVisibility(View.INVISIBLE);
-                                                        StyleableToast.makeText(RecoverPasswordActivity.this, "Error: " + e.getMessage(), R.style.custom_toast).show();
+                                                        StyleableToast.makeText(RecoverPasswordActivity.this, getString(R.string.RecoverPasswordActivity__error) + e.getMessage(), R.style.custom_toast).show();
                                                     }
                                                 });
                                             }
                                         } else {
                                             progressBar.setVisibility(View.INVISIBLE);
-                                            StyleableToast.makeText(RecoverPasswordActivity.this, "Error: " + task.getException(), R.style.custom_toast).show();
+                                            StyleableToast.makeText(RecoverPasswordActivity.this, getString(R.string.RecoverPasswordActivity__error) + task.getException(), R.style.custom_toast).show();
 
                                         }
                                     }
@@ -142,10 +140,10 @@ public class RecoverPasswordActivity extends AppCompatActivity {
                     }
                 }, 3000);
             } else {
-                emailLayout.setError("Not a valid email address");
+                emailLayout.setError(getString(R.string.RecoverPasswordActivity__invalidEmail));
             }
         } else {
-            emailLayout.setError("Enter your recovery email");
+            emailLayout.setError(getString(R.string.RecoverPasswordActivity__recoveryEmail));
         }
     }
 
@@ -183,7 +181,7 @@ public class RecoverPasswordActivity extends AppCompatActivity {
         boolean wakeLockEnabled = UserSettings.isWakeLockEnabled(this);
         if (wakeLockEnabled) {
             PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-            wakeLock = powerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "MyApp:KeepScreeOn");
+            PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "MyApp:KeepScreeOn");
             wakeLock.acquire();
         }
 

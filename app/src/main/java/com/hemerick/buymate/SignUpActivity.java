@@ -1,7 +1,6 @@
 package com.hemerick.buymate;
 
 import android.app.Dialog;
-import android.app.UiModeManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,7 +20,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -56,8 +54,6 @@ import com.hemerick.buymate.NetworkUtils.ConnectivityUtils;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import io.github.muddz.styleabletoast.StyleableToast;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -228,8 +224,6 @@ public class SignUpActivity extends AppCompatActivity {
                                                             public void onComplete(@NonNull Task<AuthResult> task) {
 
                                                                 if (task.isSuccessful()) {
-                                                                    StyleableToast.makeText(SignUpActivity.this, "Sign up successful", R.style.custom_toast).show();
-
                                                                     settings.setIsAuthenticated(UserSettings.IS_AUTHENTICATED);
                                                                     settings.setUsername(fullnameText);
 
@@ -246,8 +240,6 @@ public class SignUpActivity extends AppCompatActivity {
                                                                     Intent intent = new Intent(SignUpActivity.this, HomeActivity.class);
                                                                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                                                     startActivity(intent);
-                                                                } else {
-                                                                    StyleableToast.makeText(SignUpActivity.this, "Sign up failed", R.style.custom_toast).show();
                                                                 }
                                                             }
                                                         }).addOnFailureListener(new OnFailureListener() {
@@ -255,7 +247,7 @@ public class SignUpActivity extends AppCompatActivity {
                                                             public void onFailure(@NonNull Exception e) {
                                                                 if (e instanceof FirebaseAuthUserCollisionException) {
                                                                     progressBar.setVisibility(View.INVISIBLE);
-                                                                    emailLayout.setError("Email already registered");
+                                                                    emailLayout.setError(getString(R.string.SignUpActivity__emailAlreadyRegistered));
                                                                 }
                                                             }
                                                         });
@@ -265,31 +257,31 @@ public class SignUpActivity extends AppCompatActivity {
 
 
                                             } else {
-                                                confirmPasswordLayout.setError("Password does not match");
+                                                confirmPasswordLayout.setError(getString(R.string.SignUpActivity__confirmPasswordError));
                                             }
 
                                         } else {
-                                            passwordLayout.setError("Password must be at least 6 characters long");
+                                            passwordLayout.setError(getString(R.string.SignUpActivity__passwordLengthError));
                                         }
 
                                     } else {
-                                        emailLayout.setError("Not a valid email address");
+                                        emailLayout.setError(getString(R.string.SignUpActivity__invalidEmail));
 
                                     }
 
                                 } else {
-                                    confirmPasswordLayout.setError("Retype password to proceed");
+                                    confirmPasswordLayout.setError(getString(R.string.SignUpActivity__confirmPassword));
                                 }
 
                             } else {
-                                passwordLayout.setError("Insert password");
+                                passwordLayout.setError(getString(R.string.SignUpActivity__insertPassword));
                             }
 
                         } else {
-                            emailLayout.setError("Enter email address");
+                            emailLayout.setError(getString(R.string.SignUpActivity__insertEmail));
                         }
                     } else {
-                        fullnameLayout.setError("Enter your username to proceed");
+                        fullnameLayout.setError(getString(R.string.SignUpActivity__enterName));
                     }
                 }else{
                     progressBar.setVisibility(View.GONE);
@@ -441,9 +433,6 @@ public class SignUpActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-
-
-                                    StyleableToast.makeText(SignUpActivity.this, "Sign up successful", R.style.custom_toast).show();
 
                                     settings.setIsAuthenticated(UserSettings.IS_AUTHENTICATED);
 

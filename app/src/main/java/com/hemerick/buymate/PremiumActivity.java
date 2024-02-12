@@ -1,7 +1,6 @@
 package com.hemerick.buymate;
 
 import android.app.Dialog;
-import android.app.UiModeManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -52,7 +51,6 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
 
     ProgressBar progressBar;
     private UserSettings settings;
-    private PowerManager.WakeLock wakeLock;
 
     TextView header, sub_header, tip, no_network_header, no_network_sub_header;
 
@@ -60,7 +58,8 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
     TextView lifetime_currencyText;
     TextView lifetime_subText, prev_lifetime_currency_text;
 
-    LinearLayout lifetime_layout, price_details_container, no_network_layout;
+    LinearLayout price_details_container;
+    LinearLayout no_network_layout;
 
     CardView lifetime_card;
 
@@ -69,15 +68,13 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
 
     ExtendedFloatingActionButton upgradeBtn;
 
-    String selected_plan = "yearly";
     CardView backup_card, remove_ads_card, insert_image_card;
 
     int shadowColor;
     int colorPrimary;
     int textColor;
 
-    String LIFETIME_PRODUCT_ID = "com.hemerick.lifetime_subscription";
-    String YEARLY_PRODUCT_ID = "com.hemerick.yearly_subscription";
+    String LIFETIME_PRODUCT_ID = getString(R.string.app_lifetime_product_id);
 
     String price = "";
     Boolean isPremium = false;
@@ -231,12 +228,10 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
                                                     e.printStackTrace();
                                                 }
                                                 if (isPremium) {
-                                                    Toast.makeText(getApplicationContext(), "Premium is enabled", Toast.LENGTH_SHORT).show();
                                                     price_details_container.setVisibility(View.GONE);
                                                     progressBar.setVisibility(View.INVISIBLE);
 
                                                 } else {
-                                                    Toast.makeText(getApplicationContext(), "Premium is not enabled", Toast.LENGTH_SHORT).show();
                                                     getPrice();
                                                     progressBar.setVisibility(View.INVISIBLE);
                                                 }
@@ -281,7 +276,7 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
                     if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                         initiatePurchase();
                     } else {
-                        Toast.makeText(getApplicationContext(), "Error " + billingResult.getDebugMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.PaymentSuccessfulActivity__error) + billingResult.getDebugMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -371,21 +366,21 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
                 handlePurchase(purchase);
             }
         } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
-            Toast.makeText(PremiumActivity.this, "ITEM_ALREADY_OWNED", Toast.LENGTH_SHORT).show();
+            Toast.makeText(PremiumActivity.this, getString(R.string.PaymentSuccessfulActivity__itemOwnedAlready), Toast.LENGTH_SHORT).show();
         } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.FEATURE_NOT_SUPPORTED) {
-            Toast.makeText(PremiumActivity.this, "FEATURE_NOT_SUPPORTED", Toast.LENGTH_SHORT).show();
+            Toast.makeText(PremiumActivity.this, getString(R.string.PaymentSuccessfulActivity__featureNotSupported), Toast.LENGTH_SHORT).show();
         } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.USER_CANCELED) {
-            Toast.makeText(PremiumActivity.this, "USER_CANCELED", Toast.LENGTH_SHORT).show();
+            Toast.makeText(PremiumActivity.this, getString(R.string.PaymentSuccessfulActivity__userCancelled), Toast.LENGTH_SHORT).show();
         } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.DEVELOPER_ERROR) {
-            Toast.makeText(PremiumActivity.this, "DEVELOPER_ERROR", Toast.LENGTH_SHORT).show();
+            Toast.makeText(PremiumActivity.this, getString(R.string.PaymentSuccessfulActivity__developerError), Toast.LENGTH_SHORT).show();
         } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.ITEM_UNAVAILABLE) {
-            Toast.makeText(PremiumActivity.this, "ITEM_UNAVAILABLE", Toast.LENGTH_SHORT).show();
+            Toast.makeText(PremiumActivity.this, getString(R.string.PaymentSuccessfulActivity__itemUnavailable), Toast.LENGTH_SHORT).show();
         } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.NETWORK_ERROR) {
-            Toast.makeText(PremiumActivity.this, "NETWORK_ERROR", Toast.LENGTH_SHORT).show();
+            Toast.makeText(PremiumActivity.this, getString(R.string.PaymentSuccessfulActivity__networkError), Toast.LENGTH_SHORT).show();
         } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.SERVICE_DISCONNECTED) {
-            Toast.makeText(PremiumActivity.this, "SERVICE_DISCONNECTED", Toast.LENGTH_SHORT).show();
+            Toast.makeText(PremiumActivity.this, getString(R.string.PaymentSuccessfulActivity__serviceDisconnected), Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(getApplicationContext(), "Error: " + billingResult.getDebugMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.PaymentSuccessfulActivity__error) + billingResult.getDebugMessage(), Toast.LENGTH_SHORT).show();
         }
 
 
@@ -395,7 +390,7 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
 
         if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
             if (!verifyValidSignature(purchase.getOriginalJson(), purchase.getSignature())) {
-                Toast.makeText(getApplicationContext(), "Error: invalid purchase", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.PaymentSuccessfulActivity__errorInvalidPurchase), Toast.LENGTH_SHORT).show();
                 return;
             }
             if (!purchase.isAcknowledged()) {
@@ -414,8 +409,6 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
                 editor.apply();
                 recreate();
             }
-        } else if (purchase.getPurchaseState() == Purchase.PurchaseState.UNSPECIFIED_STATE) {
-            //not necessary     Toast.makeText(getApplicationContext(), "UNSPECIFIED_STATE", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -642,7 +635,7 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
         boolean wakeLockEnabled = UserSettings.isWakeLockEnabled(this);
         if (wakeLockEnabled) {
             PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-            wakeLock = powerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "MyApp:KeepScreeOn");
+            PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "MyApp:KeepScreeOn");
             wakeLock.acquire();
         }
 

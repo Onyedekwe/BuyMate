@@ -211,12 +211,13 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/googleCard"
-                android:layout_width="260dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="25dp"
                 android:layout_margin="5dp"
                 android:clickable="true"
                 android:focusable="true"
+                app:cardBackgroundColor="?attr/colorSurface"
                 android:foreground="?attr/selectableItemBackground"
                 app:cardElevation="1dp">
 
@@ -241,6 +242,7 @@
                         android:layout_weight="1"
                         android:layout_gravity="center"
                         android:layout_marginStart="10dp"
+                        android:layout_marginEnd="15dp"
                         android:text="Continue with Google"
                         android:textSize="16dp" />
                 </LinearLayout>

@@ -505,7 +505,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_TEXT, heading_box.getText().toString().toUpperCase() + "\n" + " \n" + items + "\n");
-        String chooserTitle = getString(R.string.send_message_via);
+        String chooserTitle = getString(R.string.CreateNoteActivity__send_message_via);
         Intent chosenIntent = Intent.createChooser(intent, chooserTitle);
         startActivity(chosenIntent);
 
