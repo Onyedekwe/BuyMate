@@ -134,7 +134,6 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
 
         backupText = findViewById(R.id.backupText);
         removeAdsText = findViewById(R.id.removeAdsText);
-        insertImageText = findViewById(R.id.insertImageText);
 
 
         product_price_list = new ArrayList<>();
@@ -175,13 +174,7 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
                 showRemoveAdsDialog();
             }
         });
-        insert_image_card = findViewById(R.id.insert_image_card);
-        insert_image_card.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showInsertImageDialog();
-            }
-        });
+
 
         progressBar.setVisibility(View.VISIBLE);
         new Handler().postDelayed(new Runnable() {

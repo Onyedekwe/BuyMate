@@ -640,7 +640,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                                     if (checkEmpty) {
                                         recyclerView.setVisibility(View.GONE);
                                         emptyFavLayout.setVisibility(View.VISIBLE);
-                                        favSumLayout.setVisibility(View.INVISIBLE);
+                                        favSumLayout.setVisibility(View.GONE);
                                     }
                                 }
                                 adapter.disableSelection();

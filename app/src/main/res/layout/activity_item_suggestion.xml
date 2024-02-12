@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/final_regular_back_icon"
-        app:title="Item Suggestion"
+        app:title="@string/activity_item_suggestion__toolbarText"
         app:titleTextColor="?attr/textFillColor" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -45,9 +45,8 @@
                 android:id="@+id/suggestionDisableTextHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Hide Suggestion"
-                android:textColor="?attr/textFillColor"
-                android:textSize="25dp" />
+                android:text="@string/activity_item_suggestion__hideSuggestionText"
+                android:textColor="?attr/textFillColor"/>
 
         </LinearLayout>
 
@@ -66,9 +65,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="15dp"
-        android:text="This disables suggestions from showing while typing"
+        android:text="@string/activity_item_suggestion__hideSuggestionDescription"
         android:textColor="?attr/itemTextAppearanceInactive"
-        android:textSize="17dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"

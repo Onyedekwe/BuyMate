@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/final_regular_back_icon"
-        app:title="Premium"
+        app:title="@string/activity_premium__toolbarText"
         app:titleTextColor="?attr/textFillColor" />
 
     <ScrollView
@@ -50,7 +50,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="Purchasing premium gives you access to:"
+                android:text="@string/activity_premium__header"
                 android:textAlignment="center"
                 android:layout_marginHorizontal="50dp"
                 android:textColor="?attr/textFillColor"
@@ -103,7 +103,8 @@
                                 android:layout_height="130dp"
                                 android:layout_margin="5dp"
                                 android:scaleType="fitCenter"
-                                android:src="@drawable/illustration_premium_cloud" />
+                                android:src="@drawable/illustration_premium_cloud"
+                                android:importantForAccessibility="no" />
 
                             <TextView
                                 android:id="@+id/backupText"
@@ -115,8 +116,7 @@
                                 android:layout_gravity="center"
                                 android:layout_marginStart="5dp"
                                 android:layout_marginEnd="5dp"
-                                android:text="Backup &amp; Restore"
-                                android:textSize="16dp" />
+                                android:text="@string/activity_premium__backupText"/>
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
 
@@ -151,7 +151,8 @@
                                 android:layout_height="130dp"
                                 android:layout_margin="5dp"
                                 android:scaleType="fitCenter"
-                                android:src="@drawable/illustration_premium_remove_ad" />
+                                android:src="@drawable/illustration_premium_remove_ad"
+                                android:importantForAccessibility="no" />
 
                             <TextView
                                 android:id="@+id/removeAdsText"
@@ -163,61 +164,13 @@
                                 android:layout_gravity="center"
                                 android:layout_marginStart="5dp"
                                 android:layout_marginEnd="5dp"
-                                android:text="Remove ads"
-                                android:textSize="16dp" />
+                                android:text="@string/activity_premium__removeAdsText" />
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
 
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginHorizontal="20dp"
-                    android:orientation="horizontal">
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/insert_image_card"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="?attr/colorSurface"
-                        app:cardCornerRadius="25dp"
-                        android:layout_margin="5dp"
-                        app:cardElevation="0dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:background="?attr/backgroundColor"
-                            android:orientation="vertical">
-
-
-                            <ImageView
-                                android:layout_width="match_parent"
-                                android:layout_height="130dp"
-                                android:layout_margin="5dp"
-                                android:scaleType="fitCenter"
-                                android:src="@drawable/illustration_premium_insert_images" />
-
-                            <TextView
-                                android:id="@+id/insertImageText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:minWidth="150dp"
-                                android:gravity="center"
-                                android:layout_margin="5dp"
-                                android:layout_gravity="center"
-                                android:layout_marginStart="5dp"
-                                android:layout_marginEnd="5dp"
-                                android:text="Insert images"
-                                android:textSize="16dp" />
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-
-                </LinearLayout>
             </ViewFlipper>
 
 
@@ -237,7 +190,7 @@
                     android:layout_height="match_parent"
                     android:fontFamily="@font/lexend"
                     android:gravity="center"
-                    android:text="ONE TIME PURCHASE OFFER"
+                    android:text="@string/activity_premium__sub_header"
                     android:layout_gravity="center"
                     android:layout_marginTop="20dp"
                     android:layout_marginHorizontal="20dp"
@@ -285,7 +238,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:gravity="center"
-                                android:text="0.00"
+                                android:text="@string/activity_premium__prev_lifetime_currency_text"
                                 android:visibility="gone"
                                 android:textStyle="bold"
                                 android:textColor="?attr/textFillColor"
@@ -298,7 +251,7 @@
                                 android:layout_gravity="center"
                                 android:gravity="center"
                                 android:layout_marginVertical="5dp"
-                                android:text="0.00"
+                                android:text="@string/activity_premium__prev_lifetime_currency_text"
                                 android:textStyle="bold"
                                 android:textColor="?attr/colorSecondaryVariant"
                                 android:textSize="25sp" />
@@ -309,7 +262,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:gravity="center"
-                                android:text="Pay one time only"
+                                android:text="@string/activity_premium__payOneTime"
                                 android:layout_marginVertical="5dp"
                                 android:textAlignment="center"
                                 android:textColor="?attr/textFillColor" />
@@ -326,7 +279,7 @@
                     android:layout_marginTop="25dp"
                     android:backgroundTint="?attr/buttonTint"
                     android:gravity="center"
-                    android:text="Upgrade Now!"
+                    android:text="@string/activity_premium__upgrade_btn"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="18sp"
@@ -342,10 +295,9 @@
                     android:layout_gravity="center"
                     android:layout_marginHorizontal="30dp"
                     android:layout_marginTop="15dp"
-                    android:text="Subscription renews automatically. You can cancel it in Google Play Setting"
+                    android:text="@string/activity_premium__tip"
                     android:textAlignment="center"
-                    android:textColor="?attr/textFillColor"
-                    android:textSize="15sp" />
+                    android:textColor="?attr/textFillColor"/>
 
             </LinearLayout>
 
@@ -368,7 +320,8 @@
                     android:layout_height="120dp"
                     android:layout_marginTop="10dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/illustration_no_signal" />
+                    android:src="@drawable/illustration_no_signal"
+                    android:importantForAccessibility="no" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -385,7 +338,7 @@
                     android:layout_marginTop="20dp"
                     android:textColor="?attr/textFillColor"
                     android:textStyle="bold"
-                    android:text="Oops, something went wrong." />
+                    android:text="@string/activity_premium__no_network_header" />
 
 
                 <TextView
@@ -398,7 +351,7 @@
                     android:layout_marginTop="10dp"
                     android:lineSpacingExtra="2dp"
                     android:textColor="?attr/textFillColor"
-                    android:text="It may be a network issue or a Google Play server error. Try again later. If the problem persists, contact our support team." />
+                    android:text="@string/activity_premium__no_network_subHeader" />
 
 
             </LinearLayout>

@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/final_regular_back_icon"
-        app:title="Account"
+        app:title="@string/activity_user__account_title"
         app:titleTextColor="?attr/textFillColor" />
 
     <androidx.core.widget.NestedScrollView
@@ -87,18 +87,14 @@
                         android:id="@+id/userNameText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Henry"
-                        android:textColor="?attr/textFillColor"
-                        android:textSize="15sp" />
+                        android:textColor="?attr/textFillColor"/>
 
                     <TextView
                         android:id="@+id/emailText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
-                        android:text="HenryOnyedekwe@gmail.com"
-                        android:textColor="?attr/itemTextAppearanceInactive"
-                        android:textSize="15sp" />
+                        android:textColor="?attr/itemTextAppearanceInactive"/>
 
 
                 </LinearLayout>
@@ -134,9 +130,8 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="20dp"
-                    android:text="Edit name"
+                    android:text="@string/activity_user__edit_nameText"
                     android:textColor="?attr/textFillColor"
-                    android:textSize="15sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageView1"
                     app:layout_constraintStart_toStartOf="parent"
@@ -148,11 +143,11 @@
                     android:layout_height="15dp"
                     android:layout_gravity="center"
                     android:layout_marginEnd="30dp"
-                    android:contentDescription="@string/open_icon_content_description"
                     android:src="@drawable/final_regular_open_icon"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:importantForAccessibility="no"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -182,9 +177,8 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="20dp"
-                    android:text="Change password"
+                    android:text="@string/activity_user__change_passwordText"
                     android:textColor="?attr/textFillColor"
-                    android:textSize="15sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageView3"
                     app:layout_constraintStart_toStartOf="parent"
@@ -196,11 +190,11 @@
                     android:layout_height="15dp"
                     android:layout_gravity="center"
                     android:layout_marginEnd="30dp"
-                    android:contentDescription="@string/open_icon_content_description"
                     android:src="@drawable/final_regular_open_icon"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:importantForAccessibility="no"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
@@ -228,9 +222,8 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="20dp"
-                    android:text="Log out"
+                    android:text="@string/activity_user__logoutText"
                     android:textColor="?attr/textFillColor"
-                    android:textSize="15sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageView4"
                     app:layout_constraintStart_toStartOf="parent"
@@ -242,11 +235,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginEnd="30dp"
-                    android:contentDescription="@string/open_icon_content_description"
                     android:src="@drawable/final_regular_log_out_icon"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:importantForAccessibility="no"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
@@ -274,7 +267,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="20dp"
-                    android:text="Delete account"
+                    android:text="@string/activity_user__delete_accountText"
                     android:textColor="?attr/textFillColor"
                     android:textSize="15sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -288,11 +281,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginEnd="30dp"
-                    android:contentDescription="@string/open_icon_content_description"
                     android:src="@drawable/final_regular_trash_icon"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:importantForAccessibility="no" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>

@@ -33,7 +33,8 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_marginStart="2dp"
-                    android:src="@drawable/buymate_icon" />
+                    android:src="@drawable/buymate_icon"
+                    android:importantForAccessibility="no" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -54,9 +55,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Create your Account"
+                android:text="@string/activity_signup__sub_header"
                 android:textColor="?attr/textFillColor"
-                android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
                 android:layout_marginTop="20dp"
-                android:hint="Username"
+                android:hint="@string/activity_signup__fulname_box_parent"
                 android:textColor="?attr/colorOnSurface"
                 app:endIconMode="clear_text"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -94,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
                 android:layout_marginTop="20dp"
-                android:hint="Email"
+                android:hint="@string/activity_signup__email_box_parent"
                 android:textColor="?attr/colorOnSurface"
                 app:endIconMode="clear_text"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -117,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
                 android:layout_marginTop="15dp"
-                android:hint="Password"
+                android:hint="@string/activity_signup__password_box_parent"
                 android:textColor="?attr/colorOnSurface"
                 app:endIconMode="password_toggle"
                 app:endIconTint="?attr/iconTint"
@@ -143,7 +143,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
                 android:layout_marginTop="15dp"
-                android:hint="Confirm Password"
+                android:hint="@string/activity_signup__confirm_password_box_parent"
                 android:textColor="?attr/colorOnSurface"
                 app:endIconMode="password_toggle"
                 app:endIconTint="?attr/iconTint"
@@ -171,7 +171,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="30dp"
                 android:backgroundTint="?attr/buttonTint"
-                android:text="Sign up"
+                android:text="@string/activity_signup__signUpBtn"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 app:cornerRadius="30dp"
@@ -197,7 +197,7 @@
             android:id="@+id/orText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="-Or-"
+            android:text="@string/activity_signup__orText"
             android:layout_gravity="center"
             android:textColor="?attr/textFillColor" />
 
@@ -233,7 +233,8 @@
                         android:layout_height="20dp"
                         android:layout_margin="10dp"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/final_regular_google_icon" />
+                        android:src="@drawable/final_regular_google_icon"
+                        android:importantForAccessibility="no" />
 
                     <TextView
                         android:id="@+id/googleText"
@@ -243,8 +244,7 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="15dp"
-                        android:text="Continue with Google"
-                        android:textSize="16dp" />
+                        android:text="@string/activity_signup__googleText"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -261,19 +261,17 @@
                 android:id="@+id/loginText1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Already have an account?"
-                android:textColor="?attr/textFillColor"
-                android:textSize="17sp" />
+                android:text="@string/activity_signup__loginText1"
+                android:textColor="?attr/textFillColor"/>
 
             <TextView
                 android:id="@+id/loginText2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:text="Log in"
+                android:text="@string/activity_signup__loginText2"
                 android:textStyle="bold"
-                android:textColor="?attr/colorPrimary"
-                android:textSize="17sp" />
+                android:textColor="?attr/colorPrimary"/>
         </LinearLayout>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

@@ -19,7 +19,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/final_regular_back_icon"
-        app:title="@string/app_name"
         app:titleTextColor="?attr/textFillColor" />
 
     <FrameLayout
@@ -80,14 +79,15 @@
                             android:layout_height="100dp"
                             android:layout_gravity="center"
                             android:layout_marginTop="50dp"
-                            app:srcCompat="@drawable/illustration_no_search_data" />
+                            app:srcCompat="@drawable/illustration_no_search_data"
+                            android:importantForAccessibility="no" />
 
                         <TextView
                             android:id="@+id/emptyTEXT1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="No item"
+                            android:text="@string/activity_item_emptyText"
                             android:textColor="?attr/textFillColor"
                             android:textSize="15sp"
                             android:textStyle="bold" />
@@ -162,9 +162,8 @@
                     android:layout_marginStart="15dp"
                     android:ellipsize="end"
                     android:gravity="start"
-                    android:text="Total:"
+                    android:text="@string/activity_item__total"
                     android:textColor="@color/white"
-                    android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -173,8 +172,10 @@
                     android:id="@+id/eyeView"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:contentDescription="@string/item_activity_currency_icon_content_description"
+                    android:contentDescription="@string/activity_item_eye_icon_content_description"
                     android:padding="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:src="@drawable/final_regular_eye"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/text2"
@@ -186,11 +187,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:clickable="true"
+                    android:focusable="true"
                     android:gravity="center"
                     android:paddingVertical="15dp"
                     android:paddingStart="15dp"
                     android:paddingEnd="15dp"
-                    android:text="@string/itemActivityFAB"
+                    android:text="@string/activity_item_FAB"
                     android:textAllCaps="false"
                     android:textColor="#37414A"
                     app:backgroundTint="@color/white"
@@ -219,7 +221,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:layout_marginBottom="10dp"
-                android:text="NGN"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
 
@@ -234,7 +235,6 @@
                 android:ellipsize="end"
                 android:gravity="start|center"
                 android:textColor="@color/white"
-                android:textSize="18sp"
                 android:textStyle="bold" />
 
         </LinearLayout>

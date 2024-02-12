@@ -18,7 +18,7 @@ import com.hemerick.buymate.Database.UserSettings;
 public class PaymentSuccessfulActivity extends AppCompatActivity {
 
     private UserSettings settings;
-    TextView header, header_text_1, header_text_2, header_text_3, header_text_4;
+    TextView header, header_text_1, header_text_2, header_text_4;
     Button backBtn;
 
     @Override
@@ -55,7 +55,6 @@ public class PaymentSuccessfulActivity extends AppCompatActivity {
         header = findViewById(R.id.header);
         header_text_1 = findViewById(R.id.header_desc_1);
         header_text_2 = findViewById(R.id.header_desc_2);
-        header_text_3 = findViewById(R.id.header_desc_3);
         header_text_4 = findViewById(R.id.header_desc_4);
 
         backBtn = findViewById(R.id.back_btn);
@@ -78,7 +77,6 @@ public class PaymentSuccessfulActivity extends AppCompatActivity {
 
             header_text_1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             header_text_2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-            header_text_3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             header_text_4.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             backBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
@@ -90,7 +88,6 @@ public class PaymentSuccessfulActivity extends AppCompatActivity {
 
             header_text_1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             header_text_2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-            header_text_3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             header_text_4.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             backBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_max_text));
@@ -101,7 +98,6 @@ public class PaymentSuccessfulActivity extends AppCompatActivity {
 
             header_text_1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             header_text_2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-            header_text_3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             header_text_4.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             backBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_max_max_text));

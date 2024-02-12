@@ -403,8 +403,143 @@
 
 
     //activity_item
+    <string name="activity_item__total">Total:</string>
+    <string name="activity_item_eye_icon_content_description">Show total</string>
+    <string name="activity_item_FAB">Add item</string>
+    <string name="activity_item_emptyText">No item</string>
 
-    
+    //activity_item_suggestion
+    <string name="activity_item_suggestion__toolbarText">Item suggestion</string>
+    <string name="activity_item_suggestion__hideSuggestionText">Hide suggestion</string>
+    <string name="activity_item_suggestion__hideSuggestionDescription">This disables suggestions from showing while typing.</string>
+
+
+    //activity_log_in
+    <string name="activity_log_in__loginText">Log into your account</string>
+    <string name="activity_log_in__email">Email</string>
+    <string name="activity_log_in__password">Password</string>
+    <string name="activity_log_in__forgotPassword">Forgot Password?</string>
+    <string name="activity_log_in__login">Login</string>
+    <string name="activity_log_in__or">-Or-</string>
+    <string name="activity_log_in__continueWithGoogle">Continue with Google</string>
+    <string name="activity_log_in__noAccount">Don\'t have an account?</string>
+    <string name="activity_log_in__signUp">Sign up</string>
+
+
+    //activity_payment_successful
+    <string name="activity_payment_successful__header">Thank you for purchasing \nBuymate premium!</string>
+    <string name="activity_payment_successful__header_desc_1">You are currently enjoying Buymate\'s full features!</string>
+    <string name="activity_payment_successful__header_desc_2">Backup &amp; Restore</string>
+    <string name="activity_payment_successful__header_desc_4">Remove ads</string>
+    <string name="activity_payment_successful__back_btn">Back to home</string>
+
+    //activity_premium
+    <string name="activity_premium__toolbarText">Premium</string>
+    <string name="activity_premium__header">Purchasing premium gives you access to:</string>
+    <string name="activity_premium__backupText">Backup &amp; Restore</string>
+    <string name="activity_premium__removeAdsText">Remove ads</string>
+    <string name="activity_premium__sub_header">ONE TIME PURCHASE OFFER</string>
+    <string name="activity_premium__payOneTime">Pay one time only</string>
+    <string name="activity_premium__prev_lifetime_currency_text">0.00</string>
+    <string name="activity_premium__upgrade_btn">Upgrade now!</string>
+    <string name="activity_premium__tip">Subscription renews automatically. You can cancel it in Google Play Setting</string>
+    <string name="activity_premium__no_network_header">Oops, something went wrong.</string>
+    <string name="activity_premium__no_network_subHeader">It may be a network issue or a Google Play server error. Try again later. If the problem persists, contact our support team.</string>
+
+    //activity_recover_password
+    <string name="activity_recover_password__sub_header">Forgot password</string>
+    <string name="activity_recover_password__email_box_parent">Email</string>
+    <string name="activity_recover_password__recoverBtn">Recover password</string>
+    <string name="activity_recover_password__recover_description">Enter your email and click on the \'Recover password\' button. \n\nA password recovery link will be sent to your email.</string>
+
+    //activity_settings
+    <string name="activity_settings__toolbarText">Settings</string>
+    <string name="activity_settings__generalHeaderText">General</string>
+    <string name="activity_settings__themeText">Dark mode</string>
+    <string name="activity_settings__screenText">Keep screen bright</string>
+    <string name="activity_settings__textSizeText">Text size</string>
+    <string name="activity_settings__removeAdsText">Remove ads</string>
+    <string name="activity_settings__removeAdsSubText">Become a premium user</string>
+    <string name="activity_settings__advancedHeaderText">Advanced</string>
+    <string name="activity_settings__strikeText">Cross off items</string>
+    <string name="activity_settings__disable_price_Text">Show item prices</string>
+    <string name="activity_settings__item_suggestionText">Item suggestion</string>
+    <string name="activity_settings__multiplyText">Multiply</string>
+    <string name="activity_settings__multiplySubText">(price x quantity)</string>
+    <string name="activity_settings__swipeActionText">Swipe actions</string>
+    <string name="activity_settings__swipeActionSubText1">Swipe actions</string>
+    <string name="activity_settings__detailedListShareTextHeader">Sharing options</string>
+    <string name="activity_settings__detailedListShareSubText">Include item prices, quantity and totals</string>
+    <string name="activity_settings__currencyTextHeader">Currency</string>
+    <string name="activity_settings__currencySubText">Enter your preferred currency symbol</string>
+    <string name="activity_settings__securityHeaderText">Security</string>
+    <string name="activity_settings__lockText">App lock</string>
+
+
+    //activity_signup
+    <string name="activity_signup__sub_header">Create your Account</string>
+    <string name="activity_signup__fulname_box_parent">Username</string>
+    <string name="activity_signup__email_box_parent">Email</string>
+    <string name="activity_signup__password_box_parent">Password</string>
+    <string name="activity_signup__confirm_password_box_parent">Confirm Password</string>
+    <string name="activity_signup__signUpBtn">Sign up</string>
+    <string name="activity_signup__orText">-Or-</string>
+    <string name="activity_signup__googleText">Continue with Google</string>
+    <string name="activity_signup__loginText1">Already have an account?</string>
+    <string name="activity_signup__loginText2">Log in</string>
+
+
+
+    //activity_swipe_setting
+    <string name="activity_swipe_setting__swipeToolbar">Swipe action</string>
+    <string name="activity_swipe_setting__swipeLeftTextHeader">Swipe left</string>
+    <string name="activity_swipe_setting__swipeRightTextHeader">Swipe right</string>
+    <string name="activity_swipe_setting__customize_button">Customize</string>
+    <string name="activity_swipe_setting__swipeDisableTextHeader">Disable swiping</string>
+    <string name="activity_swipe_setting__swipe_description">Choose what happens when items in the list are swiped left or right.\n\nWhen Disable swiping is selected, items are being disabled from swiping to the left or right.</string>
+
+
+    //activity_update_note
+    <string name="activity_update_note__update_note_title">Notes</string>
+    <string name="activity_update_note__update_heading_text">Title</string>
+    <string name="activity_update_note__update_content_text">Note something down</string>
+
+
+    //activity_user
+    <string name="activity_user__account_title">Account</string>
+    <string name="activity_user__edit_nameText">Edit name</string>
+    <string name="activity_user__change_passwordText">Change password</string>
+    <string name="activity_user__logoutText">Log out</string>
+    <string name="activity_user__delete_accountText">Delete account</string>
+
+
+    //category_title_set_popup
+    <string name="category_title_set_popup__emptyText1">Enter list name</string>
+    <string name="category_title_set_popup__emptyText2">and click <b>create</b> when finished</string>
+    <string name="category_title_set_popup__category_name_hint">New list</string>
+    <string name="category_title_set_popup__suggestion">Suggestions:</string>
+    <string name="category_title_set_popup__suggestion_option_textView1">Shopping</string>
+    <string name="category_title_set_popup__suggestion_option_textView2">Groceries</string>
+    <string name="category_title_set_popup__suggestion_option_textView3">Date</string>
+    <string name="category_title_set_popup__suggestion_option_textView4">Food</string>
+    <string name="category_title_set_popup__suggestion_option_textView5">Tools</string>
+    <string name="category_title_set_popup__suggestion_option_textView6">Toiletries</string>
+    <string name="category_title_set_popup__suggestion_option_textView7">Pharmacy</string>
+    <string name="category_title_set_popup__suggestion_option_textView8">Trip</string>
+    <string name="category_title_set_popup__fabButton">Create</string>
+
+
+    //cloud_dialog_popup
+    <string name="cloud_dialog_popup__percent">Backing to cloud</string>
+    <string name="cloud_dialog_popup__info">Please wait for backup to complete</string>
+
+    //custom_alert_delete_account_dialog
+    <string name="custom_alert_delete_account_dialog__header">Delete account?</string>
+    <string name="custom_alert_delete_account_dialog__delete_account_text">All list and other data will be removed from the cloud permanently.</string>
+    <string name="custom_alert_delete_account_dialog__CancelButton">Cancel</string>
+    <string name="custom_alert_delete_account_dialog__BtnSave">Delete</string>
+
+    //custom_alert_fingerprint_dialog
 
     ///////////////////////////////////////////////
 
@@ -453,16 +588,7 @@
     <string name="category_title_set_popup_query2">and click <b>Create</b> when finished</string>
     <string name="category_title_set_popup_editText_Hint">New list</string>
     <string name="category_title_set_popup_suggestion_textView">Suggestions:</string>
-    <string name="category_title_set_popup_suggestion_option_textView1">Shopping</string>
-    <string name="category_title_set_popup_suggestion_option_textView2">Groceries</string>
-    <string name="category_title_set_popup_suggestion_option_textView3">Date</string>
-    <string name="category_title_set_popup_suggestion_option_textView4">Food</string>
-    <string name="category_title_set_popup_suggestion_option_textView5">Tools</string>
-    <string name="category_title_set_popup_suggestion_option_textView6">Toiletries</string>
-    <string name="category_title_set_popup_suggestion_option_textView7">Pharmacy</string>
-    <string name="category_title_set_popup_suggestion_option_textView8">Trip</string>
-    <string name="category_title_set_popup_fabButton">Create</string>
-    <string name="category_name_illustration_content_description">Name List</string>
+
 
 
     //edit_category_layout

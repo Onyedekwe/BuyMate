@@ -29,7 +29,7 @@
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
                 app:navigationIcon="@drawable/final_regular_back_icon"
-                app:title="@string/settingsToolbar" />
+                app:title="@string/activity_settings__toolbarText" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
@@ -62,7 +62,7 @@
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="25dp"
                     android:layout_marginBottom="5dp"
-                    android:text="General"
+                    android:text="@string/activity_settings__generalHeaderText"
                     android:textColor="?attr/colorSecondaryVariant"
                     android:textStyle="bold" />
 
@@ -81,11 +81,11 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
                         android:layout_marginStart="22dp"
-                        android:contentDescription="@string/darkMode_icon_content_description"
                         android:src="@drawable/final_regular_night_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:importantForAccessibility="no" />
 
 
                     <TextView
@@ -96,9 +96,8 @@
                         android:layout_marginStart="30dp"
                         android:layout_marginTop="20dp"
                         android:layout_marginBottom="20dp"
-                        android:text="Dark mode"
+                        android:text="@string/activity_settings__themeText"
                         android:textColor="?attr/textFillColor"
-                        android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@id/theme_icon"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -134,11 +133,11 @@
                         android:layout_height="30dp"
                         android:layout_gravity="end"
                         android:layout_marginStart="19dp"
-                        android:contentDescription="@string/keepScreenBright_icon_content_description"
                         android:src="@drawable/final_regular_screen_bright_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:importantForAccessibility="no"/>
 
 
                     <TextView
@@ -149,9 +148,8 @@
                         android:layout_marginStart="22dp"
                         android:layout_marginTop="20dp"
                         android:layout_marginBottom="20dp"
-                        android:text="@string/header_1_option_4"
+                        android:text="@string/activity_settings__screenText"
                         android:textColor="?attr/textFillColor"
-                        android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@id/screen_icon"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -189,11 +187,11 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
                         android:layout_marginStart="20dp"
-                        android:contentDescription="@string/textSize_icon_content_description"
                         android:src="@drawable/final_regular_text_size_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:importantForAccessibility="no"/>
 
 
                     <TextView
@@ -204,9 +202,8 @@
                         android:layout_marginStart="30dp"
                         android:layout_marginTop="20dp"
                         android:layout_marginBottom="20dp"
-                        android:text="@string/header_1_option_5"
+                        android:text="@string/activity_settings__textSizeText"
                         android:textColor="?attr/textFillColor"
-                        android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@id/textSize_icon"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -250,11 +247,11 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
                         android:layout_marginStart="20dp"
-                        android:contentDescription="@string/account_icon_content_description"
                         android:src="@drawable/final_remove_ads_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/line" />
+                        app:layout_constraintTop_toBottomOf="@id/line"
+                        android:importantForAccessibility="no"/>
 
 
                     <LinearLayout
@@ -273,9 +270,8 @@
                             android:id="@+id/removeAdsText"
                             android:layout_width="200dp"
                             android:layout_height="wrap_content"
-                            android:text="Remove ads"
+                            android:text="@string/activity_settings__removeAdsText"
                             android:textColor="?attr/textFillColor"
-                            android:textSize="15sp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/notification_icon"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -284,9 +280,8 @@
                             android:id="@+id/removeAdsSubText"
                             android:layout_width="200dp"
                             android:layout_height="wrap_content"
-                            android:text="Become a premium user"
-                            android:textColor="?attr/itemTextAppearanceInactive"
-                            android:textSize="15sp" />
+                            android:text="@string/activity_settings__removeAdsSubText"
+                            android:textColor="?attr/itemTextAppearanceInactive"/>
                     </LinearLayout>
 
 
@@ -320,7 +315,7 @@
                     android:layout_marginStart="17dp"
                     android:layout_marginTop="30dp"
                     android:layout_marginBottom="5dp"
-                    android:text="Advanced"
+                    android:text="@string/activity_settings__advancedHeaderText"
                     android:textColor="?attr/colorSecondaryVariant"
                     android:textStyle="bold" />
 
@@ -340,11 +335,11 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
                         android:layout_marginStart="20dp"
-                        android:contentDescription="@string/account_icon_content_description"
                         android:src="@drawable/final_regular_strike_through_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:importantForAccessibility="no"/>
 
 
                     <TextView
@@ -355,9 +350,8 @@
                         android:layout_marginStart="30dp"
                         android:layout_marginTop="20dp"
                         android:layout_marginBottom="20dp"
-                        android:text="Cross Off Items"
+                        android:text="@string/activity_settings__strikeText"
                         android:textColor="?attr/textFillColor"
-                        android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/strike_icon"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -393,11 +387,11 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
                         android:layout_marginStart="20dp"
-                        android:contentDescription="@string/textSize_icon_content_description"
                         android:src="@drawable/final_regular_credit_card_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:importantForAccessibility="no"/>
 
 
                     <TextView
@@ -408,9 +402,8 @@
                         android:layout_marginStart="30dp"
                         android:layout_marginTop="20dp"
                         android:layout_marginBottom="20dp"
-                        android:text="Show Item Prices"
+                        android:text="@string/activity_settings__disable_price_Text"
                         android:textColor="?attr/textFillColor"
-                        android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@id/disable_price_icon"
                         app:layout_constraintTop_toTopOf="parent"
@@ -447,11 +440,11 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
                         android:layout_marginStart="20dp"
-                        android:contentDescription="@string/textSize_icon_content_description"
                         android:src="@drawable/final_regular_suggestion_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:importantForAccessibility="no"/>
 
 
                     <LinearLayout
@@ -471,9 +464,8 @@
                             android:layout_width="200dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="Item Suggestion"
-                            android:textColor="?attr/textFillColor"
-                            android:textSize="15sp" />
+                            android:text="@string/activity_settings__item_suggestionText"
+                            android:textColor="?attr/textFillColor" />
                     </LinearLayout>
 
                     <ImageView
@@ -506,11 +498,11 @@
                         android:layout_height="20dp"
                         android:layout_gravity="end"
                         android:layout_marginStart="20dp"
-                        android:contentDescription="@string/textSize_icon_content_description"
                         android:src="@drawable/final_regular_multiply_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:importantForAccessibility="no"/>
 
 
                     <LinearLayout
@@ -530,17 +522,15 @@
                             android:layout_width="200dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="Multiply"
-                            android:textColor="?attr/textFillColor"
-                            android:textSize="15sp" />
+                            android:text="@string/activity_settings__multiplyText"
+                            android:textColor="?attr/textFillColor"/>
 
                         <TextView
                             android:id="@+id/multiplySubText"
                             android:layout_width="200dp"
                             android:layout_height="wrap_content"
-                            android:text="(price x quantity)"
-                            android:textColor="?attr/itemTextAppearanceInactive"
-                            android:textSize="15sp" />
+                            android:text="@string/activity_settings__multiplySubText"
+                            android:textColor="?attr/itemTextAppearanceInactive"/>
                     </LinearLayout>
 
                     <androidx.appcompat.widget.SwitchCompat
@@ -577,11 +567,11 @@
                         android:layout_height="23dp"
                         android:layout_gravity="end"
                         android:layout_marginStart="21dp"
-                        android:contentDescription="@string/lock_icon_content_description"
                         android:src="@drawable/final_regular_swipe_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:importantForAccessibility="no"/>
 
 
                     <LinearLayout
@@ -600,15 +590,13 @@
                             android:id="@+id/swipeActionText"
                             android:layout_width="200dp"
                             android:layout_height="wrap_content"
-                            android:text="Swipe actions"
-                            android:textColor="?attr/textFillColor"
-                            android:textSize="15sp" />
+                            android:text="@string/activity_settings__swipeActionSubText1"
+                            android:textColor="?attr/textFillColor"/>
 
                         <TextView
                             android:id="@+id/swipeActionSubText1"
                             android:layout_width="200dp"
                             android:layout_height="wrap_content"
-                            android:text="Swipe actions"
                             android:textColor="?attr/itemTextAppearanceInactive"
                             android:textSize="15sp" />
 
@@ -616,7 +604,6 @@
                             android:id="@+id/swipeActionSubText2"
                             android:layout_width="200dp"
                             android:layout_height="wrap_content"
-                            android:text="Swipe actions"
                             android:textColor="?attr/itemTextAppearanceInactive"
                             android:textSize="15sp" />
 
@@ -656,11 +643,11 @@
                         android:layout_height="22dp"
                         android:layout_gravity="end"
                         android:layout_marginStart="23dp"
-                        android:contentDescription="@string/lock_icon_content_description"
                         android:src="@drawable/final_regular_share_options_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:importantForAccessibility="no"/>
 
 
                     <LinearLayout
@@ -679,17 +666,15 @@
                             android:id="@+id/detailedListShareTextHeader"
                             android:layout_width="200dp"
                             android:layout_height="wrap_content"
-                            android:text="Sharing options"
-                            android:textColor="?attr/textFillColor"
-                            android:textSize="15sp" />
+                            android:text="@string/activity_settings__detailedListShareTextHeader"
+                            android:textColor="?attr/textFillColor"/>
 
                         <TextView
                             android:id="@+id/detailedListShareSubText"
                             android:layout_width="200dp"
                             android:layout_height="wrap_content"
-                            android:text="Include item prices, quantity and totals"
-                            android:textColor="?attr/itemTextAppearanceInactive"
-                            android:textSize="15sp" />
+                            android:text="@string/activity_settings__detailedListShareSubText"
+                            android:textColor="?attr/itemTextAppearanceInactive"/>
 
 
                     </LinearLayout>
@@ -728,11 +713,11 @@
                         android:layout_height="27dp"
                         android:layout_gravity="end"
                         android:layout_marginStart="20dp"
-                        android:contentDescription="@string/lock_icon_content_description"
                         android:src="@drawable/final_regular_currency_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:importantForAccessibility="no"/>
 
 
                     <LinearLayout
@@ -751,17 +736,15 @@
                             android:id="@+id/currencyTextHeader"
                             android:layout_width="200dp"
                             android:layout_height="wrap_content"
-                            android:text="Currency"
-                            android:textColor="?attr/textFillColor"
-                            android:textSize="15sp" />
+                            android:text="@string/activity_settings__currencyTextHeader"
+                            android:textColor="?attr/textFillColor"/>
 
                         <TextView
                             android:id="@+id/currencySubText"
                             android:layout_width="200dp"
                             android:layout_height="wrap_content"
-                            android:text="Enter your preferred currency symbol"
-                            android:textColor="?attr/itemTextAppearanceInactive"
-                            android:textSize="15sp" />
+                            android:text="@string/activity_settings__currencySubText"
+                            android:textColor="?attr/itemTextAppearanceInactive"/>
 
 
                     </LinearLayout>
@@ -796,7 +779,7 @@
                     android:layout_marginStart="17dp"
                     android:layout_marginTop="30dp"
                     android:layout_marginBottom="5dp"
-                    android:text="Security"
+                    android:text="@string/activity_settings__securityHeaderText"
                     android:textColor="?attr/colorSecondaryVariant"
                     android:textStyle="bold" />
 
@@ -814,11 +797,11 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
                         android:layout_marginStart="21dp"
-                        android:contentDescription="@string/lock_icon_content_description"
                         android:src="@drawable/final_regular_lock_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:importantForAccessibility="no"/>
 
 
                     <TextView
@@ -829,9 +812,8 @@
                         android:layout_marginStart="30dp"
                         android:layout_marginTop="20dp"
                         android:layout_marginBottom="20dp"
-                        android:text="@string/header_1_option_6"
+                        android:text="@string/activity_settings__lockText"
                         android:textColor="?attr/textFillColor"
-                        android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@id/lock_icon"
                         app:layout_constraintTop_toTopOf="parent" />

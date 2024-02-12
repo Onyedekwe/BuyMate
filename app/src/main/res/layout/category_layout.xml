@@ -71,8 +71,6 @@
                 android:maxLines="1"
                 android:padding="5dp"
                 android:textColor="?attr/textFillColor"
-                android:textSize="15sp"
-                android:text="Groceries"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/categotyOptionbox"
                 app:layout_constraintStart_toStartOf="parent"
@@ -84,14 +82,14 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center|end"
                 android:clickable="true"
-                android:contentDescription="@string/option_icon_content_description"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
                 android:padding="8dp"
                 android:src="@drawable/final_regular_more_vertical_icon"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:importantForAccessibility="no" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>

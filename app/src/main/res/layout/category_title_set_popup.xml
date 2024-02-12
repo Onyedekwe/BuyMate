@@ -26,15 +26,15 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
-                android:contentDescription="@string/category_name_illustration_content_description"
-                app:srcCompat="@drawable/illustration_list_title" />
+                app:srcCompat="@drawable/illustration_list_title"
+                android:importantForAccessibility="no" />
 
             <TextView
                 android:id="@+id/emptyText1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/category_title_set_popup_query1"
+                android:text="@string/category_title_set_popup__emptyText1"
                 android:textColor="?attr/textFillColor"
                 android:textSize="15sp"
                 android:textStyle="bold" />
@@ -44,9 +44,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/category_title_set_popup_query2"
-                android:textColor="?attr/textFillColor"
-                android:textSize="15sp" />
+                android:text="@string/category_title_set_popup__emptyText2"
+                android:textColor="?attr/textFillColor"/>
 
             <LinearLayout
                 android:id="@+id/bottomBarLine"
@@ -63,7 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
             android:layout_marginTop="20dp"
-            android:hint="@string/category_title_set_popup_editText_Hint"
+            android:hint="@string/category_title_set_popup__category_name_hint"
             android:textColor="?attr/colorOnSurface"
             app:endIconMode="clear_text">
 
@@ -83,9 +82,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="20dp"
-            android:text="@string/category_title_set_popup_suggestion_textView"
+            android:text="@string/category_title_set_popup__suggestion"
             android:textColor="?attr/colorPrimary"
-            android:textSize="16sp"
             android:textStyle="bold" />
 
         <HorizontalScrollView
@@ -113,9 +111,8 @@
                     android:paddingTop="5dp"
                     android:paddingEnd="15dp"
                     android:paddingBottom="5dp"
-                    android:text="@string/category_title_set_popup_suggestion_option_textView1"
-                    android:textColor="?attr/textFillColor"
-                    android:textSize="16sp" />
+                    android:text="@string/category_title_set_popup__suggestion_option_textView1"
+                    android:textColor="?attr/textFillColor"/>
 
                 <TextView
                     android:id="@+id/Suggest_2"
@@ -130,9 +127,8 @@
                     android:paddingTop="5dp"
                     android:paddingEnd="15dp"
                     android:paddingBottom="5dp"
-                    android:text="@string/category_title_set_popup_suggestion_option_textView2"
-                    android:textColor="?attr/textFillColor"
-                    android:textSize="16sp" />
+                    android:text="@string/category_title_set_popup__suggestion_option_textView2"
+                    android:textColor="?attr/textFillColor"/>
 
 
                 <TextView
@@ -148,8 +144,7 @@
                     android:paddingTop="5dp"
                     android:paddingEnd="15dp"
                     android:paddingBottom="5dp"
-                    android:textColor="?attr/textFillColor"
-                    android:textSize="16sp" />
+                    android:textColor="?attr/textFillColor"/>
 
                 <TextView
                     android:id="@+id/Suggest_4"
@@ -164,9 +159,8 @@
                     android:paddingTop="5dp"
                     android:paddingEnd="15dp"
                     android:paddingBottom="5dp"
-                    android:text="@string/category_title_set_popup_suggestion_option_textView4"
-                    android:textColor="?attr/textFillColor"
-                    android:textSize="16sp" />
+                    android:text="@string/category_title_set_popup__suggestion_option_textView4"
+                    android:textColor="?attr/textFillColor"/>
 
                 <TextView
                     android:id="@+id/Suggest_5"
@@ -181,9 +175,8 @@
                     android:paddingTop="5dp"
                     android:paddingEnd="15dp"
                     android:paddingBottom="5dp"
-                    android:text="@string/category_title_set_popup_suggestion_option_textView5"
-                    android:textColor="?attr/textFillColor"
-                    android:textSize="16sp" />
+                    android:text="@string/category_title_set_popup__suggestion_option_textView5"
+                    android:textColor="?attr/textFillColor"/>
 
                 <TextView
                     android:id="@+id/Suggest_6"
@@ -198,9 +191,8 @@
                     android:paddingTop="5dp"
                     android:paddingEnd="15dp"
                     android:paddingBottom="5dp"
-                    android:text="@string/category_title_set_popup_suggestion_option_textView6"
-                    android:textColor="?attr/textFillColor"
-                    android:textSize="16sp" />
+                    android:text="@string/category_title_set_popup__suggestion_option_textView6"
+                    android:textColor="?attr/textFillColor"/>
 
                 <TextView
                     android:id="@+id/Suggest_7"
@@ -215,9 +207,8 @@
                     android:paddingTop="5dp"
                     android:paddingEnd="15dp"
                     android:paddingBottom="5dp"
-                    android:text="@string/category_title_set_popup_suggestion_option_textView7"
-                    android:textColor="?attr/textFillColor"
-                    android:textSize="16sp" />
+                    android:text="@string/category_title_set_popup__suggestion_option_textView7"
+                    android:textColor="?attr/textFillColor"/>
 
                 <TextView
                     android:id="@+id/Suggest_8"
@@ -232,9 +223,8 @@
                     android:paddingTop="5dp"
                     android:paddingEnd="15dp"
                     android:paddingBottom="5dp"
-                    android:text="@string/category_title_set_popup_suggestion_option_textView8"
-                    android:textColor="?attr/textFillColor"
-                    android:textSize="16sp" />
+                    android:text="@string/category_title_set_popup__suggestion_option_textView8"
+                    android:textColor="?attr/textFillColor"/>
 
             </LinearLayout>
 
@@ -249,10 +239,9 @@
             android:layout_marginBottom="20dp"
             android:backgroundTint="?attr/buttonTint"
             android:gravity="center"
-            android:text="@string/category_title_set_popup_fabButton"
+            android:text="@string/category_title_set_popup__fabButton"
             android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:textColor="@color/white"/>
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

@@ -27,10 +27,8 @@
             android:layout_gravity="start"
             android:layout_marginStart="15dp"
             android:layout_marginTop="10dp"
-            android:text="Delete account?"
-            android:textColor="@color/light_red"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:text="@string/custom_alert_delete_account_dialog__header"
+            android:textColor="@color/light_red"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -47,7 +45,7 @@
             android:textAlignment="center"
             android:layout_marginTop="20dp"
             android:lineSpacingExtra="4dp"
-            android:text="All list and other data will be removed from the cloud permanently."
+            android:text="@string/custom_alert_delete_account_dialog__delete_account_text"
             android:textColor="?attr/textFillColor" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -65,10 +63,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="40dp"
                 android:background="@android:color/transparent"
-                android:text="@string/shop_bottom_layout_cancel_button_text"
+                android:text="@string/custom_alert_delete_account_dialog__CancelButton"
                 android:textAllCaps="false"
                 android:textColor="?attr/textFillColor"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/BtnSave"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -79,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:backgroundTint="?attr/buttonTint"
-                android:text="Delete"
+                android:text="@string/custom_alert_delete_account_dialog__BtnSave"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 app:cornerRadius="5dp"

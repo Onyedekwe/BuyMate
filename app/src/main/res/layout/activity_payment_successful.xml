@@ -44,7 +44,8 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_marginStart="2dp"
-                    android:src="@drawable/buymate_icon" />
+                    android:src="@drawable/buymate_icon"
+                    android:importantForAccessibility="no" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -61,7 +62,7 @@
 
             <pl.droidsonroids.gif.GifImageView
                 android:layout_width="180dp"
-                android:layout_height="130dp"
+                android:layout_height="142dp"
                 android:layout_gravity="center"
                 android:layout_marginEnd="30dp"
                 android:src="@drawable/illustration_successful_purchase" />
@@ -71,12 +72,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginHorizontal="20dp"
+                android:layout_marginHorizontal="10dp"
                 android:layout_marginTop="20dp"
-                android:text="Thank you for purchasing Buymate premium!"
+                android:text="@string/activity_payment_successful__header"
+                android:fontFamily="@font/lexend"
                 android:textAlignment="center"
                 android:textColor="?attr/textFillColor"
-                android:textSize="25sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -88,9 +89,9 @@
                 android:paddingHorizontal="10dp"
                 android:layout_marginHorizontal="10dp"
                 android:layout_marginTop="10dp"
-                android:text="You are currently enjoying Buymate's full features!"
-                android:textColor="?attr/textFillColor"
-                android:textSize="18sp" />
+                android:fontFamily="@font/lexend"
+                android:text="@string/activity_payment_successful__header_desc_1"
+                android:textColor="?attr/textFillColor"/>
 
 
             <androidx.cardview.widget.CardView
@@ -98,7 +99,8 @@
                 android:layout_height="wrap_content"
                 android:minWidth="220dp"
                 app:cardCornerRadius="25dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="5dp"
                 android:layout_gravity="center"
                 app:cardElevation="1dp"
                 app:cardBackgroundColor="?attr/colorSurface">
@@ -125,46 +127,7 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="20dp"
-                        android:text="Backup &amp; Restore"
-                        android:textSize="16dp"
-                        android:textColor="?attr/textFillColor" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minWidth="220dp"
-                app:cardCornerRadius="25dp"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center"
-                app:cardElevation="1dp"
-                app:cardBackgroundColor="?attr/colorSurface">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:orientation="horizontal">
-
-
-                    <pl.droidsonroids.gif.GifImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/gif_diamond" />
-
-                    <TextView
-                        android:id="@+id/header_desc_3"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="20dp"
-                        android:text="Insert Images"
-                        android:textSize="16dp"
+                        android:text="@string/activity_payment_successful__header_desc_2"
                         android:textColor="?attr/textFillColor" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -201,8 +164,7 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="20dp"
-                        android:text="Remove ads"
-                        android:textSize="16dp"
+                        android:text="@string/activity_payment_successful__header_desc_4"
                         android:textColor="?attr/textFillColor" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -218,10 +180,9 @@
         android:layout_marginHorizontal="40dp"
         android:backgroundTint="?attr/buttonTint"
         android:gravity="center"
-        android:text="Back to home"
+        android:text="@string/activity_payment_successful__back_btn"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        android:textSize="18sp"
         android:layout_marginBottom="35dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

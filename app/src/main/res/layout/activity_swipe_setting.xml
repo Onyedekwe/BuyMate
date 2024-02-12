@@ -15,7 +15,7 @@
         android:background="?attr/backgroundColor"
         android:elevation="1dp"
         app:navigationIcon="@drawable/final_regular_back_icon"
-        app:title="Swipe action"
+        app:title="@string/activity_swipe_setting__swipeToolbar"
         app:titleTextColor="?attr/textFillColor" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -41,19 +41,16 @@
                 android:id="@+id/swipeLeftTextHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Swipe left"
+                android:text="@string/activity_swipe_setting__swipeLeftTextHeader"
                 android:textColor="?attr/textFillColor"
-                android:textSize="25dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/swipeLeftTextSubHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="Options"
-                android:textColor="?attr/itemTextAppearanceInactive"
-                android:textSize="16dp" />
+                android:textColor="?attr/itemTextAppearanceInactive"/>
 
         </LinearLayout>
 
@@ -66,7 +63,7 @@
             android:clickable="true"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
-            android:text="Customize"
+            android:text="@string/activity_swipe_setting__customize_button"
             android:textAllCaps="false"
             android:textColor="?attr/colorPrimary"
             android:textSize="17sp"
@@ -107,19 +104,16 @@
                 android:id="@+id/swipeRightTextHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Swipe right"
+                android:text="@string/activity_swipe_setting__swipeRightTextHeader"
                 android:textColor="?attr/textFillColor"
-                android:textSize="25dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/swipeRightTextSubHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="Delete"
-                android:textColor="?attr/itemTextAppearanceInactive"
-                android:textSize="17dp" />
+                android:textColor="?attr/itemTextAppearanceInactive"/>
 
         </LinearLayout>
 
@@ -132,7 +126,7 @@
             android:clickable="true"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
-            android:text="Customize"
+            android:text="@string/activity_swipe_setting__customize_button"
             android:textAllCaps="false"
             android:textColor="?attr/colorPrimary"
             android:textSize="17sp"
@@ -170,9 +164,8 @@
                 android:id="@+id/swipeDisableTextHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Disable swiping"
-                android:textColor="?attr/textFillColor"
-                android:textSize="25dp" />
+                android:text="@string/activity_swipe_setting__swipeDisableTextHeader"
+                android:textColor="?attr/textFillColor"/>
 
         </LinearLayout>
 
@@ -191,8 +184,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="15dp"
-        android:text="Choose what happens when items in the list are swiped left or right.\n\nWhen Disable swiping is selected, items are being disabled from swiping to the left or right."
-        android:textColor="?attr/itemTextAppearanceInactive"
-        android:textSize="17dp" />
+        android:text="@string/activity_swipe_setting__swipe_description"
+        android:textColor="?attr/itemTextAppearanceInactive"/>
 
 </LinearLayout>

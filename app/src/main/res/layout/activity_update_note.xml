@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:background="?attr/backgroundColor"
         app:navigationIcon="@drawable/final_regular_back_icon"
-        app:title="@string/fragment_notes_toolbar_title"
+        app:title="@string/activity_update_note__update_note_title"
         android:textColor="?attr/textFillColor" />
 
     <ScrollView
@@ -36,7 +36,6 @@
                 android:background="?attr/backgroundColor"
                 android:maxLines="1"
                 android:padding="14dp"
-                android:text="10:06 PM October 11, 2023"
                 android:textColor="?attr/textFillColor" />
 
 
@@ -46,7 +45,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?attr/backgroundColor"
-                android:hint="Title"
+                android:hint="@string/activity_update_note__update_heading_text"
                 android:inputType="textCapSentences|textMultiLine"
                 android:lineSpacingExtra="4dp"
                 android:padding="14dp"
@@ -61,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:background="?attr/backgroundColor"
                 android:gravity="start"
-                android:hint="Note something down"
+                android:hint="@string/activity_update_note__update_content_text"
                 android:inputType="textCapSentences|textMultiLine"
                 android:lineSpacingExtra="5dp"
                 android:padding="15dp"
