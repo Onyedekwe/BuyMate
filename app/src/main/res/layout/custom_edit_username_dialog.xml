@@ -26,7 +26,7 @@
             android:layout_gravity="start"
             android:layout_marginStart="15dp"
             android:layout_marginTop="10dp"
-            android:text="Edit Name"
+            android:text="@string/custom_edit_username_dialog__edit_title"
             android:textColor="?attr/textFillColor"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -44,7 +44,7 @@
             android:layout_gravity="end"
             android:layout_marginHorizontal="15dp"
             android:layout_marginTop="20dp"
-            android:hint="Username">
+            android:hint="@string/custom_edit_username_dialog__firstNameBoxHint">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/firstNameBox"
@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="40dp"
                 android:background="@android:color/transparent"
-                android:text="@string/shop_bottom_layout_cancel_button_text"
+                android:text="@string/custom_edit_username_dialog__nameCancelButton"
                 android:textAllCaps="false"
                 android:textColor="?attr/textFillColor"
                 android:textStyle="bold"
@@ -85,10 +85,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="5dp"
                 android:backgroundTint="?attr/buttonTint"
-                android:text="Update"
+                android:text="@string/custom_edit_username_dialog__nameBtnSave"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                app:cornerRadius="5dp"
+                app:cornerRadius="20dp"
+                android:padding="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

@@ -6,44 +6,44 @@
     <item
         android:id="@+id/search"
         android:icon="@drawable/final_regular_search_icon"
-        android:title="@string/item_toolbar_search_text"
+        android:title="@string/item_toolbar_menu_search_text"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/voice"
-        android:title="Voice typinc"
-        app:showAsAction="always"
+        android:title="@string/item_toolbar_menu_voice_text"
+        app:showAsAction="ifRoom"
         android:icon="@drawable/final_regular_voice_icon"/>
 
     <item
         android:id="@+id/rename"
-        android:title="@string/item_toolbar_rename_text"
+        android:title="@string/item_toolbar_menu_rename_text"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/share"
-        android:title="@string/item_toolbar_share_text"
+        android:title="@string/item_toolbar_menu_share_text"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/sort"
-        android:title="@string/item_toolbar_sort_text"
+        android:title="@string/item_toolbar_menu_sort_text"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/check"
-        android:title="@string/item_toolbar_check_text"
+        android:title="@string/item_toolbar_menu_check_text"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/unCheck"
-        android:title="@string/item_toolbar_uncheck_text"
+        android:title="@string/item_toolbar_menu_unCheck_text"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/reminder"
-        android:title="@string/item_toolbar_reminder_text"
+        android:title="@string/item_toolbar_menu_reminder_text"
         app:showAsAction="never" />
 
 </menu>

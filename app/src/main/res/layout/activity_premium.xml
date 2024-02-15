@@ -38,7 +38,6 @@
                 android:layout_width="85dp"
                 android:layout_height="85dp"
                 android:layout_gravity="center"
-                android:contentDescription="@string/premium_icon_content_description"
                 android:src="@drawable/gif_diamond"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -229,7 +228,7 @@
                                 android:layout_gravity="center"
                                 android:gravity="center"
                                 android:maxLines="1"
-                                android:text="@string/full_star"
+                                android:text="@string/activity_premium__full_star"
                                 android:textAlignment="center" />
 
                             <TextView

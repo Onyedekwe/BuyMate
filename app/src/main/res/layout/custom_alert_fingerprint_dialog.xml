@@ -14,7 +14,7 @@
         android:layout_gravity="start"
         android:layout_marginStart="15dp"
         android:layout_marginTop="10dp"
-        android:text="Notice !!!"
+        android:text="@string/custom_alert_fingerprint_dialog__header"
         android:textColor="@color/light_red"
         android:textSize="16sp"/>
 
@@ -34,7 +34,7 @@
         android:layout_marginTop="20dp"
         android:lineSpacingExtra="4dp"
         android:textColor="?attr/textFillColor"
-        android:text="You can't use fingerprint with this account. To enable it, go to the settings page after logging in." />
+        android:text="@string/custom_alert_fingerprint_dialog__alert_text" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/okBtn"
@@ -46,7 +46,7 @@
         android:layout_marginBottom="30dp"
         android:backgroundTint="?attr/buttonTint"
         android:gravity="center"
-        android:text="OK"
+        android:text="@string/custom_alert_fingerprint_dialog__okBtn"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="18sp" />

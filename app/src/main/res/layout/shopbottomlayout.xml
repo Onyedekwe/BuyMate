@@ -26,7 +26,6 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
-                android:contentDescription="@string/shop_bottom_layout_illustration_content_description"
                 app:srcCompat="@drawable/illustration_add_item_to_list" />
 
             <TextView
@@ -70,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
                 android:layout_marginTop="20dp"
-                android:hint="@string/shop_bottom_layout_item_name_textBox_hint"
+                android:hint="@string/shopbottomlayout_desc_name"
                 android:textColor="?attr/colorOnSurface"
                 app:endIconMode="clear_text"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -109,7 +108,7 @@
                         android:id="@+id/more_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="More"
+                        android:text="@string/shopbottomlayout_more_text"
                         android:layout_gravity="center"
                         android:gravity="center" />
 
@@ -118,7 +117,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:src="@drawable/final_regular_arrow_drop_up_icon" />
+                        android:src="@drawable/final_regular_arrow_drop_up_icon"
+                        android:importantForAccessibility="no" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -140,7 +140,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="8dp"
                     android:layout_marginTop="10dp"
-                    android:hint="@string/shop_bottom_layout_price_textBox_hint"
+                    android:hint="@string/shopbottomlayout_desc_price"
                     android:textColor="?attr/colorOnSurface"
                     app:counterEnabled="true"
                     app:counterMaxLength="7"
@@ -185,7 +185,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="5dp"
-                            android:hint="@string/shop_bottom_layout_quantity_textBox_hint"
+                            android:hint="@string/shopbottomlayout_desc_quantity"
                             android:textColor="?attr/colorOnSurface"
                             app:counterEnabled="true"
                             app:counterMaxLength="7"
@@ -221,7 +221,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"
                             android:layout_marginHorizontal="5dp"
-                            android:hint="Unit"
+                            android:hint="@string/shopbottomlayout_unit_textView"
                             app:counterEnabled="true"
                             app:counterMaxLength="7">
 
@@ -259,7 +259,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="40dp"
                 android:background="@android:color/transparent"
-                android:text="@string/shop_bottom_layout_cancel_button_text"
+                android:text="@string/shopbottomlayout_CancelButton"
                 android:textAllCaps="false"
                 android:textColor="?attr/textFillColor"
                 android:textStyle="bold"
@@ -272,7 +272,7 @@
                 android:layout_width="110dp"
                 android:layout_height="56dp"
                 android:backgroundTint="?attr/buttonTint"
-                android:text="@string/shop_bottom_layout_done_button_text"
+                android:text="@string/shopbottomlayout_BtnSave"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 app:cornerRadius="25dp"

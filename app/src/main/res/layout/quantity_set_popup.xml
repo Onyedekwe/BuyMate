@@ -18,9 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center"
-            android:text="Select action"
             android:textColor="?attr/textFillColor"
-            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -48,7 +46,7 @@
         app:layout_constraintTop_toBottomOf="@id/desc_price_text_input_layout">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:layout_marginEnd="20dp"
@@ -60,7 +58,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="5dp"
-                android:hint="@string/shop_bottom_layout_quantity_textBox_hint"
+                android:hint="@string/quantity_set_popup_quantity_name"
                 android:textColor="?attr/colorOnSurface"
                 app:counterEnabled="true"
                 app:counterMaxLength="7"
@@ -93,10 +91,10 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_gravity="end"
                 android:layout_marginHorizontal="5dp"
-                android:hint="Unit"
+                android:hint="@string/quantity_set_popup_unit_hint"
                 android:layout_weight="1"
                 app:counterEnabled="true"
                 app:counterMaxLength="7">
@@ -119,13 +117,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="56dp"
-        android:layout_marginHorizontal="40dp"
+        android:layout_marginHorizontal="50dp"
         android:layout_marginTop="30dp"
         android:layout_marginBottom="20dp"
         android:backgroundTint="?attr/buttonTint"
         android:gravity="center"
-        android:text="Done"
+        android:text="@string/quantity_set_popup_quantity_btnSave"
         android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="18sp" />
+        android:textColor="@color/white"/>
 </LinearLayout>

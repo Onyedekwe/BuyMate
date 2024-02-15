@@ -6,7 +6,7 @@
     <item
         android:id="@+id/setting"
         android:icon="@drawable/final_regular_settings_home_icon"
-        android:title="@string/category_toolbar_mark_text"
+        android:title="@string/category_toolbar_setting_text"
         app:showAsAction="ifRoom"/>
 
 </menu>

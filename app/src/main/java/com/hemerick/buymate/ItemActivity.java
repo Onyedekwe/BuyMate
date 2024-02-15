@@ -433,6 +433,28 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                     Button deleteButton = menu_delete_dialog.findViewById(R.id.delete_button);
                     Button cancelButton = menu_delete_dialog.findViewById(R.id.cancel_button);
 
+                    if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
+                        delete_heading.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                        delete_message.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                        deleteButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                        cancelButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                    }
+
+                    if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
+                        delete_heading.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                        delete_message.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                        deleteButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                        cancelButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                    }
+
+                    if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
+                        delete_heading.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                        delete_message.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                        deleteButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                        cancelButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                    }
+
+
                     if (finalSelectList.size() > 1) {
                         delete_heading.setText(getString(R.string.ItemActivity__deleteTheseItems));
                     } else {
@@ -708,6 +730,29 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                     TextView delete_message = menu_unstar_dialog.findViewById(R.id.delete_message);
                     Button deleteButton = menu_unstar_dialog.findViewById(R.id.delete_button);
                     Button cancelButton = menu_unstar_dialog.findViewById(R.id.cancel_button);
+
+
+                    if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
+                        delete_heading.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                        delete_message.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                        deleteButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                        cancelButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                    }
+
+                    if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
+                        delete_heading.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                        delete_message.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                        deleteButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                        cancelButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                    }
+
+                    if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
+                        delete_heading.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                        delete_message.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                        deleteButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                        cancelButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                    }
+
 
                     delete_heading.setText(getString(R.string.ItemActivity__unstarred));
                     delete_message.setText(items_selected.toString());
@@ -2481,7 +2526,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         }
 
         if (settings.getIsShareTotalDisabled().equals(UserSettings.NO_SHARE_TOTAL_NOT_DISABLED)) {
-            result.append("\n").append(getString(R.string.share_list_total)).append("       ").append(formatNumber(total));
+            result.append("\n").append(getString(R.string.ItemActivity__Total)).append("       ").append(formatNumber(total));
         }
 
         String appLink = getString(R.string.app_link) + this.getPackageName();
@@ -2811,7 +2856,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         TextView textView = copy_dialog.findViewById(R.id.item_move_title);
         TextView emptyTEXT1 = copy_dialog.findViewById(R.id.emptyTEXT1);
         LinearLayout emptyNotesLayout = copy_dialog.findViewById(R.id.emptyNotesLayout);
-        textView.setText(getString(R.string.copy_to));
+        textView.setText(getString(R.string.ItemActivity__copyTo));
         SearchView searchView = copy_dialog.findViewById(R.id.search_bar);
         EditText searchEditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
         Button button = copy_dialog.findViewById(R.id.create_new_list);
@@ -3733,18 +3778,18 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
             Total_Summation_Textbox.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_max_text));
-            Items_list_size_textbox.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
-            Total_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
-            emptyText1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
+            Items_list_size_textbox.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            Total_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            emptyText1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             fab.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             currency_textbox.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
             Total_Summation_Textbox.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_max_max_text));
-            Items_list_size_textbox.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-            Total_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-            emptyText1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            Items_list_size_textbox.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            Total_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            emptyText1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             fab.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             currency_textbox.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
         }

@@ -430,7 +430,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                 params.width = 300;
                 params.height = 200;
                 emptyView.setLayoutParams(params);
-                emptyText1.setText(getString(R.string.no_list));
+                emptyText1.setText(getString(R.string.HomeFragment__no_list));
             } else {
                 emptyView.setImageResource(R.drawable.illustration_empty_list_1);
                 String[] suggestion_list = getResources().getStringArray(R.array.item_suggestions);
@@ -606,9 +606,9 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                     }
 
                     if (finalSelectList.size() > 1) {
-                        delete_heading.setText(getString(R.string.multiple_list_remove));
+                        delete_heading.setText(getString(R.string.HomeFragment__deleteTheseLists));
                     } else {
-                        delete_heading.setText(getString(R.string.list_remove));
+                        delete_heading.setText(getString(R.string.HomeFragment__deleteThisList));
                     }
                     delete_message.setText(items_selected.toString());
 
@@ -844,7 +844,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                                 bottom_dialog.dismiss();
                             }
                         } else {
-                            StyleableToast.makeText(context, getString(R.string.list_exist_already), R.style.custom_toast_2).show();
+                            StyleableToast.makeText(context, getString(R.string.HomeFragment__list_exist_already), R.style.custom_toast_2).show();
                         }
                     } else {
                         if (!itemCheck.contains(descText.getText().toString().trim().toLowerCase())) {
@@ -860,11 +860,11 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                                 bottom_dialog.dismiss();
                             }
                         } else {
-                            StyleableToast.makeText(context, getString(R.string.list_exist_already), R.style.custom_toast_2).show();
+                            StyleableToast.makeText(context, getString(R.string.HomeFragment__list_exist_already), R.style.custom_toast_2).show();
                         }
                     }
                 } else {
-                    StyleableToast.makeText(context, getString(R.string.insert_item_name), R.style.custom_toast_2).show();
+                    StyleableToast.makeText(context, getString(R.string.HomeFragment__please_insert_name), R.style.custom_toast_2).show();
                 }
 
             }
@@ -1057,7 +1057,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
 
                     }
                 } else {
-                    StyleableToast.makeText(context, getString(R.string.please_insert_name), R.style.custom_toast_2).show();
+                    StyleableToast.makeText(context, getString(R.string.HomeFragment__please_insert_name), R.style.custom_toast_2).show();
                 }
 
             }
@@ -1103,10 +1103,10 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
             cancelButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
         }
 
-        String temp_text = getString(R.string.remove) + " " + temp;
+        String temp_text = getString(R.string.HomeFragment__delete) + " " + temp;
         delete_heading.setText(temp_text);
 
-        delete_message.setText(getString(R.string.remove_item_warning));
+        delete_message.setText(getString(R.string.HomeFragment__deleteWarning));
 
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1161,7 +1161,6 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                     adapter.notifyItemRemoved(position);
                 }
                 delete_dialog.dismiss();
-                StyleableToast.makeText(context, getString(R.string.removed), R.style.custom_toast_2).show();
                 searchEditText.setText("");
 
             }
@@ -1623,7 +1622,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         }
 
         if (settings.getIsShareTotalDisabled().equals(UserSettings.NO_SHARE_TOTAL_NOT_DISABLED)) {
-            result.append("\n").append(getString(R.string.share_list_total)).append("       ").append(formatNumber(total));
+            result.append("\n").append(getString(R.string.HomeFragment__Total)).append("       ").append(formatNumber(total));
 
         }
 
@@ -1930,16 +1929,13 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                 String newName = description.getText().toString().trim();
                 if (newName.trim().equals(prevName.trim())) {
                     rename_dialog.dismiss();
-                    StyleableToast.makeText(context, getString(R.string.list_rename_success), R.style.custom_toast).show();
                 } else {
                     itemCheck.remove(prevName);
                     if (!newName.isEmpty()) {
                         if (!itemCheck.contains(newName)) {
                             boolean checkEditData = db.updateCategory(newName, prevName);
                             if (!checkEditData) {
-                                Toast.makeText(context, R.string.rename_fail, Toast.LENGTH_SHORT).show();
                             } else {
-                                StyleableToast.makeText(context, getString(R.string.list_rename_success), R.style.custom_toast).show();
                                 rename_dialog.dismiss();
                                 adapter.refreshUpdate(newName, position);
                                 adapter.notifyItemChanged(position);
@@ -1953,16 +1949,14 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                             }
                             boolean checkEditData = db.updateCategory(newItem, prevName);
                             if (!checkEditData) {
-                                StyleableToast.makeText(context, getString(R.string.rename_fail), R.style.custom_toast).show();
                             } else {
-                                StyleableToast.makeText(context, getString(R.string.list_rename_success), R.style.custom_toast).show();
                                 rename_dialog.dismiss();
                                 adapter.refreshUpdate(newItem, position);
                                 adapter.notifyItemChanged(position);
                             }
                         }
                     } else {
-                        StyleableToast.makeText(context, getString(R.string.please_insert_name), R.style.custom_toast_2).show();
+                        StyleableToast.makeText(context, getString(R.string.HomeFragment__please_insert_name), R.style.custom_toast_2).show();
                     }
 
                 }
@@ -2007,7 +2001,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                     startActivity(intent);
 
                 } else {
-                    StyleableToast.makeText(context, getString(R.string.no_alarm_app), R.style.custom_toast).show();
+                    StyleableToast.makeText(context, getString(R.string.HomeFragment__no_alarm_app), R.style.custom_toast).show();
                 }
 
             }

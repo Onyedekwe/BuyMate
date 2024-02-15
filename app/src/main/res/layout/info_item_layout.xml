@@ -34,14 +34,14 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginEnd="3dp"
-            android:contentDescription="@string/info_layout_favourites_icon_content_description"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
             android:src="@drawable/final_regular_star_icon"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:importantForAccessibility="no" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -129,8 +129,8 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
-                android:contentDescription="@string/info_layout_minus_icon_content_description"
-                android:src="@drawable/final_regular_minus_icon" />
+                android:src="@drawable/final_regular_minus_icon"
+                android:importantForAccessibility="no" />
 
 
             <LinearLayout
@@ -187,8 +187,8 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
-                android:contentDescription="@string/info_layout_plus_icon_content_description"
-                android:src="@drawable/final_regular_plus_icon" />
+                android:src="@drawable/final_regular_plus_icon"
+                android:importantForAccessibility="no" />
         </LinearLayout>
 
 
@@ -237,7 +237,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="3dp"
-                android:text="NGN"
                 android:textColor="?attr/textFillColor"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -279,7 +278,8 @@
                 android:scaleType="centerCrop"
                 android:clickable="true"
                 android:focusable="true"
-                android:foreground="?attr/selectableItemBackground"/>
+                android:foreground="?attr/selectableItemBackground"
+                android:importantForAccessibility="no" />
 
             <ImageView
                 android:id="@+id/item_image_null"
@@ -289,7 +289,8 @@
                 android:visibility="gone"
                 android:background="@drawable/bg_stroke_curve_corner_premium"
                 android:src="@drawable/final_regular_add_photo_text_icon"
-                android:scaleType="fitCenter" />
+                android:scaleType="fitCenter"
+                android:importantForAccessibility="no" />
 
             <ProgressBar
                 android:id="@+id/progress_bar"

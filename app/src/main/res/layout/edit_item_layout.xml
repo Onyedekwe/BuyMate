@@ -30,22 +30,18 @@
         android:clickable="true"
         android:focusable="true"
         android:layout_marginTop="20dp"
+        android:layout_marginStart="5dp"
         android:foreground="?attr/selectableItemBackground"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:baselineAligned="false">
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="5dp"
-            android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="37dp"
                 android:layout_gravity="center"
-                android:contentDescription="@string/edit_item_copy_icon_content_description"
-                android:src="@drawable/final_regular_image_icon">
+                android:src="@drawable/final_regular_image_icon"
+                android:importantForAccessibility="no">
 
             </ImageView>
 
@@ -56,9 +52,9 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="10dp"
                 android:padding="5dp"
-                android:text="Add Image"
+                android:text="@string/edit_item_layout__addImage_text"
                 android:textColor="?attr/textFillColor" />
-        </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout
@@ -76,7 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:contentDescription="@string/edit_item_rename_icon_content_description"
+            android:importantForAccessibility="no"
             android:src="@drawable/final_regular_rename_icon">
 
         </ImageView>
@@ -88,7 +84,7 @@
             android:layout_gravity="center"
             android:layout_marginStart="10dp"
             android:padding="5dp"
-            android:text="@string/edit_item_rename_text"
+            android:text="@string/edit_item_layout__rename_text"
             android:textColor="?attr/textFillColor" />
     </LinearLayout>
 
@@ -107,8 +103,8 @@
             android:layout_width="wrap_content"
             android:layout_height="37dp"
             android:layout_gravity="center"
-            android:contentDescription="@string/edit_item_copy_icon_content_description"
-            android:src="@drawable/final_regular_copy_icon">
+            android:src="@drawable/final_regular_copy_icon"
+            android:importantForAccessibility="no">
 
         </ImageView>
 
@@ -119,7 +115,7 @@
             android:layout_gravity="center"
             android:layout_marginStart="10dp"
             android:padding="5dp"
-            android:text="@string/edit_item_copy_text"
+            android:text="@string/edit_item_layout__copy_text"
             android:textColor="?attr/textFillColor" />
     </LinearLayout>
 
@@ -138,8 +134,8 @@
             android:layout_width="wrap_content"
             android:layout_height="37dp"
             android:layout_gravity="center"
-            android:contentDescription="@string/edit_item_move_icon_content_description"
-            android:src="@drawable/final_regular_move_icon">
+            android:src="@drawable/final_regular_move_icon"
+            android:importantForAccessibility="no">
 
         </ImageView>
 
@@ -150,7 +146,7 @@
             android:layout_gravity="center"
             android:layout_marginStart="10dp"
             android:padding="5dp"
-            android:text="@string/edit_item_move_text"
+            android:text="@string/edit_item_layout__move_text"
             android:textColor="?attr/textFillColor" />
     </LinearLayout>
 
@@ -169,8 +165,8 @@
             android:layout_width="wrap_content"
             android:layout_height="37dp"
             android:layout_gravity="center"
-            android:contentDescription="@string/edit_item_price_icon_content_description"
-            android:src="@drawable/final_regular_credit_card_icon">
+            android:src="@drawable/final_regular_credit_card_icon"
+            android:importantForAccessibility="no">
 
         </ImageView>
 
@@ -181,7 +177,7 @@
             android:layout_gravity="center"
             android:layout_marginStart="10dp"
             android:padding="5dp"
-            android:text="@string/edit_item_price_text"
+            android:text="@string/edit_item_layout__price_text"
             android:textColor="?attr/textFillColor" />
     </LinearLayout>
 
@@ -201,8 +197,8 @@
             android:layout_width="wrap_content"
             android:layout_height="37dp"
             android:layout_gravity="center"
-            android:contentDescription="@string/edit_item_quantity_icon_content_description"
-            android:src="@drawable/final_regular_quantity_icon">
+            android:src="@drawable/final_regular_quantity_icon"
+            android:importantForAccessibility="no">
 
         </ImageView>
 
@@ -213,7 +209,7 @@
             android:layout_gravity="center"
             android:layout_marginStart="10dp"
             android:padding="5dp"
-            android:text="@string/edit_item_quantity_text"
+            android:text="@string/edit_item_layout__quantity_text"
             android:textColor="?attr/textFillColor" />
     </LinearLayout>
 
@@ -233,8 +229,8 @@
             android:layout_width="wrap_content"
             android:layout_height="37dp"
             android:layout_gravity="center"
-            android:contentDescription="@string/edit_item_favourites_icon_content_description"
-            android:src="@drawable/final_regular_star_icon">
+            android:src="@drawable/final_regular_star_icon"
+            android:importantForAccessibility="no">
 
         </ImageView>
 
@@ -245,7 +241,7 @@
             android:layout_gravity="center"
             android:layout_marginStart="10dp"
             android:padding="5dp"
-            android:text="@string/edit_item_favourites_text_1"
+            android:text="@string/edit_item_layout__favourites_text_1"
             android:textColor="?attr/textFillColor" />
     </LinearLayout>
 
@@ -264,8 +260,8 @@
             android:layout_width="wrap_content"
             android:layout_height="37dp"
             android:layout_gravity="center"
-            android:contentDescription="@string/edit_item_delete_icon_content_description"
-            android:src="@drawable/final_regular_trash_icon">
+            android:src="@drawable/final_regular_trash_icon"
+            android:importantForAccessibility="no">
 
         </ImageView>
 
@@ -276,7 +272,7 @@
             android:layout_gravity="center"
             android:layout_marginStart="10dp"
             android:padding="5dp"
-            android:text="@string/edit_item_delete_text"
+            android:text="@string/edit_item_layout__delete_text"
             android:textColor="?attr/textFillColor" />
     </LinearLayout>
 
@@ -295,8 +291,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:contentDescription="@string/edit_item_information_icon_content_description"
-            android:src="@drawable/final_regular_info_circle_icon">
+            android:src="@drawable/final_regular_info_circle_icon"
+            android:importantForAccessibility="no">
 
         </ImageView>
 
@@ -307,7 +303,7 @@
             android:layout_gravity="center"
             android:layout_marginStart="10dp"
             android:padding="5dp"
-            android:text="@string/edit_item_information_text"
+            android:text="@string/edit_item_layout__information_text"
             android:textColor="?attr/textFillColor" />
     </LinearLayout>
 

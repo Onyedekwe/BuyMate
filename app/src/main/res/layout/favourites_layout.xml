@@ -84,7 +84,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
-                    android:text="NGN"
                     android:textColor="?attr/itemTextAppearanceInactive" />
 
                 <TextView
@@ -104,8 +103,8 @@
             android:layout_width="30dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:contentDescription="@string/favourites_layout_favourites_icon_content_description"
-            android:padding="3dp" />
+            android:padding="3dp"
+            android:importantForAccessibility="no" />
 
         <CheckBox
             android:id="@+id/checkbox"
@@ -121,12 +120,12 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:clickable="true"
-            android:contentDescription="@string/option_icon_content_description"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
             android:padding="3dp"
             android:layout_marginEnd="5dp"
-            android:src="@drawable/final_regular_more_vertical_icon" />
+            android:src="@drawable/final_regular_more_vertical_icon"
+            android:importantForAccessibility="no" />
 
     </LinearLayout>
 

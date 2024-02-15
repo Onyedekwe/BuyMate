@@ -1,27 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:id="@+id/shopping_widget_item_layout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:minHeight="50dp"
-    android:paddingStart="5dp"
-    android:layout_marginTop="7dp"
-    android:orientation="horizontal">
-
-
     <LinearLayout
+        android:id="@+id/shopping_widget_item_layout"
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:paddingStart="8dp"
+        android:paddingEnd="2dp"
+        android:minHeight="50dp"
+        android:layout_marginTop="7dp"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/shopping_widget_item_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Item"
             android:ellipsize="end"
             android:maxLines="2"
             android:fontFamily="@font/lexend"
@@ -32,7 +24,6 @@
             android:id="@+id/shopping_widget_item_date_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Date"
             android:ellipsize="end"
             android:maxLines="1"
             android:fontFamily="@font/lexend"
@@ -41,8 +32,6 @@
             android:textStyle="italic"/>
     </LinearLayout>
 
-
-</LinearLayout>
 
 
 

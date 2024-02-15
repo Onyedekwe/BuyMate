@@ -5,7 +5,7 @@
     <string name="app_email">hemerickservices@gmail.com</string>
     <string name="app_lifetime_product_id">com.hemerick.lifetime_subscription</string>
     <string name="default_web_client_id" translatable="false">401382920363-u289nhkse3o3fi2tevrq68m7oic9vaj6.apps.googleusercontent.com</string>
-
+    <string name="open_icon_content_description">Open</string>
 
 
     //ShopCopyAdapter
@@ -34,6 +34,7 @@
     //BackupActivity
     <string name="BackupActivity__loginBeforeBackup">Please log in before proceeding to backup</string>
     <string name="BackupActivity__loginBeforeRestore">Please ensure you\'re logged in before restoring data</string>
+    <string name="BackupActivity__restoreHeader">Restore data</string>
     <string name="BackupActivity__restoreWarning">This action will replace your current data with the last backed up data. Any unsaved changes will be lost. Are you sure you want to proceed?</string>
     <string name="BackupActivity__restoreProceedBtn">Proceed</string>
     <string name="BackupActivity__restoreCancelBtn">Cancel</string>
@@ -149,6 +150,15 @@
     <string name="HomeFragment__noListFound">No list found</string>
     <string name="HomeFragment__sortPriceText">Size</string>
     <string name="HomeFragment__send_message_via">Send message via:</string>
+    <string name="HomeFragment__please_insert_name">Please insert name</string>
+    <string name="HomeFragment__deleteTheseLists">Delete these list</string>
+    <string name="HomeFragment__deleteThisList">Delete this list</string>
+    <string name="HomeFragment__delete">Delete</string>
+    <string name="HomeFragment__deleteWarning">This action cannot be undone</string>
+    <string name="HomeFragment__no_list">No list</string>
+    <string name="HomeFragment__list_exist_already">This list already exists</string>
+    <string name="HomeFragment__no_alarm_app">No app to perform this action</string>
+
 
     //InsertPasscodeActivity
     <string name="InsertPasscodeActivity__success">Success</string>
@@ -442,6 +452,7 @@
     <string name="activity_premium__payOneTime">Pay one time only</string>
     <string name="activity_premium__prev_lifetime_currency_text">0.00</string>
     <string name="activity_premium__upgrade_btn">Upgrade now!</string>
+    <string name="activity_premium__full_star">"\u2606""\u2606""\u2606""\u2606"</string>
     <string name="activity_premium__tip">Subscription renews automatically. You can cancel it in Google Play Setting</string>
     <string name="activity_premium__no_network_header">Oops, something went wrong.</string>
     <string name="activity_premium__no_network_subHeader">It may be a network issue or a Google Play server error. Try again later. If the problem persists, contact our support team.</string>
@@ -466,7 +477,6 @@
     <string name="activity_settings__item_suggestionText">Item suggestion</string>
     <string name="activity_settings__multiplyText">Multiply</string>
     <string name="activity_settings__multiplySubText">(price x quantity)</string>
-    <string name="activity_settings__swipeActionText">Swipe actions</string>
     <string name="activity_settings__swipeActionSubText1">Swipe actions</string>
     <string name="activity_settings__detailedListShareTextHeader">Sharing options</string>
     <string name="activity_settings__detailedListShareSubText">Include item prices, quantity and totals</string>
@@ -520,7 +530,6 @@
     <string name="category_title_set_popup__suggestion">Suggestions:</string>
     <string name="category_title_set_popup__suggestion_option_textView1">Shopping</string>
     <string name="category_title_set_popup__suggestion_option_textView2">Groceries</string>
-    <string name="category_title_set_popup__suggestion_option_textView3">Date</string>
     <string name="category_title_set_popup__suggestion_option_textView4">Food</string>
     <string name="category_title_set_popup__suggestion_option_textView5">Tools</string>
     <string name="category_title_set_popup__suggestion_option_textView6">Toiletries</string>
@@ -540,172 +549,227 @@
     <string name="custom_alert_delete_account_dialog__BtnSave">Delete</string>
 
     //custom_alert_fingerprint_dialog
-
-    ///////////////////////////////////////////////
-
-
-
-
-    //ItemActivity
-    <string name="itemActivityFAB">Add item</string>
-    <string name="item_activity_currency_icon_content_description">Currency</string>
-
-    //SettingsActivity
-    <string name="settingsToolbar">Settings</string>
-    <string name="adsPaneText_1">Try Buymate Premium</string>
-    <string name="adsPaneText_2">Remove ads and enjoy more features</string>
-    <string name="premium_icon_content_description">Premium Icon </string>
-    <string name="header_1">GENERAL</string>
-    <string name="account_icon_content_description">Login Icon </string>
-    <string name="header_1_option_1">Account</string>
-    <string name="language_icon_content_description">Set Language Icon </string>
-    <string name="header_1_option_2">Language</string>
-    <string name="darkMode_icon_content_description">Dark Mode Icon </string>
-    <string name="header_1_option_3">Dark Mode</string>
-    <string name="keepScreenBright_icon_content_description">Keep Screen Bright Icon </string>
-    <string name="header_1_option_4">Keep Screen Bright</string>
-    <string name="textSize_icon_content_description">Text Size Icon </string>
-    <string name="header_1_option_5">Text Size</string>
-    <string name="lock_icon_content_description">Lock Icon </string>
-    <string name="header_1_option_6">App lock</string>
-
-    <string name="header_2">FEEDBACK</string>
-    <string name="messageUs_icon_content_description">Message Us Icon </string>
-    <string name="header_2_option_1">Message us</string>
-    <string name="rateUs_icon_content_description">Rate Us Icon </string>
-    <string name="header_2_option_2.0">Enjoy using the app?</string>
-    <string name="header_2_option_2.1">rate us "\u2606""\u2606""\u2606""\u2606""\u2606" on Google Play</string>
-    <string name="header_3">ABOUT</string>
-    <string name="privacy_icon_content_description">Privacy Icon </string>
-    <string name="header_3_option_1">Privacy policy</string>
-    <string name="logout_icon_content_description">Logout Icon </string>
-    <string name="header_3_option_2">Logout</string>
-    <string name="open_icon_content_description">Open</string>
+    <string name="custom_alert_fingerprint_dialog__header">Notice !!!</string>
+    <string name="custom_alert_fingerprint_dialog__alert_text">You can\'t use fingerprint with this account. To enable it, go to the settings page after logging in.</string>
+    <string name="custom_alert_fingerprint_dialog__okBtn">Got it</string>
 
 
-    //category_title_set_popup
-    <string name="category_title_set_popup_query1">Enter List Name</string>
-    <string name="category_title_set_popup_query2">and click <b>Create</b> when finished</string>
-    <string name="category_title_set_popup_editText_Hint">New list</string>
-    <string name="category_title_set_popup_suggestion_textView">Suggestions:</string>
+    //custom_app_version_dialog
+    <string name="custom_app_version_dialog__version_text1">Version:" "</string>
+    <string name="custom_app_version_dialog__version_close">Close</string>
 
+
+    //custom_currency_dialog
+    <string name="custom_currency_dialog__edit_title">Currency symbol</string>
+    <string name="custom_currency_dialog__desc_currency_hint">Insert symbol</string>
+    <string name="custom_currency_dialog__CurrencyCancelButton">Cancel</string>
+    <string name="custom_currency_dialog__currencyBtnSave">Done</string>
+
+
+    //custom_delete_dialog
+    <string name="custom_delete_dialog__cancel_button">Cancel</string>
+    <string name="custom_delete_dialog__delete_button">Done</string>
+
+    //custom_edit_username_dialog
+    <string name="custom_edit_username_dialog__edit_title">Edit Name</string>
+    <string name="custom_edit_username_dialog__firstNameBoxHint">Username</string>
+    <string name="custom_edit_username_dialog__nameCancelButton">Cancel</string>
+    <string name="custom_edit_username_dialog__nameBtnSave">Done</string>
+
+
+    //custom_image_upload_dialog
+    <string name="custom_edit_username_dialog__image_title">Add image</string>
+    <string name="custom_edit_username_dialog__takePictureText">Take picture</string>
+    <string name="custom_edit_username_dialog__uploadPictureText">Upload picture</string>
+
+
+    //custom_image_upload_dialog
+    <string name="custom_image_upload_dialog__header">Notice !!!</string>
+    <string name="custom_image_upload_dialog__login_btn">Log in</string>
+    <string name="custom_image_upload_dialog__cancel_btn">Cancel</string>
+
+
+    //custom_logout_warning_dialog
+    <string name="custom_logout_warning_dialog__header">Confirm logout</string>
+    <string name="custom_logout_warning_dialog__logout_btn">Log out</string>
+    <string name="custom_logout_warning_dialog__cancel_btn">Cancel</string>
+
+    //custom_premium_backup_description_dialog
+    <string name="custom_premium_backup_description_dialog__header">Backup &amp; Restore</string>
+    <string name="custom_premium_backup_description_dialog__sub_header">Ensure peace of mind with our streamlined backup and retrieval system for your shopping list. Safeguard and restore your list when desired.</string>
+    <string name="custom_premium_backup_description_dialog__okBtn">Close</string>
+
+
+    //custom_premium_remove_ads_description_dialog
+    <string name="custom_premium_remove_ads_description_dialog__header">Remove ads</string>
+    <string name="custom_premium_remove_ads_description_dialog__sub_header">Unlock an ad-free environment, ensuring a seamless interface and uninterrupted enjoyment of the app\'s features.</string>
+    <string name="custom_premium_remove_ads_description_dialog__okBtn">Close</string>
+
+
+    //custom_share_dialog
+    <string name="custom_share_dialog__title">Share</string>
+    <string name="custom_share_dialog__asText">Share as Text</string>
+    <string name="custom_share_dialog__asPDF">Download PDF</string>
+
+
+    //custom_swipe_action_dialog
+    <string name="custom_swipe_action_dialog__edit_title">Select action</string>
+    <string name="custom_swipe_action_dialog__radio_button_rename">Rename</string>
+    <string name="custom_swipe_action_dialog__radio_button_check">Check &amp; uncheck item</string>
+    <string name="custom_swipe_action_dialog__radio_button_price">Change price</string>
+    <string name="custom_swipe_action_dialog__radio_button_quantity">Change quantity</string>
+    <string name="custom_swipe_action_dialog__radio_button_star">Star &amp; unstar item</string>
+    <string name="custom_swipe_action_dialog__radio_button_delete">Delete</string>
+    <string name="custom_swipe_action_dialog__radio_button_options">Show options</string>
+    <string name="custom_swipe_action_dialog__radio_button_do_nothing">Do nothing</string>
+
+
+    //custom_textsize_dialog
+    <string name="custom_textsize_dialog__radio_button_small">Small</string>
+    <string name="custom_textsize_dialog__radio_button_medium">Medium" "(default)</string>
+    <string name="custom_textsize_dialog__radio_button_large">Large</string>
 
 
     //edit_category_layout
-    <string name="edit_category_rename_icon_content_description">Rename Icon</string>
-    <string name="edit_category_rename_text">Rename</string>
-    <string name="edit_category_share_icon_content_description">Share Icon</string>
-    <string name="edit_category_share_text">Share list</string>
-    <string name="edit_category_setReminder_icon_content_description">Set Alarm Icon</string>
-    <string name="edit_category_setReminder_text">Set alarm</string>
-    <string name="edit_category_delete_icon_content_description">Delete Icon</string>
-    <string name="edit_category_delete_text">Delete</string>
+    <string name="edit_category_layout__renameText">Rename</string>
+    <string name="edit_category_layout__shareText">Share list</string>
+    <string name="edit_category_layout__alarmText">Set alarm</string>
+    <string name="edit_category_layout__deleteText">Delete</string>
 
     //edit_item_layout
-    <string name="edit_item_rename_icon_content_description">Rename Icon</string>
-    <string name="edit_item_rename_text">Rename</string>
-    <string name="edit_item_price_icon_content_description">Price Icon</string>
-    <string name="edit_item_price_text">Change price</string>
-    <string name="edit_item_quantity_icon_content_description">Quantity Icon</string>
-    <string name="edit_item_quantity_text">Change quantity</string>
-    <string name="edit_item_copy_icon_content_description">Copy Icon</string>
-    <string name="edit_item_copy_text">Copy</string>
-    <string name="edit_item_move_icon_content_description">Move Icon</string>
-    <string name="edit_item_move_text">Move</string>
-    <string name="edit_item_favourites_icon_content_description">Favourites Icon</string>
-    <string name="edit_item_favourites_text_1">Add to Starred</string>
-    <string name="edit_item_delete_icon_content_description">Delete Icon</string>
-    <string name="edit_item_delete_text">Delete</string>
-    <string name="edit_item_information_icon_content_description">Details Icon</string>
-    <string name="edit_item_information_text">Details</string>
-
-
-    //favourites_layout
-    <string name="favourites_layout_favourites_icon_content_description">Favourites Icon</string>
+    <string name="edit_item_layout__addImage_text">Add image</string>
+    <string name="edit_item_layout__rename_text">Rename</string>
+    <string name="edit_item_layout__price_text">Change price</string>
+    <string name="edit_item_layout__quantity_text">Change quantity</string>
+    <string name="edit_item_layout__copy_text">Copy</string>
+    <string name="edit_item_layout__move_text">Move</string>
+    <string name="edit_item_layout__favourites_text_1">Add to Starred</string>
+    <string name="edit_item_layout__delete_text">Delete</string>
+    <string name="edit_item_layout__information_text">Details</string>
 
 
     //fragment_favourites
     <string name="fragment_favourites_toolbar_title">Starred</string>
-    <string name="fragment_favourites_illustration_content_description">Starred Items List</string>
     <string name="fragment_favourites_illustration_text_1">No Starred Items</string>
     <string name="fragment_favourites_illustration_text_2">Add stars to items you want to</string>
     <string name="fragment_favourites_illustration_text_3">easily find later</string>
-    <string name="fragment_favourites_currency_icon_content_description">Currency</string>
     <string name="fragment_favourites_subtotal">Total:</string>
-
-    //fragment_notes
-    <string name="fragment_notes_toolbar_title">Notes</string>
-    <string name="fragment_notes_illustration_content_description">Note List</string>
-    <string name="fragment_notes_illustration_text_1">No Note</string>
-    <string name="fragment_notes_illustration_text_2">Add notes for a smoother</string>
-    <string name="fragment_notes_illustration_text_3">shopping experience</string>
-    <string name="fragment_notes_fab_content_description">Create note button</string>
-    <string name="fragment_notes_subtotal">Subtotal:</string>
+    <string name="fragment_favourites_addItem_fav_fab">Add item</string>
 
     //fragment_home
+    <string name="fragment_home_toolbar_text_2">What are we buying today?</string>
     <string name="fragment_home_search_view_hint">Search</string>
-    <string name="fragment_home_nav_bar_icon_content_description">Navigation Bar Icon</string>
-    <string name="fragment_home_notification_icon_content_description">Notification Icon</string>
-    <string name="fragment_home_app_icon_content_description">App Icon</string>
-    <string name="fragment_home_voice_type_icon_content_description">Voice Type Icon</string>
-    <string name="fragment_home_layout_style_icon_content_description">Layout Style Icon</string>
+    <string name="fragment_home_page_description_text">Categories</string>
     <string name="fragment_home_sort_by_text">Sort by</string>
-    <string name="fragment_home_empty_illustration_content_description">No List</string>
     <string name="fragment_home_noList_text_1">Let\'s get you started</string>
     <string name="fragment_home_noList_text_2">Click the + button below</string>
     <string name="fragment_home_noList_text_3">to create a new list</string>
-    <string name="fragment_home_fab_content_description">Create List Button</string>
+    <string name="fragment_home_empty_create_btn">New list</string>
 
 
-    //info_layout
-    <string name="info_layout_favourites_icon_content_description">Favourites Icon</string>
+    //fragment_more
+    <string name="fragment_more_settingToolbar">Menu</string>
+    <string name="fragment_more_premiumText">Try Buymate Premium</string>
+    <string name="fragment_more_premiumText2">Remove ads and enjoy more features</string>
+    <string name="fragment_more_accountText">Account</string>
+    <string name="fragment_more_messageText">Message us</string>
+    <string name="fragment_more_backupText">Backup</string>
+    <string name="fragment_more_premiumText_2">Premium</string>
+    <string name="fragment_more_websiteText">Website</string>
+    <string name="fragment_more_shareText">Share</string>
+    <string name="fragment_more_RateText">Enjoy using the app?</string>
+    <string name="fragment_more_RateText2">rate us "\u2606""\u2606""\u2606""\u2606""\u2606" on Google Play</string>
+    <string name="fragment_more_twitterText">Follow on twitter</string>
+    <string name="fragment_more_settingText">Settings</string>
+    <string name="fragment_more_aboutText">About</string>
+
+
+    //fragment_notes
+    <string name="fragment_notes_toolbar_title">Notes</string>
+    <string name="fragment_notes_illustration_text_1">No Note</string>
+    <string name="fragment_notes_illustration_text_2">Add notes for a smoother</string>
+    <string name="fragment_notes_illustration_text_3">shopping experience</string>
+    <string name="fragment_notes_search_View">Search in list</string>
+
+
+    //info_item_layout
     <string name="info_layout_price_text">Price:</string>
     <string name="info_layout_quantity_text">Quantity:</string>
     <string name="info_layout_subTotal_text">Subtotal:</string>
-    <string name="info_layout_minus_icon_content_description">Remove one from this item</string>
-    <string name="info_layout_plus_icon_content_description">Add one to this item</string>
-    <string name="info_layout_zero_hint">0</string>
+
 
     //move_bottom_layout
+    <string name="move_bottom_layout_search_bar">Search</string>
+
     <string name="move_bottom_layout_new_list_button">Create new list</string>
+    <string name="move_bottom_layout_emptyTEXT1">No item</string>
 
+    //no_connection_layout
+    <string name="no_connection_layout_no_connection_text_1">No Connection</string>
+    <string name="no_connection_layout_no_connection_text_2">No internet connection found. Check</string>
+    <string name="no_connection_layout_no_connection_text_3">your connection or try again.</string>
+    <string name="no_connection_layout_try_again">Try again</string>
 
-    //nav_drawer_header
-    <string name="nav_drawer_header_hello_text">Hello!</string>
-    <string name="nav_drawer_header_account_icon_content_description">Login Icon</string>
-    <string name="nav_drawer_header_premium_text_1">Try Shopping List Premium</string>
-    <string name="nav_drawer_header_premium_text_2">Remove ads and enjoy more features</string>
-    <string name="nav_drawer_header_diamond_icon_content_description">Premium Icon</string>
 
     //price_update_popup
-    <string name="price_update_popup_price_textBox_hint">Price per unit</string>
-    <string name="price_update_popup_done_icon_content_description">Done</string>
-
+    <string name="price_update_price_name">Insert price</string>
 
     //quantity_set_popup
-    <string name="quantity_set_popup_quantity_textBox_hint">Insert quantity</string>
-    <string name="quantity_set_popup_done_icon_content_description">Done</string>
+    <string name="quantity_set_popup_quantity_name">Insert quantity</string>
+    <string name="quantity_set_popup_unit_hint">Unit</string>
+    <string name="quantity_set_popup_quantity_btnSave">Done</string>
 
-    //shop_bottom_layout
-    <string name="shop_bottom_layout_item_name_textBox_hint">Item name</string>
-    <string name="shop_bottom_layout_price_textBox_hint">Price</string>
-    <string name="shop_bottom_layout_quantity_textBox_hint">Quantity</string>
-    <string name="shop_bottom_layout_cancel_button_text">Cancel</string>
-    <string name="shop_bottom_layout_done_button_text">Done</string>
-    <string name="shop_bottom_layout_illustration_content_description">Add item</string>
+
+    //set_password_layout
+    <string name="set_password_layout_header">Create New Password</string>
+    <string name="set_password_layout_sub_header">Set your 4 pin password so you can access BuyMate</string>
+
+
+    //set_theme_layout
+    <string name="set_theme_layout_title">Dark mode</string>
+    <string name="set_theme_layout_radio_button_default">Use system</string>
+    <string name="set_theme_layout_radio_button_off">Off</string>
+    <string name="set_theme_layout_radio_button_on">On</string>
+    <string name="set_theme_layout_dimSwitch">Dim</string>
+
+    //shopbottomlayout
+    <string name="shopbottomlayout_desc_name">Item name</string>
+    <string name="shopbottomlayout_more_text">More</string>
+    <string name="shopbottomlayout_desc_price">Price</string>
+    <string name="shopbottomlayout_desc_quantity">Quantity</string>
+    <string name="shopbottomlayout_unit_textView">Unit</string>
+    <string name="shopbottomlayout_CancelButton">Cancel</string>
+    <string name="shopbottomlayout_BtnSave">Done</string>
     <string name="shop_bottom_layout_illustration_text_1">You\'re almost done!</string>
     <string name="shop_bottom_layout_illustration_text_2">Add an item to your list</string>
 
+
+    //shopping_widget_provider
+    <string name="shopping_widget_provider_category_text_view">------</string>
+
+    //shopping_widget_provider_configure
+    <string name="shopping_widget_provider_configure_configureToolbar">Select list</string>
+    <string name="shopping_widget_provider_configure_configureCreateButton">Create new list</string>
+
+    //sort_category_layout
+    <string name="sort_bottom_layout_title_text">Sort by:</string>
+    <string name="sort_bottom_layout_name_text">Name</string>
+    <string name="sort_bottom_layout_date_text">Date created</string>
+    <string name="sort_bottom_layout_price_text">Price</string>
+    <string name="sort_bottom_layout_quantity_text">Quantity</string>
+
+
     //success_dialog_popup
-    <string name="success_dialog_popup_success_illustration_content_description">Success</string>
     <string name="success_dialog_popup_illustration_text_1">Congratulations!</string>
     <string name="success_dialog_popup_illustration_text_2">Your first list is ready!</string>
-    <string name="success_dialog_popup_button_text">OK</string>
+    <string name="success_dialog_popup_button_text">Got it</string>
+
 
     //update_category_name_layout
     <string name="update_category_name_layout_header_text">Rename</string>
     <string name="update_category_name_textBox_hint">List name</string>
     <string name="update_category_name_layout_button_text">Save</string>
+
 
     //update_item_name_layout
     <string name="update_item_name_layout_header_text">Rename</string>
@@ -713,118 +777,17 @@
     <string name="update_item_name_layout_button_text">Save</string>
 
 
-    //side_Nav_menu
-    <string name="nav_home_text">Home</string>
-    <string name="nav_settings_text">Settings</string>
-    <string name="nav_extras_text">Extras</string>
-    <string name="nav_rate_text">Rate app</string>
-    <string name="nav_message_text">Message us</string>
-    <string name="nav_about_text">About</string>
-    <string name="nav_logout_text">Logout</string>
+    //upgrade_required_layout
+    <string name="upgrade_required_layout_upgrade_text_1">Upgrade Required</string>
+    <string name="upgrade_required_layout_upgrade_text_2">Upgrade to Buymate lifetime subscription to enjoy this feature and more!</string>
+    <string name="upgrade_required_layout_upgradeBtn">Upgrade</string>
+    <string name="upgrade_required_layout_cancelButton">Cancel</string>
 
-    //bottom_bar_menu
-    <string name="bottom_bar_home_text">Home</string>
-    <string name="bottom_bar_favourites_text">Starred</string>
-    <string name="bottom_bar_notes_text">Notes</string>
-    <string name="bottom_bar_more_text">Menu</string>
-
-    //item_toolbar_menu
-    <string name="item_toolbar_search_text">Search</string>
-    <string name="item_toolbar_sort_text">Sort by</string>
-    <string name="item_toolbar_check_text">Check all</string>
-    <string name="item_toolbar_uncheck_text">Uncheck all</string>
-    <string name="item_toolbar_mark_text">Mark all</string>
-    <string name="item_toolbar_reminder_text">Set alarm</string>
-    <string name="item_toolbar_rename_text">Rename list</string>
-    <string name="item_toolbar_share_text">Share list</string>
-    <string name="item_toolbar_delete_text">Delete list</string>
-
-
-    //note_toolbar_menu
-    <string name="note_toolbar_save_text">Save</string>
-    <string name="note_toolbar_share_text">Share note</string>
-    <string name="note_toolbar_delete_text">Delete</string>
-
-
-    //sort_bottom_layout
-    <string name="sort_bottom_layout_title_text">Sort by:</string>
-    <string name="sort_bottom_layout_name_text">Name</string>
-    <string name="sort_bottom_layout_date_text">Date created</string>
-    <string name="sort_bottom_layout_price_text">Price</string>
-    <string name="sort_bottom_layout_noSort_text">No sort</string>
-    <string name="sort_bottom_layout_quantity_text">Quantity</string>
-
-
-    //favourites_toolbar_menu
-    <string name="favourites_toolbar_share_text">Share list</string>
-    <string name="favourites_toolbar_check_text">Check all</string>
-    <string name="favourites_toolbar_Remove_all_text">Remove all</string>
-    <string name="favourites_toolbar_mark_text">Mark all</string>
-
-
-    //item_toolbar_hold_menu
-    <string name="item_toolbar_hold_menu_copy_text">Copy</string>
-    <string name="item_toolbar_hold_menu_delete_text">Delete</string>
-    <string name="item_toolbar_hold_menu_move_text">Move</string>
-    <string name="item_toolbar_hold_menu_check_text">Check</string>
-    <string name="item_toolbar_hold_menu_unStar_text">Remove from starred</string>
-
-
-    //category_toolbar_menu
-    <string name="category_toolbar_mark_text">Mark all</string>
-    <string name="category_toolbar_delete_text">Delete</string>
-
-    //General
-    <string name="option_icon_content_description">Options Icon</string>
-    <string name="add_to_starred">Add to Starred</string>
-    <string name="remove_from_starred">Remove from Starred</string>
-    <string name="added_to_starred">Added to Starred</string>
-    <string name="removed_from_starred">Removed from Starred</string>
-
-    <string name="remove">Delete</string>
-    <string name="remove_star">Remove</string>
-    <string name="single_remove">Delete this item</string>
-    <string name="list_remove">Delete this list</string>
-    <string name="multiple_list_remove">Delete these lists</string>
-    <string name="single_note_remove">Delete this note</string>
-    <string name="single_unstar">Remove from starred</string>
-    <string name="multiple_remove">Delete these items</string>
-    <string name="multiple_notes_remove">Delete these notes</string>
-    <string name="remove_item_warning">This action cannot be undone</string>
-    <string name="remove_list_warning">This will permanently remove</string>
-    <string name="cancel">Cancel</string>
-    <string name="removed">Deleted</string>
-    <string name="user_name">Chinedu</string>
-    <string name="user_email">henryonyedekwe@gmail.com</string>
-
-    <string name="total_items_text">Items checked: </string>
-    <string name="rename_success">Item renamed</string>
-    <string name="rename_fail">Rename failed</string>
-    <string name="item_exist_already">Item already exists</string>
-    <string name="please_insert_name">Name field is empty</string>
-    <string name="price_change_success">Price changed</string>
-    <string name="please_insert_price">Price field is empty</string>
-    <string name="quantity_change_success">Quantity changed</string>
-    <string name="please_insert_quantity">Quantity field is empty</string>
-    <string name="back_to_exit">Press back again to exit app</string>
-    <string name="no_alarm_app">No app to perform this action</string>
-
-    <string name="list_created">List created</string>
-    <string name="no_list">No list</string>
-    <string name="list_exist_already">This list already exists</string>
-    <string name="insert_item_name">Item name field is empty</string>
-    <string name="share_list_total">TOTAL:</string>
-
-    <string name="list_rename_success">List renamed</string>
-    <string name="item_search_hint">Search in list</string>
-    <string name="move_to">Move to:</string>
-    <string name="copy_to">Copy to:</string>
-    <string name="moved">Item moved to </string>
-    <string name="copied">Item copied to </string>
-
-    <string name="full_star">"\u2606""\u2606""\u2606""\u2606"</string>
-    <string name="star">"\u2606""\u2606""\u2606"</string>
-
+    //voice_typing_layout
+    <string name="voice_typing_layout_Heading">Add to list</string>
+    <string name="voice_typing_layout_description">Item name</string>
+    <string name="voice_typing_cancelButton">Cancel</string>
+    <string name="voice_typing_addBtn">Add</string>
 
 
     <string-array name="units">
@@ -951,5 +914,77 @@
     </string-array>
 
 
+
+    //bottom_bar_menu
+    <string name="bottom_bar_home_text">Home</string>
+    <string name="bottom_bar_favourites_text">Starred</string>
+    <string name="bottom_bar_notes_text">Notes</string>
+    <string name="bottom_bar_more_text">Menu</string>
+
+
+    //category_toolbar_hold_menu
+    <string name="category_toolbar_mark_text">Mark all</string>
+    <string name="category_toolbar_delete_text">Delete</string>
+
+    //category_toolbar_menu
+    <string name="category_toolbar_setting_text">Settings</string>
+
+    //favourites_toolbar_hold_menu
+    <string name="favourites_toolbar_hold_menu_mark_text">Mark all</string>
+    <string name="favourites_toolbar_hold_menu_delete_text">Delete</string>
+    <string name="favourites_toolbar_hold_menu_unStar_text">Unstar</string>
+
+    //favourites_toolbar_menu
+    <string name="favourites_toolbar_share_text">Share</string>
+    <string name="favourites_toolbar_voice_text">Voice typing</string>
+    <string name="favourites_toolbar_sort_text">Sort by</string>
+    <string name="favourites_toolbar_check_text">Check all</string>
+    <string name="favourites_toolbar_unCheck_text">Uncheck all</string>
+
+    //item_toolbar_hold_menu
+    <string name="item_toolbar_hold_menu_mark_text">Mark all</string>
+    <string name="item_toolbar_hold_menu_delete_text">Delete</string>
+    <string name="item_toolbar_hold_menu_copy_text">Copy</string>
+    <string name="item_toolbar_hold_menu_move_text">Move</string>
+    <string name="item_toolbar_hold_menu_star_text">Star</string>
+    <string name="item_toolbar_hold_menu_unStar_text">Unstar</string>
+
+    //item_toolbar_menu
+    <string name="item_toolbar_menu_search_text">Search</string>
+    <string name="item_toolbar_menu_voice_text">Voice typing</string>
+    <string name="item_toolbar_menu_rename_text">Rename list</string>
+    <string name="item_toolbar_menu_share_text">Share</string>
+    <string name="item_toolbar_menu_sort_text">Sort by</string>
+    <string name="item_toolbar_menu_check_text">Check all</string>
+    <string name="item_toolbar_menu_unCheck_text">Uncheck all</string>
+    <string name="item_toolbar_menu_reminder_text">Set alarm</string>
+
+
+    //nav_menu
+    <string name="nav_home_text">Home</string>
+    <string name="nav_premium_text">Premium</string>
+    <string name="nav_reminder_text">Set alarm</string>
+    <string name="nav_extras_text">Extras</string>
+    <string name="nav_rate_text">Rate app</string>
+    <string name="nav_message_text">Message us</string>
+    <string name="nav_settings_text">Settings</string>
+    <string name="nav_about_text">About</string>
+
+    //note_toolbar_create_menu
+    <string name="note_toolbar_create_menu_voice_text">Voice typing</string>
+    <string name="note_toolbar_create_menu_save_text">Save</string>
+    <string name="note_toolbar_create_menu_share_text">Share</string>
+    <string name="note_toolbar_create_menu_delete_text">Delete</string>
+
+
+    //note_toolbar_hold_menu
+    <string name="note_toolbar_hold_menu_mark_text">Mark all</string>
+    <string name="note_toolbar_hold_menu_delete_text">Delete</string>
+
+    //note_toolbar_menu
+    <string name="note_toolbar_menu_share_text">Share</string>
+    <string name="note_toolbar_menu_voice_text">Voice typing</string>
+    <string name="note_toolbar_menu_save_text">Save</string>
+    <string name="note_toolbar_menu_delete_text">Delete</string>
 
 </resources>

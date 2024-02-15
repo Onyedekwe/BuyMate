@@ -15,7 +15,7 @@
         android:layout_gravity="start"
         android:layout_marginStart="15dp"
         android:layout_marginTop="10dp"
-        android:text="Currency symbol"
+        android:text="@string/custom_currency_dialog__edit_title"
         android:textColor="?attr/textFillColor"
         android:textSize="16sp"
         android:textStyle="bold" />
@@ -33,7 +33,7 @@
         android:layout_gravity="end"
         android:layout_marginHorizontal="10dp"
         android:layout_marginTop="20dp"
-        android:hint="Insert symbol"
+        android:hint="@string/custom_currency_dialog__desc_currency_hint"
         app:counterEnabled="true"
         app:counterMaxLength="4">
 
@@ -62,7 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="40dp"
             android:background="@android:color/transparent"
-            android:text="@string/shop_bottom_layout_cancel_button_text"
+            android:text="@string/custom_currency_dialog__CurrencyCancelButton"
             android:textAllCaps="false"
             android:textColor="?attr/textFillColor"
             android:textStyle="bold"
@@ -75,10 +75,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="?attr/buttonTint"
-            android:text="@string/shop_bottom_layout_done_button_text"
+            android:text="@string/custom_currency_dialog__currencyBtnSave"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            app:cornerRadius="5dp"
+            app:cornerRadius="20dp"
+            android:padding="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

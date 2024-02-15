@@ -5,14 +5,14 @@
 
     <item
         android:id="@+id/voice"
-        android:title="Voice typinc"
+        android:title="@string/note_toolbar_create_menu_voice_text"
         app:showAsAction="always"
         android:icon="@drawable/final_regular_voice_icon"/>
 
     <item
         android:id="@+id/save"
         android:icon="@drawable/final_regular_done_icon"
-        android:title="@string/note_toolbar_save_text"
+        android:title="@string/note_toolbar_create_menu_save_text"
         android:visible="false"
         app:showAsAction="always" />
 
@@ -20,14 +20,14 @@
     <item
         android:id="@+id/share"
         android:icon="@drawable/final_regular_share_icon"
-        android:title="@string/note_toolbar_share_text"
+        android:title="@string/note_toolbar_create_menu_share_text"
         android:visible="false"
         app:showAsAction="ifRoom" />
 
 
     <item
         android:id="@+id/delete"
-        android:title="@string/note_toolbar_delete_text"
+        android:title="@string/note_toolbar_create_menu_delete_text"
         android:visible="false"
         app:showAsAction="never" />
 </menu>

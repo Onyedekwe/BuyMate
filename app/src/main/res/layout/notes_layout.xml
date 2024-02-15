@@ -20,6 +20,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingStart="5dp"
+        android:paddingEnd="2dp"
         android:paddingTop="10dp">
 
         <TextView
@@ -31,7 +32,6 @@
             android:layout_marginEnd="3dp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="Advertising Bookpad Text"
             android:textColor="?attr/textFillColor"
             android:textSize="16sp"/>
 
@@ -44,7 +44,6 @@
             android:layout_marginBottom="5dp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="Are you tired of juggling a million different note..."
             android:textColor="?attr/itemTextAppearanceInactive"
             android:textSize="15sp" />
 
@@ -57,7 +56,6 @@
             android:layout_marginBottom="10dp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="16 min ago"
             android:textColor="?attr/itemTextAppearanceInactive"
             android:textSize="12sp" />
     </LinearLayout>

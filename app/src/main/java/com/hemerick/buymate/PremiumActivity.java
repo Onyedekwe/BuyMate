@@ -523,44 +523,6 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
         dialog.show();
     }
 
-    public void showInsertImageDialog() {
-        Dialog dialog = new Dialog(PremiumActivity.this);
-        dialog.setContentView(R.layout.custom_premium_insert_image_description_dialog);
-        dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-        TextView header = dialog.findViewById(R.id.header);
-        TextView sub_header = dialog.findViewById(R.id.sub_header);
-        Button okBtn = dialog.findViewById(R.id.okBtn);
-
-
-        if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
-            header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-            sub_header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-            okBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-        }
-
-        if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
-            header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-            sub_header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-            okBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-        }
-
-        if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
-            header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-            sub_header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-            okBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-        }
-
-        okBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
-    }
 
 
     private void updateView() {

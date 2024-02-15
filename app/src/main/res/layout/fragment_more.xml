@@ -28,7 +28,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/backgroundColor"
                 app:layout_collapseMode="pin"
-                app:title="Menu"
+                app:title="@string/fragment_more_settingToolbar"
                 app:titleTextColor="?attr/textFillColor" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -54,7 +54,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:importantForAccessibility="no"/>
 
 
                 <LinearLayout
@@ -88,7 +89,7 @@
                             android:layout_marginStart="5dp"
                             android:layout_marginTop="12dp"
                             android:fontFamily="@font/lexend"
-                            android:text="@string/adsPaneText_1"
+                            android:text="@string/fragment_more_premiumText"
                             android:textColor="@color/white"
                             android:textSize="15sp"
                             android:textStyle="bold" />
@@ -101,7 +102,7 @@
                             android:layout_marginTop="3dp"
                             android:layout_marginBottom="10dp"
                             android:fontFamily="@font/lexend"
-                            android:text="@string/adsPaneText_2"
+                            android:text="@string/fragment_more_premiumText2"
                             android:textColor="@color/white"
                             android:textSize="12sp" />
 
@@ -113,7 +114,6 @@
                         android:layout_height="80dp"
                         android:layout_gravity="center"
                         android:layout_marginEnd="5dp"
-                        android:contentDescription="@string/premium_icon_content_description"
                         android:src="@drawable/gif_diamond"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -170,7 +170,8 @@
                         android:src="@drawable/final_regular_account_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:importantForAccessibility="no" />
 
 
                     <LinearLayout
@@ -187,7 +188,7 @@
                             android:id="@+id/accountText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Account"
+                            android:text="@string/fragment_more_accountText"
                             android:textColor="?attr/textFillColor"
                             android:textSize="15sp" />
 
@@ -231,7 +232,8 @@
                         android:src="@drawable/final_regular_message_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:importantForAccessibility="no"/>
 
 
                     <TextView
@@ -240,7 +242,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginStart="30dp"
-                        android:text="Message us"
+                        android:text="@string/fragment_more_messageText"
                         android:textColor="?attr/textFillColor"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -283,7 +285,8 @@
                         android:src="@drawable/final_regular_cloud_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:importantForAccessibility="no"/>
 
 
                     <TextView
@@ -292,7 +295,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginStart="30dp"
-                        android:text="Backup"
+                        android:text="@string/fragment_more_backupText"
                         android:textColor="?attr/textFillColor"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -336,7 +339,8 @@
                         android:src="@drawable/final_regular_diamond_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:importantForAccessibility="no"/>
 
 
                     <TextView
@@ -345,7 +349,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginStart="30dp"
-                        android:text="Premium"
+                        android:text="@string/fragment_more_premiumText_2"
                         android:textColor="?attr/textFillColor"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -388,7 +392,8 @@
                         android:src="@drawable/final_regular_website_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:importantForAccessibility="no"/>
 
 
                     <TextView
@@ -397,7 +402,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginStart="30dp"
-                        android:text="Website"
+                        android:text="@string/fragment_more_websiteText"
                         android:textColor="?attr/textFillColor"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -440,7 +445,8 @@
                         android:src="@drawable/final_regular_forward_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:importantForAccessibility="no"/>
 
 
                     <TextView
@@ -449,7 +455,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginStart="30dp"
-                        android:text="Share"
+                        android:text="@string/fragment_more_shareText"
                         android:textColor="?attr/textFillColor"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -496,7 +502,6 @@
                         android:layout_height="33dp"
                         android:layout_gravity="end"
                         android:layout_marginStart="18dp"
-                        android:contentDescription="@string/rateUs_icon_content_description"
                         android:src="@drawable/gif_star"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -518,7 +523,7 @@
                             android:layout_width="200dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="23dp"
-                            android:text="@string/header_2_option_2.0"
+                            android:text="@string/fragment_more_RateText"
                             android:textColor="?attr/textFillColor"
                             android:textSize="15sp" />
 
@@ -527,7 +532,7 @@
                             android:layout_width="200dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="23dp"
-                            android:text="@string/header_2_option_2.1"
+                            android:text="@string/fragment_more_RateText2"
                             android:textColor="?attr/itemTextAppearanceInactive"
                             android:textSize="15sp" />
 
@@ -570,7 +575,8 @@
                         android:src="@drawable/final_regular_twitter_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:importantForAccessibility="no"/>
 
 
                     <TextView
@@ -579,7 +585,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginStart="30dp"
-                        android:text="Follow on Twitter"
+                        android:text="@string/fragment_more_twitterText"
                         android:textColor="?attr/textFillColor"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -624,7 +630,8 @@
                         android:src="@drawable/final_regular_settings_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:importantForAccessibility="no"/>
 
 
                     <TextView
@@ -633,7 +640,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginStart="30dp"
-                        android:text="Settings"
+                        android:text="@string/fragment_more_settingText"
                         android:textColor="?attr/textFillColor"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -678,7 +685,8 @@
                         android:src="@drawable/final_regular_info_circle_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:importantForAccessibility="no"/>
 
 
                     <TextView
@@ -687,7 +695,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginStart="30dp"
-                        android:text="About"
+                        android:text="@string/fragment_more_aboutText"
                         android:textColor="?attr/textFillColor"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="parent"

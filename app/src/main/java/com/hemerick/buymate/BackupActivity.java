@@ -318,7 +318,7 @@ public class BackupActivity extends AppCompatActivity {
         TextView alertText = dialog.findViewById(R.id.alert_text);
         Button backup = dialog.findViewById(R.id.backup);
         TextView okBtn = dialog.findViewById(R.id.okBtn);
-
+        header.setText(getString(R.string.BackupActivity__restoreHeader));
         alertText.setText(getString(R.string.BackupActivity__restoreWarning));
         backup.setText(getString(R.string.BackupActivity__restoreProceedBtn));
         okBtn.setText(getString(R.string.BackupActivity__restoreCancelBtn));

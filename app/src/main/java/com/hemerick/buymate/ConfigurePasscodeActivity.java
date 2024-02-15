@@ -290,6 +290,9 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
         TextView Header = dialog.findViewById(R.id.header);
         TextView subHeader = dialog.findViewById(R.id.sub_header);
         PinView pinView = dialog.findViewById(R.id.password_pin);
+
+
+
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         pinView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -332,20 +335,20 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
 
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
-            Header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            Header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
             subHeader.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
 
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
 
-            Header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            Header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_text));
             subHeader.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
 
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
-            Header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            Header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_max_text));
             subHeader.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
         }
 

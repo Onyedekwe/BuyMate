@@ -21,7 +21,8 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginStart="2dp"
-            android:src="@drawable/buymate_icon" />
+            android:src="@drawable/buymate_icon"
+            android:importantForAccessibility="no" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -49,7 +50,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_gravity="center"
-            android:text="Version: "
+            android:text="@string/custom_app_version_dialog__version_text1"
             android:textColor="?attr/textFillColor"
             android:textSize="20sp" />
 
@@ -59,7 +60,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_gravity="center"
-            android:text="1.0.0"
+            android:text="@string/app_version"
             android:textColor="?attr/itemTextAppearanceInactive"
             android:textSize="20sp" />
     </LinearLayout>
@@ -81,7 +82,7 @@
         android:layout_marginBottom="30dp"
         android:backgroundTint="?attr/buttonTint"
         android:gravity="center"
-        android:text="Close"
+        android:text="@string/custom_app_version_dialog__version_close"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="18sp" />

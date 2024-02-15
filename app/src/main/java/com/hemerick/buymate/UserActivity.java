@@ -193,20 +193,6 @@ public class UserActivity extends AppCompatActivity {
         loadSharedPreferences();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.user_activity_toolbar_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.save) {
-
-        }
-        return true;
-    }
 
 
     public void showEditNameDialog() {

@@ -10,13 +10,13 @@
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/voice"
-        android:title="Voice typinc"
+        android:title="@string/favourites_toolbar_voice_text"
         app:showAsAction="always"
         android:icon="@drawable/final_regular_voice_icon"/>
 
     <item
         android:id="@+id/sort"
-        android:title="@string/item_toolbar_sort_text"
+        android:title="@string/favourites_toolbar_sort_text"
         app:showAsAction="never" />
 
     <item
@@ -26,7 +26,7 @@
 
     <item
         android:id="@+id/unCheck"
-        android:title="@string/item_toolbar_uncheck_text"
+        android:title="@string/favourites_toolbar_unCheck_text"
         app:showAsAction="never" />
 
 

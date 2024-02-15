@@ -23,7 +23,6 @@
         android:layout_marginHorizontal="5dp"
         android:layout_marginTop="20dp"
         android:hint="@string/update_category_name_textBox_hint"
-        android:textColor="?attr/colorOnSurface"
         app:endIconMode="clear_text">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -32,6 +31,7 @@
             android:layout_height="wrap_content"
             android:inputType="textMultiLine|textCapSentences"
             android:lineSpacingExtra="4dp"
+            android:textColor="?attr/textFillColor"
             android:maxLines="5"
             android:scrollbars="vertical" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -41,15 +41,14 @@
         android:id="@+id/save"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:layout_marginHorizontal="40dp"
+        android:layout_marginHorizontal="50dp"
         android:layout_marginTop="30dp"
         android:layout_marginBottom="20dp"
         android:backgroundTint="?attr/buttonTint"
         android:gravity="center"
         android:text="@string/update_category_name_layout_button_text"
         android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="18sp" />
+        android:textColor="@color/white"/>
 
 
 </LinearLayout>

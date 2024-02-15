@@ -18,38 +18,45 @@
             android:orientation="horizontal"
             android:padding="10dp">
 
-            <TextView
-                android:id="@+id/category_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Shopping"
-                android:fontFamily="@font/lexend"
-                android:letterSpacing="0.05"
-                android:maxWidth="150dp"
-                android:layout_gravity="center_vertical"
-                android:gravity="center"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="#026EAA"/>
-
-
-            <TextView
-                android:id="@+id/item_count_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_marginHorizontal="8dp"
-                android:layout_gravity="center_vertical"
-                android:text="[0]"
-                android:textColor="#858E93"
-                android:textSize="15sp"/>
-
-
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/category_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/shopping_widget_provider_category_text_view"
+                    android:fontFamily="@font/lexend"
+                    android:letterSpacing="0.05"
+                    android:maxWidth="150dp"
+                    android:gravity="start"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="#026EAA"/>
+
+
+                <TextView
+                    android:id="@+id/item_count_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textColor="#858E93"
+                    android:textSize="14sp"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:layout_gravity="center"
                 android:gravity="end">
 
                 <ImageView
@@ -57,13 +64,14 @@
                     android:layout_width="22dp"
                     android:layout_height="22dp"
                     android:layout_marginHorizontal="15dp"
-                    android:src="@drawable/final_regular_sync_icon" />
+                    android:src="@drawable/final_regular_sync_icon"
+                    android:importantForAccessibility="no" />
                 <ImageView
                     android:id="@+id/widget_add_icon"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-
-                    android:src="@drawable/final_regular_log_in_icon" />
+                    android:layout_width="23dp"
+                    android:layout_height="23dp"
+                    android:src="@drawable/final_regular_home_widget_icon"
+                    android:importantForAccessibility="no" />
             </LinearLayout>
         </LinearLayout>
 
@@ -86,7 +94,8 @@
                 android:src="@drawable/illustration_no_search_data"
                 android:gravity="center"
                 android:padding="10dp"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:importantForAccessibility="no" />
         </FrameLayout>
 
         <LinearLayout
@@ -100,7 +109,8 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginStart="2dp"
-                android:src="@drawable/buymate_icon" />
+                android:src="@drawable/buymate_icon"
+                android:importantForAccessibility="no" />
 
             <TextView
                 android:layout_width="wrap_content"

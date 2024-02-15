@@ -356,6 +356,27 @@ public class CreateNoteActivity extends AppCompatActivity {
             Button deleteButton = dialog.findViewById(R.id.delete_button);
             Button cancelButton = dialog.findViewById(R.id.cancel_button);
 
+            if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
+                delete_heading.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                delete_message.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                deleteButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                cancelButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            }
+
+            if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
+                delete_heading.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                delete_message.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                deleteButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                cancelButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            }
+
+            if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
+                delete_heading.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                delete_message.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                deleteButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                cancelButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            }
+
             delete_heading.setText(getString(R.string.CreateNoteActivity__deleteNote));
             delete_message.setText(getString(R.string.CreateNoteActivity__deleteWarning));
 

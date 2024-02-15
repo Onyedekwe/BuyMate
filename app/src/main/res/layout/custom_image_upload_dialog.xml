@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:layout_marginStart="15dp"
-            android:text="Add image"
+            android:text="@string/custom_edit_username_dialog__image_title"
             android:textColor="?attr/textFillColor"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -29,7 +29,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:layout_marginStart="2dp"
-            android:text="(Item)"
             android:textColor="?attr/itemTextAppearanceInactive"
             android:textSize="16sp" />
     </LinearLayout>
@@ -63,8 +62,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="37dp"
                 android:layout_gravity="center"
-                android:contentDescription="@string/edit_item_copy_icon_content_description"
-                android:src="@drawable/final_regular_camera_icon">
+                android:src="@drawable/final_regular_camera_icon"
+                android:importantForAccessibility="no">
 
             </ImageView>
 
@@ -75,7 +74,7 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="10dp"
                 android:padding="5dp"
-                android:text="Take Picture"
+                android:text="@string/custom_edit_username_dialog__takePictureText"
                 android:textColor="?attr/textFillColor" />
         </LinearLayout>
 
@@ -101,8 +100,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="37dp"
                 android:layout_gravity="center"
-                android:contentDescription="@string/edit_item_copy_icon_content_description"
-                android:src="@drawable/final_regular_image_icon">
+                android:src="@drawable/final_regular_image_icon"
+                android:importantForAccessibility="no">
 
             </ImageView>
 
@@ -113,7 +112,7 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="10dp"
                 android:padding="5dp"
-                android:text="Upload picture"
+                android:text="@string/custom_edit_username_dialog__uploadPictureText"
                 android:textColor="?attr/textFillColor" />
         </LinearLayout>
 

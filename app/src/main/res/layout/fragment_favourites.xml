@@ -58,7 +58,6 @@
                 android:gravity="start"
                 android:maxLines="1"
                 android:textColor="@color/white"
-                android:textSize="14sp"
                 app:layout_constraintBottom_toTopOf="@+id/total_layout"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -78,9 +77,8 @@
                     android:layout_marginStart="10dp"
                     android:ellipsize="end"
                     android:gravity="start"
-                    android:text="Total:"
+                    android:text="@string/fragment_favourites_subtotal"
                     android:textColor="@color/white"
-                    android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -89,12 +87,12 @@
                     android:id="@+id/eyeView"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:contentDescription="@string/item_activity_currency_icon_content_description"
                     android:padding="8dp"
                     android:src="@drawable/final_regular_eye"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/text2"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:importantForAccessibility="no" />
 
 
                 <Button
@@ -107,7 +105,8 @@
                     android:paddingStart="15dp"
                     android:paddingEnd="15dp"
                     android:clickable="true"
-                    android:text="@string/itemActivityFAB"
+                    android:focusable="true"
+                    android:text="@string/fragment_favourites_addItem_fav_fab"
                     android:textAllCaps="false"
                     android:textColor="#37414A"
                     app:backgroundTint="@color/white"
@@ -133,9 +132,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:text="NGN"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
@@ -149,9 +146,7 @@
                     android:ellipsize="end"
                     android:gravity="start|center"
                     android:maxLines="1"
-                    android:text="NGN"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@id/currency_box" />
@@ -226,8 +221,8 @@
                         android:layout_width="180dp"
                         android:layout_height="180dp"
                         android:layout_gravity="center"
-                        android:contentDescription="@string/fragment_favourites_illustration_content_description"
-                        app:srcCompat="@drawable/illustration_starred_items" />
+                        app:srcCompat="@drawable/illustration_starred_items"
+                        android:importantForAccessibility="no" />
 
                     <TextView
                         android:id="@+id/empty_text1"
@@ -237,7 +232,6 @@
                         android:layout_marginTop="5dp"
                         android:text="@string/fragment_favourites_illustration_text_1"
                         android:textColor="?attr/textFillColor"
-                        android:textSize="15sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -246,8 +240,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="@string/fragment_favourites_illustration_text_2"
-                        android:textColor="?attr/textFillColor"
-                        android:textSize="15sp" />
+                        android:textColor="?attr/textFillColor"/>
 
                     <TextView
                         android:id="@+id/empty_text3"
@@ -255,8 +248,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="@string/fragment_favourites_illustration_text_3"
-                        android:textColor="?attr/textFillColor"
-                        android:textSize="15sp" />
+                        android:textColor="?attr/textFillColor"/>
                 </LinearLayout>
 
                 <Space

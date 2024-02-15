@@ -13,9 +13,8 @@
         android:layout_gravity="start"
         android:layout_marginStart="5dp"
         android:layout_marginTop="10dp"
-        android:text="Dark mode"
+        android:text="@string/set_theme_layout_title"
         android:textColor="?attr/textFillColor"
-        android:textSize="16sp"
         android:textStyle="bold" />
 
     <LinearLayout
@@ -24,43 +23,40 @@
         android:background="?attr/trackColor"
         android:orientation="vertical" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="10dp"
-        android:orientation="horizontal">
 
         <RadioGroup
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp">
 
             <RadioButton
                 android:id="@+id/radio_button_default"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Use system"
-                android:textColor="?attr/textFillColor"
-                android:textSize="16sp" />
+                android:text="@string/set_theme_layout_radio_button_default"
+                android:textColor="?attr/textFillColor"/>
 
             <RadioButton
                 android:id="@+id/radio_button_off"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Off"
-                android:textColor="?attr/textFillColor"
-                android:textSize="16sp" />
+                android:text="@string/set_theme_layout_radio_button_off"
+                android:textColor="?attr/textFillColor"/>
 
             <RadioButton
                 android:id="@+id/radio_button_on"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="On"
-                android:textColor="?attr/textFillColor"
-                android:textSize="16sp" />
+                android:text="@string/set_theme_layout_radio_button_on"
+                android:textColor="?attr/textFillColor"/>
         </RadioGroup>
 
-    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/trackColor"
+        android:orientation="vertical" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/dim_layout"
@@ -73,10 +69,9 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginStart="5dp"
-            android:text="Dim"
+            android:layout_marginStart="10dp"
+            android:text="@string/set_theme_layout_dimSwitch"
             android:textColor="?attr/textFillColor"
-            android:textSize="25sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -86,7 +81,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginEnd="15dp"
             app:buttonTint="?attr/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

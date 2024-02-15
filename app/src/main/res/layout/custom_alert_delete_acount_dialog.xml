@@ -79,7 +79,8 @@
                 android:text="@string/custom_alert_delete_account_dialog__BtnSave"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                app:cornerRadius="5dp"
+                app:cornerRadius="20dp"
+                android:padding="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

@@ -14,7 +14,7 @@
         android:layout_gravity="start"
         android:layout_marginStart="15dp"
         android:layout_marginTop="10dp"
-        android:text="Select action"
+        android:text="@string/custom_swipe_action_dialog__edit_title"
         android:textColor="?attr/textFillColor"
         android:textSize="16sp"
         android:textStyle="bold" />
@@ -25,23 +25,20 @@
         android:background="?attr/trackColor"
         android:orientation="vertical" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:orientation="horizontal">
+
 
         <RadioGroup
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp">
 
             <RadioButton
                 android:id="@+id/radio_button_rename"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Rename"
+                android:text="@string/custom_swipe_action_dialog__radio_button_rename"
                 android:textColor="?attr/textFillColor"
                 android:textSize="16sp" />
 
@@ -50,7 +47,7 @@
                 android:id="@+id/radio_button_check"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Check &amp; uncheck item"
+                android:text="@string/custom_swipe_action_dialog__radio_button_check"
                 android:textColor="?attr/textFillColor"
                 android:textSize="16sp" />
 
@@ -58,7 +55,7 @@
                 android:id="@+id/radio_button_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Change price"
+                android:text="@string/custom_swipe_action_dialog__radio_button_price"
                 android:textColor="?attr/textFillColor"
                 android:textSize="16sp" />
 
@@ -67,7 +64,7 @@
                 android:id="@+id/radio_button_quantity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Change quantity"
+                android:text="@string/custom_swipe_action_dialog__radio_button_quantity"
                 android:textColor="?attr/textFillColor"
                 android:textSize="16sp" />
 
@@ -75,7 +72,7 @@
                 android:id="@+id/radio_button_star"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Star &amp; unstar item"
+                android:text="@string/custom_swipe_action_dialog__radio_button_star"
                 android:textColor="?attr/textFillColor"
                 android:textSize="16sp" />
 
@@ -84,7 +81,7 @@
                 android:id="@+id/radio_button_delete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Delete"
+                android:text="@string/custom_swipe_action_dialog__radio_button_delete"
                 android:textColor="?attr/textFillColor"
                 android:textSize="16sp" />
 
@@ -93,7 +90,7 @@
                 android:id="@+id/radio_button_options"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Show options"
+                android:text="@string/custom_swipe_action_dialog__radio_button_options"
                 android:textColor="?attr/textFillColor"
                 android:textSize="16sp" />
 
@@ -101,11 +98,9 @@
                 android:id="@+id/radio_button_do_nothing"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Do nothing"
+                android:text="@string/custom_swipe_action_dialog__radio_button_do_nothing"
                 android:textColor="?attr/textFillColor"
                 android:textSize="16sp" />
 
         </RadioGroup>
-
-    </LinearLayout>
 </LinearLayout>

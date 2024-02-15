@@ -48,7 +48,7 @@
             android:background="@drawable/bg_search_view_curve_corner"
             app:iconifiedByDefault="false"
             app:queryBackground="@android:color/transparent"
-            app:queryHint="@string/item_search_hint"
+            app:queryHint="@string/fragment_notes_search_View"
             app:searchIcon="@drawable/final_regular_search_icon_2" />
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -92,8 +92,8 @@
                         android:layout_height="170dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="50dp"
-                        android:contentDescription="@string/fragment_notes_illustration_content_description"
-                        app:srcCompat="@drawable/illustration_empty_list_2" />
+                        app:srcCompat="@drawable/illustration_empty_list_2"
+                        android:importantForAccessibility="no" />
 
                     <TextView
                         android:id="@+id/emptyTEXT1"
@@ -140,7 +140,6 @@
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="30dp"
-        android:contentDescription="@string/fragment_notes_fab_content_description"
         android:focusable="true"
         android:src="@drawable/final_regular_add_icon"
         android:textColor="@color/white"

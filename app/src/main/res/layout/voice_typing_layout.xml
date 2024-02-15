@@ -12,8 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:text="Add to list"
+        android:text="@string/voice_typing_layout_Heading"
         android:textAlignment="center"
+        android:textColor="?attr/textFillColor"
         android:textStyle="bold" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -22,8 +23,8 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="5dp"
         android:layout_marginTop="20dp"
-        android:hint="@string/update_item_name_textBox_hint"
-        android:textColor="?attr/colorOnSurface"
+        android:hint="@string/voice_typing_layout_description"
+        android:textColor="?attr/textFillColor"
         app:endIconMode="clear_text">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -33,6 +34,7 @@
             android:inputType="textMultiLine|textCapSentences"
             android:lineSpacingExtra="4dp"
             android:maxLines="5"
+            android:textColor="?attr/textFillColor"
             android:scrollbars="vertical" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -51,10 +53,9 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="40dp"
             android:background="@android:color/transparent"
-            android:text="@string/shop_bottom_layout_cancel_button_text"
+            android:text="@string/voice_typing_cancelButton"
             android:textAllCaps="false"
             android:textColor="?attr/textFillColor"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/addBtn"
             app:layout_constraintTop_toTopOf="parent" />
@@ -64,7 +65,7 @@
             android:layout_width="110dp"
             android:layout_height="56dp"
             android:backgroundTint="?attr/buttonTint"
-            android:text="Add"
+            android:text="@string/voice_typing_addBtn"
             android:textAllCaps="false"
             android:textColor="@color/white"
             app:cornerRadius="20dp"

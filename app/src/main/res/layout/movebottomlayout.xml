@@ -33,14 +33,14 @@
         android:backgroundTint="?attr/colorSurface"
         app:iconifiedByDefault="false"
         app:queryBackground="@android:color/transparent"
-        app:queryHint="@string/fragment_home_search_view_hint"
+        app:queryHint="@string/move_bottom_layout_search_bar"
         app:searchIcon="@drawable/final_regular_search_icon_2" />
 
     <Button
         android:id="@+id/create_new_list"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_marginHorizontal="40dp"
+        android:layout_marginHorizontal="50dp"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="15dp"
         android:backgroundTint="?attr/buttonTint"
@@ -70,14 +70,15 @@
             android:layout_width="130dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
-            app:srcCompat="@drawable/illustration_no_search_data" />
+            app:srcCompat="@drawable/illustration_no_search_data"
+            android:importantForAccessibility="no" />
 
         <TextView
             android:id="@+id/emptyTEXT1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="No item"
+            android:text="@string/move_bottom_layout_emptyTEXT1"
             android:textColor="?attr/textFillColor"
             android:textSize="15sp"
             android:textStyle="bold" />
