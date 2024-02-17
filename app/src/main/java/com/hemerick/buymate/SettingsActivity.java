@@ -49,6 +49,7 @@ public class SettingsActivity extends AppCompatActivity {
     private ConstraintLayout CurrencyLayout;
     private ConstraintLayout AppLockLayout;
     private ConstraintLayout ItemSuggestionLayout;
+    private ConstraintLayout ScreenLayout;
     private UserSettings settings = new UserSettings();
     private PowerManager.WakeLock wakeLock;
 
@@ -124,7 +125,7 @@ public class SettingsActivity extends AppCompatActivity {
         CurrencyLayout = findViewById(R.id.currencyLayout);
         AppLockLayout = findViewById(R.id.lockLayout);
         ItemSuggestionLayout = findViewById(R.id.itemSuggestionLayout);
-
+        ScreenLayout = findViewById(R.id.screenLayout);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -158,6 +159,18 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
 
+
+        ScreenLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(keepScreenBrightSwitch.isChecked()){
+                    keepScreenBrightSwitch.setChecked(false);
+                }else{
+                    keepScreenBrightSwitch.setChecked(true);
+                }
+            }
+        });
+
         keepScreenBrightSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -188,6 +201,17 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
+
+        MultiplyLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(multiplySwitch.isChecked()){
+                    multiplySwitch.setChecked(false);
+                }else{
+                    multiplySwitch.setChecked(true);
+                }
+            }
+        });
         multiplySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -202,6 +226,16 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
+        DisablePriceLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(disablePriceSwitch.isChecked()){
+                    disablePriceSwitch.setChecked(false);
+                }else{
+                    disablePriceSwitch.setChecked(true);
+                }
+            }
+        });
         disablePriceSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -457,7 +491,16 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-
+        dim_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(dim_switch.isChecked()){
+                    dim_switch.setChecked(false);
+                }else{
+                    dim_switch.setChecked(true);
+                }
+            }
+        });
         dim_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

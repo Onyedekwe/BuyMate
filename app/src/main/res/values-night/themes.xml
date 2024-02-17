@@ -46,6 +46,9 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/backgroundColor</item>
         <!-- <item name="fontFamily">@font/lexend</item> -->
+        <item name="android:letterSpacing">0.04</item>
+
+
         <item name="backgroundColor">#2d383c</item>
         <item name="colorSurface">#424D52</item>
         <item name="trackColor">#6E7780</item>
@@ -57,6 +60,8 @@
         <item name="iconTint">#FFFFFF</item>
         <item name="buttonTint">?attr/colorPrimary</item>
         <item name="itemTextAppearanceInactive">@color/inactive_text_color</item>
+
+
     </style>
 
     <style name="TimePickerTheme">

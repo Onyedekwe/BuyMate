@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/bg_bottom_popup"
     android:orientation="vertical">
 
@@ -39,7 +40,8 @@
             android:id="@+id/check_name_ascend"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            app:buttonTint="?attr/colorSecondaryVariant"/>
 
         <TextView
             android:id="@+id/sort_nameText_ascend"
@@ -75,7 +77,8 @@
             android:id="@+id/check_name_descend"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            app:buttonTint="?attr/colorSecondaryVariant"/>
 
         <TextView
             android:id="@+id/sort_nameText_descend"
@@ -112,7 +115,8 @@
             android:id="@+id/check_date_ascend"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            app:buttonTint="?attr/colorSecondaryVariant"/>
 
         <TextView
             android:id="@+id/sort_dateText_ascend"
@@ -148,7 +152,8 @@
             android:id="@+id/check_date_descend"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            app:buttonTint="?attr/colorSecondaryVariant"/>
 
         <TextView
             android:id="@+id/sort_dateText_descend"
@@ -185,7 +190,8 @@
             android:id="@+id/check_price_ascend"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            app:buttonTint="?attr/colorSecondaryVariant"/>
 
         <TextView
             android:id="@+id/price_text_ascend"
@@ -221,7 +227,8 @@
             android:id="@+id/check_price_descend"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            app:buttonTint="?attr/colorSecondaryVariant"/>
 
         <TextView
             android:id="@+id/price_text_descend"
@@ -257,7 +264,8 @@
             android:id="@+id/check_quantity_ascend"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            app:buttonTint="?attr/colorSecondaryVariant"/>
 
         <TextView
             android:id="@+id/sort_quantityText_ascend"
@@ -293,7 +301,8 @@
             android:id="@+id/check_quantity_descend"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            app:buttonTint="?attr/colorSecondaryVariant"/>
 
         <TextView
             android:id="@+id/sort_quantityText_descend"

@@ -354,7 +354,32 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                     dialog.show();
 
 
+                    TextView heading = dialog.findViewById(R.id.dialogText);
+                    TextView subHeading = dialog.findViewById(R.id.dialogText2);
                     Button okay = dialog.findViewById(R.id.okBtn);
+
+
+                    if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
+                        heading.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                        subHeading.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                        okay.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+                    }
+
+                    if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
+                        heading.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                        subHeading.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                        okay.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+                    }
+
+                    if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
+                        heading.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                        subHeading.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                        okay.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+                    }
+
+
+
+
                     okay.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -497,12 +522,13 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                             if (Items.size() == 0) {
                                 Intent intent = new Intent(ItemActivity.this, HomeActivity.class);
                                 startActivity(intent);
+                            }else{
+                                shopItemAdapter.disableSelection();
+                                shopItemAdapter.notifyDataSetChanged();
+                                menu_delete_dialog.dismiss();
                             }
-                            shopItemAdapter.disableSelection();
-                            recreate();
 
-                            shopItemAdapter.notifyDataSetChanged();
-                            menu_delete_dialog.dismiss();
+
                         }
                     });
 
@@ -3989,7 +4015,6 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
     @Override
     public void onRefresh() {
-
         swipeRefreshLayout.setRefreshing(false);
         recreate();
 

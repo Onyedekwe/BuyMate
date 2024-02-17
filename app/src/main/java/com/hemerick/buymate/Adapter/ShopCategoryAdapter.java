@@ -170,7 +170,6 @@ public class ShopCategoryAdapter extends RecyclerView.Adapter<ShopCategoryAdapte
         isEnable = false;
         isSelectAll = false;
         selectList.clear();
-        notifyDataSetChanged();
         ((AppCompatActivity) getContext()).supportInvalidateOptionsMenu();
     }
 

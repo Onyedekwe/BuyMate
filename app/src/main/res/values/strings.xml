@@ -14,6 +14,15 @@
     //ShopMoveAdapter
     <string name="ShopMoveAdapter__move_successful">Item moved to</string>
 
+    //ViewPagerAdapter
+    <string name="ViewPagerAdapter_heading_1">Always remember what to buy</string>
+    <string name="ViewPagerAdapter_heading_2">Budget wisely, avoid impulse buys</string>
+    <string name="ViewPagerAdapter_heading_3">Share your list effortlessly</string>
+    <string name="ViewPagerAdapter_sub_heading_1">Easily make list and never forget to buy anything again.</string>
+    <string name="ViewPagerAdapter_sub_heading_2">Manage your budget, shop only what\'s on your list</string>
+    <string name="ViewPagerAdapter_sub_heading_3">Connect with family, friends and colleagues by sharing list as text or PDFs.</string>
+
+
 
 
     //Firebase
@@ -234,6 +243,8 @@
     <string name="MoreFragment__account">Account</string>
     <string name="MoreFragment__loginPrompt">Please login before you can proceed</string>
     <string name="MoreFragment__login">Login</string>
+    <string name="MoreFragment__premiumText1">Congratulations!</string>
+    <string name="MoreFragment__premiumText2">You are enjoying Buymate\'s Premium Version</string>
 
 
     //NotesFragment
@@ -345,8 +356,12 @@
     <string name="UserActivity__deleteAccText2">will be removed from the cloud permanently.</string>
     <string name="UserActivity__accountDeleted">Account deleted</string>
 
-    ///////////////////////////////////////////////
 
+    //OnboardingActivity
+    <string name="OnboardingActivity__Next">Next</string>
+    <string name="OnboardingActivity__Start">Start</string>
+
+    ///////////////////////////////////////////////
 
 
     //activity_about
@@ -499,7 +514,6 @@
     <string name="activity_signup__loginText2">Log in</string>
 
 
-
     //activity_swipe_setting
     <string name="activity_swipe_setting__swipeToolbar">Swipe action</string>
     <string name="activity_swipe_setting__swipeLeftTextHeader">Swipe left</string>
@@ -521,7 +535,12 @@
     <string name="activity_user__change_passwordText">Change password</string>
     <string name="activity_user__logoutText">Log out</string>
     <string name="activity_user__delete_accountText">Delete account</string>
+    <string name="activity_user__userNameUpdated">Username updated</string>
 
+    //activity_onboarding
+    <string name="activity_onboarding_skip">Skip</string>
+    <string name="activity_onboarding_back">Back</string>
+    <string name="activity_onboarding_next">Next</string>
 
     //category_title_set_popup
     <string name="category_title_set_popup__emptyText1">Enter list name</string>
@@ -914,7 +933,6 @@
     </string-array>
 
 
-
     //bottom_bar_menu
     <string name="bottom_bar_home_text">Home</string>
     <string name="bottom_bar_favourites_text">Starred</string>
@@ -986,5 +1004,11 @@
     <string name="note_toolbar_menu_voice_text">Voice typing</string>
     <string name="note_toolbar_menu_save_text">Save</string>
     <string name="note_toolbar_menu_delete_text">Delete</string>
+
+
+
+
+
+
 
 </resources>

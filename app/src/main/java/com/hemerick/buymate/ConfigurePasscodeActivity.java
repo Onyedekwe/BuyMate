@@ -46,7 +46,7 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
     boolean allowUncheckMethod = false;
     boolean allowCheckMethod = false;
 
-    ConstraintLayout passwordLayout, removePasswordLayout;
+    ConstraintLayout passwordLayout, removePasswordLayout, fingerPrintLayout;
     SwitchCompat fingerprintSwitcher;
     TextView passwordText, fingerPrintText, removePasswordText;
 
@@ -103,6 +103,7 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
         fingerPrintText = findViewById(R.id.fingerprint_TextHeader);
         fingerprintSwitcher = findViewById(R.id.fingerprint_switch);
         removePasswordText = findViewById(R.id.remove_passwordTextHeader);
+        fingerPrintLayout = findViewById(R.id.fingerPrintLayout);
 
 
         removePasswordLayout.setOnClickListener(new View.OnClickListener() {
@@ -127,6 +128,16 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
         });
 
 
+        fingerPrintLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(fingerprintSwitcher.isChecked()){
+                    fingerprintSwitcher.setChecked(false);
+                }else{
+                    fingerprintSwitcher.setChecked(true);
+                }
+            }
+        });
         fingerprintSwitcher.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

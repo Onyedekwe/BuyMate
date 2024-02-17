@@ -38,34 +38,51 @@ public class SplashActivity extends AppCompatActivity {
             }
         }, 500);
 
-        if (settings.getIsAuthenticated().equals(UserSettings.NOT_AUTHENTICATED)) {
+
+        if (settings.getIsAppFirstStart().equals(UserSettings.YES_APP_FIRST_START)) {
+
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Intent intent = new Intent(SplashActivity.this, SignUpActivity.class);
+                    Intent intent = new Intent(SplashActivity.this, OnboardingActivity.class);
                     startActivity(intent);
                     finish();
                 }
             }, 1500);
+
         } else {
 
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Intent intentHome, intentPasscode;
-                    if (settings.getPassword().equals(UserSettings.NOT_SET_PASSWORD)) {
-                        intentHome = new Intent(SplashActivity.this, HomeActivity.class);
-                        startActivity(intentHome);
-                        finish();
-                    } else {
-                        intentPasscode = new Intent(SplashActivity.this, InsertPasscodeActivity.class);
-                        startActivity(intentPasscode);
+            if (settings.getIsAuthenticated().equals(UserSettings.NOT_AUTHENTICATED)) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent signup_intent = new Intent(SplashActivity.this, SignUpActivity.class);
+                        startActivity(signup_intent);
                         finish();
                     }
-                }
-            }, 1500);
+                }, 1500);
+            } else {
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intentHome, intentPasscode;
+                        if (settings.getPassword().equals(UserSettings.NOT_SET_PASSWORD)) {
+                            intentHome = new Intent(SplashActivity.this, HomeActivity.class);
+                            startActivity(intentHome);
+                            finish();
+                        } else {
+                            intentPasscode = new Intent(SplashActivity.this, InsertPasscodeActivity.class);
+                            startActivity(intentPasscode);
+                            finish();
+                        }
+                    }
+                }, 1500);
+
+            }
 
         }
+
     }
 
     public void updateView() {
@@ -104,6 +121,9 @@ public class SplashActivity extends AppCompatActivity {
 
         String authenticated = sharedPreferences.getString(UserSettings.IS_AUTHENTICATED, UserSettings.NOT_AUTHENTICATED);
         settings.setIsAuthenticated(authenticated);
+
+        String isAppFirstStart = sharedPreferences.getString(UserSettings.APP_FIRST_START, UserSettings.YES_APP_FIRST_START);
+        settings.setIsAppFirstStart(isAppFirstStart);
 
         updateView();
     }

@@ -54,7 +54,7 @@
         <item name="stTextColor">#fff</item>
         <!--<item name="stFont">@font/retrofont</item> -->
         <item name="stTextSize">16sp</item>
-        <item name="stColorBackground">?attr/colorPrimary</item>
+        <item name="stColorBackground">#3A3D3F</item>
         <!--  <item name="stIconEnd">@drawable/final_close_icon</item> -->
         <item name="stLength">SHORT</item>
         LONG or SHORT
@@ -67,7 +67,7 @@
         <item name="stTextColor">#fff</item>
         <!--<item name="stFont">@font/retrofont</item> -->
         <item name="stTextSize">16sp</item>
-        <item name="stColorBackground">?attr/colorPrimary</item>
+        <item name="stColorBackground">#3A3D3F</item>
         <!--  <item name="stIconEnd">@drawable/final_close_icon</item> -->
         <item name="stLength">SHORT</item>
         LONG or SHORT

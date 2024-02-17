@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -264,16 +265,17 @@ public class UserActivity extends AppCompatActivity {
                             editor.putString(UserSettings.USER_NAME, settings.getUsername());
                             editor.apply();
 
-                            userNameText.setText(first_name);
+
                             dialog.dismiss();
                             progressBar.setVisibility(View.INVISIBLE);
+                            StyleableToast.makeText(UserActivity.this, getString(R.string.activity_user__userNameUpdated), R.style.custom_toast).show();
+                            userNameText.setText(first_name);
                         }
                     }, 1500);
 
 
                 } else {
-                    StyleableToast.makeText(UserActivity.this, getString(R.string.UserActivity__emptyName), R.style.custom_toast).show();
-
+                    Toast.makeText(UserActivity.this, getString(R.string.UserActivity__emptyName), Toast.LENGTH_SHORT).show();
                 }
 
             }

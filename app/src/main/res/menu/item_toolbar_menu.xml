@@ -8,7 +8,7 @@
         android:icon="@drawable/final_regular_search_icon"
         android:title="@string/item_toolbar_menu_search_text"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/voice"

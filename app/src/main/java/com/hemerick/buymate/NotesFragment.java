@@ -224,24 +224,26 @@ public class NotesFragment extends Fragment implements ShopNotesAdapter.OnNoteLi
                                 note_date_list.remove(finalSelectListDate.get(i));
                             }
 
+                            shopNotesAdapter.disableSelection();
+                            menu_delete_dialog.dismiss();
                             if (note_heading_list.size() == 0) {
                                 boolean checkEmpty = shopNotesAdapter.checkEmpty();
                                 if (checkEmpty) {
                                     recyclerView.setVisibility(View.GONE);
                                     emptyNotesLayout.setVisibility(View.VISIBLE);
                                 }
+                            }else{
+
+                                searchEditText.setText("");
+
+                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                fragmentTransaction.replace(R.id.framelayoutContainer, new NotesFragment());
+                                fragmentTransaction.commit();
+
+
                             }
 
-                            shopNotesAdapter.disableSelection();
-                            searchEditText.setText("");
-
-                            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                            fragmentTransaction.replace(R.id.framelayoutContainer, new NotesFragment());
-                            fragmentTransaction.commit();
-
-                            shopNotesAdapter.notifyDataSetChanged();
-                            menu_delete_dialog.dismiss();
                         }
                     });
 

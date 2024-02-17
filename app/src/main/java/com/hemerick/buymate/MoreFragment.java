@@ -331,6 +331,8 @@ public class MoreFragment extends Fragment {
 
         if (settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)) {
             backup_premium_icon.setImageResource(R.drawable.final_regular_open_icon);
+            premium_text.setText(getString(R.string.MoreFragment__premiumText1));
+            premium_text2.setText(getString(R.string.MoreFragment__premiumText2));
         }
     }
 

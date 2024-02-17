@@ -77,10 +77,10 @@
 
                     <ImageView
                         android:id="@+id/theme_icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
                         android:layout_gravity="end"
-                        android:layout_marginStart="22dp"
+                        android:layout_marginStart="20dp"
                         android:src="@drawable/final_regular_night_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -125,14 +125,17 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/screenLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground">
 
                     <ImageView
                         android:id="@+id/screen_icon"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
                         android:layout_gravity="end"
-                        android:layout_marginStart="19dp"
+                        android:layout_marginStart="20dp"
                         android:src="@drawable/final_regular_screen_bright_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -145,7 +148,7 @@
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginStart="22dp"
+                        android:layout_marginStart="30dp"
                         android:layout_marginTop="20dp"
                         android:layout_marginBottom="20dp"
                         android:text="@string/activity_settings__screenText"
@@ -183,8 +186,8 @@
 
                     <ImageView
                         android:id="@+id/textSize_icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
                         android:layout_gravity="end"
                         android:layout_marginStart="20dp"
                         android:src="@drawable/final_regular_text_size_icon"
@@ -243,8 +246,8 @@
 
                     <ImageView
                         android:id="@+id/remove_ads_icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
                         android:layout_gravity="end"
                         android:layout_marginStart="20dp"
                         android:src="@drawable/final_remove_ads_icon"
@@ -331,8 +334,8 @@
 
                     <ImageView
                         android:id="@+id/strike_icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
                         android:layout_gravity="end"
                         android:layout_marginStart="20dp"
                         android:src="@drawable/final_regular_strike_through_icon"
@@ -379,12 +382,15 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/disablePriceLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground">
 
                     <ImageView
                         android:id="@+id/disable_price_icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
                         android:layout_gravity="end"
                         android:layout_marginStart="20dp"
                         android:src="@drawable/final_regular_credit_card_icon"
@@ -432,12 +438,16 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/itemSuggestionLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground">
+
 
                     <ImageView
                         android:id="@+id/item_suggestion_icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
                         android:layout_gravity="end"
                         android:layout_marginStart="20dp"
                         android:src="@drawable/final_regular_suggestion_icon"
@@ -490,12 +500,15 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/multiplyLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground">
 
                     <ImageView
                         android:id="@+id/multiply_icon"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
                         android:layout_gravity="end"
                         android:layout_marginStart="20dp"
                         android:src="@drawable/final_regular_multiply_icon"
@@ -563,10 +576,10 @@
 
                     <ImageView
                         android:id="@+id/swipeAction_icon"
-                        android:layout_width="23dp"
-                        android:layout_height="23dp"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
                         android:layout_gravity="end"
-                        android:layout_marginStart="21dp"
+                        android:layout_marginStart="20dp"
                         android:src="@drawable/final_regular_swipe_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -639,10 +652,10 @@
 
                     <ImageView
                         android:id="@+id/detailedListShare_icon"
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
                         android:layout_gravity="end"
-                        android:layout_marginStart="23dp"
+                        android:layout_marginStart="20dp"
                         android:src="@drawable/final_regular_share_options_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -709,8 +722,8 @@
 
                     <ImageView
                         android:id="@+id/currency_icon"
-                        android:layout_width="27dp"
-                        android:layout_height="27dp"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
                         android:layout_gravity="end"
                         android:layout_marginStart="20dp"
                         android:src="@drawable/final_regular_currency_icon"
@@ -793,10 +806,10 @@
 
                     <ImageView
                         android:id="@+id/lock_icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
                         android:layout_gravity="end"
-                        android:layout_marginStart="21dp"
+                        android:layout_marginStart="20dp"
                         android:src="@drawable/final_regular_lock_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"

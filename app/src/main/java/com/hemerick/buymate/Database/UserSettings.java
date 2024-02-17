@@ -28,6 +28,21 @@ public class UserSettings extends Application {
         this.isDimThemeEnabled = isDimThemeEnabled;
     }
 
+
+    public static final String APP_FIRST_START = "appFirstStart";
+    public static final String YES_APP_FIRST_START = "yesAppFirstStart";
+    public static final String NO_APP_NOT_FIRST_START = "noAppNotFirstStart";
+
+    private String isAppFirstStart;
+
+    public String getIsAppFirstStart() {
+        return isAppFirstStart;
+    }
+
+    public void setIsAppFirstStart(String isAppFirstStart) {
+        this.isAppFirstStart = isAppFirstStart;
+    }
+
     //keepScreenBright
     public static final String WAKE_LOCK_ENABLED = "wakeLockEnabled";
 

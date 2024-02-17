@@ -70,6 +70,17 @@ public class ItemSuggestionActivity extends AppCompatActivity {
         suggestionDescription = findViewById(R.id.suggestion_description);
         suggestionHeader = findViewById(R.id.suggestionDisableTextHeader);
 
+
+        suggestionDisableLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(suggestionDisableSwitch.isChecked()){
+                    suggestionDisableSwitch.setChecked(false);
+                }else{
+                    suggestionDisableSwitch.setChecked(true);
+                }
+            }
+        });
         suggestionDisableSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.hemerick.buymate.Database.UserSettings;
 
@@ -25,6 +26,8 @@ public class DetailListShareSettingActivity extends AppCompatActivity {
     private SwitchCompat shareWithPriceSwitch, shareWithQuantitySwitch, shareWithTotalSwitch;
     private TextView shareWithPriceText, shareWithQuantityText, shareWithTotalText;
     private TextView shareWithPriceSubText, shareWithQuantitySubText, shareWithTotalSubText;
+
+    ConstraintLayout shareWithPriceLayout, shareWithQuantityLayout, shareWithTotalLayout;
 
 
     @Override
@@ -77,6 +80,21 @@ public class DetailListShareSettingActivity extends AppCompatActivity {
         shareWithQuantitySwitch = findViewById(R.id.disable_share_with_quantity_switch);
         shareWithTotalSwitch = findViewById(R.id.disable_share_with_total_switch);
 
+        shareWithPriceLayout = findViewById(R.id.shareWithPriceLayout);
+        shareWithQuantityLayout = findViewById(R.id.shareWithQuantityLayout);
+        shareWithTotalLayout = findViewById(R.id.shareWithTotalLayout);
+
+        shareWithPriceLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(shareWithPriceSwitch.isChecked()){
+                    shareWithPriceSwitch.setChecked(false);
+                }else{
+                    shareWithPriceSwitch.setChecked(true);
+                }
+            }
+        });
+
         shareWithPriceSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -90,6 +108,17 @@ public class DetailListShareSettingActivity extends AppCompatActivity {
                     SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
                     editor.putString(UserSettings.IS_SHARE_PRICE_DISABLED, settings.getIsSharePriceDisabled());
                     editor.apply();
+                }
+            }
+        });
+
+        shareWithQuantityLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(shareWithQuantitySwitch.isChecked()){
+                    shareWithQuantitySwitch.setChecked(false);
+                }else{
+                    shareWithQuantitySwitch.setChecked(true);
                 }
             }
         });
@@ -111,6 +140,16 @@ public class DetailListShareSettingActivity extends AppCompatActivity {
             }
         });
 
+        shareWithTotalLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(shareWithTotalSwitch.isChecked()){
+                    shareWithTotalSwitch.setChecked(false);
+                }else{
+                    shareWithTotalSwitch.setChecked(true);
+                }
+            }
+        });
         shareWithTotalSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

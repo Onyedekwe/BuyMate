@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.hemerick.buymate.Database.UserSettings;
 
@@ -22,6 +23,7 @@ public class CrossSettingActivity extends AppCompatActivity {
     Toolbar toolbar;
     TextView crossText, crossDescription;
     SwitchCompat crossSwitch;
+    ConstraintLayout crossSwitchLayout;
     private UserSettings settings;
 
     @Override
@@ -66,6 +68,19 @@ public class CrossSettingActivity extends AppCompatActivity {
         crossText = findViewById(R.id.crossDisableTextHeader);
         crossDescription = findViewById(R.id.cross_description);
         crossSwitch = findViewById(R.id.disable_cross_switch);
+        crossSwitchLayout = findViewById(R.id.swipeDisableLayout);
+
+        crossSwitchLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(crossSwitch.isChecked()){
+                    crossSwitch.setChecked(false);
+                }else{
+                    crossSwitch.setChecked(true);
+                }
+            }
+        });
+
 
         crossSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
