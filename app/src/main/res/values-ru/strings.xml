@@ -110,7 +110,7 @@
     <string name="FavouritesFragment__shareBtmText1">Улучшите свой опыт покупок с помощью Buymate.</string>
     <string name="FavouritesFragment__shareBtmText2">Загрузите Buymate из Google Play:</string>
     <string name="FavouritesFragment__shareIntentText">Отправить сообщение через</string>
-    <string name="FavouritesFragment__no">НЕТ</string>
+    <string name="FavouritesFragment__no">номер</string>
     <string name="FavouritesFragment__item">ЭЛЕМЕНТ</string>
     <string name="FavouritesFragment__quantity">КОЛИЧЕСТВО</string>
     <string name="FavouritesFragment__unit">ЕДИНИЦА</string>
@@ -143,7 +143,7 @@
     <string name="HomeFragment__login">Вход</string>
     <string name="HomeFragment__shareBtmText1">Улучшите свой опыт покупок с помощью Buymate.</string>
     <string name="HomeFragment__shareBtmText2">Загрузите Buymate из Google Play:</string>
-    <string name="HomeFragment__no">НЕТ</string>
+    <string name="HomeFragment__no">номер</string>
     <string name="HomeFragment__item">ЭЛЕМЕНТ</string>
     <string name="HomeFragment__quantity">КОЛИЧЕСТВО</string>
     <string name="HomeFragment__unit">ЕДИНИЦА</string>
@@ -203,7 +203,7 @@
     <string name="ItemActivity__shareBtmText1">Улучшите свой опыт покупок с помощью Buymate.</string>
     <string name="ItemActivity__shareBtmText2">Загрузите Buymate из Google Play:</string>
     <string name="ItemActivity__shareIntentText">Отправить сообщение через</string>
-    <string name="ItemActivity__no">НЕТ</string>
+    <string name="ItemActivity__no">номер</string>
     <string name="ItemActivity__item">ЭЛЕМЕНТ</string>
     <string name="ItemActivity__quantity">КОЛИЧЕСТВО</string>
     <string name="ItemActivity__unit">ЕДИНИЦА</string>

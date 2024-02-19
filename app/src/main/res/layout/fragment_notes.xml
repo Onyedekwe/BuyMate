@@ -97,9 +97,10 @@
 
                     <TextView
                         android:id="@+id/emptyTEXT1"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:textAlignment="center"
                         android:layout_marginTop="10dp"
                         android:text="@string/fragment_notes_illustration_text_1"
                         android:textColor="?attr/textFillColor"
@@ -108,18 +109,21 @@
 
                     <TextView
                         android:id="@+id/emptyTEXT2"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:textAlignment="center"
+                        android:layout_marginTop="5dp"
                         android:text="@string/fragment_notes_illustration_text_2"
                         android:textColor="?attr/textFillColor"
                         android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/emptyTEXT3"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:textAlignment="center"
                         android:text="@string/fragment_notes_illustration_text_3"
                         android:textColor="?attr/textFillColor"
                         android:textSize="15sp" />

@@ -245,7 +245,7 @@
                         android:text="@string/fragment_more_messageText"
                         android:textColor="?attr/textFillColor"
                         android:textSize="15sp"
-                        android:maxWidth="230dp"
+                        android:maxWidth="200dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/message_icon"
                         app:layout_constraintTop_toTopOf="parent" />

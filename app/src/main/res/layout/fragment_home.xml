@@ -229,31 +229,35 @@
 
                             <TextView
                                 android:id="@+id/emptyText1"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:layout_marginTop="10dp"
                                 android:text="@string/fragment_home_noList_text_1"
+                                android:textAlignment="center"
                                 android:textColor="?attr/textFillColor"
                                 android:textSize="18sp"
                                 android:textStyle="bold" />
 
                             <TextView
                                 android:id="@+id/emptyText2"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:layout_marginTop="5dp"
+                                android:textAlignment="center"
                                 android:text="@string/fragment_home_noList_text_2"
+
                                 android:textColor="?attr/textFillColor"
                                 android:textSize="18sp" />
 
                             <TextView
                                 android:id="@+id/emptyText3"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:text="@string/fragment_home_noList_text_3"
+                                android:textAlignment="center"
                                 android:textColor="?attr/textFillColor"
                                 android:textSize="18sp" />
 

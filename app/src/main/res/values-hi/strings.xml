@@ -111,7 +111,7 @@
     <string name="FavouritesFragment__shareBtmText1">अपने खरीदारी अनुभव को बेहतर बनाएं Buymate के साथ।</string>
     <string name="FavouritesFragment__shareBtmText2">Google Play पर Buymate डाउनलोड करें:</string>
     <string name="FavouritesFragment__shareIntentText">संदेश भेजें द्वारा</string>
-    <string name="FavouritesFragment__no">नहीं</string>
+    <string name="FavouritesFragment__no">संख्या</string>
     <string name="FavouritesFragment__item">आइटम</string>
     <string name="FavouritesFragment__quantity">मात्रा</string>
     <string name="FavouritesFragment__unit">इकाई</string>
@@ -147,7 +147,7 @@
     <string name="HomeFragment__login">लॉगिन</string>
     <string name="HomeFragment__shareBtmText1">Buymate के साथ अपने खरीदारी अनुभव को बेहतर बनाएं।</string>
     <string name="HomeFragment__shareBtmText2">Google Play से Buymate डाउनलोड करें:</string>
-    <string name="HomeFragment__no">नहीं</string>
+    <string name="HomeFragment__no">संख्या</string>
     <string name="HomeFragment__item">आइटम</string>
     <string name="HomeFragment__quantity">मात्रा</string>
     <string name="HomeFragment__unit">इकाई</string>
@@ -210,7 +210,7 @@
     <string name="ItemActivity__shareBtmText1">Buymate के साथ अपने खरीदारी अनुभव को बेहतर बनाएं।</string>
     <string name="ItemActivity__shareBtmText2">Google Play से Buymate डाउनलोड करें:</string>
     <string name="ItemActivity__shareIntentText">माध्यम से संदेश भेजें</string>
-    <string name="ItemActivity__no">नहीं</string>
+    <string name="ItemActivity__no">संख्या</string>
     <string name="ItemActivity__item">आइटम</string>
     <string name="ItemActivity__quantity">मात्रा</string>
     <string name="ItemActivity__unit">इकाई</string>

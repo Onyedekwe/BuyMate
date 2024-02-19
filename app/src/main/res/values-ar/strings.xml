@@ -99,7 +99,7 @@
     <string name="FavouritesFragment__shareBtmText1">قم بتحسين تجربة التسوق الخاصة بك مع Buymate.</string>
     <string name="FavouritesFragment__shareBtmText2">قم بتنزيل Buymate على Google Play:</string>
     <string name="FavouritesFragment__shareIntentText">إرسال رسالة عبر</string>
-    <string name="FavouritesFragment__no">لا</string>
+    <string name="FavouritesFragment__no">الرقم</string>
     <string name="FavouritesFragment__item">العنصر</string>
     <string name="FavouritesFragment__quantity">الكمية</string>
     <string name="FavouritesFragment__unit">الوحدة</string>
@@ -133,7 +133,7 @@
     <string name="HomeFragment__login">تسجيل الدخول</string>
     <string name="HomeFragment__shareBtmText1">قم بتحسين تجربة التسوق الخاصة بك مع Buymate.</string>
     <string name="HomeFragment__shareBtmText2">قم بتنزيل Buymate على Google Play:</string>
-    <string name="HomeFragment__no">لا</string>
+    <string name="HomeFragment__no">الرقم</string>
     <string name="HomeFragment__item">العنصر</string>
     <string name="HomeFragment__quantity">الكمية</string>
     <string name="HomeFragment__unit">الوحدة</string>
@@ -175,9 +175,7 @@
     <string name="ItemActivity__itemStarred">تم تمييز العنصر</string>
     <string name="ItemActivity__searchHint">البحث في القائمة</string>
     <string name="ItemActivity__itemsChecked">العناصر المحددة:</string>
-    <string name="ItemActivity__addItemToList">أضف عنصرًا إلى قائمتك</string
-
-        >
+    <string name="ItemActivity__addItemToList">أضف عنصرًا إلى قائمتك</string>
     <string name="ItemActivity__alreadyExist">العنصر موجود بالفعل</string>
     <string name="ItemActivity__emptyName">حقل اسم العنصر فارغ</string>
     <string name="ItemActivity__emptyNameCate">حقل الاسم فارغ</string>
@@ -196,7 +194,7 @@
     <string name="ItemActivity__shareBtmText1">قم بتحسين تجربة التسوق الخاصة بك مع Buymate.</string>
     <string name="ItemActivity__shareBtmText2">قم بتنزيل Buymate على Google Play:</string>
     <string name="ItemActivity__shareIntentText">إرسال رسالة عبر</string>
-    <string name="ItemActivity__no">لا</string>
+    <string name="ItemActivity__no">الرقم</string>
     <string name="ItemActivity__item">العنصر</string>
     <string name="ItemActivity__quantity">الكمية</string>
     <string name="ItemActivity__unit">الوحدة</string>

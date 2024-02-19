@@ -112,7 +112,7 @@
     <string name="FavouritesFragment__shareBtmText1">Buymateでショッピング体験を向上させましょう。</string>
     <string name="FavouritesFragment__shareBtmText2">Google PlayでBuymateをダウンロード：</string>
     <string name="FavouritesFragment__shareIntentText">経由でメッセージを送信</string>
-    <string name="FavouritesFragment__no">いいえ</string>
+    <string name="FavouritesFragment__no">番号</string>
     <string name="FavouritesFragment__item">アイテム</string>
     <string name="FavouritesFragment__quantity">数量</string>
     <string name="FavouritesFragment__unit">単位</string>
@@ -147,7 +147,7 @@
     <string name="HomeFragment__login">ログイン</string>
     <string name="HomeFragment__shareBtmText1">Buymateでショッピング体験を向上させましょう。</string>
     <string name="HomeFragment__shareBtmText2">Google PlayでBuymateをダウンロード：</string>
-    <string name="HomeFragment__no">いいえ</string>
+    <string name="HomeFragment__no">番号</string>
     <string name="HomeFragment__item">アイテム</string>
     <string name="HomeFragment__quantity">数量</string>
     <string name="HomeFragment__unit">単位</string>
@@ -208,7 +208,7 @@
     <string name="ItemActivity__shareBtmText1">Buymateでショッピング体験を向上させましょう。</string>
     <string name="ItemActivity__shareBtmText2">Google PlayでBuymateをダウンロード：</string>
     <string name="ItemActivity__shareIntentText">経由でメッセージを送信</string>
-    <string name="ItemActivity__no">いいえ</string>
+    <string name="ItemActivity__no">番号</string>
     <string name="ItemActivity__item">アイテム</string>
     <string name="ItemActivity__quantity">数量</string>
     <string name="ItemActivity__unit">単位</string>

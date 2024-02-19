@@ -119,7 +119,7 @@
     <string name="FavouritesFragment__shareBtmText1">Améliorez votre expérience d\'achat avec Buymate.</string>
     <string name="FavouritesFragment__shareBtmText2">Téléchargez Buymate sur Google Play :</string>
     <string name="FavouritesFragment__shareIntentText">Envoyer le message via</string>
-    <string name="FavouritesFragment__no">NON</string>
+    <string name="FavouritesFragment__no">NO</string>
     <string name="FavouritesFragment__item">ARTICLE</string>
     <string name="FavouritesFragment__quantity">QUANTITÉ</string>
     <string name="FavouritesFragment__unit">UNITÉ</string>
@@ -152,7 +152,7 @@
     <string name="HomeFragment__login">Connexion</string>
     <string name="HomeFragment__shareBtmText1">Améliorez votre expérience d\'achat avec Buymate.</string>
     <string name="HomeFragment__shareBtmText2">Téléchargez Buymate sur Google Play :</string>
-    <string name="HomeFragment__no">NON</string>
+    <string name="HomeFragment__no">NO</string>
     <string name="HomeFragment__item">ARTICLE</string>
     <string name="HomeFragment__quantity">QUANTITÉ</string>
     <string name="HomeFragment__unit">UNITÉ</string>
@@ -214,7 +214,7 @@
     <string name="ItemActivity__shareBtmText1">Améliorez votre expérience d\'achat avec Buymate.</string>
     <string name="ItemActivity__shareBtmText2">Téléchargez Buymate sur Google Play :</string>
     <string name="ItemActivity__shareIntentText">Envoyer le message via</string>
-    <string name="ItemActivity__no">NON</string>
+    <string name="ItemActivity__no">NO</string>
     <string name="ItemActivity__item">ARTICLE</string>
     <string name="ItemActivity__quantity">QUANTITÉ</string>
     <string name="ItemActivity__unit">UNITÉ</string>

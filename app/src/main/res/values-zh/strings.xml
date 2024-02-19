@@ -112,7 +112,7 @@
     <string name="FavouritesFragment__shareBtmText1">通过Buymate改善您的购物体验。</string>
     <string name="FavouritesFragment__shareBtmText2">在Google Play上下载Buymate：</string>
     <string name="FavouritesFragment__shareIntentText">通过以下方式发送消息</string>
-    <string name="FavouritesFragment__no">否</string>
+    <string name="FavouritesFragment__no">号</string>
     <string name="FavouritesFragment__item">物品</string>
     <string name="FavouritesFragment__quantity">数量</string>
     <string name="FavouritesFragment__unit">单位</string>
@@ -145,7 +145,7 @@
     <string name="HomeFragment__login">登录</string>
     <string name="HomeFragment__shareBtmText1">通过Buymate改善您的购物体验。</string>
     <string name="HomeFragment__shareBtmText2">在Google Play上下载Buymate：</string>
-    <string name="HomeFragment__no">否</string>
+    <string name="HomeFragment__no">号</string>
     <string name="HomeFragment__item">物品</string>
     <string name="HomeFragment__quantity">数量</string>
     <string name="HomeFragment__unit">单位</string>
@@ -204,7 +204,7 @@
     <string name="ItemActivity__shareBtmText1">通过Buymate改善您的购物体验。</string>
     <string name="ItemActivity__shareBtmText2">在Google Play上下载Buymate：</string>
     <string name="ItemActivity__shareIntentText">通过以下方式发送消息</string>
-    <string name="ItemActivity__no">否</string>
+    <string name="ItemActivity__no">号</string>
     <string name="ItemActivity__item">物品</string>
     <string name="ItemActivity__quantity">数量</string>
     <string name="ItemActivity__unit">单位</string>
