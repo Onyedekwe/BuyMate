@@ -49,8 +49,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/activity_configure_passcode__setPassword"
-                android:textColor="?attr/textFillColor"
-                />
+                android:textColor="?attr/textFillColor" />
 
         </LinearLayout>
 
@@ -89,10 +88,10 @@
 
             <TextView
                 android:id="@+id/fingerprint_TextHeader"
-                android:layout_width="wrap_content"
+                android:layout_width="270dp"
                 android:layout_height="wrap_content"
                 android:text="@string/activity_configure_passcode__fingerprintLogin"
-                android:textColor="?attr/textFillColor"/>
+                android:textColor="?attr/textFillColor" />
 
         </LinearLayout>
 
@@ -144,7 +143,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/activity_configure_passcode__removeAppLock"
-                android:textColor="?attr/textFillColor"/>
+                android:textColor="?attr/textFillColor" />
 
         </LinearLayout>
 

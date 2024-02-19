@@ -86,14 +86,14 @@
                         android:id="@+id/userNameText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="?attr/textFillColor"/>
+                        android:textColor="?attr/textFillColor" />
 
                     <TextView
                         android:id="@+id/emailText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
-                        android:textColor="?attr/itemTextAppearanceInactive"/>
+                        android:textColor="?attr/itemTextAppearanceInactive" />
 
 
                 </LinearLayout>
@@ -146,7 +146,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:importantForAccessibility="no"/>
+                    android:importantForAccessibility="no" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -193,7 +193,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:importantForAccessibility="no"/>
+                    android:importantForAccessibility="no" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
@@ -238,7 +238,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:importantForAccessibility="no"/>
+                    android:importantForAccessibility="no" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout

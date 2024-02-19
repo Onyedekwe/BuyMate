@@ -240,7 +240,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="@string/fragment_favourites_illustration_text_2"
-                        android:textColor="?attr/textFillColor"/>
+                        android:textColor="?attr/textFillColor" />
 
                     <TextView
                         android:id="@+id/empty_text3"
@@ -248,7 +248,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="@string/fragment_favourites_illustration_text_3"
-                        android:textColor="?attr/textFillColor"/>
+                        android:textColor="?attr/textFillColor" />
                 </LinearLayout>
 
                 <Space

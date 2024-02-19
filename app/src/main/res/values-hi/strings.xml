@@ -1,0 +1,980 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Buymate</string>
+    <string name="app_version" translatable="false">1.0.1</string>
+    <string name="app_link" translatable="false">https://play.google.com/store/apps/details?id=</string>
+    <string name="app_email" translatable="false">hemerickservices@gmail.com</string>
+    <string name="app_lifetime_product_id" translatable="false">com.hemerick.lifetime_subscription</string>
+    <string name="default_web_client_id" translatable="false">401382920363-u289nhkse3o3fi2tevrq68m7oic9vaj6.apps.googleusercontent.com</string>
+
+    <string name="open_icon_content_description">खोलें</string>
+
+    //ShopCopyAdapter
+    <string name="ShopCopyAdapter__copy_successful">आइटम कॉपी किया गया</string>
+
+    //ShopMoveAdapter
+    <string name="ShopMoveAdapter__move_successful">आइटम मूव किया गया</string>
+
+    //ViewPagerAdapter
+    <string name="ViewPagerAdapter_heading_1">हमेशा याद रखें कि क्या खरीदना है</string>
+    <string name="ViewPagerAdapter_heading_2">बजट को समझे, आवेगीय खरीददारी से बचें</string>
+    <string name="ViewPagerAdapter_heading_3">अपनी सूची को आसानी से साझा करें</string>
+    <string name="ViewPagerAdapter_sub_heading_1">सूची बनाएं और कभी कुछ न भूलें।</string>
+    <string name="ViewPagerAdapter_sub_heading_2">अपने बजट को प्रबंधित करें, सिर्फ वही खरीदें जो सूची में है</string>
+    <string name="ViewPagerAdapter_sub_heading_3">सूची को टेक्स्ट या पीडीएफ के रूप में साझा करके परिवार, दोस्त और सहयोगियों से जुड़ें।</string>
+
+    //Firebase
+    <string name="Firebase__backup_text_heading">बादल में बैकअप किया जा रहा है</string>
+    <string name="Firebase__backup_text_subheading">कृपया प्रतीक्षा करें...</string>
+    <string name="Firebase__backup_successful">बैकअप सफल</string>
+    <string name="Firebase__restore_text_heading">बादल से डेटा पुनर्स्थापित किया जा रहा है</string>
+    <string name="Firebase__restore_text_subheading">कृपया प्रतीक्षा करें...</string>
+    <string name="Firebase__restore_no_list_found">कोई सूची नहीं मिली</string>
+    <string name="Firebase__restore_no_notes_found">कोई नोट्स नहीं मिले</string>
+    <string name="Firebase__restore_completed">पुनर्स्थापन पूरा हुआ</string>
+    <string name="Firebase__error">त्रुटि: </string>
+
+    //ShoppingWidgetService
+    <string name="ShoppingWidgetService__added">जोड़ा गया </string>
+
+    //BackupActivity
+    <string name="BackupActivity__loginBeforeBackup">बैकअप करने से पहले कृपया लॉगिन करें</string>
+    <string name="BackupActivity__loginBeforeRestore">डेटा पुनर्स्थापित करने से पहले कृपया लॉगिन होने की सुनिश्चित करें</string>
+    <string name="BackupActivity__restoreHeader">डेटा पुनर्स्थापित करें</string>
+    <string name="BackupActivity__restoreWarning">यह कार्रवाई आपका वर्तमान डेटा अंतिम बैकअप डेटा के साथ प्रतिस्थापित करेगी। कोई बचाई गई परिवर्तन हो जाएंगे। क्या आप सुनिश्चित हैं कि आप आगे बढ़ना चाहते हैं?</string>
+    <string name="BackupActivity__restoreProceedBtn">आगे बढ़ें</string>
+    <string name="BackupActivity__restoreCancelBtn">रद्द करें</string>
+
+    //ChangePasswordActivity
+    <string name="ChangePasswordActivity__passwordUpdateSuccess">पासवर्ड अपडेट किया गया</string>
+    <string name="ChangePasswordActivity__passwordUpdateFailed">पासवर्ड अपडेट विफल हुआ</string>
+    <string name="ChangePasswordActivity__error">त्रुटि: </string>
+    <string name="ChangePasswordActivity__passwordNotMatched">पासवर्ड मेल नहीं खाता</string>
+    <string name="ChangePasswordActivity__passwordLengthFailed">पासवर्ड कम से कम 6 अक्षरों का होना चाहिए</string>
+    <string name="ChangePasswordActivity__retypePassword">आगे बढ़ने के लिए पासवर्ड फिर से टाइप करें</string>
+    <string name="ChangePasswordActivity__enterNewPassword">अपना नया पासवर्ड दर्ज करें</string>
+    <string name="ChangePasswordActivity__enterCurrentPassword">अपना वर्तमान पासवर्ड दर्ज करें</string>
+
+    //ConfigurePasscodeActivity
+    <string name="ConfigurePasscodeActivity__deviceNotSupported">उपकरण समर्थित नहीं है</string>
+    <string name="ConfigurePasscodeActivity__hardwareUnavailable">हार्डवेयर उपलब्ध नहीं है</string>
+    <string name="ConfigurePasscodeActivity__fingerprintNotSet">इस उपकरण के लिए उंगली की छाप सेट नहीं है</string>
+    <string name="ConfigurePasscodeActivity__verifyFingerprint">उंगली की छाप सत्यापित करें</string>
+    <string name="ConfigurePasscodeActivity__usePassword">पासवर्ड का उपयोग करें</string>
+    <string name="ConfigurePasscodeActivity__insert4digitPassword">4 अंकों का पासवर्ड डालें</string>
+    <string name="ConfigurePasscodeActivity__confirmPassword">पासवर्ड की पुष्टि करें</string>
+    <string name="ConfigurePasscodeActivity__retypePassword">आगे बढ़ने के लिए पासवर्ड फिर से टाइप करें</string>
+    <string name="ConfigurePasscodeActivity__success">सफलता</string>
+    <string name="ConfigurePasscodeActivity__passwordNotMatched">पासवर्ड मेल नहीं खाता</string>
+    <string name="ConfigurePasscodeActivity__insertPassword">पासवर्ड डालें</string>
+    <string name="ConfigurePasscodeActivity__letsVerifyYou">हमें सत्यापित करें कि यह वास्तव में आप हैं, अपना वर्तमान पासवर्ड दर्ज करें</string>
+    <string name="ConfigurePasscodeActivity__appLockRemoved">एप्लिकेशन लॉक हटा दिया गया</string>
+    <string name="ConfigurePasscodeActivity__wrongPassword">गलत पासवर्ड</string>
+    <string name="ConfigurePasscodeActivity__fingerprintEnabled">उंगली की छाप सक्षम की गई</string>
+    <string name="ConfigurePasscodeActivity__setupPassword">पासवर्ड सेट करें</string>
+    <string name="ConfigurePasscodeActivity__changePassword">पासवर्ड बदलें</string>
+
+    //CreateNoteActivity
+    <string name="CreateNoteActivity__untitled">शीर्षक नहीं</string>
+    <string name="CreateNoteActivity__deleteNote">हटाएं</string>
+    <string name="CreateNoteActivity__deleteWarning">यह कार्रवाई पूर्ववत नहीं हो सकती</string>
+    <string name="CreateNoteActivity__voicePrompt">सुन रहा है</string>
+    <string name="CreateNoteActivity__send_message_via">संदेश भेजें:</string>
+
+    //FavouritesFragment
+    <string name="FavouritesFragment__addItemToList">अपनी सूची में आइटम जोड़ें</string>
+    <string name="FavouritesFragment__untitled">शीर्षक नहीं</string>
+    <string name="FavouritesFragment__alreadyExist">आइटम पहले से मौजूद है</string>
+    <string name="FavouritesFragment__emptyName">आइटम नाम फील्ड खाली है</string>
+    <string name="FavouritesFragment__toolbarStarred">स्टार्ड</string>
+    <string name="FavouritesFragment__multipleDelete">इन आइटम्स को हटाएं</string>
+    <string name="FavouritesFragment__singleDelete">इस आइटम को हटाएं</string>
+    <string name="FavouritesFragment__deleteWarning">यह कार्रवाई पूर्ववत नहीं हो सकती</string>
+    <string name="FavouritesFragment__removeFromStarred">स्टार्ड से हटाएं</string>
+    <string name="FavouritesFragment__remove">हटाएं</string>
+    <string name="FavouritesFragment__unstar">स्टार को हटाएं</string>
+    <string name="FavouritesFragment__star">आइटम को स्टार करें</string>
+    <string name="FavouritesFragment__itemsChecked">आइटम्स जाँची गईं</string>
+    <string name="FavouritesFragment__itemStarred">आइटम स्टार किया गया</string>
+    <string name="FavouritesFragment__itemUnstarred">आइटम का स्टार हटाया गया</string>
+    <string name="FavouritesFragment__addPhoto">तस्वीर जोड़ें</string>
+    <string name="FavouritesFragment__updatePhoto">तस्वीर अपडेट करें</string>
+    <string name="FavouritesFragment__loginPrompt">कृपया पहले लॉग इन करें</string>
+    <string name="FavouritesFragment__insertImageFailed">त्रुटि: तस्वीर डाली नहीं जा सकी</string>
+
+
+    <string name="FavouritesFragment__error">त्रुटि: </string>
+    <string name="FavouritesFragment__emptyPrice">आइटम की कीमत का क्षेत्र खाली है</string>
+    <string name="FavouritesFragment__voicePrompt">सुन रहा है</string>
+    <string name="FavouritesFragment__emptyQuantity">आइटम की मात्रा का क्षेत्र खाली है</string>
+    <string name="FavouritesFragment__Total">कुल:</string>
+    <string name="FavouritesFragment__shareBtmText1">अपने खरीदारी अनुभव को बेहतर बनाएं Buymate के साथ।</string>
+    <string name="FavouritesFragment__shareBtmText2">Google Play पर Buymate डाउनलोड करें:</string>
+    <string name="FavouritesFragment__shareIntentText">संदेश भेजें द्वारा</string>
+    <string name="FavouritesFragment__no">नहीं</string>
+    <string name="FavouritesFragment__item">आइटम</string>
+    <string name="FavouritesFragment__quantity">मात्रा</string>
+    <string name="FavouritesFragment__unit">इकाई</string>
+    <string name="FavouritesFragment__price">मूल्य</string>
+    <string name="FavouritesFragment__contactUs">हमसे संपर्क करें:</string>
+    <string name="FavouritesFragment__pdfDownloadedTo">पीडीएफ डाउनलोड किया गया</string>
+
+    //HomeActivity
+    <string name="HomeActivity__pressBack">एप्लिकेशन से बाहर निकलने के लिए फिर से प्रेस करें</string>
+
+    Certainly! Here are the translations to Hindi:
+
+    ```xml
+    // HomeFragment
+    <string name="HomeFragment__feedback">प्रतिक्रिया</string>
+    <string name="HomeFragment__accountEmail">खाता ईमेल: </string>
+    <string name="HomeFragment__appVersion">एप्लिकेशन संस्करण: </string>
+    <string name="HomeFragment__device">उपकरण: </string>
+    <string name="HomeFragment__model">मॉडल: </string>
+    <string name="HomeFragment__brand">ब्रांड: </string>
+    <string name="HomeFragment__osVersion">ओएस संस्करण: </string>
+    <string name="HomeFragment__sdkVersion">एसडीके संस्करण: </string>
+    <string name="HomeFragment__mailTo">को भेजें:</string>
+    <string name="HomeFragment__mailError">कोई ईमेल क्लाइंट नहीं मिला</string>
+    <string name="HomeFragment__navigation_drawer_open">नेविगेशन ड्रायर खोलें</string>
+    <string name="HomeFragment__navigation_drawer_close">नेविगेशन ड्रायर बंद करें</string>
+    <string name="HomeFragment__defaultName">उपयोगकर्ता</string>
+    <string name="HomeFragment__hiText">नमस्ते,</string>
+    <string name="HomeFragment__exclam">!</string>
+    <string name="HomeFragment__emptySearch">खोज के लिए कोई सूची नहीं</string>
+    <string name="HomeFragment__addItemToList">अपनी सूची में आइटम जोड़ें</string>
+    <string name="HomeFragment__loginPrompt">आगे बढ़ने से पहले कृपया लॉग इन करें</string>
+    <string name="HomeFragment__login">लॉगिन</string>
+    <string name="HomeFragment__shareBtmText1">Buymate के साथ अपने खरीदारी अनुभव को बेहतर बनाएं।</string>
+    <string name="HomeFragment__shareBtmText2">Google Play से Buymate डाउनलोड करें:</string>
+    <string name="HomeFragment__no">नहीं</string>
+    <string name="HomeFragment__item">आइटम</string>
+    <string name="HomeFragment__quantity">मात्रा</string>
+    <string name="HomeFragment__unit">इकाई</string>
+    <string name="HomeFragment__price">कीमत</string>
+    <string name="HomeFragment__contactUs">हमसे संपर्क करें:</string>
+    <string name="HomeFragment__pdfDownloadedTo">पीडीएफ डाउनलोड किया गया</string>
+    <string name="HomeFragment__Total">कुल:</string>
+    <string name="HomeFragment__noListFound">कोई सूची नहीं मिली</string>
+    <string name="HomeFragment__sortPriceText">साइज़</string>
+    <string name="HomeFragment__send_message_via">माध्यम से संदेश भेजें:</string>
+    <string name="HomeFragment__please_insert_name">कृपया नाम डालें</string>
+    <string name="HomeFragment__deleteTheseLists">इन सूचियों को हटाएं</string>
+    <string name="HomeFragment__deleteThisList">इस सूची को हटाएं</string>
+    <string name="HomeFragment__delete">हटाएं</string>
+    <string name="HomeFragment__deleteWarning">यह क्रिया पूर्ववत नहीं हो सकती</string>
+    <string name="HomeFragment__no_list">कोई सूची नहीं</string>
+    <string name="HomeFragment__list_exist_already">यह सूची पहले से मौजूद है</string>
+    <string name="HomeFragment__no_alarm_app">इस क्रिया को पूरा करने के लिए कोई ऐप नहीं है</string>
+
+
+    // InsertPasscodeActivity
+    <string name="InsertPasscodeActivity__success">सफलता</string>
+    <string name="InsertPasscodeActivity__wrongPin">गलत पिन</string>
+    <string name="InsertPasscodeActivity__insertPin">4 अंकों का पासवर्ड डालें</string>
+    <string name="InsertPasscodeActivity__notSupported">डिवाइस समर्थित नहीं है</string>
+    <string name="InsertPasscodeActivity__hardwareNotAvailable">हार्डवेयर उपलब्ध नहीं है</string>
+    <string name="InsertPasscodeActivity__fingerprintNotSet">इस डिवाइस के लिए उंगलियों को सेट नहीं किया गया है</string>
+    <string name="InsertPasscodeActivity__verifyFingerprint">उंगली प्रमाणित करें</string>
+    <string name="InsertPasscodeActivity__usePassword">पासवर्ड का उपयोग करें</string>
+
+
+    // ItemActivity
+    <string name="ItemActivity__deleteTheseItems">इन आइटमों को हटाएं</string>
+    <string name="ItemActivity__deleteThisItem">इस आइटम को हटाएं</string>
+    <string name="ItemActivity__moveTo">को इसमें ले जाएं:</string>
+    <string
+
+        name="ItemActivity__copyTo">को इसमें कॉपी करें:</string>
+    <string name="ItemActivity__unstarred">स्टार नहीं किया गया</string>
+    <string name="ItemActivity__unstar">स्टार निकालें</string>
+    <string name="ItemActivity__itemStarred">आइटम स्टार किया गया</string>
+    <string name="ItemActivity__searchHint">सूची में खोजें</string>
+    <string name="ItemActivity__itemsChecked">आइटम चेक किए गए:</string>
+    <string name="ItemActivity__addItemToList">अपनी सूची में आइटम जोड़ें</string>
+    <string name="ItemActivity__alreadyExist">आइटम पहले से मौजूद है</string>
+    <string name="ItemActivity__emptyName">आइटम नाम फ़ील्ड खाली है</string>
+    <string name="ItemActivity__emptyNameCate">नाम फ़ील्ड खाली है</string>
+    <string name="ItemActivity__starItem">आइटम स्टार करें</string>
+    <string name="ItemActivity__addPhoto">छवि जोड़ें</string>
+    <string name="ItemActivity__updatePhoto">छवि अपडेट करें</string>
+    <string name="ItemActivity__loginPrompt">आगे बढ़ने से पहले कृपया लॉग इन करें</string>
+    <string name="ItemActivity__insertImageFailed">त्रुटि: छवि डालने में असमर्थ</string>
+    <string name="ItemActivity__error">त्रुटि: </string>
+    <string name="ItemActivity__emptyPrice">आइटम मूल्य फ़ील्ड खाली है</string>
+    <string name="ItemActivity__emptyQuantity">आइटम मात्रा फ़ील्ड खाली है</string>
+    <string name="ItemActivity__delete">हटाएं</string>
+    <string name="ItemActivity__deleteWarning">यह क्रिया पूर्ववत नहीं हो सकती</string>
+    <string name="ItemActivity__noAlarmApp">इस क्रिया को पूरा करने के लिए कोई ऐप नहीं है</string>
+    <string name="ItemActivity__Total">कुल:</string>
+    <string name="ItemActivity__shareBtmText1">Buymate के साथ अपने खरीदारी अनुभव को बेहतर बनाएं।</string>
+    <string name="ItemActivity__shareBtmText2">Google Play से Buymate डाउनलोड करें:</string>
+    <string name="ItemActivity__shareIntentText">माध्यम से संदेश भेजें</string>
+    <string name="ItemActivity__no">नहीं</string>
+    <string name="ItemActivity__item">आइटम</string>
+    <string name="ItemActivity__quantity">मात्रा</string>
+    <string name="ItemActivity__unit">इकाई</string>
+    <string name="ItemActivity__price">कीमत</string>
+    <string name="ItemActivity__contactUs">हमसे संपर्क करें:</string>
+    <string name="ItemActivity__pdfDownloadedTo">पीडीएफ डाउनलोड किया गया</string>
+    <string name="ItemActivity__voicePrompt">सुनना</string>
+    ```
+
+    Here are the translations to Hindi:
+
+    ```xml
+    // LoginActivity
+    <string name="LoginActivity__error">त्रुटि: </string>
+    <string name="LoginActivity__emailError">मान्य ईमेल पता नहीं</string>
+    <string name="LoginActivity__passwordError">पासवर्ड डालें</string>
+    <string name="LoginActivity__emptyEmailError">ईमेल पता दर्ज करें</string>
+
+
+    // MoreFragment
+    <string name="MoreFragment__shareBtmText1">इस शानदार खरीदारी ऐप को देखें! मैं इसे अत्यधिक सिफारिश करता हूं। Google Play पर इसे डाउनलोड करें।</string>
+    <string name="MoreFragment__shareVia">के माध्यम से शेयर करें:</string>
+    <string name="MoreFragment__feedback">प्रतिक्रिया</string>
+    <string name="MoreFragment__accountEmail">खाता ईमेल: </string>
+    <string name="MoreFragment__appVersion">ऐप संस्करण: </string>
+    <string name="MoreFragment__device">उपकरण: </string>
+    <string name="MoreFragment__model">मॉडल: </string>
+    <string name="MoreFragment__brand">ब्रांड: </string>
+    <string name="MoreFragment__osVersion">OS संस्करण: </string>
+    <string name="MoreFragment__sdkVersion">SDK संस्करण: </string>
+    <string name="MoreFragment__mailTo">को भेजें:</string>
+    <string name="MoreFragment__mailError">कोई ईमेल क्लाइंट नहीं मिला</string>
+    <string name="MoreFragment__signIn">साइन इन करें</string>
+    <string name="MoreFragment__account">खाता</string>
+    <string name="MoreFragment__loginPrompt">कृपया आगे बढ़ने से पहले लॉगिन करें</string>
+    <string name="MoreFragment__login">लॉगिन</string>
+    <string name="MoreFragment__premiumText1">बधाई हो!</string>
+    <string name="MoreFragment__premiumText2">आप Buymate का प्रीमियम संस्करण आनंदित कर रहे हैं</string>
+
+
+    // NotesFragment
+    <string name="NotesFragment__multipleDelete">इन नोट्स को हटाएं</string>
+    <string name="NotesFragment__singleDelete">इस नोट को हटाएं</string>
+    <string name="NotesFragment__toolbarTitle">नोट्स</string>
+    <string name="NotesFragment__emptyNoteSearchView">खोज के लिए कोई नोट नहीं</string>
+    <string name="NotesFragment__emptyNoteRecyclerView">कोई नोट नहीं मिली</string>
+
+    // PaymentSuccessfulActivity
+    <string name="PaymentSuccessfulActivity__error">त्रुटि: </string>
+    <string name="PaymentSuccessfulActivity__itemOwnedAlready">आइटम पहले से ही स्वामित्व में है</string>
+    <string name="PaymentSuccessfulActivity__featureNotSupported">सुविधा समर्थित नहीं है</string>
+    <string name="PaymentSuccessfulActivity__userCancelled">उपयोगकर्ता ने रद्द किया</string>
+    <string name="PaymentSuccessfulActivity__developerError">डेवलपर त्रुटि</string>
+    <string name="PaymentSuccessfulActivity__itemUnavailable">आइटम अनुपलब्ध</string>
+    <string name="PaymentSuccessfulActivity__networkError">नेटवर्क त्रुटि</string>
+    <string name="PaymentSuccessfulActivity__serviceDisconnected">सेवा बंद</string>
+    <string name="PaymentSuccessfulActivity__errorInvalidPurchase">त्रुटि: अमान्य खरीद</string>
+
+
+    // RecoverPasswordActivity
+    <string name="RecoverPasswordActivity__emailNotRegistered">ईमेल पंजीकृत नहीं है। कृपया साइन अप करें।</string>
+    <string name="RecoverPasswordActivity__resetLinkSent">रीसेट लिंक ईमेल पर भेजा गया है</string>
+    <string name="RecoverPasswordActivity__error">त्रुटि: </string>
+    <string name="RecoverPasswordActivity__invalidEmail">मान्य ईमेल पता नहीं</string>
+    <string name="RecoverPasswordActivity__recoveryEmail">अपना पुनर्प्राप्ति ईमेल दर्ज करें</string>
+
+
+    // SettingsActivity
+    <string name="SettingsActivity__currencyUpdated">मुद्रा अपडेट की गई</string>
+    <string name="SettingsActivity__currencyFieldEmpty">मुद्रा क्षेत्र खाली है</string>
+    <string name="SettingsActivity__disabled">अक्षम किया गया</string>
+
+    <string name="SettingsActivity__renameSwipeLeft">नाम बदलें: बायाँ स्वाइप करें</string>
+    <string name="SettingsActivity__changePriceSwipeLeft">कीमत बदलें: बायाँ स्वाइप करें</string>
+    <string name="SettingsActivity__changeQuantitySwipeLeft">मात्रा बदलें: बायाँ स्वाइप करें</string>
+    <string name="SettingsActivity__starAndUnstarLeft">
+
+आइटम को स्टार और अस्टार करें: बायाँ स्वाइप करें</string>
+    <string name="SettingsActivity__deleteSwipeLeft">हटाएं: बायाँ स्वाइप करें</string>
+    <string name="SettingsActivity__checkAndUncheckLeft">आइटम को चेक और अनचेक करें: बायाँ स्वाइप करें</string>
+    <string name="SettingsActivity__showOptionsSwipeLeft">विकल्प दिखाएं: बायाँ स्वाइप करें</string>
+    <string name="SettingsActivity__doNothingSwipeLeft">कुछ न करें: बायाँ स्वाइप करें</string>
+
+    <string name="SettingsActivity__renameSwipeRight">नाम बदलें: दायाँ स्वाइप करें</string>
+    <string name="SettingsActivity__changePriceSwipeRight">कीमत बदलें: दायाँ स्वाइप करें</string>
+    <string name="SettingsActivity__changeQuantitySwipeRight">मात्रा बदलें: दायाँ स्वाइप करें</string>
+    <string name="SettingsActivity__starAndUnstarRight">आइटम को स्टार और अस्टार करें: दायाँ स्वाइप करें</string>
+    <string name="SettingsActivity__deleteSwipeRight">हटाएं: दायाँ स्वाइप करें</string>
+    <string name="SettingsActivity__checkAndUncheckRight">आइटम को चेक और अनचेक करें: दायाँ स्वाइप करें</string>
+    <string name="SettingsActivity__showOptionsSwipeRight">विकल्प दिखाएं: दायाँ स्वाइप करें</string>
+    <string name="SettingsActivity__doNothingSwipeRight">कुछ न करें: दायाँ स्वाइप करें</string>
+
+
+    // SignUpActivity
+    <string name="SignUpActivity__emailAlreadyRegistered">ईमेल पहले से ही पंजीकृत है</string>
+    <string name="SignUpActivity__confirmPasswordError">पासवर्ड मेल नहीं खाता</string>
+    <string name="SignUpActivity__passwordLengthError">पासवर्ड कम से कम 6 वर्णों का होना चाहिए</string>
+    <string name="SignUpActivity__invalidEmail">मान्य ईमेल पता नहीं</string>
+    <string name="SignUpActivity__confirmPassword">आगे बढ़ने के लिए पासवर्ड फिर से टाइप करें</string>
+    <string name="SignUpActivity__insertPassword">पासवर्ड डालें</string>
+    <string name="SignUpActivity__insertEmail">ईमेल पता दर्ज करें</string>
+    <string name="SignUpActivity__enterName">आगे बढ़ने के लिए अपना उपयोगकर्ता नाम दर्ज करें</string>
+
+
+    // SwipeSettingActivity
+    <string name="SwipeSettingActivity__rename">नाम बदलें</string>
+    <string name="SwipeSettingActivity__checkAndUncheckItem">आइटम को चेक और अनचेक करें</string>
+    <string name="SwipeSettingActivity__changePrice">कीमत बदलें</string>
+    <string name="SwipeSettingActivity__changeQuantity">मात्रा बदलें</string>
+    <string name="SwipeSettingActivity__starAndUnstar">आइटम को स्टार और अस्टार करें</string>
+    <string name="SwipeSettingActivity__delete">हटाएं</string>
+    <string name="SwipeSettingActivity__showOptions">विकल्प दिखाएं</string>
+    <string name="SwipeSettingActivity__doNothing">कुछ न करें</string>
+
+
+    <string name="SwipeSettingActivity__renameSwipeLeft">नाम बदलें: बायाँ स्वाइप करें</string>
+    <string name="SwipeSettingActivity__changePriceSwipeLeft">कीमत बदलें: बायाँ स्वाइप करें</string>
+    <string name="SwipeSettingActivity__changeQuantitySwipeLeft">मात्रा बदलें: बायाँ स्वाइप करें</string>
+    <string name="SwipeSettingActivity__starAndUnstarLeft">आइटम को स्टार और अस्टार करें: बायाँ स्वाइप करें</string>
+    <string name="SwipeSettingActivity__deleteSwipeLeft">हटाएं: बायाँ स्वाइप करें</string>
+    <string name="SwipeSettingActivity__checkAndUncheckLeft">आइटम को चेक और अनचेक करें: बायाँ स्वाइप करें</string>
+    <string name="SwipeSettingActivity__showOptionsSwipeLeft">विकल्प दिखाएं: बायाँ स्वाइप करें</string>
+    <string name="SwipeSettingActivity__doNothingSwipeLeft">कुछ न करें: बायाँ स्वाइप करें</string>
+
+    <string name="SwipeSettingActivity__renameSwipeRight">नाम बदलें: दायाँ स्वाइप करें</string>
+    <string name="SwipeSettingActivity__changePriceSwipeRight">कीमत बदलें: दायाँ स्वाइप करें</string>
+    <string name="SwipeSettingActivity__changeQuantitySwipeRight">मात्रा बदलें: दायाँ स्वाइप करें</string>
+    <string name="SwipeSettingActivity__starAndUnstarRight">आइटम को स्टार और अस्टार करें: दायाँ स्वाइप करें</string>
+    <string name="SwipeSettingActivity__deleteSwipeRight">हटाएं: दायाँ स्वाइप करें</string>
+    <string name="SwipeSettingActivity__checkAndUncheckRight">आइटम को चेक और अनचेक करें: दायाँ स्वाइप करें</string>
+    <string name="SwipeSettingActivity__showOptionsSwipeRight">विकल्प दिखाएं: दायाँ स्वाइप करें</string>
+    <string name="SwipeSettingActivity__doNothingSwipeRight">कुछ न करें: दायाँ स्वाइप करें</string>
+
+
+    // UpdateNoteActivity
+    <string name="UpdateNoteActivity__untitled">अशीर्वाद</string>
+    <string name="UpdateNoteActivity__deleteNote">हटाएं</string>
+    <string name="UpdateNoteActivity__deleteWarning">यह क्रिया पूर्वी नहीं हो सकती</string>
+    <string name="UpdateNoteActivity__voicePrompt">सुन रहे हैं</string>
+    <string name="UpdateNoteActivity__send_message_via">के माध्यम से संदेश भेजें:</string>
+    ```
+    // UserActivity
+    <string name="UserActivity__user">उपयोगकर्ता</string>
+    <string name="UserActivity__error">त्रुटि: </string>
+    <string name="UserActivity__emptyName">आगे बढ़ने के लिए उपयोगकर्ता नाम डालें</string>
+    <string name="UserActivity__logoutPrompt">हम आपका इंतजार कर रहे हैं!</string>
+    <string name="UserActivity__deleteAccText1">सभी सूची और अन्य डेटा</string>
+    <string name="UserActivity__deleteAccText2">हटा दिए जाएंगे</string>
+    <string name="UserActivity__accountDeleted">खाता हटा दिया गया</string>
+
+
+    // OnboardingActivity
+    <string name="OnboardingActivity__Next">आगे</string>
+    <string name="OnboardingActivity__Start">शुरू</string>
+
+    ///////////////////////////////////////////////
+
+    // activity_about
+    <string name="activity_about__toolbarText">बारे में</string>
+    <string name="activity_about__version">ऐप संस्करण</string>
+    <string name="activity_about__privacyPolicy">गोपनीयता नीति</string>
+    <string name="activity_about__credits">क्रेडिट्स</string>
+    <string name="activity_about__open_icon_content_description">खोलें</string>
+
+    // activity_acknowledgments
+    <string name="activity_acknowledgments__toolbarText">क्रेडिट्स</string>
+    <string name="activity_acknowledgments__open_link_content_description">लिंक खोलें</string>
+
+    // activity_backup
+    <string name="activity_backup__toolbarText">बैकअप</string>
+    <string name="activity_backup__backupText">बैकअप</string>
+    <string name="activity_backup__backupDescription">अपनी शॉपिंग सूची का बैकअप बनाएं और आवश्यकता पर उन्हें बहाल करें</string>
+    <string name="activity_backup__restoreText">पुनर्स्थापित करें</string>
+    <string name="activity_backup__restoreDescription">फोन बदल गया? पहले से निर्यात किए गए बैकअप से डेटा को पुनः प्राप्त करें</string>
+
+    // activity_change_password
+    <string name="activity_change_password__toolbarText">पासवर्ड बदलें</string>
+    <string name="activity_change_password__currentPasswordHint">वर्तमान पासवर्ड दर्ज करें</string>
+    <string name="activity_change_password__newPasswordHint">नया पासवर्ड दर्ज करें</string>
+    <string name="activity_change_password__confirmPasswordHint">नया पासवर्ड पुनः दर्ज करें</string>
+    <string name="activity_change_password__forgotPasswordText">अपना पासवर्ड भूल गए?</string>
+    <string name="activity_change_password__doneBtnText">करें</string>
+
+    // activity_configure_passcode
+    <string name="activity_configure_passcode__toolbarText">एप्लिकेशन लॉक</string>
+    <string name="activity_configure_passcode__setPassword">पासवर्ड सेट करें</string>
+    <string name="activity_configure_passcode__fingerprintLogin">फिंगरप्रिंट के साथ लॉगिन करें</string>
+    <string name="activity_configure_passcode__removeAppLock">ऐप लॉक हटाएं</string>
+
+    // activity_create_note
+    <string name="activity_create_note__toolbarText">टिप्पणियाँ</string>
+    <string name="activity_create_note__titleHint">शीर्षक</string>
+    <string name="activity_create_note__descriptionHint">कुछ नोट करें</string>
+
+    // activity_cross_setting
+    <string name="activity_cross_setting__toolbarText">आइटम से चिन्हित करें</string>
+    <string name="activity_cross_setting__disableSwitchText">चिन्हित करने का विकल्प अक्षम करें</string
+
+        >
+    <string name="activity_cross_setting__disableCrossDescription">अगर सक्षम किया गया है, तो जब चेक किए जाते हैं तो आइटम से चिन्हित हो जाते हैं</string>
+
+    // activity_detail_list_share_setting
+    <string name="activity_detail_list_share_setting__toolbarText">विस्तृत सूची साझा करना</string>
+    <string name="activity_detail_list_share_setting__shareWithPrice">कीमत के साथ साझा करें</string>
+    <string name="activity_detail_list_share_setting__shareWithPriceDescription">साझा करते समय आइटम कीमत शामिल करें</string>
+    <string name="activity_detail_list_share_setting__shareWithQuantity">मात्रा के साथ साझा करें</string>
+    <string name="activity_detail_list_share_setting__shareWithQuantityDescription">साझा करते समय आइटम मात्रा शामिल करें</string>
+    <string name="activity_detail_list_share_setting__shareWithTotal">कुल के साथ साझा करें</string>
+    <string name="activity_detail_list_share_setting__shareWithTotalDescription">साझा करते समय सूची कुल शामिल करें</string>
+
+    // activity_insert_passcode
+    <string name="activity_insert_passcode__toolbarText">साइन इन</string>
+    <string name="activity_insert_passcode__welcomeBack">वापस स्वागत है!</string>
+    <string name="activity_insert_passcode__insertPinPrompt">4 अंकों का पिन डालें</string>
+    <string name="activity_insert_passcode__loginWithFingerprint">फिंगरप्रिंट के साथ लॉगिन करें</string>
+    <string name="activity_insert_passcode__loginWithFingerprintDescription">आगे बढ़ने के लिए फिंगरप्रिंट आइकन टैप करें</string>
+
+    // activity_item
+    <string name="activity_item__total">कुल:</string>
+    <string name="activity_item_eye_icon_content_description">कुल दिखाएं</string>
+    <string name="activity_item_FAB">आइटम जोड़ें</string>
+    <string name="activity_item_emptyText">कोई आइटम नहीं</string>
+
+    // activity_item_suggestion
+    <string name="activity_item_suggestion__toolbarText">आइटम सुझाव</string>
+    <string name="activity_item_suggestion__hideSuggestionText">सुझाव छिपाएं</string>
+    <string name="activity_item_suggestion__hideSuggestionDescription">यह टाइप करते समय सुझाव दिखाना अक्षम कर देता है।</string>
+
+    // activity_log_in
+    <string name="activity_log_in__loginText">अपने खाते में लॉगिन करें</string>
+    <string name="activity_log_in__email">ईमेल</string>
+    <string name="activity_log_in__password">पासवर्ड</string>
+    <string name="activity_log_in__forgotPassword">पासवर्ड भूल गए?</string>
+    <string name="activity_log_in__login">लॉगिन</string>
+    <string name="activity_log_in__or">-या-</string>
+    <string name="activity_log_in__continueWithGoogle">Google के साथ जारी रखें</string>
+    <string name="activity_log_in__noAccount">खाता नहीं है?</string>
+    <string name="activity_log_in__signUp">साइन अप</string>
+
+    // activity_payment_successful
+    <string name="activity_payment_successful__header">Buymate प्रीमियम खरीदने के लिए धन्यवाद!\n</string>
+    <string name="activity_payment_successful__header_desc_1">आप वर्तमान में Buymate के सभी सुविधाओं का आनंद ले रहे हैं!</string>
+    <string name="activity_payment_successful__header_desc_2">बैकअप और पुनः स्थापना</string>
+    <string name="activity_payment_successful__header_desc_4">विज्ञापन हटाएं</string>
+    <string name="activity_payment_successful__header_desc_5">Buymate का समर्थन करें</string>
+    <string name="activity_payment_successful__back_btn">होम पर वापस जाएं</string>
+
+    // activity_premium
+    <string name="activity_premium__toolbarText">प्रीमियम</string>
+    <string name="activity_premium__header">प्रीमियम खरीदने से आपको निम्नलिखित तक पहुंच मिलती है:</string>
+    <string name="activity_premium__backupText">बैकअप और पुनः स्थापना</string>
+    <string name="activity_premium__removeAdsText">विज्ञापन हटाएं</string>
+    <string name="activity_premium__supportText">Buymate का समर्थन करें</string>
+    <string name="activity_premium__sub_header">एक बार की खरीदारी प्रस्ताव</string>
+    <string name="activity_premium__payOneTime">केवल एक बार भुगतान करें</string>
+    <string name="activity_premium__prev_lifetime_currency_text">0.00</string>
+    <string name="activity_premium__upgrade_btn">अब अपग्रेड करें!</string>
+    <string name="activity_premium__full_star">"\u2606""\u2606""\u2606""\u2606"</string>
+    <string name="activity_premium__tip">सदस्यता स्वचालित रूप से नवीनीकृत होती है। आप इसे Google Play सेटिंग में रद्द कर सकते हैं</string>
+    <string name="activity_premium__no_network_header">उफ़, कुछ गलत हो गया है।</string>
+    <string name="activity_premium__no_network_subHeader">यह नेटवर्क समस्या या Google Play सर्वर की त्रुटि हो सकती है। बाद में पुन: प्रयास करें। यदि समस्या बनी रहती है, तो हमारी समर्थन टीम से संपर्क करें।</string>
+
+    // activity_recover_password
+    <string name="activity_recover_password__sub_header">पासवर्ड भूल गए</string>
+    <string name="activity_recover_password__email_box_parent">ईमेल</string>
+    <string name="activity_recover_password__recoverBtn">पासवर्ड पुनर्प्राप्त करें</string>
+    <string name="activity_recover_password__recover_description">अपना ईमेल डालें और \'पासवर्ड पुनर्प्राप्त करें\' बटन पर क्लिक करें। \n\nआपके ईमेल पर एक पासवर्ड पुनर्प्राप्ति लिंक भेजा जाएगा।</string>
+
+    // activity_settings
+    <string name="activity_settings__toolbarText">सेटिंग्स</string>
+    <string name="activity_settings__generalHeaderText">सामान्य</string>
+    <string name="activity_settings__themeText">डार्क मोड</string>
+    <string name="activity_settings__screenText">स्क्रीन चमकाएँ</string>
+    <string name="activity_settings__textSizeText">टेक्स्ट का आकार</string>
+    <string name="activity_settings__removeAdsText">विज्ञापन हटाएं</string>
+    <string name="activity_settings__removeAdsSubText">प्रीमियम उपयोगकर्ता बनें</string>
+    <string name="activity_settings__advancedHeaderText">उन्नत</string>
+    <string name="activity_settings__strikeText">आइटम को चिन्हित करें</string>
+    <string name="activity_settings__disable_price_Text">आइटम कीमत दिखाएं</string>
+    <string name="activity_settings__item_suggestionText">आइटम सुझाव</string>
+    <string name="activity_settings__multiplyText">गुणा करें</string>
+    <string name="activity_settings__multiplySubText">(मूल्य x मात्रा)</string>
+    <string name="activity_settings__swipeActionSubText1">स्वाइप क्रियाएँ</string>
+    <string name="activity_settings__detailedListShareTextHeader">साझा करने के विकल्प</string>
+    <string name="activity_settings__detailedListShareSubText">आइटम कीमत, मात्रा और कुल को शामिल करें</string>
+    <string name="activity_settings__currencyTextHeader">मुद्रा</string>
+    <string name="activity_settings__currencySubText">अपनी पसंदीदा मुद्रा प्रतीक दर्ज करें</string>
+    <string name="activity_settings__securityHeaderText">सुरक
+
+्षा</string>
+    <string name="activity_settings__lockText">ऐप लॉक</string>
+
+    // activity_signup
+    <string name="activity_signup__sub_header">अपना खाता बनाएं</string>
+    <string name="activity_signup__fulname_box_parent">उपयोगकर्ता नाम</string>
+    <string name="activity_signup__email_box_parent">ईमेल</string>
+    <string name="activity_signup__password_box_parent">पासवर्ड</string>
+    <string name="activity_signup__confirm_password_box_parent">पासवर्ड की पुष्टि करें</string>
+    <string name="activity_signup__signUpBtn">साइन अप करें</string>
+    <string name="activity_signup__orText">-या-</string>
+    <string name="activity_signup__googleText">Google के साथ जारी रखें</string>
+    <string name="activity_signup__loginText1">पहले से ही खाता है?</string>
+    <string name="activity_signup__loginText2">लॉग इन करें</string>
+
+    // activity_swipe_setting
+    <string name="activity_swipe_setting__swipeToolbar">स्वाइप क्रिया</string>
+    <string name="activity_swipe_setting__swipeLeftTextHeader">बाया स्वाइप करें</string>
+    <string name="activity_swipe_setting__swipeRightTextHeader">दाया स्वाइप करें</string>
+    <string name="activity_swipe_setting__customize_button">कस्टमाइज़ करें</string>
+    <string name="activity_swipe_setting__swipeDisableTextHeader">स्वाइपिंग को अक्षम करें</string>
+    <string name="activity_swipe_setting__swipe_description">सूची में आइटम स्वाइप किए जाने पर क्या होता है चुनें।\n\nजब स्वाइपिंग को अक्षम किया जाता है, तो आइटमों को बाएं या दाएं स्वाइप किया जाने से अक्षम किया जाता है।</string>
+
+    // activity_update_note
+    <string name="activity_update_note__update_note_title">टिप्पणियाँ</string>
+    <string name="activity_update_note__update_heading_text">शीर्षक</string>
+    <string name="activity_update_note__update_content_text">कुछ नोट दर्ज करें</string>
+
+    // activity_user
+    <string name="activity_user__account_title">खाता</string>
+    <string name="activity_user__edit_nameText">नाम संपादित करें</string>
+    <string name="activity_user__change_passwordText">पासवर्ड बदलें</string>
+    <string name="activity_user__logoutText">लॉग आउट</string>
+    <string name="activity_user__delete_accountText">खाता हटाएं</string>
+    <string name="activity_user__userNameUpdated">उपयोगकर्ता नाम अपडेट किया गया है</string>
+
+    // activity_onboarding
+    <string name="activity_onboarding_skip">छोड़ें</string>
+    <string name="activity_onboarding_back">वापस</string>
+    <string name="activity_onboarding_next">अगला</string>
+
+    //category_title_set_popup
+    <string name="category_title_set_popup__emptyText1">सूची का नाम दर्ज करें</string>
+    <string name="category_title_set_popup__emptyText2">और समाप्त होने पर <b>बनाएं</b> पर क्लिक करें</string>
+    <string name="category_title_set_popup__category_name_hint">नई सूची</string>
+    <string name="category_title_set_popup__suggestion">सुझाव:</string>
+    <string name="category_title_set_popup__suggestion_option_textView1">खरीदारी</string>
+    <string name="category_title_set_popup__suggestion_option_textView2">किराना</string>
+    <string name="category_title_set_popup__suggestion_option_textView4">खाना</string>
+    <string name="category_title_set_popup__suggestion_option_textView5">उपकरण</string>
+    <string name="category_title_set_popup__suggestion_option_textView6">सामग्री</string>
+    <string name="category_title_set_popup__suggestion_option_textView7">फार्मेसी</string>
+    <string name="category_title_set_popup__suggestion_option_textView8">यात्रा</string>
+    <string name="category_title_set_popup__fabButton">बनाएं</string>
+
+
+    //cloud_dialog_popup
+    <string name="cloud_dialog_popup__percent">क्लाउड में बैकअप</string>
+    <string name="cloud_dialog_popup__info">कृपया बैकअप पूरा होने का इंतजार करें</string>
+
+    //custom_alert_delete_account_dialog
+    <string name="custom_alert_delete_account_dialog__header">खाता हटाएं?</string>
+    <string name="custom_alert_delete_account_dialog__delete_account_text">सभी सूची और अन्य डेटा को क्लाउड से स्थायी रूप से हटा दिया जाएगा।</string>
+    <string name="custom_alert_delete_account_dialog__CancelButton">रद्द करें</string>
+    <string name="custom_alert_delete_account_dialog__BtnSave">हटाएं</string>
+
+    //custom_alert_fingerprint_dialog
+    <string name="custom_alert_fingerprint_dialog__header">नोटिस !!!</string>
+    <string name="custom_alert_fingerprint_dialog__alert_text">आप इस खाते के साथ फिंगरप्रिंट का उपयोग नहीं कर सकते। इसे सक्षम करने के लिए, लॉग इन करने के बाद सेटिंग्स पृष्ठ पर जाएं।</string>
+    <string name="custom_alert_fingerprint_dialog__okBtn">समझ गया</string>
+
+    //custom_app_version_dialog
+    <string name="custom_app_version_dialog__version_text1">संस्करण:" "</string>
+    <string name="custom_app_version_dialog__version_close">बंद करें</string>
+
+    //custom_currency_dialog
+    <string name="custom_currency_dialog__edit_title">मुद्रा प्रतीक</string>
+    <string name="custom_currency_dialog__desc_currency_hint">प्रतीक डालें</string>
+    <string name="custom_currency_dialog__CurrencyCancelButton">रद्द करें</string>
+    <string name="custom_currency_dialog__currencyBtnSave">संपन्न</string>
+
+    //custom_delete_dialog
+    <string name="custom_delete_dialog__cancel_button">रद्द करें</string>
+    <string name="custom_delete_dialog__delete_button">संपन्न</string>
+
+    //custom_edit_username_dialog
+    <string name="custom_edit_username_dialog__edit_title">नाम संपादित करें</string>
+    <string name="custom_edit_username_dialog__firstNameBoxHint">उपयोगकर्ता नाम</string>
+    <string name="custom_edit_username_dialog__nameCancelButton">रद्द करें</string>
+    <string name="custom_edit_username_dialog__nameBtnSave">संपन्न</string>
+
+    //custom_image_upload_dialog
+    <string name="custom_edit_username_dialog__image_title">छवि जोड़ें</string>
+    <string name="custom_edit_username_dialog__takePictureText">तस्वीर खींचें</string>
+    <string name="custom_edit_username_dialog__uploadPictureText">तस्वीर अपलोड करें</string>
+
+    //custom_image_upload_dialog
+    <string name="custom_image_upload_dialog__header">नोटिस !!!</string>
+    <string name="custom_image_upload_dialog__login_btn">लॉग इन करें</string>
+    <string name="custom_image_upload_dialog__cancel_btn">रद्द करें</string>
+
+    //custom_logout_warning_dialog
+    <string name="custom_logout_warning_dialog__header">लॉगआउट की पुष्टि करें</string>
+    <string name="custom_logout_warning_dialog__logout_btn">लॉग आउट</string>
+    <string name="custom_logout_warning_dialog__cancel_btn">रद्द करें</string>
+
+    //custom_premium_backup_description_dialog
+    <string name="custom_premium_backup_description_dialog__header">बैकअप और पुनर्स्थापन</string>
+    <string name="custom_premium_backup_description_dialog__sub_header">अपनी खरीददारी सूची को सुरक्षित रखें और आसानी से पहुंचने के लिए हमारी बैकअप प्रणाली का उपयोग करें। जब आपको आवश्यक हो, तो इसे पुनर्स्थापित करें</string>
+    <string name="custom_premium_backup_description_dialog__okBtn">बंद करें</string>
+
+    //custom_premium_remove_ads_description_dialog
+    <string name="custom_premium_remove_ads_description_dialog__header">विज्ञापन हटाएं</string>
+    <string name="custom_premium_remove_ads_description_dialog__sub_header">हमारे प्रीमियम सुविधाओं के साथ अविच्छिन्न ऐप का आनंद लें।</string>
+    <string name="custom_premium_remove_ads_description_dialog__okBtn">बंद करें</string>
+
+    //custom_premium_support_description_dialog
+    <string name="custom_premium_support_description_dialog_header">Buymate का समर्थन करें</string>
+    <string name="custom_premium_support_description_dialog__sub_header">Buymate का समर्थन करें, हमें आपकी खरीददारी अनुभव को सुधारने के लिए सहायक होगा!</string>
+    <string name="custom_premium_support_description_dialog__okBtn">बंद करें</string>
+
+    //custom_share_dialog
+    <string name="custom_share_dialog__title">शेयर</string>
+    <string name="custom_share_dialog__asText">पाठ के रूप में शेयर करें</string>
+    <string name="custom_share_dialog__asPDF">PDF डाउनलोड करें</string>
+
+    //custom_swipe_action_dialog
+    <string name="custom_swipe_action_dialog__edit_title">क्रिया का चयन करें</string>
+    <string name="custom_swipe_action_dialog__radio_button_rename">नाम बदलें</string>
+    <string name="custom_swipe_action_dialog__radio_button_check">आइटम को चेक और अचेक करें</string>
+    <string name="custom_swipe_action_dialog__radio_button_price">मूल्य बदलें</string>
+    <string name="custom_swipe_action_dialog__radio_button_quantity">मात्रा बदलें</string>
+    <string name="custom_swipe_action_dialog__radio_button_star">आइटम को तारा और अतारा करें</string>
+    <string name="custom_swipe_action_dialog__radio_button_delete">हटाएं</string>
+    <string name="custom_swipe_action_dialog__radio_button_options">विकल्प दिखाएं</string>
+    <string name="custom_swipe_action_dialog__radio_button_do_nothing">कुछ न करें</string>
+
+    //custom_textsize_dialog
+    <string name="custom_textsize_dialog__radio_button_small">छोटा</string>
+    <string name="custom_textsize_dialog__radio_button_medium">मध्यम" "(डिफ़ॉल्ट)</string>
+    <string name="custom_textsize_dialog__radio_button_large">बड़ा</string>
+
+    //edit_category_layout
+    <string name="edit_category_layout__renameText">नाम बदलें</string>
+    <string name="edit_category_layout__duplicateText">सूची की नकल</string>
+    <string name="edit_category_layout__shareText">सूची साझा करें</string>
+    <string name="edit_category_layout__alarmText">अलार्म सेट करें</string>
+    <string name="edit_category_layout__deleteText">हटाएं</string>
+
+    //edit_item_layout
+    <string name="edit_item_layout__addImage_text">छवि जोड़ें</string>
+    <string name="edit_item_layout__rename_text">नाम बदलें</string>
+    <string name="edit_item_layout__price_text">मूल्य बदलें</string>
+    <string name="edit_item_layout__quantity_text">मात्रा बदलें</string>
+    <string name="edit_item_layout__copy_text">प्रतिलिपि</string>
+    <string name="edit_item_layout__move_text">हटाएं</string>
+    <string name="edit_item_layout__favourites_text_1">स्टार्ड में जोड़ें</string>
+    <string name="edit_item_layout__delete_text">हटाएं</string>
+    <string name="edit_item_layout__information_text">विवरण</string>
+
+    //fragment_favourites
+    <string name="fragment_favourites_toolbar_title">स्टार्ड</string>
+    <string name="fragment_favourites_illustration_text_1">कोई स्टार्ड आइटम नहीं</string>
+    <string name="fragment_favourites_illustration_text_2">उन आइटमों को स्टार्ड में जोड़ें</string>
+    <string name="fragment_favourites_illustration_text_3">जिन्हें आप बाद में आसानी से खोज सकते हैं</string>
+    <string name="fragment_favourites_subtotal">कुल:</string>
+    <string name="fragment_favourites_addItem_fav_fab">आइटम जोड़ें</string>
+
+    //fragment_home
+    <string name="fragment_home_toolbar_text_2">आज हम क्या खरीद रहे हैं?</string>
+    <string name="fragment_home_search_view_hint">खोजें</string>
+    <string name="fragment_home_page_description_text">श्रेणियाँ</string>
+    <string name="fragment_home_sort_by_text">क्रमबद्ध करें द्वारा</string>
+    <string name="fragment_home_noList_text_1">आइटम नहीं हैं</string>
+    <string name="fragment_home_noList_text_2">नीचे + बटन पर क्लिक करें</string>
+    <string name="fragment_home_noList_text_3">एक नई सूची बनाने के लिए</string
+
+        >
+    <string name="fragment_home_empty_create_btn">नई सूची</string>
+
+    //fragment_more
+    <string name="fragment_more_settingToolbar">मेनू</string>
+    <string name="fragment_more_premiumText">Buymate प्रीमियम का प्रयास करें</string>
+    <string name="fragment_more_premiumText2">विज्ञापन हटाएं और अधिक सुविधाओं का आनंद लें</string>
+    <string name="fragment_more_accountText">खाता</string>
+    <string name="fragment_more_messageText">हमें संदेश भेजें</string>
+    <string name="fragment_more_backupText">बैकअप</string>
+    <string name="fragment_more_premiumText_2">प्रीमियम</string>
+    <string name="fragment_more_websiteText">वेबसाइट</string>
+    <string name="fragment_more_shareText">शेयर</string>
+    <string name="fragment_more_RateText">क्या आप ऐप का उपयोग करने में आनंद लेते हैं?</string>
+    <string name="fragment_more_RateText2">हमें Google Play पर दरिया करें "\u2606""\u2606""\u2606""\u2606""\u2606"</string>
+    <string name="fragment_more_twitterText">ट्विटर पर फॉलो करें</string>
+    <string name="fragment_more_settingText">सेटिंग्स</string>
+    <string name="fragment_more_aboutText">के बारे में</string>
+
+    //fragment_notes
+    <string name="fragment_notes_toolbar_title">टिप्पणियाँ</string>
+    <string name="fragment_notes_illustration_text_1">कोई नोट</string>
+    <string name="fragment_notes_illustration_text_2">एक और आसान खरीदारी के लिए नोट जोड़ें</string>
+    <string name="fragment_notes_illustration_text_3">अनुभव</string>
+    <string name="fragment_notes_search_View">सूची में खोजें</string>
+
+    //info_item_layout
+    <string name="info_layout_price_text">मूल्य:</string>
+    <string name="info_layout_quantity_text">मात्रा:</string>
+    <string name="info_layout_subTotal_text">कुल:</string>
+
+    //move_bottom_layout
+    <string name="move_bottom_layout_search_bar">खोजें</string>
+    <string name="move_bottom_layout_new_list_button">नई सूची बनाएं</string>
+    <string name="move_bottom_layout_emptyTEXT1">कोई आइटम नहीं</string>
+
+    //no_connection_layout
+    <string name="no_connection_layout_no_connection_text_1">कोई कनेक्शन नहीं</string>
+    <string name="no_connection_layout_no_connection_text_2">कोई इंटरनेट कनेक्शन नहीं मिला। अपना कनेक्शन जांचें</string>
+    <string name="no_connection_layout_no_connection_text_3">और पुनः प्रयास करें।</string>
+    <string name="no_connection_layout_try_again">पुनः प्रयास करें</string>
+
+
+    //price_update_popup
+    <string name="price_update_price_name">मूल्य डालें</string>
+
+    //quantity_set_popup
+    <string name="quantity_set_popup_quantity_name">मात्रा डालें</string>
+    <string name="quantity_set_popup_unit_hint">इकाई</string>
+    <string name="quantity_set_popup_quantity_btnSave">किया</string>
+
+
+    //set_password_layout
+    <string name="set_password_layout_header">नया पासवर्ड बनाएं</string>
+    <string name="set_password_layout_sub_header">अपना 4 पिन पासवर्ड सेट करें ताकि आप बायमेट तक पहुँच सकें</string>
+
+
+    //set_theme_layout
+    <string name="set_theme_layout_title">डार्क मोड</string>
+    <string name="set_theme_layout_radio_button_default">सिस्टम का प्रयोग करें</string>
+    <string name="set_theme_layout_radio_button_off">बंद</string>
+    <string name="set_theme_layout_radio_button_on">चालू</string>
+    <string name="set_theme_layout_dimSwitch">धीमा</string>
+
+    //shopbottomlayout
+    <string name="shopbottomlayout_desc_name">आइटम का नाम</string>
+    <string name="shopbottomlayout_more_text">अधिक</string>
+    <string name="shopbottomlayout_desc_price">मूल्य</string>
+    <string name="shopbottomlayout_desc_quantity">मात्रा</string>
+    <string name="shopbottomlayout_unit_textView">इकाई</string>
+    <string name="shopbottomlayout_CancelButton">रद्द करें</string>
+    <string name="shopbottomlayout_BtnSave">किया</string>
+    <string name="shop_bottom_layout_illustration_text_1">आप लगभग पूरा कर चुके हैं!</string>
+    <string name="shop_bottom_layout_illustration_text_2">अपनी सूची में आइटम जोड़ें</string>
+
+
+    //shopping_widget_provider
+    <string name="shopping_widget_provider_category_text_view">------</string>
+
+    //shopping_widget_provider_configure
+    <string name="shopping_widget_provider_configure_configureToolbar">सूची का चयन करें</string>
+    <string name="shopping_widget_provider_configure_configureCreateButton">नई सूची बनाएं</string>
+
+    //sort_category_layout
+    <string name="sort_bottom_layout_title_text">क्रमबद्ध करें द्वारा:</string>
+    <string name="sort_bottom_layout_name_text">नाम</string>
+    <string name="sort_bottom_layout_date_text">बनाने की तारीख</string>
+    <string name="sort_bottom_layout_price_text">मूल्य</string>
+    <string name="sort_bottom_layout_quantity_text">मात्रा</string>
+
+
+    //success_dialog_popup
+    <string name="success_dialog_popup_illustration_text_1">बधाई हो!</string>
+    <string name="success_dialog_popup_illustration_text_2">आपकी पहली सूची तैयार है!</string>
+    <string name="success_dialog_popup_button_text">समझे</string>
+
+
+    //update_category_name_layout
+    <string name="update_category_name_layout_header_text">नाम बदलें</string>
+    <string name="update_category_name_textBox_hint">सूची का नाम</string>
+    <string name="update_category_name_layout_button_text">किया</string>
+
+
+    //update_item_name_layout
+    <string name="update_item_name_layout_header_text">नाम बदलें</string>
+    <string name="update_item_name_textBox_hint">आइटम का नाम</string>
+    <string name="update_item_name_layout_button_text">किया</string>
+
+
+    //upgrade_required_layout
+    <string name="upgrade_required_layout_upgrade_text_1">उन्नति आवश्यक है</string>
+    <string name="upgrade_required_layout_upgrade_text_2">इस सुविधा और अधिक का आनंद लेने के लिए बायमेट लाइफटाइम सब्सक्रिप्शन पर अपग्रेड करें!</string>
+    <string name="upgrade_required_layout_upgradeBtn">अपग्रेड</string>
+    <string name="upgrade_required_layout_cancelButton">रद्द करें</string>
+
+    //voice_typing_layout
+    <string name="voice_typing_layout_Heading">सूची में जोड़ें</string>
+    <string name="voice_typing_layout_description">आइटम का नाम</string>
+    <string name="voice_typing_cancelButton">रद्द करें</string>
+    <string name="voice_typing_addBtn">जोड़ें</string>
+
+
+    <string-array name="units">
+        <item>औंस</item>
+        <item>पाउंड</item>
+        <item>गैलन</item>
+        <item>क्वार्ट</item>
+        <item>पैकेज</item>
+        <item>कैन</item>
+        <item>पैक</item>
+        <item>बॉक्स</item>
+        <item>टुकड़ा</item>
+        <item>बैग</item>
+    </string-array>
+
+    <string-array name="currency">
+        <item>"\u0024"</item>
+        <item>"\u20A6"</item>
+        <item>"\u20AC"</item>
+        <item>"\u00A5"</item>
+        <item>"\u00A3"</item>
+    </string-array>
+
+    <string-array name="item_suggestions" tools:ignore="InconsistentArrays">
+        <item>सेब</item>
+        <item>केला</item>
+        <item>संतरे</item>
+        <item>अंगूर</item>
+        <item>मांस</item>
+        <item>स्ट्रॉबेरी</item>
+        <item>ब्लूबेरी</item>
+        <item>अनानास</item>
+        <item>आम</item>
+        <item>आड़ू</item>
+        <item>आलूबुखारा</item>
+        <item>सब्जियां</item>
+        <item>गाजर</item>
+        <item>ब्रोकोली</item>
+        <item>टमाटर</item>
+        <item>खीरा</item>
+        <item>पालक</item>
+        <item>हरी फलियां</item>
+        <item>शिमला मिर्च</item>
+        <item>ज़ुकिनी</item>
+        <item>फूलगोभी</item>
+        <item>खाद्य</item>
+        <item>रोटी</item>
+        <item>दूध</item>
+        <item>अंडे</item>
+        <item>सीरियल</item>
+        <item>पास्ता</item>
+        <item>चावल</item>
+        <item>मुर्गा</item>
+        <item>गाय का मांस</item>
+        <item>मछली</item>
+        <item>उपकरण</item>
+        <item>चाकू</item>
+        <item>कटिंग बोर्ड</item>
+        <item>आलू का छिलका</item>
+        <item>कैन ओपनर</item>
+        <item>मापन की चम्मच</item>
+        <item>मापन कप</item>
+        <item>मिश्रण कटोरे</item>
+        <item>बेकिंग शीट</item>
+        <item>व्हिस्क</item>
+        <item>क्लीनिंग उपकरण</item>
+        <item>झाड़ू</item>
+        <item>पोछा</item>
+        <item>बर्तनों का साबुन</item>
+        <item>कचरे के थैले</item>
+        <item>झाड़ू</item>
+        <item>स्पंज</item>
+        <item>वैक्यूम क्लीनर</item>
+        <item>बीटिंग उपकरण</item>
+        <item>मिक्सर</item>
+        <item>ब्लेंडर</item>
+        <item>हैंड मिक्सर</item>
+        <item>जूसर</item>
+        <item>टूथपेस्ट</item>
+        <item>शैम्पू</item>
+        <item>कंडीशनर</item>
+        <item>चॉकलेट</item>
+        <item>साबुन</item>
+        <item>लोशन</item>
+        <item>रेज़र्स</item>
+        <item>डिओडोरेंट</item>
+        <item>कपड़े धोने का डिटर्जेंट</item>
+        <item>डिशवॉशर डिटर्जेंट</item>
+        <item>कचरे के थैले</item>
+        <item>ब्लीच</item>
+        <item>कागज़ी तौलिए</item>
+        <item>टॉयलेट पेपर</item>
+        <item>कॉफी</item>
+        <item>चाय</item>
+        <item>चीनी</item>
+        <item>आटा</item>
+        <item>कुकिंग तेल</item>
+        <item>मसाले</item>
+        <item>कैन्ड सूप</item>
+        <item>फ्रोजन सब्जियाँ</item>
+        <item>आइसक्रीम</item>
+        <item>कुकीज़</item>
+        <item>चिप्स</item>
+        <item>सोडा</item>
+        <item>पानी</item>
+        <item>बीयर</item>
+        <item>वाइन</item>
+        <item>नाश्ता</item>
+        <item>मोमबत्तियाँ</item>
+        <item>लाइट बल्ब</item>
+        <item>गेराज स्टोरेज बिन्स</item>
+        <item>स्टेशनरी</item>
+        <item>पालतू खाद्य</item>
+        <item>बिल्ली का रेत</item>
+        <item>प्राथमिक चिकित्सा किट</item>
+        <item>बैटरी</item>
+        <item>पौधे का उर्वरक</item>
+        <item>तस्वीर का फ्रेम</item>
+        <item>उपहार कार्ड</item>
+    </string-array>
+
+
+    <string name="bottom_bar_home_text">होम</string>
+    <string name="bottom_bar_favourites_text">स्टार चिह्नित</string>
+    <string name="bottom_bar_notes_text">नोट्स</string>
+    <string name="bottom_bar_more_text">मेन्यू</string>
+
+    <string name="category_toolbar_mark_text">सभी को चिह्नित करें</string>
+    <string name="category_toolbar_delete_text">हटाएं</string>
+
+    <string name="category_toolbar_setting_text">सेटिंग्स</string>
+
+    <string name="favourites_toolbar_hold_menu_mark_text">सभी को चिह्नित करें</string>
+    <string name="favourites_toolbar_hold_menu_delete_text">हटाएं</string>
+    <string name="favourites_toolbar_hold_menu_unStar_text">चिह्नित न करें</string>
+
+    <string name="favourites_toolbar_share_text">शेयर करें</string>
+    <string name="favourites_toolbar_voice_text">आवाज टाइपिंग</string>
+    <string name="favourites_toolbar_sort_text">क्रमबद्ध करें द्वारा</string>
+    <string name="favourites_toolbar_check_text">सभी को चिह्नित करें</string>
+    <string name="favourites_toolbar_unCheck_text">सभी चिह्नित न करें</string>
+
+    <string name="item_toolbar_hold_menu_mark_text">सभी को चिह्नित करें</string>
+    <string name="item_toolbar_hold_menu_delete_text">हटाएं</string>
+    <string name="item_toolbar_hold_menu_copy_text">प्रतिलिपि बनाएं</string>
+    <string name="item_toolbar_hold_menu_move_text">हटाएं</string>
+    <string name="item_toolbar_hold_menu_star_text">चिह्नित करें</string>
+    <string name="item_toolbar_hold_menu_unStar_text">चिह्नित न करें</string>
+
+    <string name="item_toolbar_menu_search_text">खोजें</string>
+    <string name="item_toolbar_menu_voice_text">आवाज टाइपिंग</string>
+    <string name="item_toolbar_menu_rename_text">सूची का नाम बदलें</string>
+    <string name="item_toolbar_menu_share_text">शेयर करें</string>
+    <string name="item_toolbar_menu_sort_text">क्रमबद्ध करें द्वारा</string>
+    <string name="item_toolbar_menu_check_text">सभी को चिह्नित करें</string>
+    <string name="item_toolbar_menu_unCheck_text">सभी चिह्नित न करें</string>
+    <string name="item_toolbar_menu_reminder_text">अलार्म सेट करें</string>
+
+    <string name="nav_home_text">होम</string>
+    <string name="nav_premium_text">प्रीमियम</string>
+    <string name="nav_reminder_text">अलार्म सेट करें</string>
+    <string name="nav_extras_text">अतिरिक्त</string>
+    <string name="nav_rate_text">ऐप को मूल्यांकन दें</string>
+    <string name="nav_message_text">हमें संदेश भेजें</string>
+    <string name="nav_settings_text">सेटिंग्स</string>
+    <string name="nav_about_text">बारे में</string>
+
+    <string name="note_toolbar_create_menu_voice_text">आवाज टाइपिंग</string>
+    <string name="note_toolbar_create_menu_save_text">सहेजें</string>
+    <string name="note_toolbar_create_menu_share_text">शेयर करें</string>
+    <string name="note_toolbar_create_menu_delete_text">हटाएं</string>
+
+    <string name="note_toolbar_hold_menu_mark_text">सभी को चिह्नित करें</string>
+    <string name="note_toolbar_hold_menu_delete_text">हटाएं</string>
+
+    <string name="note_toolbar_menu_share_text">शेयर करें</string>
+    <string name="note_toolbar_menu_voice_text">आवाज टाइपिंग</string>
+    <string name="note_toolbar_menu_save_text">सहेजें</string>
+    <string name="note_toolbar_menu_delete_text">हटाएं</string>
+
+</resources>

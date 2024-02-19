@@ -41,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_gravity="center"
-            app:buttonTint="?attr/colorSecondaryVariant"/>
+            app:buttonTint="?attr/colorSecondaryVariant" />
 
         <TextView
             android:id="@+id/sort_nameText_ascend"
@@ -78,7 +78,7 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_gravity="center"
-            app:buttonTint="?attr/colorSecondaryVariant"/>
+            app:buttonTint="?attr/colorSecondaryVariant" />
 
         <TextView
             android:id="@+id/sort_nameText_descend"
@@ -116,7 +116,7 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_gravity="center"
-            app:buttonTint="?attr/colorSecondaryVariant"/>
+            app:buttonTint="?attr/colorSecondaryVariant" />
 
         <TextView
             android:id="@+id/sort_dateText_ascend"
@@ -153,7 +153,7 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_gravity="center"
-            app:buttonTint="?attr/colorSecondaryVariant"/>
+            app:buttonTint="?attr/colorSecondaryVariant" />
 
         <TextView
             android:id="@+id/sort_dateText_descend"
@@ -191,7 +191,7 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_gravity="center"
-            app:buttonTint="?attr/colorSecondaryVariant"/>
+            app:buttonTint="?attr/colorSecondaryVariant" />
 
         <TextView
             android:id="@+id/price_text_ascend"
@@ -228,7 +228,7 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_gravity="center"
-            app:buttonTint="?attr/colorSecondaryVariant"/>
+            app:buttonTint="?attr/colorSecondaryVariant" />
 
         <TextView
             android:id="@+id/price_text_descend"
@@ -265,7 +265,7 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_gravity="center"
-            app:buttonTint="?attr/colorSecondaryVariant"/>
+            app:buttonTint="?attr/colorSecondaryVariant" />
 
         <TextView
             android:id="@+id/sort_quantityText_ascend"
@@ -302,7 +302,7 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_gravity="center"
-            app:buttonTint="?attr/colorSecondaryVariant"/>
+            app:buttonTint="?attr/colorSecondaryVariant" />
 
         <TextView
             android:id="@+id/sort_quantityText_descend"

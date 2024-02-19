@@ -57,6 +57,6 @@
         android:gravity="center"
         android:text="@string/custom_premium_backup_description_dialog__okBtn"
         android:textAllCaps="false"
-        android:textColor="@color/white"/>
+        android:textColor="@color/white" />
 
 </LinearLayout>

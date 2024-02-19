@@ -14,7 +14,7 @@
 
 
     <color name="inactive_text_color">#CCCECF</color>
-    <color name="inactive_text_color_dark">#656C6F</color>
+    <color name="inactive_text_color_dark">#80878A</color>
 
 
     <color name="pdf_table_header">#37414A</color>

@@ -130,7 +130,7 @@
                 android:layout_marginTop="20dp"
                 android:gravity="center"
                 android:text="@string/activity_insert_passcode__loginWithFingerprint"
-                android:textColor="?attr/textFillColor"/>
+                android:textColor="?attr/textFillColor" />
 
             <ImageView
                 android:id="@+id/fingerPrintImage"

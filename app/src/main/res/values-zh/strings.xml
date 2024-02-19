@@ -1,0 +1,999 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Buymate</string>
+    <string name="app_version" translatable="false">1.0.1</string>
+    <string name="app_link" translatable="false">https://play.google.com/store/apps/details?id=</string>
+    <string name="app_email" translatable="false">hemerickservices@gmail.com</string>
+    <string name="app_lifetime_product_id" translatable="false">com.hemerick.lifetime_subscription</string>
+    <string name="default_web_client_id" translatable="false">401382920363-u289nhkse3o3fi2tevrq68m7oic9vaj6.apps.googleusercontent.com</string>
+
+    ```xml
+    <string name="open_icon_content_description">打开</string>
+
+    //ShopCopyAdapter
+    <string name="ShopCopyAdapter__copy_successful">项目已复制到</string>
+
+    //ShopMoveAdapter
+    <string name="ShopMoveAdapter__move_successful">项目已移动到</string>
+
+    //ViewPagerAdapter
+    <string name="ViewPagerAdapter_heading_1">永远记住要购买的物品</string>
+    <string name="ViewPagerAdapter_heading_2">明智预算，避免冲动购买</string>
+    <string name="ViewPagerAdapter_heading_3">轻松分享您的清单</string>
+    <string name="ViewPagerAdapter_sub_heading_1">轻松创建列表，再也不会忘记购买任何物品。</string>
+    <string name="ViewPagerAdapter_sub_heading_2">管理您的预算，只购买列表上的物品</string>
+    <string name="ViewPagerAdapter_sub_heading_3">通过将列表分享为文本或 PDF 文件，与家人、朋友和同事建立联系。</string>
+
+    //Firebase
+    <string name="Firebase__backup_text_heading">正在备份到云端</string>
+    <string name="Firebase__backup_text_subheading">请稍候……</string>
+    <string name="Firebase__backup_successful">备份成功</string>
+    <string name="Firebase__restore_text_heading">正在从云端还原数据</string>
+    <string name="Firebase__restore_text_subheading">请稍候……</string>
+    <string name="Firebase__restore_no_list_found">未找到清单</string>
+    <string name="Firebase__restore_no_notes_found">未找到备注</string>
+    <string name="Firebase__restore_completed">还原完成</string>
+    <string name="Firebase__error">错误：</string>
+
+    //ShoppingWidgetService
+    <string name="ShoppingWidgetService__added">已添加</string>
+
+    //BackupActivity
+    <string name="BackupActivity__loginBeforeBackup">请登录后再进行备份</string>
+    <string name="BackupActivity__loginBeforeRestore">请确保在还原数据之前已登录</string>
+    <string name="BackupActivity__restoreHeader">还原数据</string>
+    <string name="BackupActivity__restoreWarning">此操作将用上次备份的数据替换当前数据。任何未保存的更改将丢失。确定要继续吗？</string>
+    <string name="BackupActivity__restoreProceedBtn">继续</string>
+    <string name="BackupActivity__restoreCancelBtn">取消</string>
+
+    //ChangePasswordActivity
+    <string name="ChangePasswordActivity__passwordUpdateSuccess">密码已更新</string>
+    <string name="ChangePasswordActivity__passwordUpdateFailed">密码更新失败</string>
+    <string name="ChangePasswordActivity__error">错误：</string>
+    <string name="ChangePasswordActivity__passwordNotMatched">密码不匹配</string>
+    <string name="ChangePasswordActivity__passwordLengthFailed">密码长度必须至少为 6 个字符</string>
+    <string name="ChangePasswordActivity__retypePassword">重新输入密码以继续</string>
+    <string name="ChangePasswordActivity__enterNewPassword">输入新密码</string>
+    <string name="ChangePasswordActivity__enterCurrentPassword">输入当前密码</string>
+
+    //ConfigurePasscodeActivity
+    <string name="ConfigurePasscodeActivity__deviceNotSupported">设备不受支持</string>
+    <string name="ConfigurePasscodeActivity__hardwareUnavailable">硬件不可用</string>
+    <string name="ConfigurePasscodeActivity__fingerprintNotSet">此设备未设置指纹</string>
+    <string name="ConfigurePasscodeActivity__verifyFingerprint">验证指纹</string>
+    <string name="ConfigurePasscodeActivity__usePassword">使用密码</string>
+    <string name="ConfigurePasscodeActivity__insert4digitPassword">输入 4 位密码</string>
+    <string name="ConfigurePasscodeActivity__confirmPassword">确认密码</string>
+    <string name="ConfigurePasscodeActivity__retypePassword">重新输入密码以继续</string>
+    <string name="ConfigurePasscodeActivity__success">成功</string>
+    <string name="ConfigurePasscodeActivity__passwordNotMatched">密码不匹配</string>
+    <string name="ConfigurePasscodeActivity__insertPassword">输入密码</string>
+    <string name="ConfigurePasscodeActivity__letsVerifyYou">帮助我们验证您是否是本人，请输入您的当前密码</string>
+    <string name="ConfigurePasscodeActivity__appLockRemoved">应用锁已移除</string>
+    <string name="ConfigurePasscodeActivity__wrongPassword">密码错误</string>
+    <string name="ConfigurePasscodeActivity__fingerprintEnabled">指纹已启用</string>
+    <string name="ConfigurePasscodeActivity__setupPassword">设置密码</string>
+    <string name="ConfigurePasscodeActivity__changePassword">更改密码</string>
+
+    //CreateNoteActivity
+    <string name="CreateNoteActivity__untitled">无标题</string>
+    <string name="CreateNoteActivity__deleteNote">删除</string>
+    <string name="CreateNoteActivity__deleteWarning">此操作无法撤消</string>
+    <string name="CreateNoteActivity__voicePrompt">正在听取</string>
+    <string name="CreateNoteActivity__send_message_via">通过以下方式发送消息：</string>
+
+
+    ```xml
+    //FavouritesFragment
+    <string name="FavouritesFragment__addItemToList">添加物品到您的列表</string>
+    <string name="FavouritesFragment__untitled">无标题</string>
+    <string name="FavouritesFragment__alreadyExist">物品已存在</string>
+    <string name="FavouritesFragment__emptyName">物品名称为空</string>
+    <string name="FavouritesFragment__toolbarStarred">已加星标</string>
+    <string name="FavouritesFragment__multipleDelete">删除这些物品</string>
+    <string name="FavouritesFragment__singleDelete">删除此物品</string>
+    <string name="FavouritesFragment__deleteWarning">此操作无法撤销</string>
+    <string name="FavouritesFragment__removeFromStarred">从加星标中移除</string>
+    <string name="FavouritesFragment__remove">移除</string>
+    <string name="FavouritesFragment__unstar">取消星标</string>
+    <string name="FavouritesFragment__star">加星标物品</string>
+    <string name="FavouritesFragment__itemsChecked">已选中物品</string>
+    <string name="FavouritesFragment__itemStarred">物品已加星标</string>
+    <string name="FavouritesFragment__itemUnstarred">物品已取消星标</string>
+    <string name="FavouritesFragment__addPhoto">添加图片</string>
+    <string name="FavouritesFragment__updatePhoto">更新图片</string>
+    <string name="FavouritesFragment__loginPrompt">请登录后继续</string>
+    <string name="FavouritesFragment__insertImageFailed">错误：无法插入图片</string>
+    <string name="FavouritesFragment__error">错误：</string>
+    <string name="FavouritesFragment__emptyPrice">物品价格为空</string>
+    <string name="FavouritesFragment__voicePrompt">正在听取</string>
+    <string name="FavouritesFragment__emptyQuantity">物品数量为空</string>
+    <string name="FavouritesFragment__Total">总计：</string>
+    <string name="FavouritesFragment__shareBtmText1">通过Buymate改善您的购物体验。</string>
+    <string name="FavouritesFragment__shareBtmText2">在Google Play上下载Buymate：</string>
+    <string name="FavouritesFragment__shareIntentText">通过以下方式发送消息</string>
+    <string name="FavouritesFragment__no">否</string>
+    <string name="FavouritesFragment__item">物品</string>
+    <string name="FavouritesFragment__quantity">数量</string>
+    <string name="FavouritesFragment__unit">单位</string>
+    <string name="FavouritesFragment__price">价格</string>
+    <string name="FavouritesFragment__contactUs">联系我们：</string>
+    <string name="FavouritesFragment__pdfDownloadedTo">PDF 下载到</string>
+
+    //HomeActivity
+    <string name="HomeActivity__pressBack">再按一次返回键退出应用</string>
+
+    //HomeFragment
+    <string name="HomeFragment__feedback">反馈</string>
+    <string name="HomeFragment__accountEmail">账户邮箱：</string>
+    <string name="HomeFragment__appVersion">应用版本：</string>
+    <string name="HomeFragment__device">设备：</string>
+    <string name="HomeFragment__model">型号：</string>
+    <string name="HomeFragment__brand">品牌：</string>
+    <string name="HomeFragment__osVersion">操作系统版本：</string>
+    <string name="HomeFragment__sdkVersion">SDK 版本：</string>
+    <string name="HomeFragment__mailTo">发送邮件至：</string>
+    <string name="HomeFragment__mailError">未找到邮件客户端</string>
+    <string name="HomeFragment__navigation_drawer_open">打开导航抽屉</string>
+    <string name="HomeFragment__navigation_drawer_close">关闭导航抽屉</string>
+    <string name="HomeFragment__defaultName">用户</string>
+    <string name="HomeFragment__hiText">你好，</string>
+    <string name="HomeFragment__exclam">！</string>
+    <string name="HomeFragment__emptySearch">没有要搜索的列表</string>
+    <string name="HomeFragment__addItemToList">添加物品到您的列表</string>
+    <string name="HomeFragment__loginPrompt">请登录后继续</string>
+    <string name="HomeFragment__login">登录</string>
+    <string name="HomeFragment__shareBtmText1">通过Buymate改善您的购物体验。</string>
+    <string name="HomeFragment__shareBtmText2">在Google Play上下载Buymate：</string>
+    <string name="HomeFragment__no">否</string>
+    <string name="HomeFragment__item">物品</string>
+    <string name="HomeFragment__quantity">数量</string>
+    <string name="HomeFragment__unit">单位</string>
+    <string name="HomeFragment__price">价格</string>
+    <string name="HomeFragment__contactUs">联系我们：</string>
+    <string name="HomeFragment__pdfDownloadedTo">PDF 下载到</string>
+    <string name="HomeFragment__Total">总计：</string>
+    <string name="HomeFragment__noListFound">未找到列表</string>
+    <string name="HomeFragment__sortPriceText">大小</string>
+    <string name="HomeFragment__send_message_via">通过以下方式发送消息：</string>
+    <string name="HomeFragment__please_insert_name">请插入名称</string>
+    <string name="HomeFragment__deleteTheseLists">删除这些列表</string>
+    <string name="HomeFragment__deleteThisList">删除此列表</string>
+    <string name="HomeFragment__delete">删除</string>
+    <string name="HomeFragment__deleteWarning">此操作无法撤销</string>
+    <string name="HomeFragment__no_list">无列表</string>
+    <string name="HomeFragment__list_exist_already">此列表已存在</string>
+    <string name="HomeFragment__no_alarm_app">没有应用程序执行此操作</string>
+
+    //InsertPasscodeActivity
+    <string name="InsertPasscodeActivity__success">成功</string>
+    <string name="InsertPasscodeActivity__wrongPin">密码错误</string>
+    <string name="InsertPasscodeActivity__insertPin">输入 4 位密码</string>
+    <string name="InsertPasscodeActivity__notSupported">设备不支持</string>
+    <string name="InsertPasscodeActivity__hardwareNotAvailable">硬件不可用</string>
+    <string name="InsertPasscodeActivity__fingerprintNotSet">此设备未设置指纹</string>
+    <string name="InsertPasscodeActivity__verifyFingerprint">验证指纹</string>
+    <string name="InsertPasscodeActivity__usePassword">使用密码</string>
+
+    //ItemActivity
+    <string name="ItemActivity__deleteTheseItems">删除这些物品</string>
+    <string name="ItemActivity__deleteThisItem">删除此物品</string>
+    <string name="ItemActivity__moveTo">移动至：</string>
+    <string name="ItemActivity__copyTo">复制至：</string>
+    <string name="ItemActivity__unstarred">未加星标</string>
+    <string name="ItemActivity__unstar">取消星标</string>
+    <string name="ItemActivity__itemStarred">物品已加星标</string>
+    <string name="ItemActivity__searchHint">在列表中搜索</string>
+    <string name="ItemActivity__itemsChecked">已选中物品：</string>
+    <string name="ItemActivity__addItemToList">添加物品到您的列表</string>
+    <string name="ItemActivity__alreadyExist">物品已存在</string>
+    <string name="ItemActivity__emptyName">物品名称为空</string>
+    <string name="ItemActivity__emptyNameCate">名称字段为空</string>
+    <string name="ItemActivity__starItem">加星标物品</string>
+    <string name="ItemActivity__addPhoto">添加图片</string>
+    <string name="ItemActivity__updatePhoto">更新图片</string>
+    <string name="ItemActivity__loginPrompt">请登录后继续</string>
+    <string name="ItemActivity__insertImageFailed">错误：无法插入图片</string>
+    <string name="ItemActivity__error">错误：</string>
+    <string name="ItemActivity__emptyPrice">物品价格为空</string>
+    <string name="ItemActivity__emptyQuantity">物品数量为空</string>
+    <string name="ItemActivity__delete">删除</string>
+    <string name="ItemActivity__deleteWarning">此操作无法撤销</string>
+    <string name="ItemActivity__noAlarmApp">没有应用程序执行此操作</string>
+    <string name="ItemActivity__Total">总计：</string>
+    <string name="ItemActivity__shareBtmText1">通过Buymate改善您的购物体验。</string>
+    <string name="ItemActivity__shareBtmText2">在Google Play上下载Buymate：</string>
+    <string name="ItemActivity__shareIntentText">通过以下方式发送消息</string>
+    <string name="ItemActivity__no">否</string>
+    <string name="ItemActivity__item">物品</string>
+    <string name="ItemActivity__quantity">数量</string>
+    <string name="ItemActivity__unit">单位</string>
+    <string name="ItemActivity__price">价格</string>
+    <string name="ItemActivity__contactUs">联系我们：</string>
+    <string name="ItemActivity__pdfDownloadedTo">PDF 下载到</string>
+    <string name="ItemActivity__voicePrompt">正在听取</string>
+
+    //LoginActivity
+    <string name="LoginActivity__error">错误：</string>
+    <string name="LoginActivity__emailError">无效的电子邮件地址</string>
+    <string name="LoginActivity__passwordError">插入密码</string>
+    <string name="LoginActivity__emptyEmailError">输入电子邮件地址</string>
+
+    //MoreFragment
+    <string name="MoreFragment__shareBtmText1">快来看看这个超棒的购物应用！我强烈推荐它。在Google Play上下载它。</string>
+    <string name="MoreFragment__shareVia">通过以下方式分享：</string>
+    <string name="MoreFragment__feedback">反馈</string>
+    <string name="MoreFragment__accountEmail">账户邮箱：</string>
+    <string name="MoreFragment__appVersion">应用版本：</string>
+    <string name="MoreFragment__device">设备：</string>
+    <string name="MoreFragment__model">型号：</string>
+    <string name="MoreFragment__brand">品牌：</string>
+    <string name="MoreFragment__osVersion">操作系统版本：</string>
+    <string name="MoreFragment__sdkVersion">SDK 版本：</string>
+    <string name="MoreFragment__mailTo">发送邮件至：</string>
+    <string name="MoreFragment__mailError">未找到邮件客户端</string>
+    <string name="MoreFragment__signIn">登录</string>
+    <string name="MoreFragment__account">账户</string>
+    <string name="MoreFragment__loginPrompt">请登录后继续</string>
+    <string name="MoreFragment__login">登录</string>
+    <string name="MoreFragment__premiumText1">恭喜！</string>
+    <string name="MoreFragment__premiumText2">您正在享受Buymate的高级版本</string>
+
+    ```xml
+    //NotesFragment
+    <string name="NotesFragment__multipleDelete">删除这些笔记</string>
+    <string name="NotesFragment__singleDelete">删除此笔记</string>
+    <string name="NotesFragment__toolbarTitle">笔记</string>
+    <string name="NotesFragment__emptyNoteSearchView">没有要搜索的笔记</string>
+    <string name="NotesFragment__emptyNoteRecyclerView">找不到笔记</string>
+
+    //PaymentSuccessfulActivity
+    <string name="PaymentSuccessfulActivity__error">错误：</string>
+    <string name="PaymentSuccessfulActivity__itemOwnedAlready">已拥有的物品</string>
+    <string name="PaymentSuccessfulActivity__featureNotSupported">不支持的功能</string>
+    <string name="PaymentSuccessfulActivity__userCancelled">用户取消</string>
+    <string name="PaymentSuccessfulActivity__developerError">开发者错误</string>
+    <string name="PaymentSuccessfulActivity__itemUnavailable">物品不可用</string>
+    <string name="PaymentSuccessfulActivity__networkError">网络错误</string>
+    <string name="PaymentSuccessfulActivity__serviceDisconnected">服务已断开连接</string>
+    <string name="PaymentSuccessfulActivity__errorInvalidPurchase">错误：无效的购买</string>
+
+    //RecoverPasswordActivity
+    <string name="RecoverPasswordActivity__emailNotRegistered">电子邮件未注册。请注册。</string>
+    <string name="RecoverPasswordActivity__resetLinkSent">重置链接已发送到电子邮件</string>
+    <string name="RecoverPasswordActivity__error">错误：</string>
+    <string name="RecoverPasswordActivity__invalidEmail">无效的电子邮件地址</string>
+    <string name="RecoverPasswordActivity__recoveryEmail">输入您的恢复电子邮件</string>
+
+    //SettingsActivity
+    <string name="SettingsActivity__currencyUpdated">货币已更新</string>
+    <string name="SettingsActivity__currencyFieldEmpty">货币字段为空</string>
+    <string name="SettingsActivity__disabled">已禁用</string>
+    <string name="SettingsActivity__renameSwipeLeft">重命名：向左滑动</string>
+    <string name="SettingsActivity__changePriceSwipeLeft">更改价格：向左滑动</string>
+    <string name="SettingsActivity__changeQuantitySwipeLeft">更改数量：向左滑动</string>
+    <string name="SettingsActivity__starAndUnstarLeft">加星标和取消星标物品：向左滑动</string>
+    <string name="SettingsActivity__deleteSwipeLeft">删除：向左滑动</string>
+    <string name="SettingsActivity__checkAndUncheckLeft">选中和取消选中物品：向左滑动</string>
+    <string name="SettingsActivity__showOptionsSwipeLeft">显示选项：向左滑动</string>
+    <string name="SettingsActivity__doNothingSwipeLeft">不执行任何操作：向左滑动</string>
+    <string name="SettingsActivity__renameSwipeRight">重命名：向右滑动</string>
+    <string name="SettingsActivity__changePriceSwipeRight">更改价格：向右滑动</string>
+    <string name="SettingsActivity__changeQuantitySwipeRight">更改数量：向右滑动</string>
+    <string name="SettingsActivity__starAndUnstarRight">加星标和取消星标物品：向右滑动</string>
+    <string name="SettingsActivity__deleteSwipeRight">删除：向右滑动</string>
+    <string name="SettingsActivity__checkAndUncheckRight">选中和取消选中物品：向右滑动</string>
+    <string name="SettingsActivity__showOptionsSwipeRight">显示选项：向右滑动</string>
+    <string name="SettingsActivity__doNothingSwipeRight">不执行任何操作：向右滑动</string>
+
+    //SignUpActivity
+    <string name="SignUpActivity__emailAlreadyRegistered">电子邮件已注册</string>
+    <string name="SignUpActivity__confirmPasswordError">密码不匹配</string>
+    <string name="SignUpActivity__passwordLengthError">密码必须至少为6个字符</string>
+    <string name="SignUpActivity__invalidEmail">无效的电子邮件地址</string>
+    <string name="SignUpActivity__confirmPassword">重新输入密码以继续</string>
+    <string name="SignUpActivity__insertPassword">插入密码</string>
+    <string name="SignUpActivity__insertEmail">输入电子邮件地址</string>
+    <string name="SignUpActivity__enterName">输入用户名以继续</string>
+
+    //SwipeSettingActivity
+    <string name="SwipeSettingActivity__rename">重命名</string>
+    <string name="SwipeSettingActivity__checkAndUncheckItem">选中和取消选中物品</string>
+    <string name="SwipeSettingActivity__changePrice">更改价格</string>
+    <string name="SwipeSettingActivity__changeQuantity">更改数量</string>
+    <string name="SwipeSettingActivity__starAndUnstar">加星标和取消星标物品</string>
+    <string name="SwipeSettingActivity__delete">删除</string>
+    <string name="SwipeSettingActivity__showOptions">显示选项</string>
+    <string name="SwipeSettingActivity__doNothing">不执行任何操作</string>
+
+    <string name="SwipeSettingActivity__renameSwipeLeft">重命名：向左滑动</string>
+    <string name="SwipeSettingActivity__changePriceSwipeLeft">更改价格：向左滑动</string>
+    <string name="SwipeSettingActivity__changeQuantitySwipeLeft">更改数量：向左滑动</string>
+    <string name="SwipeSettingActivity__starAndUnstarLeft">加星标和取消星标物品：向左滑动</string>
+    <string name="SwipeSettingActivity__deleteSwipeLeft">删除：向左滑动</string>
+    <string name="SwipeSettingActivity__checkAndUncheckLeft">选中和取消选中物品：向左滑动</string>
+    <string name="SwipeSettingActivity__showOptionsSwipeLeft">显示选项：向左滑动</string>
+    <string name="SwipeSettingActivity__doNothingSwipeLeft">不执行任何操作：向左滑动</string>
+
+    <string name="SwipeSettingActivity__renameSwipeRight">重命名：向右滑动</string>
+    <string name="SwipeSettingActivity__changePriceSwipeRight">更改价格：向右滑动</string>
+    <string name="SwipeSettingActivity__changeQuantitySwipeRight">更改数量：向右滑动</string>
+    <string name="SwipeSettingActivity__starAndUnstarRight">加星标和取消星标物品：向右滑动</string>
+    <string name="SwipeSettingActivity__deleteSwipeRight">删除：向右滑动</string>
+    <string name="SwipeSettingActivity__checkAndUncheckRight">选中和取消选中物品：向右滑动</string>
+    <string name="SwipeSettingActivity__showOptionsSwipeRight">显示选项：向右滑动</string>
+    <string name="SwipeSettingActivity__doNothingSwipeRight">不执行任何操作：向右滑动</string>
+
+    //UpdateNoteActivity
+
+
+    <string name="UpdateNoteActivity__untitled">无标题</string>
+    <string name="UpdateNoteActivity__deleteNote">删除</string>
+    <string name="UpdateNoteActivity__deleteWarning">此操作无法撤销</string>
+    <string name="UpdateNoteActivity__voicePrompt">正在听取</string>
+    <string name="UpdateNoteActivity__send_message_via">通过以下方式发送消息：</string>
+
+    //UserActivity
+    <string name="UserActivity__user">用户</string>
+    <string name="UserActivity__error">错误：</string>
+    <string name="UserActivity__emptyName">请插入用户名以继续</string>
+    <string name="UserActivity__logoutPrompt">我们迫不及待地想让您回来！</string>
+    <string name="UserActivity__deleteAccText1">所有列表和其他数据</string>
+    <string name="UserActivity__deleteAccText2">将永久从云端删除</string>
+    <string name="UserActivity__accountDeleted">帐户已删除</string>
+
+    //OnboardingActivity
+    <string name="OnboardingActivity__Next">下一个</string>
+    <string name="OnboardingActivity__Start">开始</string>
+
+    ///////////////////////////////////////////////
+
+    //activity_about
+    <string name="activity_about__toolbarText">关于</string>
+    <string name="activity_about__version">应用程序版本</string>
+    <string name="activity_about__privacyPolicy">隐私政策</string>
+    <string name="activity_about__credits">鸣谢</string>
+    <string name="activity_about__open_icon_content_description">打开</string>
+
+    //activity_acknowledgments
+    <string name="activity_acknowledgments__toolbarText">鸣谢</string>
+    <string name="activity_acknowledgments__open_link_content_description">打开链接</string>
+
+    //activity_backup
+    <string name="activity_backup__toolbarText">备份</string>
+    <string name="activity_backup__backupText">备份</string>
+    <string name="activity_backup__backupDescription">创建您的购物清单备份，并在需要时恢复它们</string>
+    <string name="activity_backup__restoreText">恢复</string>
+    <string name="activity_backup__restoreDescription">更换手机？从以前导出的备份恢复数据</string>
+
+    //activity_change_password
+    <string name="activity_change_password__toolbarText">更改密码</string>
+    <string name="activity_change_password__currentPasswordHint">输入当前密码</string>
+    <string name="activity_change_password__newPasswordHint">输入新密码</string>
+    <string name="activity_change_password__confirmPasswordHint">确认新密码</string>
+    <string name="activity_change_password__forgotPasswordText">忘记密码了？</string>
+    <string name="activity_change_password__doneBtnText">完成</string>
+
+    //activity_configure_passcode
+    <string name="activity_configure_passcode__toolbarText">应用程序锁定</string>
+    <string name="activity_configure_passcode__setPassword">设置密码</string>
+    <string name="activity_configure_passcode__fingerprintLogin">使用指纹登录</string>
+    <string name="activity_configure_passcode__removeAppLock">删除应用程序锁定</string>
+
+    //activity_create_note
+    <string name="activity_create_note__toolbarText">笔记</string>
+    <string name="activity_create_note__titleHint">标题</string>
+    <string name="activity_create_note__descriptionHint">记录一些内容</string>
+
+    //activity_cross_setting
+    <string name="activity_cross_setting__toolbarText">划掉项目</string>
+    <string name="activity_cross_setting__disableSwitchText">禁用划掉</string>
+    <string name="activity_cross_setting__disableCrossDescription">如果启用，选中时会划掉项目</string>
+
+
+    ```xml
+    //activity_detail_list_share_setting
+    <string name="activity_detail_list_share_setting__toolbarText">详细清单分享</string>
+    <string name="activity_detail_list_share_setting__shareWithPrice">带价格分享</string>
+    <string name="activity_detail_list_share_setting__shareWithPriceDescription">在分享时包括商品价格</string>
+    <string name="activity_detail_list_share_setting__shareWithQuantity">带数量分享</string>
+    <string name="activity_detail_list_share_setting__shareWithQuantityDescription">在分享时包括商品数量</string>
+    <string name="activity_detail_list_share_setting__shareWithTotal">带总数分享</string>
+    <string name="activity_detail_list_share_setting__shareWithTotalDescription">在分享时包括清单总数</string>
+
+
+    //activity_insert_passcode
+    <string name="activity_insert_passcode__toolbarText">登录</string>
+    <string name="activity_insert_passcode__welcomeBack">欢迎回来！</string>
+    <string name="activity_insert_passcode__insertPinPrompt">输入4位数的PIN</string>
+    <string name="activity_insert_passcode__loginWithFingerprint">使用指纹登录</string>
+    <string name="activity_insert_passcode__loginWithFingerprintDescription">点击指纹图标继续</string>
+
+
+    //activity_item
+    <string name="activity_item__total">总计：</string>
+    <string name="activity_item_eye_icon_content_description">显示总计</string>
+    <string name="activity_item_FAB">添加商品</string>
+    <string name="activity_item_emptyText">无商品</string>
+
+    //activity_item_suggestion
+    <string name="activity_item_suggestion__toolbarText">商品建议</string>
+    <string name="activity_item_suggestion__hideSuggestionText">隐藏建议</string>
+    <string name="activity_item_suggestion__hideSuggestionDescription">在输入时禁止显示建议。</string>
+
+
+    //activity_log_in
+    <string name="activity_log_in__loginText">登录到您的帐户</string>
+    <string name="activity_log_in__email">电子邮件</string>
+    <string name="activity_log_in__password">密码</string>
+    <string name="activity_log_in__forgotPassword">忘记密码？</string>
+    <string name="activity_log_in__login">登录</string>
+    <string name="activity_log_in__or">-或-</string>
+    <string name="activity_log_in__continueWithGoogle">使用Google继续</string>
+    <string name="activity_log_in__noAccount">还没有帐户？</string>
+    <string name="activity_log_in__signUp">注册</string>
+
+
+    //activity_payment_successful
+    <string name="activity_payment_successful__header">感谢购买\nBuymate高级版！</string>
+    <string name="activity_payment_successful__header_desc_1">您目前正在享受Buymate的全部功能！</string>
+    <string name="activity_payment_successful__header_desc_2">备份与恢复</string>
+    <string name="activity_payment_successful__header_desc_4">移除广告</string>
+    <string name="activity_payment_successful__header_desc_5">支持Buymate</string>
+    <string name="activity_payment_successful__back_btn">返回首页</string>
+
+    //activity_premium
+    <string name="activity_premium__toolbarText">高级版</string>
+    <string name="activity_premium__header">购买高级版即可获得以下功能：</string>
+    <string name="activity_premium__backupText">备份与恢复</string>
+    <string name="activity_premium__removeAdsText">移除广告</string>
+    <string name="activity_premium__supportText">支持Buymate</string>
+    <string name="activity_premium__sub_header">一次性购买优惠</string>
+    <string name="activity_premium__payOneTime">仅需一次付款</string>
+    <string name="activity_premium__prev_lifetime_currency_text">0.00</string>
+    <string name="activity_premium__upgrade_btn">立即升级！</string>
+    <string name="activity_premium__full_star">"\u2606""\u2606""\u2606""\u2606"</string>
+    <string name="activity_premium__tip">订阅将自动续订。您可以在Google Play设置中取消订阅</string>
+    <string name="activity_premium__no_network_header">糟糕，出现了一些问题。</string>
+    <string name="activity_premium__no_network_subHeader">可能是网络问题或Google Play服务器错误。稍后再试。如果问题仍然存在，请联系我们的支持团队。</string>
+
+    //activity_recover_password
+    <string name="activity_recover_password__sub_header">忘记密码</string>
+    <string name="activity_recover_password__email_box_parent">电子邮件</string>
+    <string name="activity_recover_password__recoverBtn">恢复密码</string>
+    <string name="activity_recover_password__recover_description">输入您的电子邮件，然后点击“恢复密码”按钮。\n\n密码恢复链接将发送到您的电子邮件。</string>
+
+    //activity_settings
+    <string name="activity_settings__toolbarText">设置</string>
+    <string name="activity_settings__generalHeaderText">常规</string>
+    <string name="activity_settings__themeText">暗黑模式</string>
+    <string name="activity_settings__screenText">保持屏幕亮度</string>
+    <string name="activity_settings__textSizeText">文本大小</string>
+    <string name="activity_settings__removeAdsText">移除广告</string>
+    <string name="activity_settings__removeAdsSubText">成为高级用户</string>
+    <string name="activity_settings__advancedHeaderText">高级</string>
+    <string name="activity_settings__strikeText">划掉项目</string>
+    <string name="activity_settings__disable_price_Text">显示商品价格</string>
+    <string name="activity_settings__item_suggestionText">商品建议</string>
+    <string name="activity_settings__multiplyText">乘法</string>
+    <string name="activity_settings__multiplySubText">（价格 x 数量）</string>
+    <string name="activity_settings__swipeActionSubText1">滑动操作</string>
+    <string name="activity_settings__detailedListShareTextHeader">分享选项</string>
+    <string name="activity_settings__detailedListShareSubText">包括商品价格、数量和总数</string>
+    <string name="activity_settings__currencyTextHeader">货币</string>
+    <string name="activity_settings__currencySubText">输入您喜欢的货币符号</string>
+    <string name="activity_settings__securityHeaderText">安全</string>
+    <string name="activity_settings__lockText">应用程序锁定</string>
+
+
+    //activity_signup
+    <string name="activity_signup__sub_header">创建您的帐户</string>
+    <string name="activity_signup__fulname_box_parent">用户名</string>
+    <string name="activity_signup__email_box_parent">电子邮件</string>
+
+
+    <string name="activity_signup__password_box_parent">密码</string>
+    <string name="activity_signup__confirm_password_box_parent">确认密码</string>
+    <string name="activity_signup__signUpBtn">注册</string>
+    <string name="activity_signup__orText">-或-</string>
+    <string name="activity_signup__googleText">使用Google继续</string>
+    <string name="activity_signup__loginText1">已经有帐户了？</string>
+    <string name="activity_signup__loginText2">登录</string>
+
+
+    //activity_swipe_setting
+    <string name="activity_swipe_setting__swipeToolbar">滑动操作</string>
+    <string name="activity_swipe_setting__swipeLeftTextHeader">向左滑动</string>
+    <string name="activity_swipe_setting__swipeRightTextHeader">向右滑动</string>
+    <string name="activity_swipe_setting__customize_button">自定义</string>
+    <string name="activity_swipe_setting__swipeDisableTextHeader">禁用滑动</string>
+    <string name="activity_swipe_setting__swipe_description">选择在列表中向左或向右滑动时发生的操作。\n\n选择禁用滑动后，无法向左或向右滑动项目。</string>
+
+
+    //activity_update_note
+    <string name="activity_update_note__update_note_title">笔记</string>
+    <string name="activity_update_note__update_heading_text">标题</string>
+    <string name="activity_update_note__update_content_text">记录一些内容</string>
+
+
+    //activity_user
+    <string name="activity_user__account_title">帐户</string>
+    <string name="activity_user__edit_nameText">编辑用户名</string>
+    <string name="activity_user__change_passwordText">更改密码</string>
+    <string name="activity_user__logoutText">注销</string>
+    <string name="activity_user__delete_accountText">删除帐户</string>
+    <string name="activity_user__userNameUpdated">用户名已更新</string>
+
+    //activity_onboarding
+    <string name="activity_onboarding_skip">跳过</string>
+    <string name="activity_onboarding_back">返回</string>
+    <string name="activity_onboarding_next">下一个</string>
+
+    //category_title_set_popup
+    <string name="category_title_set_popup__emptyText1">输入清单名称</string>
+    <string name="category_title_set_popup__emptyText2">完成后单击<b>创建</b></string>
+    <string name="category_title_set_popup__category_name_hint">新清单</string>
+    <string name="category_title_set_popup__suggestion">建议：</string>
+    <string name="category_title_set_popup__suggestion_option_textView1">购物</string>
+    <string name="category_title_set_popup__suggestion_option_textView2">杂货</string>
+    <string name="category_title_set_popup__suggestion_option_textView4">食物</string>
+    <string name="category_title_set_popup__suggestion_option_textView5">工具</string>
+    <string name="category_title_set_popup__suggestion_option_textView6">洗浴用品</string>
+    <string name="category_title_set_popup__suggestion_option_textView7">药店</string>
+    <string name="category_title_set_popup__suggestion_option_textView8">旅行</string>
+    <string name="category_title_set_popup__fabButton">创建</string>
+
+
+    //cloud_dialog_popup
+    <string name="cloud_dialog_popup__percent">备份到云端</string>
+    <string name="cloud_dialog_popup__info">请等待备份完成</string>
+
+    //custom_alert_delete_account_dialog
+    <string name="custom_alert_delete_account_dialog__header">删除帐户？</string>
+    <string name="custom_alert_delete_account_dialog__delete_account_text">所有清单和其他数据将永久从云端删除。</string>
+    <string name="custom_alert_delete_account_dialog__CancelButton">取消</string>
+    <string name="custom_alert_delete_account_dialog__BtnSave">删除</string>
+
+    //custom_alert_fingerprint_dialog
+    <string name="custom_alert_fingerprint_dialog__header">注意！</string>
+    <string name="custom_alert_fingerprint_dialog__alert_text">您不能在此帐户上使用指纹。要启用它，请在登录后转到设置页面。</string>
+    <string name="custom_alert_fingerprint_dialog__okBtn">知道了</string>
+
+
+    //custom_app_version_dialog
+    <string name="custom_app_version_dialog__version_text1">版本：" "</string>
+    <string name="custom_app_version_dialog__version_close">关闭</string>
+
+
+    //custom_currency_dialog
+    <string name="custom_currency_dialog__edit_title">货币符号</string>
+    <string name="custom_currency_dialog__desc_currency_hint">插入符号</string>
+    <string name="custom_currency_dialog__CurrencyCancelButton">取消</string>
+    <string name="custom_currency_dialog__currencyBtnSave">完成</string>
+
+
+    //custom_delete_dialog
+    <string name="custom_delete_dialog__cancel_button">取消</string>
+    <string name="custom_delete_dialog__delete_button">完成</string>
+
+    //custom_edit_username_dialog
+    <string name="custom_edit_username_dialog__edit_title">编辑用户名</string>
+    <string name="custom_edit_username_dialog__firstNameBoxHint">用户名</string>
+    <string name="custom_edit_username_dialog__nameCancelButton">取消</string>
+    <string name="custom_edit_username_dialog__nameBtnSave">完成</string>
+
+
+    //custom_image_upload_dialog
+    <string name="custom_edit_username_dialog__image_title">添加图像</string>
+    <string name="custom_edit_username_dialog__takePictureText">拍照</string>
+    <string name="custom_edit_username_dialog__uploadPictureText">上传图片</string>
+
+
+    //custom_image_upload_dialog
+    <string name="custom_image_upload_dialog__header">注意！</string>
+    <string name="custom_image_upload_dialog__login_btn">登录</string>
+    <string name="custom_image_upload_dialog__cancel_btn">取消</string>
+
+
+    //custom_logout_warning_dialog
+    <string name="custom_logout_warning_dialog__header">确认注销</string>
+    <string name="custom_logout_warning_dialog__logout_btn">注销</string>
+    <string name="custom_logout_warning_dialog__cancel_btn">取消</string>
+
+    //custom_premium_backup_description_dialog
+    <string name="custom_premium_backup_description_dialog__header">备份与恢复</string>
+    <string name="custom_premium_backup_description_dialog__sub_header">使用我们的备份系统，使您的购物清单安全且易于访问。需要时随时恢复。</string>
+    <string name="custom_premium_backup_description_dialog__okBtn">关闭</string>
+
+
+    //custom_premium_remove_ads_description_dialog
+    <string name="custom_premium_remove_ads_description_dialog__header">移除广告</string>
+    <string name="custom_premium_remove_ads_description_dialog__sub_header">通过我们的高级功能，享受无广告的使用，不受打扰的应用体验。</string>
+    <string name="custom_premium_remove_ads_description_dialog__okBtn">关闭</string>
+
+    //custom_premium_support_description_dialog
+    <string name="custom_premium_support_description_dialog_header">支持Buymate</string>
+    <string name="custom_premium_support_description_dialog__sub_header">支持Buymate，帮助我们继续改进您的购物体验！</string>
+    <string name="custom_premium_support_description_dialog__okBtn">关闭</string>
+
+    //custom_share_dialog
+    <string name="custom_share_dialog__title">分享</string>
+    <string name="custom_share_dialog__asText">分享为文本</string>
+    <string name="custom_share_dialog__asPDF">下载PDF</string>
+
+    //custom_swipe_action_dialog
+    <string name="custom_swipe_action_dialog__edit_title">选择操作</string>
+    <string name="custom_swipe_action_dialog__radio_button_rename">重命名</string>
+    <string name="custom_swipe_action_dialog__radio_button_check">检查和取消检查项目</string>
+    <string name="custom_swipe_action_dialog__radio_button_price">更改价格</string>
+    <string name="custom_swipe_action_dialog__radio_button_quantity">更改数量</string>
+    <string name="custom_swipe_action_dialog__radio_button_star">添加星标和取消星标项目</string>
+    <string name="custom_swipe_action_dialog__radio_button_delete">删除</string>
+    <string name="custom_swipe_action_dialog__radio_button_options">显示选项</string>
+    <string name="custom_swipe_action_dialog__radio_button_do_nothing">不执行任何操作</string>
+
+
+    //custom_textsize_dialog
+    <string name="custom_textsize_dialog__radio_button_small">小</string>
+    <string name="custom_textsize_dialog__radio_button_medium">中" "(默认)</string>
+    <string name="custom_textsize_dialog__radio_button_large">大</string>
+
+
+    //edit_category_layout
+    <string name="edit_category_layout__renameText">重命名</string>
+    <string name="edit_category_layout__duplicateText">复制清单</string>
+    <string name="edit_category_layout__shareText">分享清单</string>
+    <string name="edit_category_layout__alarmText">设置闹钟</string>
+    <string name="edit_category_layout__deleteText">删除</string>
+
+    //edit_item_layout
+    <string name="edit_item_layout__addImage_text">添加图片</string>
+    <string name="edit_item_layout__rename_text">重命名</string>
+    <string name="edit_item_layout__price_text">更改价格</string>
+    <string name="edit_item_layout__quantity_text">更改数量</string>
+    <string name="edit_item_layout__copy_text">复制</string>
+    <string name="edit_item_layout__move_text">移动</string>
+    <string name="edit_item_layout__favourites_text_1">添加到星标</string>
+    <string name="edit_item_layout__delete_text">删除</string>
+    <string name="edit_item_layout__information_text">详细信息</string>
+
+
+    //fragment_favourites
+    <string name="fragment_favourites_toolbar_title">星标</string>
+    <string name="fragment_favourites_illustration_text_1">没有星标项目</string>
+    <string name="fragment_favourites_illustration_text_2">将星标添加到您想要的项目</string>
+    <string name="fragment_favourites_illustration_text_3">以便以后轻松找到</string>
+    <string name="fragment_favourites_subtotal">总计：</string>
+    <string name="fragment_favourites_addItem_fav_fab">添加项目</string>
+
+    //fragment_home
+    <string name="fragment_home_toolbar_text_2">今天我们买什么？</string>
+    <string name="fragment_home_search_view_hint">搜索</string>
+    <string name="fragment_home_page_description_text">类别</string>
+    <string name="fragment_home_sort_by_text">排序方式</string>
+    <string name="fragment_home_noList_text_1">让我们开始吧</string>
+    <string name="fragment_home_noList_text_2">单击下面的+按钮</string>
+    <string name="fragment_home_noList_text_3">创建新的清单</string>
+    <string name="fragment_home_empty_create_btn">新建清单</string>
+
+
+    //fragment_more
+    <string name="fragment_more_settingToolbar">菜单</string>
+    <string name="fragment_more_premiumText">尝试 Buymate 高级版</string>
+    <string name="fragment_more_premiumText2">删除广告并享受更多功能</string>
+    <string name="fragment_more_accountText">帐户</string>
+    <string name="fragment_more_messageText">给我们发消息</string>
+    <string name="fragment_more_backupText">备份</string>
+    <string name="fragment_more_premiumText_2">高级版</string>
+    <string name="fragment_more_websiteText">网站</string>
+    <string name="fragment_more_shareText">分享</string>
+    <string name="fragment_more_RateText">喜欢使用该应用吗？</string>
+    <string name="fragment_more_RateText2">在 Google Play 上给我们"\u2606""\u2606""\u2606""\u2606""\u2606"</string>
+    <string name="fragment_more_twitterText">在 Twitter 上关注我们</string>
+    <string name="fragment_more_settingText">设置</string>
+    <string name="fragment_more_aboutText">关于</string>
+
+
+    //fragment_notes
+    <string name="fragment_notes_toolbar_title">笔记</string>
+    <string name="fragment_notes_illustration_text_1">没有笔记</string>
+    <string name="fragment_notes_illustration_text_2">添加笔记以获得更流畅的</string>
+    <string name="fragment_notes_illustration_text_3">购物体验</string>
+    <string name="fragment_notes_search_View">在列表中搜索</string>
+
+
+    //info_item_layout
+    <string name="info_layout_price_text">价格：</string>
+    <string name="info_layout_quantity_text">数量：</string>
+    <string name="info_layout_subTotal_text">小计：</string>
+
+
+    //move_bottom_layout
+    <string name="move_bottom_layout_search_bar">搜索</string>
+
+    <string name="move_bottom_layout_new_list_button">创建新清单</string>
+    <string name="move_bottom_layout_emptyTEXT1">没有项目</string>
+
+    //no_connection_layout
+    <string name="no_connection_layout_no_connection_text_1">无连接</string>
+    <string name="no_connection_layout_no_connection_text_2">找不到互联网连接。检查</string>
+    <string name="no_connection_layout_no_connection_text_3">您的连接或稍后重试。</string>
+    <string name="no_connection_layout_try_again">重试</string>
+
+
+    //price_update_popup
+    <string name="price_update_price_name">输入价格</string>
+
+    //quantity_set_popup
+    <string name="quantity_set_popup_quantity_name">输入数量</string>
+    <string name="quantity_set_popup_unit_hint">单位</string>
+    <string name="quantity_set_popup_quantity_btnSave">完成</string>
+
+
+    //set_password_layout
+    <string name="set_password_layout_header">创建新密码</string>
+    <string name="set_password_layout_sub_header">设置您的 4 位密码，以便您可以访问 BuyMate</string>
+
+
+    //set_theme_layout
+    <string name="set_theme_layout_title">深色模式</string>
+    <string name="set_theme_layout_radio_button_default">使用系统设置</string>
+    <string name="set_theme_layout_radio_button_off">关闭</string>
+    <string name="set_theme_layout_radio_button_on">打开</string>
+    <string name="set_theme_layout_dimSwitch">调暗</string>
+
+    //shopbottomlayout
+    <string name="shopbottomlayout_desc_name">项目名称</string>
+    <string name="shopbottomlayout_more_text">更多</string>
+    <string name="shopbottomlayout_desc_price">价格</string>
+    <string name="shopbottomlayout_desc_quantity">数量</string>
+    <string name="shopbottomlayout_unit_textView">单位</string>
+    <string name="shopbottomlayout_CancelButton">取消</string>
+    <string name="shopbottomlayout_BtnSave">完成</string>
+    <string name="shop_bottom_layout_illustration_text_1">您几乎完成了！</string>
+    <string name="shop_bottom_layout_illustration_text_2">将项目添加到您的清单中</string>
+
+
+    //shopping_widget_provider
+    <string name="shopping_widget_provider_category_text_view">------</string>
+
+    //shopping_widget_provider_configure
+    <string name="shopping_widget_provider_configure_configureToolbar">选择列表</string>
+    <string name="shopping_widget_provider_configure_configureCreateButton">创建新列表</string>
+
+    //sort_category_layout
+    <string name="sort_bottom_layout_title_text">排序方式：</string>
+    <string name="sort_bottom_layout_name_text">名称</string>
+    <string name="sort_bottom_layout_date_text">创建日期</string>
+    <string name="sort_bottom_layout_price_text">价格</string>
+    <string name="sort_bottom_layout_quantity_text">数量</string>
+
+
+    //success_dialog_popup
+    <string name="success_dialog_popup_illustration_text_1">恭喜！</string>
+    <string name="success_dialog_popup_illustration_text_2">您的第一个列表已准备就绪！</string>
+    <string name="success_dialog_popup_button_text">知道了</string>
+
+
+    //update_category_name_layout
+    <string name="update_category_name_layout_header_text">重命名</string>
+    <string name="update_category_name_textBox_hint">清单名称</string>
+    <string name="update_category_name_layout_button_text">保存</string>
+
+
+    //update_item_name_layout
+    <string name="update_item_name_layout_header_text">重命名</string>
+    <string name="update_item_name_textBox_hint">项目名称</string>
+    <string name="update_item_name_layout_button_text">保存</string>
+
+
+    //upgrade_required_layout
+    <string name="upgrade_required_layout_upgrade_text_1">需要升级</string>
+    <string name="upgrade_required_layout_upgrade_text_2">升级到 Buymate 终身订阅以享受此功能和更多功能！</string>
+    <string name="upgrade_required_layout_upgradeBtn">升级</string>
+    <string name="upgrade_required_layout_cancelButton">取消</string>
+
+    //voice_typing_layout
+    <string name="voice_typing_layout_Heading">添加到清单</string>
+    <string name="voice_typing_layout_description">项目名称</string>
+    <string name="voice_typing_cancelButton">取消</string>
+    <string name="voice_typing_addBtn">添加</string>
+
+
+    ```xml
+    <string-array name="units">
+        <item>盎司</item>
+        <item>磅</item>
+        <item>加仑</item>
+        <item>夸脱</item>
+        <item>包</item>
+        <item>罐头</item>
+        <item>包装</item>
+        <item>盒</item>
+        <item>件</item>
+        <item>袋</item>
+    </string-array>
+
+    <string-array name="currency">
+        <item>"\u0024"</item>
+        <item>"\u20A6"</item>
+        <item>"\u20AC"</item>
+        <item>"\u00A5"</item>
+        <item>"\u00A3"</item>
+    </string-array>
+
+    <string-array name="item_suggestions" tools:ignore="InconsistentArrays">
+        <item>苹果</item>
+        <item>香蕉</item>
+        <item>橙子</item>
+        <item>葡萄</item>
+        <item>肉类</item>
+        <item>草莓</item>
+        <item>蓝莓</item>
+        <item>菠萝</item>
+        <item>芒果</item>
+        <item>桃子</item>
+        <item>李子</item>
+        <item>蔬菜</item>
+        <item>胡萝卜</item>
+        <item>西兰花</item>
+        <item>西红柿</item>
+        <item>黄瓜</item>
+        <item>菠菜</item>
+        <item>青豆</item>
+        <item>辣椒</item>
+        <item>西葫芦</item>
+        <item>花椰菜</item>
+        <item>食品</item>
+        <item>面包</item>
+        <item>牛奶</item>
+        <item>鸡蛋</item>
+        <item>谷物</item>
+        <item>意大利面</item>
+        <item>大米</item>
+        <item>鸡肉</item>
+        <item>牛肉</item>
+        <item>鱼</item>
+        <item>工具</item>
+        <item>刀</item>
+        <item>切菜板</item>
+        <item>土豆削皮器</item>
+        <item>开罐器</item>
+        <item>量匙</item>
+        <item>量杯</item>
+        <item>混合碗</item>
+        <item>烘焙盘</item>
+        <item>搅拌器</item>
+        <item>清洁设备</item>
+        <item>扫帚</item>
+        <item>拖把</item>
+        <item>洗碗液</item>
+        <item>垃圾袋</item>
+        <item>扫帚</item>
+        <item>海绵</item>
+        <item>吸尘器</item>
+        <item>搅拌设备</item>
+        <item>搅拌器</item>
+        <item>搅拌机</item>
+        <item>手持搅拌器</item>
+        <item>榨汁机</item>
+        <item>牙膏</item>
+        <item>洗发水</item>
+        <item>护发素</item>
+        <item>巧克力</item>
+        <item>肥皂</item>
+        <item>润肤露</item>
+        <item>剃须刀</item>
+        <item>除臭剂</item>
+        <item>洗衣液</item>
+        <item>洗碗机清洁剂</item>
+        <item>垃圾袋</item>
+        <item>漂白剂</item>
+        <item>纸巾</item>
+        <item>卫生纸</item>
+        <item>咖啡</item>
+        <item>茶</item>
+        <item>糖</item>
+        <item>面粉</item>
+        <item>食用油</item>
+        <item>香料</item>
+        <item>罐装汤</item>
+        <item>冷冻蔬菜</item>
+        <item>冰淇淋</item>
+        <item>饼干</item>
+        <item>薯片</item>
+        <item>苏打水</item>
+        <item>水</item>
+        <item>啤酒</item>
+        <item>葡萄酒</item>
+        <item>零食</item>
+        <item>蜡烛</item>
+        <item>灯泡</item>
+        <item>车库储物箱</item>
+        <item>文具</item>
+        <item>宠物食品</item>
+        <item>猫砂</item>
+        <item>急救箱</item>
+        <item>电池</item>
+        <item>植物肥料</item>
+        <item>相框</item>
+        <item>礼品卡</item>
+    </string-array>
+
+
+    ```xml
+    //bottom_bar_menu
+    <string name="bottom_bar_home_text">首页</string>
+    <string name="bottom_bar_favourites_text">收藏</string>
+    <string name="bottom_bar_notes_text">备忘录</string>
+    <string name="bottom_bar_more_text">更多</string>
+
+
+    //category_toolbar_hold_menu
+    <string name="category_toolbar_mark_text">全部标记</string>
+    <string name="category_toolbar_delete_text">删除</string>
+
+    //category_toolbar_menu
+    <string name="category_toolbar_setting_text">设置</string>
+
+    //favourites_toolbar_hold_menu
+    <string name="favourites_toolbar_hold_menu_mark_text">全部标记</string>
+    <string name="favourites_toolbar_hold_menu_delete_text">删除</string>
+    <string name="favourites_toolbar_hold_menu_unStar_text">取消收藏</string>
+
+    //favourites_toolbar_menu
+    <string name="favourites_toolbar_share_text">分享</string>
+    <string name="favourites_toolbar_voice_text">语音输入</string>
+    <string name="favourites_toolbar_sort_text">排序</string>
+    <string name="favourites_toolbar_check_text">全部选中</string>
+    <string name="favourites_toolbar_unCheck_text">全部取消选中</string>
+
+    //item_toolbar_hold_menu
+    <string name="item_toolbar_hold_menu_mark_text">全部标记</string>
+    <string name="item_toolbar_hold_menu_delete_text">删除</string>
+    <string name="item_toolbar_hold_menu_copy_text">复制</string>
+    <string name="item_toolbar_hold_menu_move_text">移动</string>
+    <string name="item_toolbar_hold_menu_star_text">收藏</string>
+    <string name="item_toolbar_hold_menu_unStar_text">取消收藏</string>
+
+    //item_toolbar_menu
+    <string name="item_toolbar_menu_search_text">搜索</string>
+    <string name="item_toolbar_menu_voice_text">语音输入</string>
+    <string name="item_toolbar_menu_rename_text">重命名列表</string>
+    <string name="item_toolbar_menu_share_text">分享</string>
+    <string name="item_toolbar_menu_sort_text">排序</string>
+    <string name="item_toolbar_menu_check_text">全部选中</string>
+    <string name="item_toolbar_menu_unCheck_text">全部取消选中</string>
+    <string name="item_toolbar_menu_reminder_text">设置提醒</string>
+
+
+    //nav_menu
+    <string name="nav_home_text">首页</string>
+    <string name="nav_premium_text">高级版</string>
+    <string name="nav_reminder_text">设置提醒</string>
+    <string name="nav_extras_text">额外功能</string>
+    <string name="nav_rate_text">给应用评分</string>
+    <string name="nav_message_text">联系我们</string>
+    <string name="nav_settings_text">设置</string>
+    <string name="nav_about_text">关于</string>
+
+    //note_toolbar_create_menu
+    <string name="note_toolbar_create_menu_voice_text">语音输入</string>
+    <string name="note_toolbar_create_menu_save_text">保存</string>
+    <string name="note_toolbar_create_menu_share_text">分享</string>
+    <string name="note_toolbar_create_menu_delete_text">删除</string>
+
+
+    //note_toolbar_hold_menu
+    <string name="note_toolbar_hold_menu_mark_text">全部标记</string>
+    <string name="note_toolbar_hold_menu_delete_text">删除</string>
+
+    //note_toolbar_menu
+    <string name="note_toolbar_menu_share_text">分享</string>
+    <string name="note_toolbar_menu_voice_text">语音输入</string>
+    <string name="note_toolbar_menu_save_text">保存</string>
+    <string name="note_toolbar_menu_delete_text">删除</string>
+
+
+
+</resources>

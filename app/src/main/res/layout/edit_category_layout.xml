@@ -22,121 +22,169 @@
         android:background="?attr/iconTint"
         android:orientation="vertical" />
 
-    <LinearLayout
-        android:id="@+id/rename"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="20dp"
-        android:foreground="?attr/selectableItemBackground"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/final_regular_rename_icon"
-            android:importantForAccessibility="no">
+            android:orientation="vertical">
 
-        </ImageView>
+            <LinearLayout
+                android:id="@+id/rename"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="20dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/renameText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="10dp"
-            android:padding="5dp"
-            android:text="@string/edit_category_layout__renameText"
-            android:textColor="?attr/textFillColor" />
-    </LinearLayout>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/final_regular_rename_icon">
 
+                </ImageView>
 
-    <LinearLayout
-        android:id="@+id/share"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="20dp"
-        android:foreground="?attr/selectableItemBackground"
-        android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/renameText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:padding="5dp"
+                    android:text="@string/edit_category_layout__renameText"
+                    android:textColor="?attr/textFillColor" />
+            </LinearLayout>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="37dp"
-            android:layout_gravity="center"
-            android:src="@drawable/final_regular_share_icon"
-            android:importantForAccessibility="no">
+            <LinearLayout
+                android:id="@+id/duplicate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="20dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:orientation="horizontal">
 
-        </ImageView>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/final_regular_copy_icon">
 
-        <TextView
-            android:id="@+id/shareText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="10dp"
-            android:padding="5dp"
-            android:text="@string/edit_category_layout__shareText"
-            android:textColor="?attr/textFillColor" />
-    </LinearLayout>
+                </ImageView>
 
-    <LinearLayout
-        android:id="@+id/reminder"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="20dp"
-        android:foreground="?attr/selectableItemBackground"
-        android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/duplicateText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:padding="5dp"
+                    android:text="@string/edit_category_layout__duplicateText"
+                    android:textColor="?attr/textFillColor" />
+            </LinearLayout>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="37dp"
-            android:layout_gravity="center"
-            android:src="@drawable/final_regular_reminder_icon"
-            android:importantForAccessibility="no">
+            <LinearLayout
+                android:id="@+id/share"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="20dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:orientation="horizontal">
 
-        </ImageView>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="37dp"
+                    android:layout_gravity="center"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/final_regular_share_icon">
 
-        <TextView
-            android:id="@+id/alarmText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="10dp"
-            android:padding="5dp"
-            android:text="@string/edit_category_layout__alarmText"
-            android:textColor="?attr/textFillColor" />
-    </LinearLayout>
+                </ImageView>
 
-    <LinearLayout
-        android:id="@+id/delete"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="20dp"
-        android:foreground="?attr/selectableItemBackground"
-        android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/shareText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:padding="5dp"
+                    android:text="@string/edit_category_layout__shareText"
+                    android:textColor="?attr/textFillColor" />
+            </LinearLayout>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="37dp"
-            android:layout_gravity="center"
-            android:src="@drawable/final_regular_trash_icon"
-            android:importantForAccessibility="no">
+            <LinearLayout
+                android:id="@+id/reminder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="20dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:orientation="horizontal">
 
-        </ImageView>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="37dp"
+                    android:layout_gravity="center"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/final_regular_reminder_icon">
 
-        <TextView
-            android:id="@+id/deleteText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="10dp"
-            android:padding="5dp"
-            android:text="@string/edit_category_layout__deleteText"
-            android:textColor="?attr/textFillColor" />
-    </LinearLayout>
+                </ImageView>
 
+                <TextView
+                    android:id="@+id/alarmText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:padding="5dp"
+                    android:text="@string/edit_category_layout__alarmText"
+                    android:textColor="?attr/textFillColor" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/delete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="20dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="37dp"
+                    android:layout_gravity="center"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/final_regular_trash_icon">
+
+                </ImageView>
+
+                <TextView
+                    android:id="@+id/deleteText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:padding="5dp"
+                    android:text="@string/edit_category_layout__deleteText"
+                    android:textColor="?attr/textFillColor" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

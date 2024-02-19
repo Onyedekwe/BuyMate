@@ -1,0 +1,960 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Buymate</string>
+    <string name="app_version">1.0.1</string>
+    <string name="app_link">https://play.google.com/store/apps/details?id=</string>
+    <string name="app_email">hemerickservices@gmail.com</string>
+    <string name="app_lifetime_product_id">com.hemerick.lifetime_subscription</string>
+    <string name="default_web_client_id" translatable="false">401382920363-u289nhkse3o3fi2tevrq68m7oic9vaj6.apps.googleusercontent.com</string>
+
+
+    <string name="open_icon_content_description">Открыть</string>
+
+    //ShopCopyAdapter
+    <string name="ShopCopyAdapter__copy_successful">Элемент скопирован в</string>
+
+    //ShopMoveAdapter
+    <string name="ShopMoveAdapter__move_successful">Элемент перемещен в</string>
+
+    //ViewPagerAdapter
+    <string name="ViewPagerAdapter_heading_1">Всегда помните, что купить</string>
+    <string name="ViewPagerAdapter_heading_2">Мудро распределяйте бюджет, избегайте импульсивных покупок</string>
+    <string name="ViewPagerAdapter_heading_3">Легко делитесь своим списком</string>
+    <string name="ViewPagerAdapter_sub_heading_1">Легко составляйте список и никогда не забывайте покупать что-то.</string>
+    <string name="ViewPagerAdapter_sub_heading_2">Управляйте своим бюджетом, покупайте только то, что есть в вашем списке</string>
+    <string name="ViewPagerAdapter_sub_heading_3">Связывайтесь с семьей, друзьями и коллегами, делясь списком в виде текста или PDF.</string>
+
+    //Firebase
+    <string name="Firebase__backup_text_heading">Резервное копирование в облако</string>
+    <string name="Firebase__backup_text_subheading">Пожалуйста, подождите…</string>
+    <string name="Firebase__backup_successful">Резервное копирование успешно завершено</string>
+    <string name="Firebase__restore_text_heading">Восстановление данных из облака</string>
+    <string name="Firebase__restore_text_subheading">Пожалуйста, подождите…</string>
+    <string name="Firebase__restore_no_list_found">Список не найден</string>
+    <string name="Firebase__restore_no_notes_found">Заметки не найдены</string>
+    <string name="Firebase__restore_completed">Восстановление завершено</string>
+    <string name="Firebase__error">Ошибка: </string>
+
+    //ShoppingWidgetService
+    <string name="ShoppingWidgetService__added">Добавлено </string>
+
+    //BackupActivity
+    <string name="BackupActivity__loginBeforeBackup">Пожалуйста, войдите перед резервным копированием</string>
+    <string name="BackupActivity__loginBeforeRestore">Пожалуйста, убедитесь, что вы вошли в систему перед восстановлением данных</string>
+    <string name="BackupActivity__restoreHeader">Восстановление данных</string>
+    <string name="BackupActivity__restoreWarning">Это действие заменит ваши текущие данные последними зарезервированными данными. Все несохраненные изменения будут потеряны. Вы уверены, что хотите продолжить?</string>
+    <string name="BackupActivity__restoreProceedBtn">Продолжить</string>
+    <string name="BackupActivity__restoreCancelBtn">Отмена</string>
+
+    //ChangePasswordActivity
+    <string name="ChangePasswordActivity__passwordUpdateSuccess">Пароль обновлен</string>
+    <string name="ChangePasswordActivity__passwordUpdateFailed">Обновление пароля не удалось</string>
+    <string name="ChangePasswordActivity__error">Ошибка: </string>
+    <string name="ChangePasswordActivity__passwordNotMatched">Пароли не совпадают</string>
+    <string name="ChangePasswordActivity__passwordLengthFailed">Пароль должен содержать не менее 6 символов</string>
+    <string name="ChangePasswordActivity__retypePassword">Введите пароль еще раз для продолжения</string>
+    <string name="ChangePasswordActivity__enterNewPassword">Введите новый пароль</string>
+    <string name="ChangePasswordActivity__enterCurrentPassword">Введите текущий пароль</string>
+
+    //ConfigurePasscodeActivity
+    <string name="ConfigurePasscodeActivity__deviceNotSupported">Устройство не поддерживается</string>
+    <string name="ConfigurePasscodeActivity__hardwareUnavailable">Аппаратное обеспечение недоступно</string>
+    <string name="ConfigurePasscodeActivity__fingerprintNotSet">Отпечаток пальца не настроен для этого устройства</string>
+    <string name="ConfigurePasscodeActivity__verifyFingerprint">Проверьте отпечаток пальца</string>
+    <string name="ConfigurePasscodeActivity__usePassword">Использовать пароль</string>
+    <string name="ConfigurePasscodeActivity__insert4digitPassword">Введите 4-значный пароль</string>
+    <string name="ConfigurePasscodeActivity__confirmPassword">Подтвердите пароль</string>
+    <string name="ConfigurePasscodeActivity__retypePassword">Введите пароль еще раз для продолжения</string>
+    <string name="ConfigurePasscodeActivity__success">Успешно</string>
+    <string name="ConfigurePasscodeActivity__passwordNotMatched">Пароли не совпадают</string>
+    <string name="ConfigurePasscodeActivity__insertPassword">Введите пароль</string>
+    <string name="ConfigurePasscodeActivity__letsVerifyYou">Помогите нам убедиться, что это действительно вы, введите текущий пароль</string>
+    <string name="ConfigurePasscodeActivity__appLockRemoved">Блокировка приложения удалена</string>
+    <string name="ConfigurePasscodeActivity__wrongPassword">Неправильный пароль</string>
+    <string name="ConfigurePasscodeActivity__fingerprintEnabled">Отпечаток пальца включен</string>
+    <string name="ConfigurePasscodeActivity__setupPassword">Установить пароль</string>
+    <string name="ConfigurePasscodeActivity__changePassword">Изменить пароль</string>
+
+    //CreateNoteActivity
+    <string name="CreateNoteActivity__untitled">Без названия</string>
+    <string name="CreateNoteActivity__deleteNote">Удалить</string>
+    <string name="CreateNoteActivity__deleteWarning">Это действие нельзя отменить</string>
+    <string name="CreateNoteActivity__voicePrompt">Прослушивание</string>
+    <string name="CreateNoteActivity__send_message_via">Отправить сообщение через:</string>
+
+    //FavouritesFragment
+    <string name="FavouritesFragment__addItemToList">Добавить элемент в ваш список</string>
+    <string name="FavouritesFragment__untitled">Без названия</string>
+    <string name="FavouritesFragment__alreadyExist">Элемент уже существует</string>
+    <string name="FavouritesFragment__emptyName">Поле названия элемента пусто</string>
+    <string name="FavouritesFragment__toolbarStarred">Отмечено</string>
+    <string name="FavouritesFragment__multipleDelete">Удалить эти элементы</string>
+    <string name="FavouritesFragment__singleDelete">Удалить этот элемент</string>
+    <string name="FavouritesFragment__deleteWarning">Это действие нельзя отменить</string>
+    <string name="FavouritesFragment__removeFromStarred">Удалить из отмеченных</string>
+    <string name="FavouritesFragment__remove">Удалить</string>
+    <string name="FavouritesFragment__unstar">Снять отметку</string>
+    <string name="FavouritesFragment__star">Отметить элемент</string>
+    <string name="FavouritesFragment__itemsChecked">Элементы отмечены</string>
+    <string name="FavouritesFragment__itemStarred">Элемент отмечен</string>
+    <string name="FavouritesFragment__itemUnstarred">Элемент не отмечен</string>
+    <string name="FavouritesFragment__addPhoto">Добавить изображение</string>
+    <string name="FavouritesFragment__updatePhoto">Обновить изображение</string>
+    <string name="FavouritesFragment__loginPrompt">Пожалуйста, войдите, прежде чем продолжить</string>
+    <string name="FavouritesFragment__insertImageFailed">Ошибка: Не удалось вставить изображение</string>
+    <string name="FavouritesFragment__error">Ошибка: </string>
+    <string name="FavouritesFragment__emptyPrice">Поле цены элемента пусто</string>
+    <string name="FavouritesFragment__voicePrompt">Прослушивание</string>
+    <string name="FavouritesFragment__emptyQuantity">Поле количества элемента пусто</string>
+    <string name="FavouritesFragment__Total">ИТОГО:</string>
+    <string name="FavouritesFragment__shareBtmText1">Улучшите свой опыт покупок с помощью Buymate.</string>
+    <string name="FavouritesFragment__shareBtmText2">Загрузите Buymate из Google Play:</string>
+    <string name="FavouritesFragment__shareIntentText">Отправить сообщение через</string>
+    <string name="FavouritesFragment__no">НЕТ</string>
+    <string name="FavouritesFragment__item">ЭЛЕМЕНТ</string>
+    <string name="FavouritesFragment__quantity">КОЛИЧЕСТВО</string>
+    <string name="FavouritesFragment__unit">ЕДИНИЦА</string>
+    <string name="FavouritesFragment__price">ЦЕНА</string>
+    <string name="FavouritesFragment__contactUs">Свяжитесь с нами по адресу:</string>
+    <string name="FavouritesFragment__pdfDownloadedTo">PDF загружен в</string>
+
+    //HomeActivity
+    <string name="HomeActivity__pressBack">Нажмите еще раз, чтобы выйти из приложения</string>
+
+    //HomeFragment
+    <string name="HomeFragment__feedback">Обратная связь</string>
+    <string name="HomeFragment__accountEmail">Email аккаунта: </string>
+    <string name="HomeFragment__appVersion">Версия приложения: </string>
+    <string name="HomeFragment__device">Устройство: </string>
+    <string name="HomeFragment__model">Модель: </string>
+    <string name="HomeFragment__brand">Бренд: </string>
+    <string name="HomeFragment__osVersion">Версия ОС: </string>
+    <string name="HomeFragment__sdkVersion">Версия SDK: </string>
+    <string name="HomeFragment__mailTo">Письмо на:</string>
+    <string name="HomeFragment__mailError">Почтовый клиент не найден</string>
+    <string name="HomeFragment__navigation_drawer_open">Открыть боковое меню</string>
+    <string name="HomeFragment__navigation_drawer_close">Закрыть боковое меню</string>
+    <string name="HomeFragment__defaultName">Пользователь</string>
+    <string name="HomeFragment__hiText">Привет,</string>
+    <string name="HomeFragment__exclam">!</string>
+    <string name="HomeFragment__emptySearch">Нет списка для поиска</string>
+    <string name="HomeFragment__addItemToList">Добавить элемент в ваш список</string>
+    <string name="HomeFragment__loginPrompt">Пожалуйста, войдите, прежде чем продолжить</string>
+    <string name="HomeFragment__login">Вход</string>
+    <string name="HomeFragment__shareBtmText1">Улучшите свой опыт покупок с помощью Buymate.</string>
+    <string name="HomeFragment__shareBtmText2">Загрузите Buymate из Google Play:</string>
+    <string name="HomeFragment__no">НЕТ</string>
+    <string name="HomeFragment__item">ЭЛЕМЕНТ</string>
+    <string name="HomeFragment__quantity">КОЛИЧЕСТВО</string>
+    <string name="HomeFragment__unit">ЕДИНИЦА</string>
+    <string name="HomeFragment__price">ЦЕНА</string>
+    <string name="HomeFragment__contactUs">Свяжитесь с нами по адресу:</string>
+    <string name="HomeFragment__pdfDownloadedTo">PDF загружен в</string>
+    <string name="HomeFragment__Total">ИТОГО:</string>
+    <string name="HomeFragment__noListFound">Список не найден</string>
+    <string name="HomeFragment__sortPriceText">Размер</string>
+    <string name="HomeFragment__send_message_via">Отправить сообщение через:</string>
+    <string name="HomeFragment__please_insert_name">Пожалуйста, введите имя</string>
+    <string name="HomeFragment__deleteTheseLists">Удалить эти списки</string>
+    <string name="HomeFragment__deleteThisList">Удалить этот список</string>
+    <string name="HomeFragment__delete">Удалить</string>
+    <string name="HomeFragment__deleteWarning">Это действие нельзя отменить</string>
+    <string name="HomeFragment__no_list">Нет списка</string>
+    <string name="HomeFragment__list_exist_already">Этот список уже существует</string>
+    <string name="HomeFragment__no_alarm_app">Нет приложения для выполнения этого действия</string>
+
+
+    //InsertPasscodeActivity
+    <string name="InsertPasscodeActivity__success">Успешно</string>
+    <string name="InsertPasscodeActivity__wrongPin">Неверный пин-код</string>
+    <string name="InsertPasscodeActivity__insertPin">Введите 4-значный пароль</string>
+    <string name="InsertPasscodeActivity__notSupported">Устройство не поддерживается</string>
+    <string name="InsertPasscodeActivity__hardwareNotAvailable">Аппаратное обеспечение недоступно</string>
+    <string name="InsertPasscodeActivity__fingerprintNotSet">Отпечаток пальца не настроен для этого устройства</string>
+    <string name="InsertPasscodeActivity__verifyFingerprint">Проверьте отпечаток пальца</string>
+    <string name="InsertPasscodeActivity__usePassword">Использовать пароль</string>
+
+    //ItemActivity
+    <string name="ItemActivity__deleteTheseItems">Удалить эти элементы</string>
+    <string name="ItemActivity__deleteThisItem">Удалить этот элемент</string>
+    <string name="ItemActivity__moveTo">Переместить в:</string>
+    <string name="ItemActivity__copyTo">Скопировать в:</string>
+    <string name="ItemActivity__unstarred">Без звезды</string>
+    <string name="ItemActivity__unstar">Убрать звезду</string>
+    <string name="ItemActivity__itemStarred">Элемент помечен</string>
+    <string name="ItemActivity__searchHint">Поиск в списке</string>
+    <string name="ItemActivity__itemsChecked">Выбранные элементы:</string>
+    <string name="ItemActivity__addItemToList">Добавить элемент в список</string>
+    <string name="ItemActivity__alreadyExist">Элемент уже существует</string>
+    <string name="ItemActivity__emptyName">Поле имени элемента пусто</string>
+    <string name="ItemActivity__emptyNameCate">Поле имени пусто</string>
+    <string name="ItemActivity__starItem">Отметить элемент</string>
+    <string name="ItemActivity__addPhoto">Добавить изображение</string>
+    <string name="ItemActivity__updatePhoto">Обновить изображение</string>
+    <string name="ItemActivity__loginPrompt">Пожалуйста, войдите, прежде чем продолжить</string>
+    <string name="ItemActivity__insertImageFailed">Ошибка: Не удалось вставить изображение</string>
+    <string name="ItemActivity__error">Ошибка: </string>
+    <string name="ItemActivity__emptyPrice">Поле цены элемента пусто</string>
+    <string name="ItemActivity__emptyQuantity">Поле количества элемента пусто</string>
+    <string name="ItemActivity__delete">Удалить</string>
+    <string name="ItemActivity__deleteWarning">Это действие нельзя отменить</string>
+    <string name="ItemActivity__noAlarmApp">Нет приложения для выполнения этого действия</string>
+    <string name="ItemActivity__Total">ИТОГО:</string>
+    <string name="ItemActivity__shareBtmText1">Улучшите свой опыт покупок с помощью Buymate.</string>
+    <string name="ItemActivity__shareBtmText2">Загрузите Buymate из Google Play:</string>
+    <string name="ItemActivity__shareIntentText">Отправить сообщение через</string>
+    <string name="ItemActivity__no">НЕТ</string>
+    <string name="ItemActivity__item">ЭЛЕМЕНТ</string>
+    <string name="ItemActivity__quantity">КОЛИЧЕСТВО</string>
+    <string name="ItemActivity__unit">ЕДИНИЦА</string>
+    <string name="ItemActivity__price">ЦЕНА</string>
+    <string name="ItemActivity__contactUs">Свяжитесь с нами по адресу:</string>
+    <string name="ItemActivity__pdfDownloadedTo">PDF загружен в</string>
+    <string name="ItemActivity__voicePrompt">Прослушивание</string>
+
+    //LoginActivity
+    <string name="LoginActivity__error">Ошибка: </string>
+    <string name="LoginActivity__emailError">Недопустимый адрес электронной почты</string>
+    <string name="LoginActivity__passwordError">Введите пароль</string>
+    <string name="LoginActivity__emptyEmailError">Введите адрес электронной почты</string>
+
+    //MoreFragment
+    <string name="MoreFragment__shareBtmText1">Посмотрите это удивительное приложение для покупок! Я настоятельно рекомендую его. Загрузите его в Google Play.</string>
+    <string name="MoreFragment__shareVia">Поделиться через:</string>
+    <string name="MoreFragment__feedback">Обратная связь</string>
+    <string name="MoreFragment__accountEmail">Электронная почта аккаунта: </string>
+    <string name="MoreFragment__appVersion">Версия приложения: </string>
+    <string name="MoreFragment__device">Устройство: </string>
+    <string name="MoreFragment__model">Модель: </string>
+    <string name="MoreFragment__brand">Бренд: </string>
+    <string name="MoreFragment__osVersion">Версия ОС: </string>
+    <string name="MoreFragment__sdkVersion">Версия SDK: </string>
+    <string name="MoreFragment__mailTo">Отправить по электронной почте:</string>
+    <string name="MoreFragment__mailError">Почтовый клиент не найден</string>
+    <string name="MoreFragment__signIn">Войти</string>
+    <string name="MoreFragment__account">Аккаунт</string>
+    <string name="MoreFragment__loginPrompt">Пожалуйста, войдите, прежде чем продолжить</string>
+    <string name="MoreFragment__login">Вход</string>
+    <string name="MoreFragment__premiumText1">Поздравляем!</string>
+    <string name="MoreFragment__premiumText2">Вы пользуетесь премиальной версией Buymate</string>
+
+    //NotesFragment
+    <string name="NotesFragment__multipleDelete">Удалить эти заметки</string>
+    <string name="NotesFragment__singleDelete">Удалить эту заметку</string>
+    <string name="NotesFragment__toolbarTitle">Заметки</string>
+    <string name="NotesFragment__emptyNoteSearchView">Нет заметок для поиска</string>
+    <string name="NotesFragment__emptyNoteRecyclerView">Заметки не найдены</string>
+
+    //PaymentSuccessfulActivity
+    <string name="PaymentSuccessfulActivity__error">Ошибка: </string>
+    <string name="PaymentSuccessfulActivity__itemOwnedAlready">ПРЕДМЕТ_УЖЕ_ПРИОБРЕТЕН</string>
+    <string name="PaymentSuccessfulActivity__featureNotSupported">ФУНКЦИЯ_НЕ_ПОДДЕРЖИВАЕТСЯ</string>
+    <string name="PaymentSuccessfulActivity__userCancelled">ПОЛЬЗОВАТЕЛЬ_ОТМЕНИЛ</string>
+    <string name="PaymentSuccessfulActivity__developerError">ОШИБКА_РАЗРАБОТЧИКА</string>
+    <string name="PaymentSuccessfulActivity__itemUnavailable">ПРЕДМЕТ_НЕДОСТУПЕН</string>
+    <string name="PaymentSuccessfulActivity__networkError">СЕТЕВАЯ_ОШИБКА</string>
+    <string name="PaymentSuccessfulActivity__serviceDisconnected">СЛУЖБА_ОТКЛЮЧЕНА</string>
+    <string name="PaymentSuccessfulActivity__errorInvalidPurchase">Ошибка: недопустимая покупка</string>
+
+    //RecoverPasswordActivity
+    <string name="RecoverPasswordActivity__emailNotRegistered">Электронная почта не зарегистрирована. Пожалуйста, зарегистрируйтесь.</string>
+    <string name="RecoverPasswordActivity__resetLinkSent">Ссылка для сброса пароля отправлена на электронную почту</string>
+    <string name="RecoverPasswordActivity__error">Ошибка: </string>
+    <string name="RecoverPasswordActivity__invalidEmail">Недопустимый адрес электронной почты</string>
+    <string name="RecoverPasswordActivity__recoveryEmail">Введите свой адрес электронной почты для восстановления</string>
+
+    //SettingsActivity
+    <string name="SettingsActivity__currencyUpdated">Валюта обновлена</string>
+    <string name="SettingsActivity__currencyFieldEmpty">Поле валюты пусто</string>
+    <string name="SettingsActivity__disabled">Отключено</string>
+
+    <string name="SettingsActivity__renameSwipeLeft">Переименовать: смахните влево</string>
+    <string name="SettingsActivity__changePriceSwipeLeft">Изменить цену: смахните влево</string>
+    <string name="SettingsActivity__changeQuantitySwipeLeft">Изменить количество: смахните влево</string>
+    <string name="SettingsActivity__starAndUnstarLeft">Пометить и снять пометку с элемента: смахните влево</string>
+    <string name="SettingsActivity__deleteSwipeLeft">Удалить: смахните влево</string>
+    <string name="SettingsActivity__checkAndUncheckLeft">Выбрать и снять выбор элемента: смахните влево</string>
+    <string name="SettingsActivity__showOptionsSwipeLeft">Показать опции: смахните влево</string>
+    <string name="SettingsActivity__doNothingSwipeLeft">Не делать ничего: смахните влево</string>
+
+    <string name="SettingsActivity__renameSwipeRight">Переименовать: смахните вправо</string>
+    <string name="SettingsActivity__changePriceSwipeRight">Изменить цену: смахните вправо</string>
+    <string name="SettingsActivity__changeQuantitySwipeRight">Изменить количество: смахните вправо</string>
+    <string name="SettingsActivity__starAndUnstarRight">Пометить и снять пометку с элемента: смахните вправо</string>
+    <string name="SettingsActivity__deleteSwipeRight">Удалить: смахните вправо</string>
+    <string name="SettingsActivity__checkAndUncheckRight">Выбрать и снять выбор элемента: смахните вправо</string>
+    <string name="SettingsActivity__showOptionsSwipeRight">Показать опции: смахните вправо</string>
+    <string name="SettingsActivity__doNothingSwipeRight">Не делать ничего: смахните вправо</string>
+
+    //SignUpActivity
+    <string name="SignUpActivity__emailAlreadyRegistered">Электронная почта уже зарегистрирована</string>
+    <string name="SignUpActivity__confirmPasswordError">Пароли не совпадают</string>
+    <string name="SignUpActivity__passwordLengthError">Пароль должен содержать не менее 6 символов</string>
+    <string name="SignUpActivity__invalidEmail">Недопустимый адрес электронной почты</string>
+    <string name="SignUpActivity__confirmPassword">Повторите пароль, чтобы продолжить</string>
+    <string name="SignUpActivity__insertPassword">Введите пароль</string>
+    <string name="SignUpActivity__insertEmail">Введите адрес электронной почты</string>
+    <string name="SignUpActivity__enterName">Введите свое имя пользователя, чтобы продолжить</string>
+
+    //SwipeSettingActivity
+    <string name="SwipeSettingActivity__rename">Переименовать</string>
+    <string name="SwipeSettingActivity__checkAndUncheckItem">Выбрать и снять выбор с элемента</string>
+    <string name="SwipeSettingActivity__changePrice">Изменить цену</string>
+    <string name="SwipeSettingActivity__changeQuantity">Изменить количество</string>
+    <string name="SwipeSettingActivity__starAndUnstar">Пометить и снять пометку с элемента</string>
+    <string name="SwipeSettingActivity__delete">Удалить</string>
+    <string name="SwipeSettingActivity__showOptions">Показать опции</string>
+    <string name="SwipeSettingActivity__doNothing">Не делать ничего</string>
+
+    <string name="SwipeSettingActivity__renameSwipeLeft">Переименовать: смахните влево</string>
+    <string name="SwipeSettingActivity__changePriceSwipeLeft">Изменить цену: смахните влево</string>
+    <string name="SwipeSettingActivity__changeQuantitySwipeLeft">Изменить количество: смахните влево</string>
+    <string name="SwipeSettingActivity__starAndUnstarLeft">Пометить и снять пометку с элемента: смахните влево</string>
+    <string name="SwipeSettingActivity__deleteSwipeLeft">Удалить: смахните влево</string>
+    <string name="SwipeSettingActivity__checkAndUncheckLeft">Выбрать и снять выбор элемента: смахните влево</string>
+    <string name="SwipeSettingActivity__showOptionsSwipeLeft">Показать опции: смахните влево</string>
+    <string name="SwipeSettingActivity__doNothingSwipeLeft">Не делать ничего: смахните влево</string>
+
+    <string name="SwipeSettingActivity__renameSwipeRight">Переименовать: смахните вправо</string>
+    <string name="SwipeSettingActivity__changePriceSwipeRight">Изменить цену: смахните вправо</string>
+    <string name="SwipeSettingActivity__changeQuantitySwipeRight">Изменить количество: смахните вправо</string>
+    <string name="SwipeSettingActivity__starAndUnstarRight">Пометить и снять пометку с элемента: смахните вправо</string>
+    <string name="SwipeSettingActivity__deleteSwipeRight">Удалить: смахните вправо</string>
+    <string name="SwipeSettingActivity__checkAndUncheckRight">Выбрать и снять выбор элемента: смахните вправо</string>
+    <string name="SwipeSettingActivity__showOptionsSwipeRight">Показать опции: смахните вправо</string>
+    <string name="SwipeSettingActivity__doNothingSwipeRight">Не делать ничего: смахните вправо</string>
+
+    //UpdateNoteActivity
+    <string name="UpdateNoteActivity__untitled">Без названия</string>
+    <string name="UpdateNoteActivity__deleteNote">Удалить</string>
+    <string name="UpdateNoteActivity__deleteWarning">Это действие нельзя отменить</string>
+    <string name="UpdateNoteActivity__voicePrompt">Прослушивание</string>
+    <string name="UpdateNoteActivity__send_message_via">Отправить сообщение через:</string>
+
+
+    //UserActivity
+    <string name="UserActivity__user">Пользователь</string>
+    <string name="UserActivity__error">Ошибка: </string>
+    <string name="UserActivity__emptyName">Пожалуйста, введите имя пользователя для продолжения</string>
+    <string name="UserActivity__logoutPrompt">Мы с нетерпением ждем вашего возвращения!</string>
+    <string name="UserActivity__deleteAccText1">Все списки и другие данные для</string>
+    <string name="UserActivity__deleteAccText2">будут навсегда удалены из облака.</string>
+    <string name="UserActivity__accountDeleted">Учетная запись удалена</string>
+
+
+    //OnboardingActivity
+    <string name="OnboardingActivity__Next">Далее</string>
+    <string name="OnboardingActivity__Start">Начать</string>
+
+    ///////////////////////////////////////////////
+
+
+    //activity_about
+    <string name="activity_about__toolbarText">О приложении</string>
+    <string name="activity_about__version">Версия приложения</string>
+    <string name="activity_about__privacyPolicy">Политика конфиденциальности</string>
+    <string name="activity_about__credits">Благодарности</string>
+    <string name="activity_about__open_icon_content_description">Открыть</string>
+
+    //activity_acknowledgments
+    <string name="activity_acknowledgments__toolbarText">Благодарности</string>
+    <string name="activity_acknowledgments__open_link_content_description">Открыть ссылку</string>
+
+    //activity_backup
+    <string name="activity_backup__toolbarText">Резервное копирование</string>
+    <string name="activity_backup__backupText">Резервное копирование</string>
+    <string name="activity_backup__backupDescription">Создайте резервную копию вашего списка покупок и восстанавливайте их по мере необходимости</string>
+    <string name="activity_backup__restoreText">Восстановление</string>
+    <string name="activity_backup__restoreDescription">Сменили телефон? Восстановите данные из ранее экспортированной резервной копии</string>
+
+    //activity_change_password
+    <string name="activity_change_password__toolbarText">Смена пароля</string>
+    <string name="activity_change_password__currentPasswordHint">Введите текущий пароль</string>
+    <string name="activity_change_password__newPasswordHint">Введите новый пароль</string>
+    <string name="activity_change_password__confirmPasswordHint">Подтвердите новый пароль</string>
+    <string name="activity_change_password__forgotPasswordText">Забыли пароль?</string>
+    <string name="activity_change_password__doneBtnText">Готово</string>
+
+
+    //activity_configure_passcode
+    <string name="activity_configure_passcode__toolbarText">Блокировка приложения</string>
+    <string name="activity_configure_passcode__setPassword">Настроить пароль</string>
+    <string name="activity_configure_passcode__fingerprintLogin">Вход по отпечатку пальца</string>
+    <string name="activity_configure_passcode__removeAppLock">Удалить блокировку приложения</string>
+
+
+    //activity_create_note
+    <string name="activity_create_note__toolbarText">Заметки</string>
+    <string name="activity_create_note__titleHint">Название</string>
+    <string name="activity_create_note__descriptionHint">Запишите что-нибудь</string>
+
+
+    //activity_cross_setting
+    <string name="activity_cross_setting__toolbarText">Вычеркивание элементов</string>
+    <string name="activity_cross_setting__disableSwitchText">Отключить вычеркивание</string>
+    <string name="activity_cross_setting__disableCrossDescription">если включено, элементы вычеркиваются при проверке</string>
+
+    //activity_detail_list_share_setting
+    <string name="activity_detail_list_share_setting__toolbarText">Подробное совместное использование списка</string>
+    <string name="activity_detail_list_share_setting__shareWithPrice">Поделиться с ценой</string>
+    <string name="activity_detail_list_share_setting__shareWithPriceDescription">Включить цены товаров при совместном использовании</string>
+    <string name="activity_detail_list_share_setting__shareWithQuantity">Поделиться с количеством</string>
+    <string name="activity_detail_list_share_setting__shareWithQuantityDescription">Включить количество товаров при совместном использовании</string>
+    <string name="activity_detail_list_share_setting__shareWithTotal">Поделиться с общим</string>
+    <string name="activity_detail_list_share_setting__shareWithTotalDescription">Включить общую сумму при совместном использовании</string>
+
+
+    //activity_insert_passcode
+    <string name="activity_insert_passcode__toolbarText">Вход</string>
+    <string name="activity_insert_passcode__welcomeBack">С возвращением!</string>
+    <string name="activity_insert_passcode__insertPinPrompt">Введите 4-значный PIN-код</string>
+    <string name="activity_insert_passcode__loginWithFingerprint">Вход с помощью отпечатка пальца</string>
+    <string name="activity_insert_passcode__loginWithFingerprintDescription">Нажмите на значок отпечатка пальца, чтобы продолжить</string>
+
+
+    //activity_item
+    <string name="activity_item__total">Итого:</string>
+    <string name="activity_item_eye_icon_content_description">Показать общую сумму</string>
+    <string name="activity_item_FAB">Добавить элемент</string>
+    <string name="activity_item_emptyText">Нет элементов</string>
+
+    //activity_item_suggestion
+    <string name="activity_item_suggestion__toolbarText">Подсказка по элементам</string>
+    <string name="activity_item_suggestion__hideSuggestionText">Скрыть подсказку</string>
+    <string name="activity_item_suggestion__hideSuggestionDescription">Это отключает отображение подсказок при вводе текста.</string>
+
+
+    //activity_log_in
+    <string name="activity_log_in__loginText">Войти в свою учетную запись</string>
+    <string name="activity_log_in__email">Электронная почта</string>
+    <string name="activity_log_in__password">Пароль</string>
+    <string name="activity_log_in__forgotPassword">Забыли пароль?</string>
+    <string name="activity_log_in__login">Войти</string>
+    <string name="activity_log_in__or">-Или-</string>
+    <string name="activity_log_in__continueWithGoogle">Продолжить с Google</string>
+    <string name="activity_log_in__noAccount">Нет аккаунта?</string>
+    <string name="activity_log_in__signUp">Зарегистрироваться</string>
+
+
+    //activity_payment
+
+    _successful
+    <string name="activity_payment_successful__header">Спасибо за покупку \nBuymate Premium!</string>
+    <string name="activity_payment_successful__header_desc_1">Вы сейчас наслаждаетесь всеми функциями Buymate!</string>
+    <string name="activity_payment_successful__header_desc_2">Резервное копирование и восстановление</string>
+    <string name="activity_payment_successful__header_desc_4">Удалить рекламу</string>
+    <string name="activity_payment_successful__header_desc_5">Поддержка Buymate</string>
+    <string name="activity_payment_successful__back_btn">Вернуться на главную</string>
+
+    //activity_premium
+    <string name="activity_premium__toolbarText">Премиум</string>
+    <string name="activity_premium__header">Покупка премиум дает вам доступ к:</string>
+    <string name="activity_premium__backupText">Резервное копирование и восстановление</string>
+    <string name="activity_premium__removeAdsText">Удалить рекламу</string>
+    <string name="activity_premium__supportText">Поддержка Buymate</string>
+    <string name="activity_premium__sub_header">ПРЕДЛОЖЕНИЕ ОДНОКРАТНОЙ ПОКУПКИ</string>
+    <string name="activity_premium__payOneTime">Оплатить один раз</string>
+    <string name="activity_premium__prev_lifetime_currency_text">0,00</string>
+    <string name="activity_premium__upgrade_btn">Получите премиум сейчас!</string>
+    <string name="activity_premium__full_star">"\u2606""\u2606""\u2606""\u2606"</string>
+    <string name="activity_premium__tip">Подписка автоматически продлевается. Вы можете отменить ее в настройках Google Play</string>
+    <string name="activity_premium__no_network_header">Упс, что-то пошло не так.</string>
+    <string name="activity_premium__no_network_subHeader">Это может быть проблема сети или ошибка сервера Google Play. Повторите попытку позже. Если проблема повторится, свяжитесь с нашей службой поддержки.</string>
+
+    //activity_recover_password
+    <string name="activity_recover_password__sub_header">Забыли пароль</string>
+    <string name="activity_recover_password__email_box_parent">Электронная почта</string>
+    <string name="activity_recover_password__recoverBtn">Восстановить пароль</string>
+    <string name="activity_recover_password__recover_description">Введите свою электронную почту и нажмите кнопку "Восстановить пароль". \n\nСсылка на восстановление пароля будет отправлена на вашу электронную почту.</string>
+
+    //activity_settings
+    <string name="activity_settings__toolbarText">Настройки</string>
+    <string name="activity_settings__generalHeaderText">Общие</string>
+    <string name="activity_settings__themeText">Темный режим</string>
+    <string name="activity_settings__screenText">Сохранять яркость экрана</string>
+    <string name="activity_settings__textSizeText">Размер текста</string>
+    <string name="activity_settings__removeAdsText">Убрать рекламу</string>
+    <string name="activity_settings__removeAdsSubText">Станьте пользователем премиум-класса</string>
+    <string name="activity_settings__advancedHeaderText">Дополнительные</string>
+    <string name="activity_settings__strikeText">Вычеркивание элементов</string>
+    <string name="activity_settings__disable_price_Text">Показывать цены товаров</string>
+    <string name="activity_settings__item_suggestionText">Подсказка по элементам</string>
+    <string name="activity_settings__multiplyText">Умножение</string>
+    <string name="activity_settings__multiplySubText">(цена x количество)</string>
+    <string name="activity_settings__swipeActionSubText1">Действия при смахивании</string>
+    <string name="activity_settings__detailedListShareTextHeader">Параметры совместного использования</string>
+    <string name="activity_settings__detailedListShareSubText">Включить цены товаров, количество и общую сумму</string>
+    <string name="activity_settings__currencyTextHeader">Валюта</string>
+    <string name="activity_settings__currencySubText">Введите символ вашей предпочтительной валюты</string>
+    <string name="activity_settings__securityHeaderText">Безопасность</string>
+    <string name="activity_settings__lockText">Блокировка приложения</string>
+
+
+    //activity_signup
+    <string name="activity_signup__sub_header">Создайте свою учетную запись</string>
+    <string name="activity_signup__fulname_box_parent">Имя пользователя</string>
+    <string name="activity_signup__email_box_parent">Электронная почта</string>
+    <string name="activity_signup__password_box_parent">Пароль</string>
+    <string name="activity_signup__confirm_password_box_parent">Подтвердите пароль</string>
+    <string name="activity_signup__signUpBtn">Зарегистрироваться</string>
+    <string name="activity_signup__orText">-Или-</string>
+    <string name="activity_signup__googleText">Продолжить с Google</string>
+    <string name="activity_signup__loginText1">Уже есть аккаунт?</string>
+    <string name="activity_signup__loginText2">Войти</string>
+
+
+    //activity_swipe_setting
+    <string name="activity_swipe_setting__swipeToolbar">Действие свайпа</string>
+    <string name="activity_swipe_setting__swipeLeftTextHeader">Свайп влево</string>
+    <string name="activity_swipe_setting__swipeRightTextHeader">Свайп вправо</string>
+    <string name="activity_swipe_setting__customize_button">Настроить</string>
+    <string name="activity_swipe_setting__swipeDisableTextHeader">Отключить свайп</string>
+    <string name="activity_swipe_setting__swipe_description">Выберите, что происходит, когда элементы в списке свайпают влево или вправо.\n\nПри выборе отключения свайпа элементы не могут свайпаться влево или вправо.</string>
+
+    //activity_update_note
+    <string name="activity_update_note__update_note_title">Заметки</string>
+    <string name="activity_update_note__update_heading_text">Название</string>
+    <string name="activity_update_note__update_content_text">Запишите что-нибудь</string>
+
+    //activity_user
+    <string name="activity_user__account_title">Учетная запись</string>
+    <string name="activity_user__edit_nameText">Редактировать имя</string>
+    <string name="activity_user__change_passwordText">Сменить пароль</string>
+    <string name="activity_user__logoutText">Выйти</string>
+    <string name="activity_user__delete_accountText">Удалить аккаунт</string>
+    <string name="activity_user__userNameUpdated">Имя пользователя обновлено</string>
+
+    //activity_onboarding
+    <string name="activity_onboarding_skip">Пропустить</string>
+    <string name="activity_onboarding_back">Назад</string>
+    <string name="activity_onboarding_next">Далее</string>
+
+
+    //category_title_set_popup
+    <string name="category_title_set_popup__emptyText1">Введите название списка</string>
+    <string name="category_title_set_popup__emptyText2">и нажмите <b>создать</b>, когда закончите</string>
+    <string name="category_title_set_popup__category_name_hint">Новый список</string>
+    <string name="category_title_set_popup__suggestion">Предложения:</string>
+    <string name="category_title_set_popup__suggestion_option_textView1">Покупки</string>
+    <string name="category_title_set_popup__suggestion_option_textView2">Продукты</string>
+    <string name="category_title_set_popup__suggestion_option_textView4">Еда</string>
+    <string name="category_title_set_popup__suggestion_option_textView5">Инструменты</string>
+    <string name="category_title_set_popup__suggestion_option_textView6">Туалетные принадлежности</string>
+    <string name="category_title_set_popup__suggestion_option_textView7">Аптека</string>
+    <string name="category_title_set_popup__suggestion_option_textView8">Поездка</string>
+    <string name="category_title_set_popup__fabButton">Создать</string>
+
+    //cloud_dialog_popup
+    <string name="cloud_dialog_popup__percent">Резервное копирование в облако</string>
+    <string name="cloud_dialog_popup__info">Пожалуйста, подождите завершения резервного копирования</string>
+
+    //custom_alert_delete_account_dialog
+    <string name="custom_alert_delete_account_dialog__header">Удалить аккаунт?</string>
+    <string name="custom_alert_delete_account_dialog__delete_account_text">Все списки и другие данные будут навсегда удалены из облака.</string>
+    <string name="custom_alert_delete_account_dialog__CancelButton">Отмена</string>
+    <string name="custom_alert_delete_account_dialog__BtnSave">Удалить</string>
+
+    //custom_alert_fingerprint_dialog
+    <string name="custom_alert_fingerprint_dialog__header">Внимание !!!</string>
+    <string name="custom_alert_fingerprint_dialog__alert_text">Вы не можете использовать отпечаток пальца с этим аккаунтом. Чтобы включить его, перейдите на страницу настроек после входа в систему.</string>
+    <string name="custom_alert_fingerprint_dialog__okBtn">Понятно</string>
+
+    //custom_app_version_dialog
+    <string name="custom_app_version_dialog__version_text1">Версия:" "</string>
+    <string name="custom_app_version_dialog__version_close">Закрыть</string>
+
+    //custom_currency_dialog
+    <string name="custom_currency_dialog__edit_title">Символ валюты</string>
+    <string name="custom_currency_dialog__desc_currency_hint">Вставьте символ</string>
+    <string name="custom_currency_dialog__CurrencyCancelButton">Отмена</string>
+    <string name="custom_currency_dialog__currencyBtnSave">Готово</string>
+
+    //custom_delete_dialog
+    <string name="custom_delete_dialog__cancel_button">Отмена</string>
+    <string name="custom_delete_dialog__delete_button">Готово</string>
+
+    //custom_edit_username_dialog
+    <string name="custom_edit_username_dialog__edit_title">Изменить имя</string>
+    <string name="custom_edit_username_dialog__firstNameBoxHint">Имя пользователя</string>
+    <string name="custom_edit_username_dialog__nameCancelButton">Отмена</string>
+    <string name="custom_edit_username_dialog__nameBtnSave">Готово</string>
+
+    //custom_image_upload_dialog
+    <string name="custom_edit_username_dialog__image_title">Добавить изображение</string>
+    <string name="custom_edit_username_dialog__takePictureText">Сделать фото</string>
+    <string name="custom_edit_username_dialog__uploadPictureText">Загрузить фото</string>
+
+    //custom_image_upload_dialog
+    <string name="custom_image_upload_dialog__header">Внимание !!!</string>
+    <string name="custom_image_upload_dialog__login_btn">Войти</string>
+    <string name="custom_image_upload_dialog__cancel_btn">Отмена</string>
+
+    //custom_logout_warning_dialog
+    <string name="custom_logout_warning_dialog__header">Подтвердить выход</string>
+    <string name="custom_logout_warning_dialog__logout_btn">Выйти</string>
+    <string name="custom_logout_warning_dialog__cancel_btn">Отмена</string>
+
+    //custom_premium_backup_description_dialog
+    <string name="custom_premium_backup_description_dialog__header">Резервное копирование и восстановление</string>
+    <string name="custom_premium_backup_description_dialog__sub_header">Сохраняйте ваш список покупок в безопасности и легко получайте к нему доступ благодаря нашей системе резервного копирования. Восстанавливайте его в любое время, когда вам нужно</string>
+    <string name="custom_premium_backup_description_dialog__okBtn">Закрыть</string>
+
+    //custom_premium_remove_ads_description_dialog
+    <string name="custom_premium_remove_ads_description_dialog__header">Удалить рекламу</string>
+    <string name="custom_premium_remove_ads_description_dialog__sub_header">Наслаждайтесь использованием приложения без рекламы для непрерывного удовольствия от приложения с нашими премиальными функциями.</string>
+    <string name="custom_premium_remove_ads_description_dialog__okBtn">Закрыть</string>
+
+    //custom_premium_support_description_dialog
+    <string name="custom_premium_support_description_dialog_header">Поддержать Buymate</string>
+    <string name="custom_premium_support_description_dialog__sub_header">Поддержите Buymate, помогите нам продолжать улучшать ваш опыт покупок!</string>
+    <string name="custom_premium_support_description_dialog__okBtn">Закрыть</string>
+
+    //custom_share_dialog
+    <string name="custom_share_dialog__title">Поделиться</string>
+    <string name="custom_share_dialog__asText">Поделиться как текст</string>
+    <string name="custom_share_dialog__asPDF">Загрузить в формате PDF</string>
+
+    //custom_swipe_action_dialog
+    <string name="custom_swipe_action_dialog__edit_title">Выберите действие</string>
+    <string name="custom_swipe_action_dialog__radio_button_rename">Переименовать</string>
+    <string name="custom_swipe_action_dialog__radio_button_check">Проверить и снять отметку с элемента</string>
+    <string name="custom_swipe_action_dialog__radio_button_price">Изменить цену</string>
+    <string name="custom_swipe_action_dialog__radio_button_quantity">Изменить количество</string>
+    <string name
+
+        ="custom_swipe_action_dialog__radio_button_star">Поставить и снять звездочку с элемента</string>
+    <string name="custom_swipe_action_dialog__radio_button_delete">Удалить</string>
+    <string name="custom_swipe_action_dialog__radio_button_options">Показать опции</string>
+    <string name="custom_swipe_action_dialog__radio_button_do_nothing">Ничего не делать</string>
+
+    //custom_textsize_dialog
+    <string name="custom_textsize_dialog__radio_button_small">Малый</string>
+    <string name="custom_textsize_dialog__radio_button_medium">Средний" "(по умолчанию)</string>
+    <string name="custom_textsize_dialog__radio_button_large">Большой</string>
+
+    //edit_category_layout
+    <string name="edit_category_layout__renameText">Переименовать</string>
+    <string name="edit_category_layout__duplicateText">Дублировать список</string>
+    <string name="edit_category_layout__shareText">Поделиться списком</string>
+    <string name="edit_category_layout__alarmText">Установить оповещение</string>
+    <string name="edit_category_layout__deleteText">Удалить</string>
+
+    //edit_item_layout
+    <string name="edit_item_layout__addImage_text">Добавить изображение</string>
+    <string name="edit_item_layout__rename_text">Переименовать</string>
+    <string name="edit_item_layout__price_text">Изменить цену</string>
+    <string name="edit_item_layout__quantity_text">Изменить количество</string>
+    <string name="edit_item_layout__copy_text">Копировать</string>
+    <string name="edit_item_layout__move_text">Переместить</string>
+    <string name="edit_item_layout__favourites_text_1">Добавить в Избранное</string>
+    <string name="edit_item_layout__delete_text">Удалить</string>
+    <string name="edit_item_layout__information_text">Информация</string>
+
+    //fragment_favourites
+    <string name="fragment_favourites_toolbar_title">Избранное</string>
+    <string name="fragment_favourites_illustration_text_1">Нет элементов в избранном</string>
+    <string name="fragment_favourites_illustration_text_2">Добавьте звездочки к элементам, которые вы хотите</string>
+    <string name="fragment_favourites_illustration_text_3">легко найти позже</string>
+    <string name="fragment_favourites_subtotal">Итого:</string>
+    <string name="fragment_favourites_addItem_fav_fab">Добавить элемент</string>
+
+    //fragment_home
+    <string name="fragment_home_toolbar_text_2">Что сегодня покупаем?</string>
+    <string name="fragment_home_search_view_hint">Поиск</string>
+    <string name="fragment_home_page_description_text">Категории</string>
+    <string name="fragment_home_sort_by_text">Сортировать по</string>
+    <string name="fragment_home_noList_text_1">Давайте начнем</string>
+    <string name="fragment_home_noList_text_2">Нажмите кнопку + ниже</string>
+    <string name="fragment_home_noList_text_3">чтобы создать новый список</string>
+    <string name="fragment_home_empty_create_btn">Новый список</string>
+
+    //fragment_more
+    <string name="fragment_more_settingToolbar">Меню</string>
+    <string name="fragment_more_premiumText">Попробуйте Buymate Premium</string>
+    <string name="fragment_more_premiumText2">Уберите рекламу и наслаждайтесь большим количеством функций</string>
+    <string name="fragment_more_accountText">Аккаунт</string>
+    <string name="fragment_more_messageText">Напишите нам</string>
+    <string name="fragment_more_backupText">Резервное копирование</string>
+    <string name="fragment_more_premiumText_2">Премиум</string>
+    <string name="fragment_more_websiteText">Веб-сайт</string>
+    <string name="fragment_more_shareText">Поделиться</string>
+    <string name="fragment_more_RateText">Нравится использовать приложение?</string>
+    <string name="fragment_more_RateText2">оцените нас "\u2606""\u2606""\u2606""\u2606""\u2606" в Google Play</string>
+    <string name="fragment_more_twitterText">Подписаться в Twitter</string>
+    <string name="fragment_more_settingText">Настройки</string>
+    <string name="fragment_more_aboutText">О нас</string>
+
+
+    //fragment_notes
+    <string name="fragment_notes_toolbar_title">Заметки</string>
+    <string name="fragment_notes_illustration_text_1">Нет заметок</string>
+    <string name="fragment_notes_illustration_text_2">Добавьте заметки для более плавного</string>
+    <string name="fragment_notes_illustration_text_3">опыта покупок</string>
+    <string name="fragment_notes_search_View">Поиск в списке</string>
+
+    //info_item_layout
+    <string name="info_layout_price_text">Цена:</string>
+    <string name="info_layout_quantity_text">Количество:</string>
+    <string name="info_layout_subTotal_text">Итого:</string>
+
+    //move_bottom_layout
+    <string name="move_bottom_layout_search_bar">Поиск</string>
+    <string name="move_bottom_layout_new_list_button">Создать новый список</string>
+    <string name="move_bottom_layout_emptyTEXT1">Нет товаров</string>
+
+    //no_connection_layout
+    <string name="no_connection_layout_no_connection_text_1">Нет подключения</string>
+    <string name="no_connection_layout_no_connection_text_2">Интернет-соединение не найдено. Проверьте</string>
+    <string name="no_connection_layout_no_connection_text_3">своё подключение или повторите попытку.</string>
+    <string name="no_connection_layout_try_again">Повторить</string>
+
+    //price_update_popup
+    <string name="price_update_price_name">Вставьте цену</string>
+
+    //quantity_set_popup
+    <string name="quantity_set_popup_quantity_name">Вставьте количество</string>
+    <string name="quantity_set_popup_unit_hint">Единица</string>
+    <string name="quantity_set_popup_quantity_btnSave">Готово</string>
+
+    //set_password_layout
+    <string name="set_password_layout_header">Создать новый пароль</string>
+    <string name="set_password_layout_sub_header">Установите свой 4-значный пароль, чтобы получить доступ к BuyMate</string>
+
+    //set_theme_layout
+    <string name="set_theme_layout_title">Темный режим</string>
+    <string name="set_theme_layout_radio_button_default">Использовать систему</string>
+    <string name="set_theme_layout_radio_button_off">Отключить</string>
+    <string name="set_theme_layout_radio_button_on">Включить</string>
+    <string name="set_theme_layout_dimSwitch">Подсветка</string>
+
+    //shopbottomlayout
+    <string name="shopbottomlayout_desc_name">Название товара</string>
+    <string name="shopbottomlayout_more_text">Дополнительно</string>
+    <string name="shopbottomlayout_desc_price">Цена</string>
+    <string name="shopbottomlayout_desc_quantity">Количество</string>
+    <string name="shopbottomlayout_unit_textView">Единица измерения</string>
+    <string name="shopbottomlayout_CancelButton">Отмена</string>
+    <string name="shopbottomlayout_BtnSave">Готово</string>
+    <string name="shop_bottom_layout_illustration_text_1">Вы почти закончили!</string>
+    <string name="shop_bottom_layout_illustration_text_2">Добавьте товар в ваш список</string>
+
+    //shopping_widget_provider
+    <string name="shopping_widget_provider_category_text_view">------</string>
+
+    //shopping_widget_provider_configure
+    <string name="shopping_widget_provider_configure_configureToolbar">Выберите список</string>
+    <string name="shopping_widget_provider_configure_configureCreateButton">Создать новый список</string>
+
+    //sort_category_layout
+    <string name="sort_bottom_layout_title_text">Сортировать по:</string>
+    <string name="sort_bottom_layout_name_text">Название</string>
+    <string name="sort_bottom_layout_date_text">Дата создания</string>
+    <string name="sort_bottom_layout_price_text">Цена</string>
+    <string name="sort_bottom_layout_quantity_text">Количество</string>
+
+    //success_dialog_popup
+    <string name="success_dialog_popup_illustration_text_1">Поздравляем!</string>
+    <string name="success_dialog_popup_illustration_text_2">Ваш первый список готов!</string>
+    <string name="success_dialog_popup_button_text">Понятно</string>
+
+    //update_category_name_layout
+    <string name="update_category_name_layout_header_text">Переименовать</string>
+    <string name="update_category_name_textBox_hint">Название списка</string>
+    <string name="update_category_name_layout_button_text">Сохранить</string>
+
+    //update_item_name_layout
+    <string name="update_item_name_layout_header_text">Переименовать</string>
+    <string name="update_item_name_textBox_hint">Название товара</string>
+    <string name="update_item_name_layout_button_text">Сохранить</string>
+
+    //upgrade_required_layout
+    <string name="upgrade_required_layout_upgrade_text_1">Требуется обновление</string>
+    <string name="upgrade_required_layout_upgrade_text_2">Обновите до пожизненной подписки Buymate, чтобы насладиться этой функцией и многим другим!</string>
+    <string name="upgrade_required_layout_upgradeBtn">Обновить</string>
+    <string name="upgrade_required_layout_cancelButton">Отмена</string>
+
+    //voice_typing_layout
+    <string name="voice_typing_layout_Heading">Добавить в список</string>
+    <string name="voice_typing_layout_description">Название товара</string>
+    <string name="voice_typing_cancelButton">Отмена</string>
+    <string name="voice_typing_addBtn">Добавить</string>
+
+
+    ```xml
+    <string-array name="units">
+        <item>унции</item>
+        <item>фунт</item>
+        <item>галлон</item>
+        <item>кварта</item>
+        <item>упаковка</item>
+        <item>банка</item>
+        <item>пачка</item>
+        <item>коробка</item>
+        <item>штука</item>
+        <item>мешок</item>
+    </string-array>
+
+    <string-array name="currency">
+        <item>"\u0024"</item>
+        <item>"\u20A6"</item>
+        <item>"\u20AC"</item>
+        <item>"\u00A5"</item>
+        <item>"\u00A3"</item>
+    </string-array>
+
+    <string-array name="item_suggestions" tools:ignore="InconsistentArrays">
+        <item>Яблоки</item>
+        <item>Бананы</item>
+        <item>Апельсины</item>
+        <item>Виноград</item>
+        <item>Мясо</item>
+        <item>Клубника</item>
+        <item>Голубика</item>
+        <item>Ананасы</item>
+        <item>Манго</item>
+        <item>Персики</item>
+        <item>Сливы</item>
+        <item>Овощи</item>
+        <item>Морковь</item>
+        <item>Брокколи</item>
+        <item>Помидоры</item>
+        <item>Огурцы</item>
+        <item>Шпинат</item>
+        <item>Зелёные бобы</item>
+        <item>Перцы</item>
+        <item>Цуккини</item>
+        <item>Цветная капуста</item>
+        <item>Еда</item>
+        <item>Хлеб</item>
+        <item>Молоко</item>
+        <item>Яйца</item>
+        <item>Хлопья</item>
+        <item>Паста</item>
+        <item>Рис</item>
+        <item>Курица</item>
+        <item>Говядина</item>
+        <item>Рыба</item>
+        <item>Инструменты</item>
+        <item>Нож</item>
+        <item>Разделочная доска</item>
+        <item>Овощечистка</item>
+        <item>Консервный нож</item>
+        <item>Мерные ложки</item>
+        <item>Мерные кружки</item>
+        <item>Миски для смешивания</item>
+        <item>Противни для выпечки</item>
+        <item>Венчик</item>
+        <item>Оборудование для уборки</item>
+        <item>Метла</item>
+        <item>Швабра</item>
+        <item>Моющее средство для посуды</item>
+        <item>Мусорные пакеты</item>
+        <item>Губки</item>
+        <item>Пылесос</item>
+        <item>Вспомогательное оборудование для приготовления</item>
+        <item>Миксер</item>
+        <item>Блендер</item>
+        <item>Ручной миксер</item>
+        <item>Соковыжималка</item>
+        <item>Зубная паста</item>
+        <item>Шампунь</item>
+        <item>Кондиционер</item>
+        <item>Шоколад</item>
+        <item>Мыло</item>
+        <item>Лосьон</item>
+        <item>Бритвы</item>
+        <item>Дезодорант</item>
+        <item>Стиральный порошок</item>
+        <item>Порошок для посудомоечной машины</item>
+        <item>Мусорные пакеты</item>
+        <item>Хлор</item>
+        <item>Бумажные полотенца</item>
+        <item>Туалетная бумага</item>
+        <item>Кофе</item>
+        <item>Чай</item>
+        <item>Сахар</item>
+        <item>Мука</item>
+        <item>Растительное масло</item>
+        <item>Специи</item>
+        <item>Консервированный суп</item>
+        <item>Замороженные овощи</item>
+        <item>Мороженое</item>
+        <item>Печенье</item>
+        <item>Чипсы</item>
+        <item>Газировка</item>
+        <item>Вода</item>
+        <item>Пиво</item>
+        <item>Вино</item>
+        <item>Закуски</item>
+        <item>Свечи</item>
+        <item>Лампочки</item>
+        <item>Ящики для хранения в гараже</item>
+        <item>Канцтовары</item>
+        <item>Корм для животных</item>
+        <item>Наполнитель для кошачьего туалета</item>
+        <item>Аптечка</item>
+        <item>Батарейки</item>
+        <item>Удобрение для растений</item>
+        <item>Фоторамки</item>
+        <item>Подарочные карты</item>
+    </string-array>
+
+    <string name="bottom_bar_home_text">Главная</string>
+    <string name="bottom_bar_favourites_text">Избранное</string>
+    <string name="bottom_bar_notes_text">Заметки</string>
+    <string name="bottom_bar_more_text">Меню</string>
+
+    <string name="category_toolbar_mark_text">Отметить все</string>
+    <string name="category_toolbar_delete_text">Удалить</string>
+
+    <string name="category_toolbar_setting_text">Настройки</string>
+
+    <string name="favourites_toolbar_hold_menu_mark_text">Отметить все</string>
+    <string name="favourites_toolbar_hold_menu_delete_text">Удалить</string>
+    <string name="favourites_toolbar_hold_menu_unStar_text">Снять звезду</string>
+
+    <string name="favourites_toolbar_share_text">Поделиться</string>
+    <string name="favourites_toolbar_voice_text">Голосовой ввод</string>
+    <string name="favourites_toolbar_sort_text">Сортировка по</string>
+    <string name="favourites_toolbar_check_text">Отметить все</string>
+    <string name="favourites_toolbar_unCheck_text">Снять все отметки</string>
+
+    <string name="item_toolbar_hold_menu_mark_text">Отметить все</string>
+    <string name="item_toolbar_hold_menu_delete_text">Удалить</string>
+    <string name="item_toolbar_hold_menu_copy_text">Копировать</string>
+    <string name="item_toolbar_hold_menu_move_text">Переместить</string>
+    <string name="item_toolbar_hold_menu_star_text">Добавить звезду</string>
+    <string name="item_toolbar_hold_menu_unStar_text">Снять звезду</string>
+
+    <string name="item_toolbar_menu_search_text">Поиск</string>
+    <string name="item_toolbar_menu_voice_text">Голосовой ввод</string>
+    <string name="item_toolbar_menu_rename_text">Переименовать список</string>
+    <string name="item_toolbar_menu_share_text">Поделиться</string>
+    <string name="item_toolbar_menu_sort_text">Сортировка по</string>
+    <string name="item_toolbar_menu_check_text">Отметить все</string>
+    <string name="item_toolbar_menu_unCheck_text">Снять все отметки</string>
+    <string name="item_toolbar_menu_reminder_text">Установить напоминание</string>
+
+    <string name="nav_home_text">Главная</string>
+    <string name="nav_premium_text">Премиум</string>
+    <string name="nav_reminder_text">Установить напоминание</string>
+    <string name="nav_extras_text">Дополнительно</string>
+    <string name="nav_rate_text">Оценить приложение</string>
+    <string name="nav_message_text">Написать нам</string>
+    <string name="nav_settings_text">Настройки</string>
+    <string name="nav_about_text">О приложении</string>
+
+    <string name="note_toolbar_create_menu_voice_text">Голосовой ввод</string>
+    <string name="note_toolbar_create_menu_save_text">Сохранить</string>
+    <string name="note_toolbar_create_menu_share_text">Поделиться</string>
+    <string name="note_toolbar_create_menu_delete_text">Удалить</string>
+
+    <string name="note_toolbar_hold_menu_mark_text">Отметить все</string>
+    <string name="note_toolbar_hold_menu_delete_text">Удалить</string>
+
+    <string name="note_toolbar_menu_share_text">Поделиться</string>
+    <string name="note_toolbar_menu_voice_text">Голосовой ввод</string>
+    <string name="note_toolbar_menu_save_text">Сохранить</string>
+    <string name="note_toolbar_menu_delete_text">Удалить</string>
+
+</resources>

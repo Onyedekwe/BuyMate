@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center|top"
+    android:background="?attr/backgroundColor"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="140dp"
+        android:scaleType="fitCenter"
+        android:layout_marginTop="25dp"
+        android:src="@drawable/illustration_premium_support"
+        android:importantForAccessibility="no" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/trackColor"
+        android:orientation="vertical" />
+
+    <TextView
+        android:id="@+id/header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textAlignment="center"
+        android:layout_marginTop="20dp"
+        android:textColor="?attr/textFillColor"
+        android:textStyle="bold"
+        android:text="@string/custom_premium_support_description_dialog_header" />
+
+
+    <TextView
+        android:id="@+id/sub_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="20dp"
+        android:textAlignment="center"
+        android:layout_marginTop="10dp"
+        android:lineSpacingExtra="4dp"
+        android:textColor="?attr/textFillColor"
+        android:text="@string/custom_premium_support_description_dialog__sub_header" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/okBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="56dp"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:backgroundTint="?attr/buttonTint"
+        android:gravity="center"
+        android:text="@string/custom_premium_support_description_dialog__okBtn"
+        android:textAllCaps="false"
+        android:textColor="@color/white" />
+
+</LinearLayout>

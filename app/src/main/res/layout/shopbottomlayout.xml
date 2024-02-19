@@ -30,10 +30,11 @@
 
             <TextView
                 android:id="@+id/addItemHeaderText"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
+                android:textAlignment="center"
                 android:text="@string/shop_bottom_layout_illustration_text_1"
                 android:textColor="?attr/textFillColor"
                 android:textSize="15sp"
@@ -41,9 +42,10 @@
 
             <TextView
                 android:id="@+id/addItemHeaderText2"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:textAlignment="center"
                 android:text="@string/shop_bottom_layout_illustration_text_2"
                 android:textColor="?attr/textFillColor"
                 android:textSize="15sp" />

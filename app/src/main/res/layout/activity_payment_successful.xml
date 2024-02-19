@@ -91,13 +91,13 @@
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/lexend"
                 android:text="@string/activity_payment_successful__header_desc_1"
-                android:textColor="?attr/textFillColor"/>
+                android:textColor="?attr/textFillColor" />
 
 
             <androidx.cardview.widget.CardView
-                android:layout_width="wrap_content"
+                android:id="@+id/backup_card"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
-                android:minWidth="220dp"
                 app:cardCornerRadius="25dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="5dp"
@@ -133,7 +133,8 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:layout_width="wrap_content"
+                android:id="@+id/ads_card"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:minWidth="220dp"
                 app:cardCornerRadius="25dp"
@@ -169,6 +170,43 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+            <androidx.cardview.widget.CardView
+                android:id="@+id/support_card"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:minWidth="220dp"
+                app:cardCornerRadius="25dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_gravity="center"
+                app:cardElevation="1dp"
+                app:cardBackgroundColor="?attr/colorSurface">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:orientation="horizontal">
+
+
+                    <pl.droidsonroids.gif.GifImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/gif_diamond" />
+
+                    <TextView
+                        android:id="@+id/header_desc_5"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="20dp"
+                        android:text="@string/activity_payment_successful__header_desc_5"
+                        android:textColor="?attr/textFillColor" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
     </ScrollView>

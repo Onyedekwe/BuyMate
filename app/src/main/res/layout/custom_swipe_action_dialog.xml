@@ -26,81 +26,80 @@
         android:orientation="vertical" />
 
 
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp">
 
-        <RadioGroup
+        <RadioButton
+            android:id="@+id/radio_button_rename"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp">
-
-            <RadioButton
-                android:id="@+id/radio_button_rename"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/custom_swipe_action_dialog__radio_button_rename"
-                android:textColor="?attr/textFillColor"
-                android:textSize="16sp" />
+            android:text="@string/custom_swipe_action_dialog__radio_button_rename"
+            android:textColor="?attr/textFillColor"
+            android:textSize="16sp" />
 
 
-            <RadioButton
-                android:id="@+id/radio_button_check"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/custom_swipe_action_dialog__radio_button_check"
-                android:textColor="?attr/textFillColor"
-                android:textSize="16sp" />
+        <RadioButton
+            android:id="@+id/radio_button_check"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/custom_swipe_action_dialog__radio_button_check"
+            android:textColor="?attr/textFillColor"
+            android:textSize="16sp" />
 
-            <RadioButton
-                android:id="@+id/radio_button_price"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/custom_swipe_action_dialog__radio_button_price"
-                android:textColor="?attr/textFillColor"
-                android:textSize="16sp" />
-
-
-            <RadioButton
-                android:id="@+id/radio_button_quantity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/custom_swipe_action_dialog__radio_button_quantity"
-                android:textColor="?attr/textFillColor"
-                android:textSize="16sp" />
-
-            <RadioButton
-                android:id="@+id/radio_button_star"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/custom_swipe_action_dialog__radio_button_star"
-                android:textColor="?attr/textFillColor"
-                android:textSize="16sp" />
+        <RadioButton
+            android:id="@+id/radio_button_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/custom_swipe_action_dialog__radio_button_price"
+            android:textColor="?attr/textFillColor"
+            android:textSize="16sp" />
 
 
-            <RadioButton
-                android:id="@+id/radio_button_delete"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/custom_swipe_action_dialog__radio_button_delete"
-                android:textColor="?attr/textFillColor"
-                android:textSize="16sp" />
+        <RadioButton
+            android:id="@+id/radio_button_quantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/custom_swipe_action_dialog__radio_button_quantity"
+            android:textColor="?attr/textFillColor"
+            android:textSize="16sp" />
+
+        <RadioButton
+            android:id="@+id/radio_button_star"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/custom_swipe_action_dialog__radio_button_star"
+            android:textColor="?attr/textFillColor"
+            android:textSize="16sp" />
 
 
-            <RadioButton
-                android:id="@+id/radio_button_options"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/custom_swipe_action_dialog__radio_button_options"
-                android:textColor="?attr/textFillColor"
-                android:textSize="16sp" />
+        <RadioButton
+            android:id="@+id/radio_button_delete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/custom_swipe_action_dialog__radio_button_delete"
+            android:textColor="?attr/textFillColor"
+            android:textSize="16sp" />
 
-            <RadioButton
-                android:id="@+id/radio_button_do_nothing"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/custom_swipe_action_dialog__radio_button_do_nothing"
-                android:textColor="?attr/textFillColor"
-                android:textSize="16sp" />
 
-        </RadioGroup>
+        <RadioButton
+            android:id="@+id/radio_button_options"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/custom_swipe_action_dialog__radio_button_options"
+            android:textColor="?attr/textFillColor"
+            android:textSize="16sp" />
+
+        <RadioButton
+            android:id="@+id/radio_button_do_nothing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/custom_swipe_action_dialog__radio_button_do_nothing"
+            android:textColor="?attr/textFillColor"
+            android:textSize="16sp" />
+
+    </RadioGroup>
 </LinearLayout>

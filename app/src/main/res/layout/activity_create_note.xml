@@ -51,7 +51,7 @@
                 android:lineSpacingExtra="4dp"
                 android:padding="14dp"
                 android:textColor="?attr/textFillColor"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
 
             <EditText

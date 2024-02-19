@@ -21,7 +21,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottombar"
         android:layout_width="match_parent"

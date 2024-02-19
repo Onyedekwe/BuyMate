@@ -33,7 +33,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="?attr/textFillColor"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/note_content_box"

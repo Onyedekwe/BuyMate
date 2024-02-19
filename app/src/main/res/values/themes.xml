@@ -16,6 +16,8 @@
         <item name="android:statusBarColor">?attr/backgroundColor</item>
 
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:windowAnimationStyle">@style/ActivityAnimation</item>
+
         <!-- <item name="fontFamily">@font/lexend</item> -->
         <item name="android:letterSpacing">0.04</item>
 
@@ -41,6 +43,14 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:colorControlActivated">?attr/colorPrimary</item>
         <item name="android:windowElevation">100dp</item>
+
+    </style>
+
+    <style name="ActivityAnimation">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/slide_out_left</item>
+        <item name="android:activityCloseEnterAnimation">@anim/slide_in_left</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
 
     </style>
 

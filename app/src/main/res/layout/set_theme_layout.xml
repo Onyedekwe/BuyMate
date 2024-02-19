@@ -24,33 +24,33 @@
         android:orientation="vertical" />
 
 
-        <RadioGroup
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp">
+
+        <RadioButton
+            android:id="@+id/radio_button_default"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp">
+            android:text="@string/set_theme_layout_radio_button_default"
+            android:textColor="?attr/textFillColor" />
 
-            <RadioButton
-                android:id="@+id/radio_button_default"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/set_theme_layout_radio_button_default"
-                android:textColor="?attr/textFillColor"/>
+        <RadioButton
+            android:id="@+id/radio_button_off"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/set_theme_layout_radio_button_off"
+            android:textColor="?attr/textFillColor" />
 
-            <RadioButton
-                android:id="@+id/radio_button_off"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/set_theme_layout_radio_button_off"
-                android:textColor="?attr/textFillColor"/>
-
-            <RadioButton
-                android:id="@+id/radio_button_on"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/set_theme_layout_radio_button_on"
-                android:textColor="?attr/textFillColor"/>
-        </RadioGroup>
+        <RadioButton
+            android:id="@+id/radio_button_on"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/set_theme_layout_radio_button_on"
+            android:textColor="?attr/textFillColor" />
+    </RadioGroup>
 
     <LinearLayout
         android:layout_width="match_parent"

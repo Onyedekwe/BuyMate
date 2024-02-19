@@ -54,7 +54,7 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
 
     TextView header, sub_header, tip, no_network_header, no_network_sub_header;
 
-    TextView backupText, removeAdsText, insertImageText;
+    TextView backupText, removeAdsText, supportText;
     TextView lifetime_currencyText;
     TextView lifetime_subText, prev_lifetime_currency_text;
 
@@ -68,13 +68,13 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
 
     ExtendedFloatingActionButton upgradeBtn;
 
-    CardView backup_card, remove_ads_card, insert_image_card;
+    CardView backup_card, remove_ads_card, support_card;
 
     int shadowColor;
     int colorPrimary;
     int textColor;
 
-    String LIFETIME_PRODUCT_ID = getString(R.string.app_lifetime_product_id);
+    String LIFETIME_PRODUCT_ID;
 
     String price = "";
     Boolean isPremium = false;
@@ -92,6 +92,8 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
         settings.setCustomTheme(theme);
         String dim = sharedPreferences_theme.getString(UserSettings.IS_DIM_THEME_ENABLED, UserSettings.NO_DIM_THEME_NOT_ENABLED);
         settings.setIsDimThemeEnabled(dim);
+
+        LIFETIME_PRODUCT_ID = getString(R.string.app_lifetime_product_id);
 
         if (settings.getCustomTheme().equals(UserSettings.DEFAULT_THEME)) {
             int currentNightMode = this.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
@@ -134,6 +136,7 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
 
         backupText = findViewById(R.id.backupText);
         removeAdsText = findViewById(R.id.removeAdsText);
+        supportText = findViewById(R.id.supportText);
 
 
         product_price_list = new ArrayList<>();
@@ -175,6 +178,13 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
             }
         });
 
+        support_card = findViewById(R.id.support_card);
+        support_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSupportDialog();
+            }
+        });
 
         progressBar.setVisibility(View.VISIBLE);
         new Handler().postDelayed(new Runnable() {
@@ -524,6 +534,46 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
     }
 
 
+    public void showSupportDialog() {
+        Dialog dialog = new Dialog(PremiumActivity.this);
+        dialog.setContentView(R.layout.custom_premium_support_description_dialog);
+        dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        TextView header = dialog.findViewById(R.id.header);
+        TextView sub_header = dialog.findViewById(R.id.sub_header);
+        Button okBtn = dialog.findViewById(R.id.okBtn);
+
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
+            header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            sub_header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            okBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+        }
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
+            header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            sub_header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            okBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+        }
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
+            header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            sub_header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            okBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+        }
+
+        okBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
+
 
     private void updateView() {
 
@@ -537,7 +587,7 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
 
             backupText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.mini_text));
             removeAdsText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.mini_text));
-            insertImageText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.mini_text));
+            supportText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.mini_text));
 
             lifetime_subText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             prev_lifetime_currency_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
@@ -557,7 +607,7 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
 
             backupText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
             removeAdsText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
-            insertImageText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
+            supportText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
 
             lifetime_subText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             prev_lifetime_currency_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_max_text));
@@ -575,7 +625,7 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
 
             backupText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_text));
             removeAdsText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_text));
-            insertImageText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_text));
+            supportText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_text));
 
             lifetime_subText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             prev_lifetime_currency_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_max_max_text));

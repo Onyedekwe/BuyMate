@@ -9,9 +9,9 @@
     android:clickable="true"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground"
-    android:padding="8dp"
+    android:padding="5dp"
     app:cardBackgroundColor="?attr/colorSurface"
-    app:cardCornerRadius="24dp"
+    app:cardCornerRadius="20dp"
     app:cardElevation="3dp">
 
     <LinearLayout
@@ -68,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:ellipsize="end"
-                android:maxLines="1"
+                android:maxLines="2"
                 android:padding="5dp"
                 android:textColor="?attr/textFillColor"
                 app:layout_constraintBottom_toBottomOf="parent"

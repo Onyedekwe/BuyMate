@@ -7,7 +7,9 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.transition.Explode;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -141,7 +143,6 @@ public class HomeActivity extends AppCompatActivity {
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
             bottomNavigationView.setItemTextAppearanceActive(androidx.appcompat.R.style.Base_TextAppearance_AppCompat_Medium);
         }
-
 
     }
 

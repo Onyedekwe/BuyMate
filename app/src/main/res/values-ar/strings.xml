@@ -1,0 +1,991 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Buymate</string>
+    <string name="app_version" translatable="false">1.0.1</string>
+    <string name="app_link" translatable="false">https://play.google.com/store/apps/details?id=</string>
+    <string name="app_email" translatable="false">hemerickservices@gmail.com</string>
+    <string name="app_lifetime_product_id" translatable="false">com.hemerick.lifetime_subscription</string>
+    <string name="default_web_client_id" translatable="false">401382920363-u289nhkse3o3fi2tevrq68m7oic9vaj6.apps.googleusercontent.com</string>
+
+    <string name="open_icon_content_description">افتح</string>
+
+    <string name="ShopCopyAdapter__copy_successful">تم نسخ العنصر إلى</string>
+
+    <string name="ShopMoveAdapter__move_successful">تم نقل العنصر إلى</string>
+
+    <string name="ViewPagerAdapter_heading_1">تذكر دائمًا ما يجب شراؤه</string>
+    <string name="ViewPagerAdapter_heading_2">حدد ميزانيتك بحكمة وتجنب الشراء العرضي</string>
+    <string name="ViewPagerAdapter_heading_3">شارك قائمتك بسهولة</string>
+    <string name="ViewPagerAdapter_sub_heading_1">قم بإنشاء قائمة بسهولة ولا تنسى شراء أي شيء مرة أخرى.</string>
+    <string name="ViewPagerAdapter_sub_heading_2">إدارة ميزانيتك، وتسوق فقط ما هو مدرج في قائمتك</string>
+    <string name="ViewPagerAdapter_sub_heading_3">تواصل مع العائلة والأصدقاء والزملاء من خلال مشاركة القائمة كنص أو ملف PDF.</string>
+
+    <string name="Firebase__backup_text_heading">جاري النسخ الاحتياطي إلى السحابة</string>
+    <string name="Firebase__backup_text_subheading">يرجى الانتظار…</string>
+    <string name="Firebase__backup_successful">تم النسخ الاحتياطي بنجاح</string>
+    <string name="Firebase__restore_text_heading">استعادة البيانات من السحابة</string>
+    <string name="Firebase__restore_text_subheading">يرجى الانتظار…</string>
+    <string name="Firebase__restore_no_list_found">لم يتم العثور على قوائم</string>
+    <string name="Firebase__restore_no_notes_found">لم يتم العثور على ملاحظات</string>
+    <string name="Firebase__restore_completed">اكتملت الاستعادة</string>
+    <string name="Firebase__error">خطأ: </string>
+
+    <string name="ShoppingWidgetService__added">تمت الإضافة </string>
+
+    <string name="BackupActivity__loginBeforeBackup">الرجاء تسجيل الدخول قبل المتابعة للنسخ الاحتياطي</string>
+    <string name="BackupActivity__loginBeforeRestore">يرجى التأكد من تسجيل الدخول قبل استعادة البيانات</string>
+    <string name="BackupActivity__restoreHeader">استعادة البيانات</string>
+    <string name="BackupActivity__restoreWarning">سيؤدي هذا الإجراء إلى استبدال البيانات الحالية بالبيانات الأخيرة التي تم نسخها احتياطيًا. سيتم فقد أي تغييرات غير محفوظة. هل أنت متأكد أنك تريد المتابعة؟</string>
+    <string name="BackupActivity__restoreProceedBtn">متابعة</string>
+    <string name="BackupActivity__restoreCancelBtn">إلغاء</string>
+
+    <string name="ChangePasswordActivity__passwordUpdateSuccess">تم تحديث كلمة المرور</string>
+    <string name="ChangePasswordActivity__passwordUpdateFailed">فشل تحديث كلمة المرور</string>
+    <string name="ChangePasswordActivity__error">خطأ: </string>
+    <string name="ChangePasswordActivity__passwordNotMatched">كلمة المرور غير متطابقة</string>
+    <string name="ChangePasswordActivity__passwordLengthFailed">يجب أن تتكون كلمة المرور من 6 أحرف على الأقل</string>
+    <string name="ChangePasswordActivity__retypePassword">أعد إدخال كلمة المرور للمتابعة</string>
+    <string name="ChangePasswordActivity__enterNewPassword">أدخل كلمة مرور جديدة</string>
+    <string name="ChangePasswordActivity__enterCurrentPassword">أدخل كلمة المرور الحالية الخاصة بك</string>
+
+    <string name="ConfigurePasscodeActivity__deviceNotSupported">الجهاز غير مدعوم</string>
+    <string name="ConfigurePasscodeActivity__hardwareUnavailable">المعدات غير متوفرة</string>
+    <string name="ConfigurePasscodeActivity__fingerprintNotSet">لم يتم تعيين بصمة لهذا الجهاز</string>
+    <string name="ConfigurePasscodeActivity__verifyFingerprint">تحقق من البصمة</string>
+    <string name="ConfigurePasscodeActivity__usePassword">استخدم كلمة المرور</string>
+    <string name="ConfigurePasscodeActivity__insert4digitPassword">أدخل كلمة المرور المكونة من 4 أرقام</string>
+    <string name="ConfigurePasscodeActivity__confirmPassword">تأكيد كلمة المرور</string>
+    <string name="ConfigurePasscodeActivity__retypePassword">أعد إدخال كلمة المرور للمتابعة</string>
+    <string name="ConfigurePasscodeActivity__success">نجاح</string>
+    <string name="ConfigurePasscodeActivity__passwordNotMatched">كلمة المرور غير متطابقة</string>
+    <string name="ConfigurePasscodeActivity__insertPassword">أدخل كلمة المرور</string>
+    <string name="ConfigurePasscodeActivity__letsVerifyYou">ساعدنا في التحقق من أنه فعليًا أنت، أدخل كلمة المرور الحالية الخاصة بك</string>
+    <string name="ConfigurePasscodeActivity__appLockRemoved">تم إزالة قفل التطبيق</string>
+    <string name="ConfigurePasscodeActivity__wrongPassword">كلمة المرور غير صحيحة</string>
+    <string name="ConfigurePasscodeActivity__fingerprintEnabled">تم تمكين بصمة الإصبع</string>
+    <string name="ConfigurePasscodeActivity__setupPassword">إعداد كلمة المرور</string>
+    <string name="ConfigurePasscodeActivity__changePassword">تغيير كلمة المرور</string>
+
+    <string name="CreateNoteActivity__untitled">بدون عنوان</string>
+    <string name="CreateNoteActivity__deleteNote">حذف</string>
+    <string name="CreateNoteActivity__deleteWarning">لا يمكن التراجع عن هذا الإجراء</string>
+    <string name="CreateNoteActivity__voicePrompt">الاستماع</string>
+    <string name="CreateNoteActivity__send_message_via">إرسال رسالة عبر:</string>
+
+    <string name="FavouritesFragment__addItemToList">أضف عنصرًا إلى قائمتك</string>
+    <string name="FavouritesFragment__untitled">بدون عنوان</string>
+    <string name="FavouritesFragment__alreadyExist">العنصر موجود بالفعل</string>
+    <string name="FavouritesFragment__emptyName">حقل اسم العنصر فارغ</string>
+    <string name="FavouritesFragment__toolbarStarred">مميز</string>
+    <string name="FavouritesFragment__multipleDelete">حذف هذه العناصر</string>
+    <string name="FavouritesFragment__singleDelete">حذف هذا العنصر</string>
+    <string name="FavouritesFragment__deleteWarning">لا يمكن التراجع عن هذا الإجراء</string>
+    <string name="FavouritesFragment__removeFromStarred">إزالة من المميز</string>
+    <string name="FavouritesFragment__remove">إزالة</string>
+    <string name="FavouritesFragment__unstar">إلغاء التمييز</string>
+    <string name="FavouritesFragment__star">تمييز العنصر</string>
+    <string name="FavouritesFragment__itemsChecked">تم تحديد العناصر</string>
+    <string name="FavouritesFragment__itemStarred">تم تمييز العنصر</string>
+    <string name="FavouritesFragment__itemUnstarred">تم إلغاء تمييز العنصر</string>
+    <string name="FavouritesFragment__addPhoto">إضافة صورة</string>
+    <string name="FavouritesFragment__updatePhoto">تحديث الصورة</string>
+    <string name="FavouritesFragment__loginPrompt">الرجاء تسجيل الدخول قبل المتابعة</string>
+    <string name="FavouritesFragment__insertImageFailed">خطأ: لم يتم إدراج الصورة</string>
+    <string name="FavouritesFragment__error">خطأ: </string>
+    <string name="FavouritesFragment__emptyPrice">حقل سعر العنصر فارغ</string>
+    <string name="FavouritesFragment__voicePrompt">الاستماع</string>
+    <string name="FavouritesFragment__emptyQuantity">حقل كمية العنصر فارغ</string>
+    <string name="FavouritesFragment__Total">المجموع:</string>
+    <string name="FavouritesFragment__shareBtmText1">قم بتحسين تجربة التسوق الخاصة بك مع Buymate.</string>
+    <string name="FavouritesFragment__shareBtmText2">قم بتنزيل Buymate على Google Play:</string>
+    <string name="FavouritesFragment__shareIntentText">إرسال رسالة عبر</string>
+    <string name="FavouritesFragment__no">لا</string>
+    <string name="FavouritesFragment__item">العنصر</string>
+    <string name="FavouritesFragment__quantity">الكمية</string>
+    <string name="FavouritesFragment__unit">الوحدة</string>
+    <string name="FavouritesFragment__price">السعر</string>
+    <string name="FavouritesFragment__contactUs">اتصل بنا على:</string>
+    <string name="FavouritesFragment__pdfDownloadedTo">تم تنزيل PDF إلى</string>
+
+
+    //HomeActivity
+    <string name="HomeActivity__pressBack">اضغط مرة أخرى للخروج من التطبيق</string>
+
+    //HomeFragment
+    <string name="HomeFragment__feedback">تعليقات</string>
+    <string name="HomeFragment__accountEmail">البريد الإلكتروني للحساب: </string>
+    <string name="HomeFragment__appVersion">إصدار التطبيق: </string>
+    <string name="HomeFragment__device">الجهاز: </string>
+    <string name="HomeFragment__model">الموديل: </string>
+    <string name="HomeFragment__brand">العلامة التجارية: </string>
+    <string name="HomeFragment__osVersion">إصدار النظام: </string>
+    <string name="HomeFragment__sdkVersion">إصدار SDK: </string>
+    <string name="HomeFragment__mailTo">إرسال إلى:</string>
+    <string name="HomeFragment__mailError">لم يتم العثور على عميل بريد إلكتروني</string>
+    <string name="HomeFragment__navigation_drawer_open">افتح لوحة التنقل</string>
+    <string name="HomeFragment__navigation_drawer_close">أغلق لوحة التنقل</string>
+    <string name="HomeFragment__defaultName">المستخدم</string>
+    <string name="HomeFragment__hiText">مرحبًا،</string>
+    <string name="HomeFragment__exclam">!</string>
+    <string name="HomeFragment__emptySearch">لا توجد قائمة للبحث</string>
+    <string name="HomeFragment__addItemToList">أضف عنصرًا إلى قائمتك</string>
+    <string name="HomeFragment__loginPrompt">الرجاء تسجيل الدخول قبل المتابعة</string>
+    <string name="HomeFragment__login">تسجيل الدخول</string>
+    <string name="HomeFragment__shareBtmText1">قم بتحسين تجربة التسوق الخاصة بك مع Buymate.</string>
+    <string name="HomeFragment__shareBtmText2">قم بتنزيل Buymate على Google Play:</string>
+    <string name="HomeFragment__no">لا</string>
+    <string name="HomeFragment__item">العنصر</string>
+    <string name="HomeFragment__quantity">الكمية</string>
+    <string name="HomeFragment__unit">الوحدة</string>
+    <string name="HomeFragment__price">السعر</string>
+    <string name="HomeFragment__contactUs">اتصل بنا على:</string>
+    <string name="HomeFragment__pdfDownloadedTo">تم تنزيل PDF إلى</string>
+    <string name="HomeFragment__Total">المجموع:</string>
+    <string name="HomeFragment__noListFound">لم يتم العثور على قائمة</string>
+    <string name="HomeFragment__sortPriceText">الحجم</string>
+    <string name="HomeFragment__send_message_via">إرسال رسالة عبر:</string>
+    <string name="HomeFragment__please_insert_name">الرجاء إدخال الاسم</string>
+    <string name="HomeFragment__deleteTheseLists">حذف هذه القوائم</string>
+    <string name="HomeFragment__deleteThisList">حذف هذه القائمة</string>
+    <string name="HomeFragment__delete">حذف</string>
+    <string name="HomeFragment__deleteWarning">لا يمكن التراجع عن هذا الإجراء</string>
+    <string name="HomeFragment__no_list">لا توجد قوائم</string>
+    <string name="HomeFragment__list_exist_already">هذه القائمة موجودة بالفعل</string>
+    <string name="HomeFragment__no_alarm_app">لا توجد تطبيقات للتنبيه بهذا الإجراء</string>
+
+
+    //InsertPasscodeActivity
+    <string name="InsertPasscodeActivity__success">نجاح</string>
+    <string name="InsertPasscodeActivity__wrongPin">الكود غير صحيح</string>
+    <string name="InsertPasscodeActivity__insertPin">أدخل كلمة مرور مكونة من 4 أرقام</string>
+    <string name="InsertPasscodeActivity__notSupported">الجهاز غير مدعوم</string>
+    <string name="InsertPasscodeActivity__hardwareNotAvailable">المعدات غير متوفرة</string>
+    <string name="InsertPasscodeActivity__fingerprintNotSet">لم يتم تعيين بصمة لهذا الجهاز</string>
+    <string name="InsertPasscodeActivity__verifyFingerprint">تحقق من البصمة</string>
+    <string name="InsertPasscodeActivity__usePassword">استخدم كلمة المرور</string>
+
+
+    //ItemActivity
+    <string name="ItemActivity__deleteTheseItems">حذف هذه العناصر</string>
+    <string name="ItemActivity__deleteThisItem">حذف هذا العنصر</string>
+    <string name="ItemActivity__moveTo">نقل إلى:</string>
+    <string name="ItemActivity__copyTo">نسخ إلى:</string>
+    <string name="ItemActivity__unstarred">غير مميز</string>
+    <string name="ItemActivity__unstar">إلغاء التمييز</string>
+    <string name="ItemActivity__itemStarred">تم تمييز العنصر</string>
+    <string name="ItemActivity__searchHint">البحث في القائمة</string>
+    <string name="ItemActivity__itemsChecked">العناصر المحددة:</string>
+    <string name="ItemActivity__addItemToList">أضف عنصرًا إلى قائمتك</string
+
+        >
+    <string name="ItemActivity__alreadyExist">العنصر موجود بالفعل</string>
+    <string name="ItemActivity__emptyName">حقل اسم العنصر فارغ</string>
+    <string name="ItemActivity__emptyNameCate">حقل الاسم فارغ</string>
+    <string name="ItemActivity__starItem">تمييز العنصر</string>
+    <string name="ItemActivity__addPhoto">إضافة صورة</string>
+    <string name="ItemActivity__updatePhoto">تحديث الصورة</string>
+    <string name="ItemActivity__loginPrompt">الرجاء تسجيل الدخول قبل المتابعة</string>
+    <string name="ItemActivity__insertImageFailed">خطأ: لم يتم إدراج الصورة</string>
+    <string name="ItemActivity__error">خطأ: </string>
+    <string name="ItemActivity__emptyPrice">حقل سعر العنصر فارغ</string>
+    <string name="ItemActivity__emptyQuantity">حقل كمية العنصر فارغ</string>
+    <string name="ItemActivity__delete">حذف</string>
+    <string name="ItemActivity__deleteWarning">لا يمكن التراجع عن هذا الإجراء</string>
+    <string name="ItemActivity__noAlarmApp">لا توجد تطبيقات للتنبيه بهذا الإجراء</string>
+    <string name="ItemActivity__Total">المجموع:</string>
+    <string name="ItemActivity__shareBtmText1">قم بتحسين تجربة التسوق الخاصة بك مع Buymate.</string>
+    <string name="ItemActivity__shareBtmText2">قم بتنزيل Buymate على Google Play:</string>
+    <string name="ItemActivity__shareIntentText">إرسال رسالة عبر</string>
+    <string name="ItemActivity__no">لا</string>
+    <string name="ItemActivity__item">العنصر</string>
+    <string name="ItemActivity__quantity">الكمية</string>
+    <string name="ItemActivity__unit">الوحدة</string>
+    <string name="ItemActivity__price">السعر</string>
+    <string name="ItemActivity__contactUs">اتصل بنا على:</string>
+    <string name="ItemActivity__pdfDownloadedTo">تم تنزيل PDF إلى</string>
+    <string name="ItemActivity__voicePrompt">الاستماع</string>
+
+
+    //LoginActivity
+    <string name="LoginActivity__error">خطأ: </string>
+    <string name="LoginActivity__emailError">عنوان البريد الإلكتروني غير صالح</string>
+    <string name="LoginActivity__passwordError">أدخل كلمة المرور</string>
+    <string name="LoginActivity__emptyEmailError">أدخل عنوان البريد الإلكتروني</string>
+
+
+    //MoreFragment
+    <string name="MoreFragment__shareBtmText1">تحقق من هذا التطبيق الرائع للتسوق! أنصح به بشدة. قم بتنزيله على Google Play.</string>
+    <string name="MoreFragment__shareVia">مشاركة عبر:</string>
+    <string name="MoreFragment__feedback">تعليقات</string>
+    <string name="MoreFragment__accountEmail">البريد الإلكتروني للحساب: </string>
+    <string name="MoreFragment__appVersion">إصدار التطبيق: </string>
+    <string name="MoreFragment__device">الجهاز: </string>
+    <string name="MoreFragment__model">الموديل: </string>
+    <string name="MoreFragment__brand">العلامة التجارية: </string>
+    <string name="MoreFragment__osVersion">إصدار النظام: </string>
+    <string name="MoreFragment__sdkVersion">إصدار SDK: </string>
+    <string name="MoreFragment__mailTo">إرسال إلى:</string>
+    <string name="MoreFragment__mailError">لم يتم العثور على عميل بريد إلكتروني</string>
+    <string name="MoreFragment__signIn">تسجيل الدخول</string>
+    <string name="MoreFragment__account">الحساب</string>
+    <string name="MoreFragment__loginPrompt">الرجاء تسجيل الدخول قبل المتابعة</string>
+    <string name="MoreFragment__login">تسجيل الدخول</string>
+    <string name="MoreFragment__premiumText1">تهانينا!</string>
+    <string name="MoreFragment__premiumText2">أنت تستمتع بنسخة Buymate Premium</string>
+
+
+    //NotesFragment
+    <string name="NotesFragment__multipleDelete">حذف هذه الملاحظات</string>
+    <string name="NotesFragment__singleDelete">حذف هذه الملاحظة</string>
+    <string name="NotesFragment__toolbarTitle">الملاحظات</string>
+    <string name="NotesFragment__emptyNoteSearchView">لا توجد ملاحظة للبحث</string>
+    <string name="NotesFragment__emptyNoteRecyclerView">لم يتم العثور على ملاحظة</string>
+
+    //PaymentSuccessfulActivity
+    <string name="PaymentSuccessfulActivity__error">خطأ: </string>
+    <string name="PaymentSuccessfulActivity__itemOwnedAlready">العنصر مملوك بالفعل</string>
+    <string name="PaymentSuccessfulActivity__featureNotSupported">الميزة غير مدعومة</string>
+    <string name="PaymentSuccessfulActivity__userCancelled">ألغى المستخدم</string>
+    <string name="PaymentSuccessfulActivity__developerError">خطأ المطور</string>
+    <string name="PaymentSuccessfulActivity__itemUnavailable">العنصر غير متوفر</string>
+    <string name="PaymentSuccessfulActivity__networkError">خطأ في الشبكة</string>
+    <string name="PaymentSuccessfulActivity__serviceDisconnected">انقطع الاتصال بالخدمة</string>
+    <string name="PaymentSuccessfulActivity__errorInvalidPurchase">خطأ: عملية شراء غير صالحة</string>
+
+
+    <string name="RecoverPasswordActivity__emailNotRegistered">البريد الإلكتروني غير مسجل. يرجى التسجيل.</string>
+    <string name="RecoverPasswordActivity__resetLinkSent">تم إرسال رابط إعادة التعيين إلى البريد الإلكتروني</string>
+    <string name="RecoverPasswordActivity__error">خطأ: </string>
+    <string name="RecoverPasswordActivity__invalidEmail">عنوان البريد الإلكتروني غير صالح</string>
+    <string name="RecoverPasswordActivity__recoveryEmail">أدخل بريدك الإلكتروني للاسترداد</string>
+
+
+    //SettingsActivity
+    <string name="SettingsActivity__currencyUpdated">تم تحديث العملة</string>
+    <string name="SettingsActivity__currencyFieldEmpty">حقل العملة فارغ</string>
+    <string name="SettingsActivity__disabled">معطل</string>
+
+    <string name="SettingsActivity__renameSwipeLeft">إعادة تسمية: اسحب لليسار</string>
+    <string name="SettingsActivity__changePriceSwipeLeft">تغيير السعر: اسحب لليسار</string>
+    <string name="SettingsActivity__changeQuantitySwipeLeft">تغيير الكمية: اسحب لليسار</string>
+    <string name="SettingsActivity__starAndUnstarLeft">تمييز وإلغاء تمييز العنصر: اسحب لليسار</string>
+    <string name="SettingsActivity__deleteSwipeLeft">حذف: اسحب لليسار</string>
+    <string name="SettingsActivity__checkAndUncheckLeft">تحديد وإلغاء تحديد العنصر: اسحب لليسار</string>
+    <string name="SettingsActivity__showOptionsSwipeLeft">إظهار الخيارات: اسحب لليسار</string>
+    <string name="SettingsActivity__doNothingSwipeLeft">لا تفعل شيئًا: اسحب لليسار</string>
+
+    <string name="SettingsActivity__renameSwipeRight">إعادة تسمية: اسحب لليمين</string>
+    <string name="SettingsActivity__changePriceSwipeRight">تغيير السعر: اسحب لليمين</string>
+    <string name="SettingsActivity__changeQuantitySwipeRight">تغيير الكمية: اسحب لليمين</string>
+    <string name="SettingsActivity__starAndUnstarRight">تمييز وإلغاء تمييز العنصر: اسحب لليمين</string>
+    <string name="SettingsActivity__deleteSwipeRight">حذف: اسحب لليمين</string>
+    <string name="SettingsActivity__checkAndUncheckRight">تحديد وإلغاء تحديد العنصر: اسحب لليمين</string>
+    <string name="SettingsActivity__showOptionsSwipeRight">إظهار الخيارات: اسحب لليمين</string>
+    <string name="SettingsActivity__doNothingSwipeRight">لا تفعل شيئًا: اسحب لليمين</string>
+
+
+    //SignUpActivity
+    <string name="SignUpActivity__emailAlreadyRegistered">البريد الإلكتروني مسجل بالفعل</string>
+    <string name="SignUpActivity__confirmPasswordError">كلمة المرور غير متطابقة</string>
+    <string name="SignUpActivity__passwordLengthError">يجب أن تتكون كلمة المرور من 6 أحرف على الأقل</string>
+    <string name="SignUpActivity__invalidEmail">عنوان البريد الإلكتروني غير صالح</string>
+    <string name="SignUpActivity__confirmPassword">أعد كتابة كلمة المرور للمتابعة</string>
+    <string name="SignUpActivity__insertPassword">أدخل كلمة المرور</string>
+    <string name="SignUpActivity__insertEmail">أدخل عنوان البريد الإلكتروني</string>
+    <string name="SignUpActivity__enterName">أدخل اسم المستخدم للمتابعة</string>
+
+
+    //SwipeSettingActivity
+    <string name="SwipeSettingActivity__rename">إعادة تسمية</string>
+    <string name="SwipeSettingActivity__checkAndUncheckItem">تحديد وإلغاء تحديد العنصر</string>
+    <string name="SwipeSettingActivity__changePrice">تغيير السعر</string>
+    <string name="SwipeSettingActivity__changeQuantity">تغيير الكمية</string>
+    <string name="SwipeSettingActivity__starAndUnstar">تمييز وإلغاء تمييز العنصر</string>
+    <string name="SwipeSettingActivity__delete">حذف</string>
+    <string name="SwipeSettingActivity__showOptions">إظهار الخيارات</string>
+    <string name="SwipeSettingActivity__doNothing">لا تفعل شيئًا</string>
+
+
+    <string name="SwipeSettingActivity__renameSwipeLeft">إعادة تسمية: اسحب لليسار</string>
+    <string name="SwipeSettingActivity__changePriceSwipeLeft">تغيير السعر: اسحب لليسار</string>
+    <string name="SwipeSettingActivity__changeQuantitySwipeLeft">تغيير الكمية: اسحب لليسار</string>
+    <string name="SwipeSettingActivity__starAndUnstarLeft">تمييز وإلغاء تمييز العنصر: اسحب لليسار</string>
+    <string name="SwipeSettingActivity__deleteSwipeLeft">حذف: اسحب لليسار</string
+
+        >
+    <string name="SwipeSettingActivity__checkAndUncheckLeft">تحديد وإلغاء تحديد العنصر: اسحب لليسار</string>
+    <string name="SwipeSettingActivity__showOptionsSwipeLeft">إظهار الخيارات: اسحب لليسار</string>
+    <string name="SwipeSettingActivity__doNothingSwipeLeft">لا تفعل شيئًا: اسحب لليسار</string>
+
+    <string name="SwipeSettingActivity__renameSwipeRight">إعادة تسمية: اسحب لليمين</string>
+    <string name="SwipeSettingActivity__changePriceSwipeRight">تغيير السعر: اسحب لليمين</string>
+    <string name="SwipeSettingActivity__changeQuantitySwipeRight">تغيير الكمية: اسحب لليمين</string>
+    <string name="SwipeSettingActivity__starAndUnstarRight">تمييز وإلغاء تمييز العنصر: اسحب لليمين</string>
+    <string name="SwipeSettingActivity__deleteSwipeRight">حذف: اسحب لليمين</string>
+    <string name="SwipeSettingActivity__checkAndUncheckRight">تحديد وإلغاء تحديد العنصر: اسحب لليمين</string>
+    <string name="SwipeSettingActivity__showOptionsSwipeRight">إظهار الخيارات: اسحب لليمين</string>
+    <string name="SwipeSettingActivity__doNothingSwipeRight">لا تفعل شيئًا: اسحب لليمين</string>
+
+
+    //UpdateNoteActivity
+    <string name="UpdateNoteActivity__untitled">بلا عنوان</string>
+    <string name="UpdateNoteActivity__deleteNote">حذف</string>
+    <string name="UpdateNoteActivity__deleteWarning">لا يمكن التراجع عن هذا الإجراء</string>
+    <string name="UpdateNoteActivity__voicePrompt">الاستماع</string>
+    <string name="UpdateNoteActivity__send_message_via">إرسال الرسالة عبر:</string>
+
+
+    //UserActivity
+    <string name="UserActivity__user">المستخدم</string>
+    <string name="UserActivity__error">خطأ: </string>
+    <string name="UserActivity__emptyName">يرجى إدخال اسم المستخدم للمتابعة</string>
+    <string name="UserActivity__logoutPrompt">لا يمكننا الانتظار لرؤيتك مرة أخرى!</string>
+    <string name="UserActivity__deleteAccText1">سيتم إزالة جميع القوائم والبيانات الأخرى لـ</string>
+    <string name="UserActivity__deleteAccText2">من السحابة بشكل دائم.</string>
+    <string name="UserActivity__accountDeleted">تم حذف الحساب</string>
+
+
+    //OnboardingActivity
+    <string name="OnboardingActivity__Next">التالي</string>
+    <string name="OnboardingActivity__Start">ابدأ</string>
+
+    ///////////////////////////////////////////////
+
+
+    //activity_about
+    <string name="activity_about__toolbarText">حول التطبيق</string>
+    <string name="activity_about__version">نسخة التطبيق</string>
+    <string name="activity_about__privacyPolicy">سياسة الخصوصية</string>
+    <string name="activity_about__credits">الشكر</string>
+    <string name="activity_about__open_icon_content_description">فتح</string>
+
+    //activity_acknowledgments
+    <string name="activity_acknowledgments__toolbarText">الشكر</string>
+    <string name="activity_acknowledgments__open_link_content_description">فتح الرابط</string>
+
+    //activity_backup
+    <string name="activity_backup__toolbarText">النسخ الاحتياطي</string>
+    <string name="activity_backup__backupText">النسخ الاحتياطي</string>
+    <string name="activity_backup__backupDescription">إنشاء نسخة احتياطية من قائمة التسوق الخاصة بك واستعادتها عند الحاجة</string>
+    <string name="activity_backup__restoreText">استعادة</string>
+    <string name="activity_backup__restoreDescription">هل قمت بتغيير هاتفك؟ استعد البيانات من نسخة احتياطية سابقة</string>
+
+    //activity_change_password
+    <string name="activity_change_password__toolbarText">تغيير كلمة المرور</string>
+    <string name="activity_change_password__currentPasswordHint">أدخل كلمة المرور الحالية</string>
+    <string name="activity_change_password__newPasswordHint">أدخل كلمة مرور جديدة</string>
+    <string name="activity_change_password__confirmPasswordHint">تأكيد كلمة المرور الجديدة</string>
+    <string name="activity_change_password__forgotPasswordText">هل نسيت كلمة المرور؟</string>
+    <string name="activity_change_password__doneBtnText">تم</string>
+
+    //activity_configure_passcode
+    <string name="activity_configure_passcode__toolbarText">قفل التطبيق</string>
+    <string name="activity_configure_passcode__setPassword">ضبط كلمة المرور</string>
+    <string name="activity_configure_passcode__fingerprintLogin">تسجيل الدخول ببصمة الإصبع</string>
+    <string name="activity_configure_passcode__removeAppLock">إزالة قفل التطبيق</string>
+
+
+    //activity_create_note
+    <string name="activity_create_note__toolbarText">الملاحظات</string>
+    <string name="activity_create_note__titleHint">العنوان</string>
+    <string name="activity_create_note__descriptionHint">اكتب شيئًا ما</string>
+
+
+    //activity_cross_setting
+    <string name="activity_cross_setting__toolbarText">شطب العناصر</string>
+    <string name="activity_cross_setting__disableSwitchText">تعطيل شطب العناصر</string>
+    <string name="activity_cross_setting__disableCrossDescription">إذا تم تمكينه، يتم شطب العناصر عند التحقق منها</string>
+
+    //activity_detail_list_share_setting
+    <string name="activity_detail_list_share_setting__toolbarText">مشاركة التفاصيل</string>
+    <string name="activity_detail_list_share_setting__shareWithPrice">مشاركة مع السعر</string>
+    <string name="activity_detail_list_share_setting__shareWithPriceDescription">تضمين أسعار العناصر أثناء المشاركة</string>
+    <string name="activity_detail_list_share_setting__shareWithQuantity">مشاركة مع الكمية</string>
+    <string name="activity_detail_list_share_setting__shareWithQuantityDescription">تضمين كميات العناصر أثناء المشاركة</string>
+    <string name="activity_detail_list_share_setting__shareWithTotal">مشاركة مع الإجمالي</string>
+    <string name="activity_detail_list_share_setting__shareWithTotalDescription">تضمين إجمالي القائمة أثناء المشاركة</string>
+
+
+    //activity_insert_passcode
+    <string name="activity_insert_passcode__toolbarText">تسجيل الدخول</string>
+    <string name="activity_insert_passcode__welcomeBack">مرحبًا بك مجدداً!</string>
+    <string name="activity_insert_passcode__insertPinPrompt">أدخل رمز PIN المؤلف من 4 أرقام</string>
+    <string name="activity_insert_passcode__loginWithFingerprint">تسجيل الدخول ببصمة الإصبع</string>
+    <string name="activity_insert_passcode__loginWithFingerprintDescription">اضغط على رمز البصمة للمتابعة</string>
+
+
+    //activity_item
+    <string name="activity_item__total">الإجمالي:</string>
+    <string name="activity_item_eye_icon_content_description">إظهار الإجمالي</string>
+    <string name="activity_item_FAB">إضافة عنصر</string>
+    <string name="activity_item_emptyText">لا يوجد عناصر</string>
+
+    //activity_item_suggestion
+    <string name="activity_item_suggestion__toolbarText">اقتراح العناصر</string>
+    <string name="activity_item_suggestion__hideSuggestionText">إخفاء الاقتراح</string>
+    <string name="activity_item_suggestion__hideSuggestionDescription">يعطل هذا الإعداد ظهور الاقتراحات أثناء الكتابة.</string>
+
+
+    //activity_log_in
+    <string name="activity_log_in__loginText">تسجيل الدخول إلى حسابك</string>
+    <string name="activity_log_in__email">البريد الإلكتروني</string>
+    <string name="activity_log_in__password">كلمة المرور</string>
+    <string name="activity_log_in__forgotPassword">هل نسيت كلمة المرور؟</string>
+    <string name="activity_log_in__login">تسجيل الدخول</string>
+    <string name="activity_log_in__or">أو</string>
+    <string name="activity_log_in__continueWithGoogle">المتابعة باستخدام Google</string>
+    <string name="activity_log_in__noAccount">ليس لديك حساب؟</string>
+    <string name="activity_log_in__signUp">التسجيل</string>
+
+
+    //activity_payment_successful
+    <string name="activity_payment_successful__header">شكرًا لشراء بريميوم Buymate!</string>
+    <string name="activity_payment_successful__header_desc_1">أنت حاليًا تستمتع بكل ميزات Buymate!</string>
+    <string name="activity_payment_successful__header_desc_2">النسخ الاحتياطي والاستعادة</string>
+    <string name="activity_payment_successful__header_desc_4">إزالة الإعلانات</string>
+    <string name="activity_payment_successful__header_desc_5">دعم Buymate</string>
+    <string name="activity_payment_successful__back_btn">العودة إلى الصفحة الرئيسية</string>
+
+    //activity_premium
+    <string name="activity_premium__toolbarText">بريميوم</string>
+    <string name="activity_premium__header">شراء بريميوم يمنحك الوصول إلى:</string>
+    <string name="activity_premium__backupText">النسخ الاحتياطي والاستعادة</string>
+    <string name="activity_premium__removeAdsText">إزالة الإعلانات</string>
+    <string name="activity_premium__supportText">دعم Buymate</string>
+    <string name="activity_premium__sub_header">عرض الشراء لمرة وا
+
+حدة</string>
+    <string name="activity_premium__payOneTime">الدفع مرة واحدة فقط</string>
+    <string name="activity_premium__prev_lifetime_currency_text">٠.٠٠</string>
+    <string name="activity_premium__upgrade_btn">الترقية الآن!</string>
+    <string name="activity_premium__full_star">"\u2606""\u2606""\u2606""\u2606"</string>
+    <string name="activity_premium__tip">الاشتراك يجدد تلقائياً. يمكنك إلغاء ذلك في إعدادات Google Play</string>
+    <string name="activity_premium__no_network_header">عذراً، حدث خطأ ما.</string>
+    <string name="activity_premium__no_network_subHeader">قد يكون هذا مشكلة في الشبكة أو خطأ في خادم Google Play. حاول مرة أخرى لاحقًا. إذا استمرت المشكلة، اتصل بفريق الدعم الخاص بنا.</string>
+
+    //activity_recover_password
+    <string name="activity_recover_password__sub_header">نسيت كلمة المرور</string>
+    <string name="activity_recover_password__email_box_parent">البريد الإلكتروني</string>
+    <string name="activity_recover_password__recoverBtn">استعادة كلمة المرور</string>
+    <string name="activity_recover_password__recover_description">أدخل بريدك الإلكتروني وانقر على زر \'استعادة كلمة المرور\'.\n\nسيتم إرسال رابط استعادة كلمة المرور إلى بريدك الإلكتروني.</string>
+
+    //activity_settings
+    <string name="activity_settings__toolbarText">الإعدادات</string>
+    <string name="activity_settings__generalHeaderText">عام</string>
+    <string name="activity_settings__themeText">الوضع الداكن</string>
+    <string name="activity_settings__screenText">الحفاظ على سطوع الشاشة</string>
+    <string name="activity_settings__textSizeText">حجم النص</string>
+    <string name="activity_settings__removeAdsText">إزالة الإعلانات</string>
+    <string name="activity_settings__removeAdsSubText">كن مستخدمًا مميزًا</string>
+    <string name="activity_settings__advancedHeaderText">متقدم</string>
+    <string name="activity_settings__strikeText">شطب العناصر</string>
+    <string name="activity_settings__disable_price_Text">عرض أسعار العناصر</string>
+    <string name="activity_settings__item_suggestionText">اقتراح العناصر</string>
+    <string name="activity_settings__multiplyText">ضرب</string>
+    <string name="activity_settings__multiplySubText">(السعر × الكمية)</string>
+    <string name="activity_settings__swipeActionSubText1">إجراءات السحب</string>
+    <string name="activity_settings__detailedListShareTextHeader">خيارات المشاركة</string>
+    <string name="activity_settings__detailedListShareSubText">تضمين أسعار العناصر والكميات والإجماليات</string>
+    <string name="activity_settings__currencyTextHeader">العملة</string>
+    <string name="activity_settings__currencySubText">أدخل رمز العملة المفضل لديك</string>
+    <string name="activity_settings__securityHeaderText">الأمان</string>
+    <string name="activity_settings__lockText">قفل التطبيق</string>
+
+
+    //activity_signup
+    <string name="activity_signup__sub_header">أنشئ حسابك</string>
+    <string name="activity_signup__fulname_box_parent">اسم المستخدم</string>
+    <string name="activity_signup__email_box_parent">البريد الإلكتروني</string>
+    <string name="activity_signup__password_box_parent">كلمة المرور</string>
+    <string name="activity_signup__confirm_password_box_parent">تأكيد كلمة المرور</string>
+    <string name="activity_signup__signUpBtn">التسجيل</string>
+    <string name="activity_signup__orText">أو</string>
+    <string name="activity_signup__googleText">المتابعة باستخدام Google</string>
+    <string name="activity_signup__loginText1">ليس لديك حساب؟</string>
+    <string name="activity_signup__loginText2">تسجيل الدخول</string>
+
+
+    //activity_swipe_setting
+    <string name="activity_swipe_setting__swipeToolbar">السحب</string>
+    <string name="activity_swipe_setting__swipeLeftTextHeader">السحب لليسار</string>
+    <string name="activity_swipe_setting__swipeRightTextHeader">السحب لليمين</string>
+    <string name="activity_swipe_setting__customize_button">تخصيص</string>
+    <string name="activity_swipe_setting__swipeDisableTextHeader">تعطيل السحب</string>
+    <string name="activity_swipe_setting__swipe_description">اختر ما يحدث عندما يتم سحب العناصر في القائمة لليسار أو اليمين.\n\nعند اختيار تعطيل السحب، يتم تعطيل العناصر من السحب إلى اليسار أو اليمين.</string>
+
+
+    //activity_update_note
+    <string name="activity_update_note__update_note_title">الملاحظات</string>
+    <string name="activity_update_note__update_heading_text">العنوان</string>
+
+
+    <string name="activity_update_note__update_content_text">اكتب شيئًا ما</string>
+
+
+    //activity_user
+    <string name="activity_user__account_title">الحساب</string>
+    <string name="activity_user__edit_nameText">تحرير الاسم</string>
+    <string name="activity_user__change_passwordText">تغيير كلمة المرور</string>
+    <string name="activity_user__logoutText">تسجيل الخروج</string>
+    <string name="activity_user__delete_accountText">حذف الحساب</string>
+    <string name="activity_user__userNameUpdated">تم تحديث اسم المستخدم</string>
+
+    //activity_onboarding
+    <string name="activity_onboarding_skip">تخطي</string>
+    <string name="activity_onboarding_back">السابق</string>
+    <string name="activity_onboarding_next">التالي</string>
+
+    //category_title_set_popup
+    <string name="category_title_set_popup__emptyText1">أدخل اسم القائمة</string>
+    <string name="category_title_set_popup__emptyText2">وانقر على <b>إنشاء</b> عند الانتهاء</string>
+    <string name="category_title_set_popup__category_name_hint">قائمة جديدة</string>
+    <string name="category_title_set_popup__suggestion">اقتراحات:</string>
+    <string name="category_title_set_popup__suggestion_option_textView1">التسوق</string>
+    <string name="category_title_set_popup__suggestion_option_textView2">البقالة</string>
+    <string name="category_title_set_popup__suggestion_option_textView4">الطعام</string>
+    <string name="category_title_set_popup__suggestion_option_textView5">الأدوات</string>
+    <string name="category_title_set_popup__suggestion_option_textView6">المستلزمات الشخصية</string>
+    <string name="category_title_set_popup__suggestion_option_textView7">الصيدلية</string>
+    <string name="category_title_set_popup__suggestion_option_textView8">الرحلة</string>
+    <string name="category_title_set_popup__fabButton">إنشاء</string>
+
+
+    //cloud_dialog_popup
+    <string name="cloud_dialog_popup__percent">جاري النسخ الاحتياطي إلى السحابة</string>
+    <string name="cloud_dialog_popup__info">يرجى الانتظار حتى يتم الانتهاء من النسخ الاحتياطي</string>
+
+    //custom_alert_delete_account_dialog
+    <string name="custom_alert_delete_account_dialog__header">حذف الحساب؟</string>
+    <string name="custom_alert_delete_account_dialog__delete_account_text">سيتم إزالة جميع القوائم والبيانات الأخرى من السحابة بشكل دائم.</string>
+    <string name="custom_alert_delete_account_dialog__CancelButton">إلغاء</string>
+    <string name="custom_alert_delete_account_dialog__BtnSave">حذف</string>
+
+    //custom_alert_fingerprint_dialog
+    <string name="custom_alert_fingerprint_dialog__header">تنويه !!!</string>
+    <string name="custom_alert_fingerprint_dialog__alert_text">لا يمكنك استخدام بصمة الإصبع مع هذا الحساب. لتمكينها، انتقل إلى صفحة الإعدادات بعد تسجيل الدخول.</string>
+    <string name="custom_alert_fingerprint_dialog__okBtn">فهمت</string>
+
+
+    //custom_app_version_dialog
+    <string name="custom_app_version_dialog__version_text1">الإصدار:" "</string>
+    <string name="custom_app_version_dialog__version_close">إغلاق</string>
+
+
+    //custom_currency_dialog
+    <string name="custom_currency_dialog__edit_title">رمز العملة</string>
+    <string name="custom_currency_dialog__desc_currency_hint">أدخل الرمز</string>
+    <string name="custom_currency_dialog__CurrencyCancelButton">إلغاء</string>
+    <string name="custom_currency_dialog__currencyBtnSave">تم</string>
+
+
+    //custom_delete_dialog
+    <string name="custom_delete_dialog__cancel_button">إلغاء</string>
+    <string name="custom_delete_dialog__delete_button">تم</string>
+
+    //custom_edit_username_dialog
+    <string name="custom_edit_username_dialog__edit_title">تحرير الاسم</string>
+    <string name="custom_edit_username_dialog__firstNameBoxHint">اسم المستخدم</string>
+    <string name="custom_edit_username_dialog__nameCancelButton">إلغاء</string>
+    <string name="custom_edit_username_dialog__nameBtnSave">تم</string>
+
+
+    //custom_image_upload_dialog
+    <string name="custom_edit_username_dialog__image_title">إضافة صورة</string>
+    <string name="custom_edit_username_dialog__takePictureText">التقاط صورة</string>
+    <string name="custom_edit_username_dialog__uploadPictureText">تحميل صورة</string>
+
+
+    //custom_image_upload_dialog
+    <string name="custom_image_upload_dialog__header">تنويه !!!</string>
+    <string name="custom_image_upload_dialog__login_btn">تسجيل الدخول</string>
+    <string name="custom_image_upload_dialog__cancel_btn">إلغاء</string>
+
+
+    //custom_logout_warning_dialog
+    <string name="custom_logout_warning_dialog__header">تأكيد تسجيل الخروج</string>
+    <string name="custom_logout_warning_dialog__logout_btn">تسجيل الخروج</string>
+    <string name="custom_logout_warning_dialog__cancel_btn">إلغاء</string>
+
+    //custom_premium_backup_description_dialog
+    <string name="custom_premium_backup_description_dialog__header">النسخ الاحتياطي والاستعادة</string>
+    <string name="custom_premium_backup_description_dialog__sub_header">احفظ قائمة التسوق الخاصة بك بأمان وسهولة الوصول إليها باستخدام نظام النسخ الاحتياطي الخاص بنا. استعدها كلما احتجت إليها</string>
+    <string name="custom_premium_backup_description_dialog__okBtn">إغلاق</string>
+
+
+    //custom_premium_remove_ads_description_dialog
+    <string name="custom_premium_remove_ads_description_dialog__header">إزالة الإعلانات</string>
+    <string name="custom_premium_remove_ads_description_dialog__sub_header">استمتع بالاستخدام بدون إعلانات للاستمتاع المتواصل بالتطبيق مع ميزاتنا المميزة.</string>
+    <string name="custom_premium_remove_ads_description_dialog__okBtn">إغلاق</string>
+
+    //custom_premium_support_description_dialog
+    <string name="custom_premium_support_description_dialog_header">دعم Buymate</string>
+    <string name="custom_premium_support_description_dialog__sub_header">أظهر دعمك لـ Buymate، وساعدنا في استمرار تحسين تجربة التسوق الخاصة بك!</string>
+    <string name="custom_premium_support_description_dialog__okBtn">إغلاق</string>
+
+    //custom_share_dialog
+    <string name="custom_share_dialog__title">مشاركة</string>
+    <string name="custom_share_dialog__asText">مشاركة كنص</string>
+    <string name="custom_share_dialog__asPDF">تحميل PDF</string>
+
+
+    //custom_swipe_action_dialog
+    <string name="custom_swipe_action_dialog__edit_title">حدد الإجراء</string>
+    <string name="custom_swipe_action_dialog__radio_button_rename">إعادة التسمية</string>
+    <string name="custom_swipe_action_dialog__radio_button_check">التحقق وإلغاء التحقق من العنصر</string>
+    <string name="custom_swipe_action_dialog__radio_button_price">تغيير السعر</string>
+    <string name="custom_swipe_action_dialog__radio_button_quantity">تغيير الكمية</string>
+    <string name="custom_swipe_action_dialog__radio_button_star">إضافة نجمة وإزالة نجمة عن العنصر</string>
+    <string name="custom_swipe_action_dialog__radio_button_delete">حذف</string>
+    <string name="custom_swipe_action_dialog__radio_button_options">عرض الخيارات</string>
+    <string name="custom_swipe_action_dialog__radio_button_do_nothing">لا تفعل شيئًا</string>
+
+
+    //custom_textsize_dialog
+    <string name="custom_textsize_dialog__radio_button_small">ص
+
+غير</string>
+    <string name="custom_textsize_dialog__radio_button_medium">متوسط" "(الافتراضي)</string>
+    <string name="custom_textsize_dialog__radio_button_large">كبير</string>
+
+
+    //edit_category_layout
+    <string name="edit_category_layout__renameText">إعادة التسمية</string>
+    <string name="edit_category_layout__duplicateText">تكرار القائمة</string>
+    <string name="edit_category_layout__shareText">مشاركة القائمة</string>
+    <string name="edit_category_layout__alarmText">تعيين تنبيه</string>
+    <string name="edit_category_layout__deleteText">حذف</string>
+
+    //edit_item_layout
+    <string name="edit_item_layout__addImage_text">إضافة صورة</string>
+    <string name="edit_item_layout__rename_text">إعادة التسمية</string>
+    <string name="edit_item_layout__price_text">تغيير السعر</string>
+    <string name="edit_item_layout__quantity_text">تغيير الكمية</string>
+    <string name="edit_item_layout__copy_text">نسخ</string>
+    <string name="edit_item_layout__move_text">نقل</string>
+    <string name="edit_item_layout__favourites_text_1">إضافة إلى المفضلة</string>
+    <string name="edit_item_layout__delete_text">حذف</string>
+    <string name="edit_item_layout__information_text">التفاصيل</string>
+
+
+    //fragment_favourites
+    <string name="fragment_favourites_toolbar_title">المفضلة</string>
+    <string name="fragment_favourites_illustration_text_1">لا يوجد عناصر مفضلة</string>
+    <string name="fragment_favourites_illustration_text_2">أضف نجومًا للعناصر التي تريد</string>
+    <string name="fragment_favourites_illustration_text_3">العثور عليها بسهولة لاحقًا</string>
+    <string name="fragment_favourites_subtotal">الإجمالي:</string>
+    <string name="fragment_favourites_addItem_fav_fab">إضافة عنصر</string>
+
+    //fragment_home
+    <string name="fragment_home_toolbar_text_2">ما الذي سنشتري اليوم؟</string>
+    <string name="fragment_home_search_view_hint">بحث</string>
+    <string name="fragment_home_page_description_text">الفئات</string>
+    <string name="fragment_home_sort_by_text">ترتيب حسب</string>
+    <string name="fragment_home_noList_text_1">لنبدأ معك</string>
+    <string name="fragment_home_noList_text_2">انقر على الزر + أدناه</string>
+    <string name="fragment_home_noList_text_3">لإنشاء قائمة جديدة</string>
+    <string name="fragment_home_empty_create_btn">قائمة جديدة</string>
+
+
+    //fragment_more
+    <string name="fragment_more_settingToolbar">القائمة</string>
+    <string name="fragment_more_premiumText">جرب Buymate Premium</string>
+    <string name="fragment_more_premiumText2">قم بإزالة الإعلانات واستمتع بالمزيد من الميزات</string>
+    <string name="fragment_more_accountText">الحساب</string>
+    <string name="fragment_more_messageText">راسلنا</string>
+    <string name="fragment_more_backupText">النسخ الاحتياطي</string>
+    <string name="fragment_more_premiumText_2">Premium</string>
+    <string name="fragment_more_websiteText">الموقع الإلكتروني</string>
+    <string name="fragment_more_shareText">مشاركة</string>
+    <string name="fragment_more_RateText">هل تستمتع باستخدام التطبيق؟</string>
+    <string name="fragment_more_RateText2">قيمنا "\u2606""\u2606""\u2606""\u2606""\u2606" على Google Play</string>
+    <string name="fragment_more_twitterText">تابعنا على تويتر</string>
+    <string name="fragment_more_settingText">الإعدادات</string>
+    <string name="fragment_more_aboutText">حول</string>
+
+    //fragment_notes
+    <string name="fragment_notes_toolbar_title">الملاحظات</string>
+    <string name="fragment_notes_illustration_text_1">لا توجد ملاحظة</string>
+    <string name="fragment_notes_illustration_text_2">أضف ملاحظات لتجربة تسوق أسهل</string>
+    <string name="fragment_notes_illustration_text_3">.</string>
+    <string name="fragment_notes_search_View">البحث في القائمة</string>
+
+
+    //info_item_layout
+    <string name="info_layout_price_text">السعر:</string>
+    <string name="info_layout_quantity_text">الكمية:</string>
+    <string name="info_layout_subTotal_text">الإجمالي الفرعي:</string>
+
+
+    //move_bottom_layout
+    <string name="move_bottom_layout_search_bar">بحث</string>
+
+    <string name="move_bottom_layout_new_list_button">إنشاء قائمة جديدة</string>
+    <string name="move_bottom_layout_emptyTEXT1">لا يوجد عنصر</string>
+
+    //no_connection_layout
+    <string name="no_connection_layout_no_connection_text_1">لا يوجد اتصال</string>
+    <string name="no_connection_layout_no_connection_text_2">لم يتم العثور على اتصال بالإنترنت. تحقق</string>
+    <string name="no_connection_layout_no_connection_text_3">من اتصالك أو حاول مرة أخرى.</string>
+    <string name="no_connection_layout_try_again">حاول مرة أخرى</string>
+
+
+    //price_update_popup
+    <string name="price_update_price_name">أدخل السعر</string>
+
+    //quantity_set_popup
+    <string name="quantity_set_popup_quantity_name">أدخل الكمية</string>
+    <string name="quantity_set_popup_unit_hint">الوحدة</string>
+    <string name="quantity_set_popup_quantity_btnSave">تم</string>
+
+
+    //set_password_layout
+    <string name="set_password_layout_header">إنشاء كلمة مرور جديدة</string>
+    <string name="set_password_layout_sub_header">قم بتعيين كلمة مرور رقمية مكونة من 4 أرقام حتى تتمكن من الوصول إلى BuyMate</string>
+
+
+    //set_theme_layout
+    <string name="set_theme_layout_title">الوضع الداكن</string>
+    <string name="set_theme_layout_radio_button_default">استخدام النظام</string>
+    <string name="set_theme_layout_radio_button_off">إيقاف</string>
+    <string name="set_theme_layout_radio_button_on">تشغيل</string>
+    <string name="set_theme_layout_dimSwitch">تعتيم</string>
+
+    //shopbottomlayout
+    <string name="shopbottomlayout_desc_name">اسم العنصر</string>
+    <string name="shopbottomlayout_more_text">المزيد</string>
+    <string name="shopbottomlayout_desc_price">السعر</string>
+    <string name="shopbottomlayout_desc_quantity">الكمية</string>
+    <string name="shopbottomlayout_unit_textView">الوحدة</string>
+    <string name="shopbottomlayout_CancelButton">إلغاء</string>
+    <string name="shopbottomlayout_BtnSave">تم</string>
+    <string name="shop_bottom_layout_illustration_text_1">أنت على وشك الانتهاء!</string>
+    <string name="shop_bottom_layout_illustration_text_2">أضف عنصرًا إلى قائمتك</string>
+
+
+    //shopping_widget_provider
+    <string name="shopping_widget_provider_category_text_view">------</string>
+
+    //shopping_widget_provider_configure
+    <string name="shopping_widget_provider_configure_configureToolbar">حدد القائمة</string>
+    <string name="shopping_widget_provider_configure_configureCreateButton">إنشاء قائمة جديدة</string>
+
+    //sort_category_layout
+    <string name="sort_bottom_layout_title_text">الترتيب حسب:</string>
+    <string name="sort_bottom_layout_name_text">الاسم</string>
+    <string name="sort_bottom_layout_date_text">تاريخ الإنشاء</string>
+    <string name="sort_bottom_layout_price_text">السعر</string>
+    <string name="sort_bottom_layout_quantity_text">الكمية</string>
+
+
+    //success_dialog_popup
+    <string name="success_dialog_popup_illustration_text_1">تهانينا!</string>
+    <string name="success_dialog_popup_illustration_text_2">قائمتك الأولى جاهزة!</string>
+    <string name="success_dialog_popup_button_text">حسنًا</string>
+
+
+    //update_category_name_layout
+    <string name="update_category_name_layout_header_text">إعادة التسمية</string>
+    <string name="update_category_name_textBox_hint">اسم القائمة</string>
+    <string name="update_category_name_layout_button_text">حفظ</string>
+
+
+    //update_item_name_layout
+    <string name="update_item_name_layout_header_text">إعادة التسمية</string>
+    <string name="update_item_name_textBox_hint">اسم العنصر</string>
+    <string name="update_item_name_layout_button_text">حفظ</string>
+
+
+    //upgrade_required_layout
+    <string name="upgrade_required_layout_upgrade_text_1">تحديث مطلوب</string>
+    <string name="upgrade_required_layout_upgrade_text_2">قم بالترقية إلى اشتراك BuyMate مدى الحياة للاستمتاع بهذه الميزة والمزيد!</string>
+    <string name="upgrade_required_layout_upgradeBtn">ترقية</string>
+    <string name="upgrade_required_layout_cancelButton">إلغاء</string>
+
+    //voice_typing_layout
+    <string name="voice_typing_layout_Heading">أضف إلى القائمة</string>
+    <string name="voice_typing_layout_description">اسم العنصر</string>
+    <string name="voice_typing_cancelButton">إلغاء</string>
+    <string name="voice_typing_addBtn">إضافة</string>
+
+    ```xml
+    <string-array name="units">
+        <item>أوقية</item>
+        <item>رطل</item>
+        <item>جالون</item>
+        <item>ربع جالون</item>
+        <item>عبوة</item>
+        <item>علبة</item>
+        <item>عدد</item>
+        <item>صندوق</item>
+        <item>قطعة</item>
+        <item>حقيبة</item>
+    </string-array>
+
+    <string-array name="currency">
+        <item>"\u0024"</item>
+        <item>"\u20A6"</item>
+        <item>"\u20AC"</item>
+        <item>"\u00A5"</item>
+        <item>"\u00A3"</item>
+    </string-array>
+
+    <string-array name="item_suggestions" tools:ignore="InconsistentArrays">
+        <item>تفاح</item>
+        <item>موز</item>
+        <item>برتقال</item>
+        <item>عنب</item>
+        <item>لحم</item>
+        <item>فراولة</item>
+        <item>توت أزرق</item>
+        <item>أناناس</item>
+        <item>مانجو</item>
+        <item>خوخ</item>
+        <item>برقوق</item>
+        <item>خضروات</item>
+        <item>جزر</item>
+        <item>بروكلي</item>
+        <item>طماطم</item>
+        <item>خيار</item>
+        <item>سبانخ</item>
+        <item>فاصوليا خضراء</item>
+        <item>فلفل</item>
+        <item>كوسة</item>
+        <item>قرنبيط</item>
+        <item>طعام</item>
+        <item>خبز</item>
+        <item>حليب</item>
+        <item>بيض</item>
+        <item>حبوب الإفطار</item>
+        <item>مكرونة</item>
+        <item>أرز</item>
+        <item>دجاج</item>
+        <item>لحم بقر</item>
+        <item>سمك</item>
+        <item>أدوات</item>
+        <item>سكين</item>
+        <item>لوح قطع</item>
+        <item>مقشر بطاطس</item>
+        <item>فتاحة علب</item>
+        <item>ملاعق قياس</item>
+        <item>أكواب قياس</item>
+        <item>وعاء خلط</item>
+        <item>أطباق خبز</item>
+        <item>مضرب</item>
+        <item>معدات تنظيف</item>
+        <item>مكنسة</item>
+        <item>ممسحة</item>
+        <item>صابون غسيل الصحون</item>
+        <item>أكياس قمامة</item>
+        <item>مكنسة</item>
+        <item>إسفنج</item>
+        <item>مكنسة كهربائية</item>
+        <item>معدات الخفق</item>
+        <item>خلاط</item>
+        <item>خلاط</item>
+        <item>خلاط يدوي</item>
+        <item>عصارة</item>
+        <item>معجون أسنان</item>
+        <item>شامبو</item>
+        <item>بلسم</item>
+        <item>شوكولاتة</item>
+        <item>صابون</item>
+        <item>لوشن</item>
+        <item>موساقي</item>
+        <item>مزيل رائحة العرق</item>
+        <item>منظف غسيل الملابس</item>
+        <item>منظف غسالة الصحون</item>
+        <item>أكياس قمامة</item>
+        <item>مبيض</item>
+        <item>مناشف ورقية</item>
+        <item>ورق تواليت</item>
+        <item>قهوة</item>
+        <item>شاي</item>
+        <item>سكر</item>
+        <item>طحين</item>
+        <item>زيت الطهي</item>
+        <item>توابل</item>
+        <item>شوربة معلبة</item>
+        <item>خضروات مجمدة</item>
+        <item>آيس كريم</item>
+        <item>كوكيز</item>
+        <item>شيبس</item>
+        <item>صودا</item>
+        <item>ماء</item>
+        <item>بيرة</item>
+        <item>نبيذ</item>
+        <item>وجبات خفيفة</item>
+        <item>شموع</item>
+        <item>مصابيح كهربائية</item>
+        <item>صناديق تخزين للمرآب</item>
+        <item>قرطاسية</item>
+        <item>طعام الحيوانات الأليفة</item>
+        <item>رمل القطط</item>
+        <item>علبة إسعاف</item>
+        <item>بطاريات</item>
+        <item>سماد النباتات</item>
+        <item>إطارات الصور</item>
+        <item>بطاقات هدايا</item>
+    </string-array>
+    ```
+
+    ```xml
+    <string name="bottom_bar_home_text">الصفحة الرئيسية</string>
+    <string name="bottom_bar_favourites_text">المفضلة</string>
+    <string name="bottom_bar_notes_text">ملاحظات</string>
+    <string name="bottom_bar_more_text">المزيد</string>
+
+    <string name="category_toolbar_mark_text">تحديد الكل</string>
+    <string name="category_toolbar_delete_text">حذف</string>
+
+    <string name="category_toolbar_setting_text">الإعدادات</string>
+
+    <string name="favourites_toolbar_hold_menu_mark_text">تحديد الكل</string>
+    <string name="favourites_toolbar_hold_menu_delete_text">حذف</string>
+    <string name="favourites_toolbar_hold_menu_unStar_text">إلغاء التأشير</string>
+
+    <string name="favourites_toolbar_share_text">مشاركة</string>
+    <string name="favourites_toolbar_voice_text">كتابة صوتية</string>
+    <string name="favourites_toolbar_sort_text">ترتيب حسب</string>
+    <string name="favourites_toolbar_check_text">تحديد الكل</string>
+    <string name="favourites_toolbar_unCheck_text">إلغاء تحديد الكل</string>
+
+    <string name="item_toolbar_hold_menu_mark_text">تحديد الكل</string>
+    <string name="item_toolbar_hold_menu_delete_text">حذف</string>
+    <string name="item_toolbar_hold_menu_copy_text">نسخ</string>
+    <string name="item_toolbar_hold_menu_move_text">نقل</string>
+    <string name="item_toolbar_hold_menu_star_text">تأشير</string>
+    <string name="item_toolbar_hold_menu_unStar_text">إلغاء التأشير</string>
+
+    <string name="item_toolbar_menu_search_text">بحث</string>
+    <string name="item_toolbar_menu_voice_text">كتابة صوتية</string>
+    <string name="item_toolbar_menu_rename_text">إعادة تسمية القائمة</string>
+    <string name="item_toolbar_menu_share_text">مشاركة</string>
+    <string name="item_toolbar_menu_sort_text">ترتيب حسب</string>
+    <string name="item_toolbar_menu_check_text">تحديد الكل</string>
+    <string name="item_toolbar_menu_unCheck_text">إلغاء تحديد الكل</string>
+    <string name="item_toolbar_menu_reminder_text">تعيين التنبيه</string>
+
+    <string name="nav_home_text">الصفحة الرئيسية</string>
+    <string name="nav_premium_text">المميزات</string>
+    <string name="nav_reminder_text">تعيين التنبيه</string>
+    <string name="nav_extras_text">إضافات</string>
+    <string name="nav_rate_text">تقييم التطبيق</string>
+    <string name="nav_message_text">راسلنا</string>
+    <string name="nav_settings_text">الإعدادات</string>
+    <string name="nav_about_text">عن التطبيق</string>
+
+    <string name="note_toolbar_create_menu_voice_text">كتابة صوتية</string>
+    <string name="note_toolbar_create_menu_save_text">حفظ</string>
+    <string name="note_toolbar_create_menu_share_text">مشاركة</string>
+    <string name="note_toolbar_create_menu_delete_text">حذف</string>
+
+    <string name="note_toolbar_hold_menu_mark_text">تحديد الكل</string>
+    <string name="note_toolbar_hold_menu_delete_text">حذف</string>
+
+    <string name="note_toolbar_menu_share_text">مشاركة</string>
+    <string name="note_toolbar_menu_voice_text">كتابة صوتية</string>
+    <string name="note_toolbar_menu_save_text">حفظ</string>
+    <string name="note_toolbar_menu_delete_text">حذف</string>
+
+
+</resources>

@@ -1,10 +1,13 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Buymate</string>
-    <string name="app_version">1.0.1</string>
-    <string name="app_link">https://play.google.com/store/apps/details?id=</string>
-    <string name="app_email">hemerickservices@gmail.com</string>
-    <string name="app_lifetime_product_id">com.hemerick.lifetime_subscription</string>
+    <string name="app_version" translatable="false">1.0.1</string>
+    <string name="app_link" translatable="false">https://play.google.com/store/apps/details?id=</string>
+    <string name="app_email" translatable="false">hemerickservices@gmail.com</string>
+    <string name="app_lifetime_product_id" translatable="false">com.hemerick.lifetime_subscription</string>
     <string name="default_web_client_id" translatable="false">401382920363-u289nhkse3o3fi2tevrq68m7oic9vaj6.apps.googleusercontent.com</string>
+
+
+
     <string name="open_icon_content_description">Open</string>
 
 
@@ -21,8 +24,6 @@
     <string name="ViewPagerAdapter_sub_heading_1">Easily make list and never forget to buy anything again.</string>
     <string name="ViewPagerAdapter_sub_heading_2">Manage your budget, shop only what\'s on your list</string>
     <string name="ViewPagerAdapter_sub_heading_3">Connect with family, friends and colleagues by sharing list as text or PDFs.</string>
-
-
 
 
     //Firebase
@@ -456,6 +457,7 @@
     <string name="activity_payment_successful__header_desc_1">You are currently enjoying Buymate\'s full features!</string>
     <string name="activity_payment_successful__header_desc_2">Backup &amp; Restore</string>
     <string name="activity_payment_successful__header_desc_4">Remove ads</string>
+    <string name="activity_payment_successful__header_desc_5">Support Buymate</string>
     <string name="activity_payment_successful__back_btn">Back to home</string>
 
     //activity_premium
@@ -463,6 +465,7 @@
     <string name="activity_premium__header">Purchasing premium gives you access to:</string>
     <string name="activity_premium__backupText">Backup &amp; Restore</string>
     <string name="activity_premium__removeAdsText">Remove ads</string>
+    <string name="activity_premium__supportText">Support Buymate</string>
     <string name="activity_premium__sub_header">ONE TIME PURCHASE OFFER</string>
     <string name="activity_premium__payOneTime">Pay one time only</string>
     <string name="activity_premium__prev_lifetime_currency_text">0.00</string>
@@ -615,15 +618,19 @@
 
     //custom_premium_backup_description_dialog
     <string name="custom_premium_backup_description_dialog__header">Backup &amp; Restore</string>
-    <string name="custom_premium_backup_description_dialog__sub_header">Ensure peace of mind with our streamlined backup and retrieval system for your shopping list. Safeguard and restore your list when desired.</string>
+    <string name="custom_premium_backup_description_dialog__sub_header">Keep your shopping list safe and easy to access with our backup system. Restore it whenever you need</string>
     <string name="custom_premium_backup_description_dialog__okBtn">Close</string>
 
 
     //custom_premium_remove_ads_description_dialog
     <string name="custom_premium_remove_ads_description_dialog__header">Remove ads</string>
-    <string name="custom_premium_remove_ads_description_dialog__sub_header">Unlock an ad-free environment, ensuring a seamless interface and uninterrupted enjoyment of the app\'s features.</string>
+    <string name="custom_premium_remove_ads_description_dialog__sub_header">Enjoy ad-free usage for uninterrupted app enjoyment with our premium features.</string>
     <string name="custom_premium_remove_ads_description_dialog__okBtn">Close</string>
 
+    //custom_premium_support_description_dialog
+    <string name="custom_premium_support_description_dialog_header">Support Buymate</string>
+    <string name="custom_premium_support_description_dialog__sub_header">Show your support for Buymate, help us continue improving your shopping experience!</string>
+    <string name="custom_premium_support_description_dialog__okBtn">Close</string>
 
     //custom_share_dialog
     <string name="custom_share_dialog__title">Share</string>
@@ -651,6 +658,7 @@
 
     //edit_category_layout
     <string name="edit_category_layout__renameText">Rename</string>
+    <string name="edit_category_layout__duplicateText">Duplicate list</string>
     <string name="edit_category_layout__shareText">Share list</string>
     <string name="edit_category_layout__alarmText">Set alarm</string>
     <string name="edit_category_layout__deleteText">Delete</string>
@@ -831,8 +839,7 @@
 
     </string-array>
 
-    <string-array name="item_suggestions">
-        <item>Fruits</item>
+    <string-array name="item_suggestions" tools:ignore="InconsistentArrays">
         <item>Apples</item>
         <item>Bananas</item>
         <item>Oranges</item>
@@ -928,7 +935,7 @@
         <item>Plant fertilizer</item>
         <item>Picture frames</item>
         <item>Gift cards</item>
-        <item>Magazines</item>
+
         <!-- Add more items as needed -->
     </string-array>
 
@@ -1004,11 +1011,6 @@
     <string name="note_toolbar_menu_voice_text">Voice typing</string>
     <string name="note_toolbar_menu_save_text">Save</string>
     <string name="note_toolbar_menu_delete_text">Delete</string>
-
-
-
-
-
 
 
 </resources>

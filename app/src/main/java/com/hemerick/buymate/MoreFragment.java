@@ -145,16 +145,21 @@ public class MoreFragment extends Fragment {
                             asterics + "\n";
 
 
-                    Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
-                    emailIntent.setData(Uri.parse(getString(R.string.MoreFragment__mailTo)));
+                    Intent emailIntent = new Intent(Intent.ACTION_SEND);
                     emailIntent.putExtra(Intent.EXTRA_EMAIL, app_email);
                     emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
                     emailIntent.putExtra(Intent.EXTRA_TEXT, deviceInfo);
+                    emailIntent.setType("message/rfc822");
+                    emailIntent.setPackage("com.google.android.gm");
+
+                    // Check if there's an app to handle this intent
                     if (emailIntent.resolveActivity(getContext().getPackageManager()) != null) {
                         startActivity(emailIntent);
                     } else {
-                        Toast.makeText(getContext(), getString(R.string.MoreFragment__mailError), Toast.LENGTH_SHORT).show();
+                        // If Gmail app is not installed, handle the intent with the chooser
+                        startActivity(Intent.createChooser(emailIntent, "Send email via..."));
                     }
+
                 } else {
                     showLogInWarningDialog();
                 }
@@ -282,7 +287,7 @@ public class MoreFragment extends Fragment {
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
 
-            premium_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            premium_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
             premium_text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             premium_text_2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             account_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
@@ -299,7 +304,7 @@ public class MoreFragment extends Fragment {
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
             premium_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-            premium_text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
+            premium_text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             premium_text_2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             account_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             message_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
@@ -315,7 +320,7 @@ public class MoreFragment extends Fragment {
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
             premium_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-            premium_text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            premium_text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             premium_text_2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             account_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             message_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));

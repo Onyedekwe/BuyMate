@@ -102,6 +102,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Locale;
+import java.util.Objects;
 
 import io.github.muddz.styleabletoast.StyleableToast;
 
@@ -563,6 +564,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
             selectList = new ArrayList<String>();
             selectList = adapter.getSelectList();
             collapsingToolbarLayout.setTitle(selectList.size() + "/" + category_list.size());
+            menu.clear();
             inflater.inflate(R.menu.category_toolbar_hold_menu, menu);
             ArrayList<String> finalSelectList = selectList;
             menu.findItem(R.id.delete).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -687,7 +689,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
             });
         } else {
             collapsingToolbarLayout.setTitle(getString(R.string.app_name));
-
+            menu.clear();
             inflater.inflate(R.menu.category_toolbar_menu, menu);
             menu.findItem(R.id.setting).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
@@ -1243,6 +1245,8 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         TextView title = edit_dialog.findViewById(R.id.cate_edit_title);
         LinearLayout renameLayout = edit_dialog.findViewById(R.id.rename);
         TextView renameText = edit_dialog.findViewById(R.id.renameText);
+        LinearLayout duplicateLayout = edit_dialog.findViewById(R.id.duplicate);
+        TextView duplicateText = edit_dialog.findViewById(R.id.duplicateText);
         LinearLayout shareLayout = edit_dialog.findViewById(R.id.share);
         TextView shareText = edit_dialog.findViewById(R.id.shareText);
         LinearLayout reminderLayout = edit_dialog.findViewById(R.id.reminder);
@@ -1256,6 +1260,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
             title.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             renameText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            duplicateText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             shareText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             reminderText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             deleteText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
@@ -1264,6 +1269,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
             title.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             renameText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            duplicateText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             shareText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             reminderText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             deleteText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
@@ -1272,6 +1278,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
             title.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             renameText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            duplicateText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             shareText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             reminderText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             deleteText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
@@ -1282,6 +1289,14 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
             @Override
             public void onClick(View v) {
                 showRenameDialog(prevTask, position);
+                edit_dialog.dismiss();
+            }
+        });
+
+        duplicateLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                duplicateList(prevTask);
                 edit_dialog.dismiss();
             }
         });
@@ -1324,6 +1339,60 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         edit_dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimations;
         edit_dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
+
+    public void duplicateList(String listName){
+        ArrayList<String> descriptions = new ArrayList<>();
+        ArrayList<Integer> status = new ArrayList<>();
+        ArrayList<String> price = new ArrayList<>();
+        ArrayList<String> quantity = new ArrayList<>();
+        ArrayList<Integer> favourites = new ArrayList<>();
+        ArrayList<String> unit = new ArrayList<>();
+        ArrayList<String> photourl = new ArrayList<>();
+
+        Cursor res = db.getItems(listName, context);
+        while(res.moveToNext()){
+            descriptions.add(res.getString(2));
+            status.add(res.getInt(3));
+            price.add(res.getString(4));
+            quantity.add(res.getString(9));
+            favourites.add(res.getInt(10));
+            unit.add(res.getString(11));
+            photourl.add(res.getString(12));
+        }
+
+        ArrayList<String> all_list = new ArrayList<>();
+
+        res = db.getCategory(context);
+        while (res.moveToNext()) {
+            all_list.add(res.getString(1).trim());
+        }
+        res.close();
+
+
+        if (all_list.contains(listName)) {
+            int count = 1;
+            String newItem = listName + " (" + count + ")";
+            while (all_list.contains(newItem)) {
+                count++;
+                newItem = listName + " (" + count + ")";
+            }
+            listName = newItem;
+        }
+        getDateNdTime();
+        for (int i = 0; i < descriptions.size(); i++) {
+            insertItemV2(listName, descriptions.get(i),status.get(i) , Double.parseDouble(price.get(i)), month, year, day, time, Double.parseDouble(quantity.get(i)), unit.get(i));
+            db.updateFavourites(listName, descriptions.get(i), favourites.get(i));
+            db.updatePhoto(listName, descriptions.get(i), photourl.get(i));
+        }
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.framelayoutContainer, new HomeFragment());
+        fragmentTransaction.commit();
+
+    }
+
+
+
 
     private void showSortByDialog() {
 
@@ -2048,6 +2117,12 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
 
     }
 
+    public void insertItemV2(String category, String description, int status, double price, String month, String year, String day, String time, double quantity, String unit) {
+        String finalPrice = formatNumberV2(price);
+        String finalQuantity = formatNumberV2(quantity);
+        db.insertItem(category, description, status, finalPrice, month, year, day, time, finalQuantity, unit);
+    }
+
     public static String formatNumber(double number) {
         return String.format("%,.2f", number);
     }
@@ -2292,7 +2367,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
             emptyText2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             emptyText3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             empty_create_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-            sortByText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            sortByText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.mini_text));
             toolBarText_2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
         }
 
@@ -2304,7 +2379,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
             emptyText2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             emptyText3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             empty_create_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-            sortByText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            sortByText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
             toolBarText_2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_text));
         }
 
@@ -2316,7 +2391,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
             emptyText2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             emptyText3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             empty_create_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-            sortByText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            sortByText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_text));
             toolBarText_2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_max_text));
 
 

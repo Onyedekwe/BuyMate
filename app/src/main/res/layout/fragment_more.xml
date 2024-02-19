@@ -55,7 +55,7 @@
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:importantForAccessibility="no"/>
+                    android:importantForAccessibility="no" />
 
 
                 <LinearLayout
@@ -91,7 +91,7 @@
                             android:fontFamily="@font/lexend"
                             android:text="@string/fragment_more_premiumText"
                             android:textColor="@color/white"
-                            android:textSize="15sp"
+                            android:letterSpacing="0.03"
                             android:textStyle="bold" />
 
                         <TextView
@@ -103,8 +103,7 @@
                             android:layout_marginBottom="10dp"
                             android:fontFamily="@font/lexend"
                             android:text="@string/fragment_more_premiumText2"
-                            android:textColor="@color/white"
-                            android:textSize="12sp" />
+                            android:textColor="@color/white" />
 
                     </LinearLayout>
 
@@ -188,6 +187,7 @@
                             android:id="@+id/accountText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:maxWidth="230dp"
                             android:text="@string/fragment_more_accountText"
                             android:textColor="?attr/textFillColor"
                             android:textSize="15sp" />
@@ -233,7 +233,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:importantForAccessibility="no"/>
+                        android:importantForAccessibility="no" />
 
 
                     <TextView
@@ -245,11 +245,13 @@
                         android:text="@string/fragment_more_messageText"
                         android:textColor="?attr/textFillColor"
                         android:textSize="15sp"
+                        android:maxWidth="230dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/message_icon"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
+                        android:id="@+id/imageView7"
                         android:layout_width="15dp"
                         android:layout_height="15dp"
                         android:layout_gravity="center"
@@ -286,7 +288,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:importantForAccessibility="no"/>
+                        android:importantForAccessibility="no" />
 
 
                     <TextView
@@ -298,6 +300,7 @@
                         android:text="@string/fragment_more_backupText"
                         android:textColor="?attr/textFillColor"
                         android:textSize="15sp"
+                        android:maxWidth="230dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/backup_icon"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -340,7 +343,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:importantForAccessibility="no"/>
+                        android:importantForAccessibility="no" />
 
 
                     <TextView
@@ -352,6 +355,7 @@
                         android:text="@string/fragment_more_premiumText_2"
                         android:textColor="?attr/textFillColor"
                         android:textSize="15sp"
+                        android:maxWidth="230dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/premium_icon"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -393,7 +397,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:importantForAccessibility="no"/>
+                        android:importantForAccessibility="no" />
 
 
                     <TextView
@@ -405,6 +409,7 @@
                         android:text="@string/fragment_more_websiteText"
                         android:textColor="?attr/textFillColor"
                         android:textSize="15sp"
+                        android:maxWidth="230dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/website_icon"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -446,7 +451,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:importantForAccessibility="no"/>
+                        android:importantForAccessibility="no" />
 
 
                     <TextView
@@ -458,6 +463,7 @@
                         android:text="@string/fragment_more_shareText"
                         android:textColor="?attr/textFillColor"
                         android:textSize="15sp"
+                        android:maxWidth="230dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/share_icon"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -509,29 +515,32 @@
 
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
                         android:orientation="vertical"
                         app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/imageView8"
                         app:layout_constraintStart_toEndOf="@+id/Rate_icon"
                         app:layout_constraintTop_toTopOf="parent">
 
                         <TextView
                             android:id="@+id/RateText"
-                            android:layout_width="200dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="23dp"
+                            android:maxWidth="230dp"
                             android:text="@string/fragment_more_RateText"
                             android:textColor="?attr/textFillColor"
                             android:textSize="15sp" />
 
                         <TextView
                             android:id="@+id/RateText2"
-                            android:layout_width="200dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="23dp"
+                            android:maxWidth="200dp"
                             android:text="@string/fragment_more_RateText2"
                             android:textColor="?attr/itemTextAppearanceInactive"
                             android:textSize="15sp" />
@@ -540,6 +549,7 @@
 
 
                     <ImageView
+                        android:id="@+id/imageView8"
                         android:layout_width="15dp"
                         android:layout_height="15dp"
                         android:layout_gravity="center"
@@ -576,7 +586,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:importantForAccessibility="no"/>
+                        android:importantForAccessibility="no" />
 
 
                     <TextView
@@ -588,6 +598,7 @@
                         android:text="@string/fragment_more_twitterText"
                         android:textColor="?attr/textFillColor"
                         android:textSize="15sp"
+                        android:maxWidth="230dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/twitter_icon"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -631,7 +642,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:importantForAccessibility="no"/>
+                        android:importantForAccessibility="no" />
 
 
                     <TextView
@@ -641,6 +652,7 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="30dp"
                         android:text="@string/fragment_more_settingText"
+                        android:maxWidth="230dp"
                         android:textColor="?attr/textFillColor"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -682,11 +694,12 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
                         android:layout_marginStart="22dp"
+                        android:maxWidth="230dp"
                         android:src="@drawable/final_regular_info_circle_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:importantForAccessibility="no"/>
+                        android:importantForAccessibility="no" />
 
 
                     <TextView

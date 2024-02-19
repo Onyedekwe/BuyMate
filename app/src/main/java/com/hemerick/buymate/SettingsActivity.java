@@ -943,6 +943,7 @@ public class SettingsActivity extends AppCompatActivity {
         super.onBackPressed();
         startActivity(new Intent(SettingsActivity.this, HomeActivity.class));
         finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 
 }

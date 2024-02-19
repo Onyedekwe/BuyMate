@@ -14,18 +14,18 @@
 
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/backgroundColor</item>
-
+        <item name="android:windowAnimationStyle">@style/ActivityAnimation</item>
 
 
 
         <!-- Customize your theme here. -->
-        <item name="backgroundColor">#121212</item>
-        <item name="colorSurface">#212124</item>
+        <item name="backgroundColor">#111315</item>
+        <item name="colorSurface">#30353c</item>
         <item name="trackColor">#6E7780</item>
         <item name="colorError">#DD6868</item>
         <item name="textFillColor">#FFFFFF</item>
-        <item name="android:shadowColor">#3A4447</item>
-        <item name="color">#161618</item>
+        <item name="android:shadowColor">#282D33</item>
+        <item name="color">#282D33</item>
         <item name="colorControlHighlight">#6B8A99</item>
         <item name="iconTint">#FFFFFF</item>
         <item name="buttonTint">?attr/colorPrimary</item>
@@ -72,6 +72,14 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:colorControlActivated">?attr/colorPrimary</item>
         <item name="android:windowElevation">100dp</item>
+    </style>
+
+    <style name="ActivityAnimation">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/slide_out_left</item>
+        <item name="android:activityCloseEnterAnimation">@anim/slide_in_left</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
+
     </style>
 
     <style name="DialogAnimations">

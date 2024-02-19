@@ -244,7 +244,7 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="15dp"
-                        android:text="@string/activity_signup__googleText"/>
+                        android:text="@string/activity_signup__googleText" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -262,7 +262,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/activity_signup__loginText1"
-                android:textColor="?attr/textFillColor"/>
+                android:textColor="?attr/textFillColor" />
 
             <TextView
                 android:id="@+id/loginText2"
@@ -271,7 +271,7 @@
                 android:padding="10dp"
                 android:text="@string/activity_signup__loginText2"
                 android:textStyle="bold"
-                android:textColor="?attr/colorPrimary"/>
+                android:textColor="?attr/colorPrimary" />
         </LinearLayout>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

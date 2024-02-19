@@ -1,0 +1,886 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Buymate</string>
+    <string name="app_version" translatable="false">1.0.1</string>
+    <string name="app_link" translatable="false">https://play.google.com/store/apps/details?id=</string>
+    <string name="app_email" translatable="false">hemerickservices@gmail.com</string>
+    <string name="app_lifetime_product_id" translatable="false">com.hemerick.lifetime_subscription</string>
+    <string name="default_web_client_id" translatable="false">401382920363-u289nhkse3o3fi2tevrq68m7oic9vaj6.apps.googleusercontent.com</string>
+
+
+    ```xml
+    <string name="open_icon_content_description">Otwórz</string>
+
+    //ShopCopyAdapter
+    <string name="ShopCopyAdapter__copy_successful">Element skopiowany do</string>
+
+    //ShopMoveAdapter
+    <string name="ShopMoveAdapter__move_successful">Element przeniesiony do</string>
+
+    //ViewPagerAdapter
+    <string name="ViewPagerAdapter_heading_1">Zawsze pamiętaj, co kupić</string>
+    <string name="ViewPagerAdapter_heading_2">Mądrze zarządzaj budżetem, unikaj impulsywnych zakupów</string>
+    <string name="ViewPagerAdapter_heading_3">Dziel się listą bez wysiłku</string>
+    <string name="ViewPagerAdapter_sub_heading_1">Łatwo twórz listy i nigdy więcej nie zapominaj o zakupach.</string>
+    <string name="ViewPagerAdapter_sub_heading_2">Zarządzaj swoim budżetem, kupuj tylko to, co jest na liście.</string>
+    <string name="ViewPagerAdapter_sub_heading_3">Łącz się z rodziną, przyjaciółmi i kolegami, udostępniając listy jako tekst lub pliki PDF.</string>
+
+    //Firebase
+    <string name="Firebase__backup_text_heading">Tworzenie kopii zapasowej w chmurze</string>
+    <string name="Firebase__backup_text_subheading">Proszę czekać…</string>
+    <string name="Firebase__backup_successful">Kopia zapasowa utworzona pomyślnie</string>
+    <string name="Firebase__restore_text_heading">Przywracanie danych z chmury</string>
+    <string name="Firebase__restore_text_subheading">Proszę czekać…</string>
+    <string name="Firebase__restore_no_list_found">Nie znaleziono listy</string>
+    <string name="Firebase__restore_no_notes_found">Nie znaleziono notatek</string>
+    <string name="Firebase__restore_completed">Przywracanie zakończone</string>
+    <string name="Firebase__error">Błąd: </string>
+
+    //ShoppingWidgetService
+    <string name="ShoppingWidgetService__added">Dodano </string>
+
+    //BackupActivity
+    <string name="BackupActivity__loginBeforeBackup">Proszę zaloguj się przed kontynuowaniem tworzenia kopii zapasowej</string>
+    <string name="BackupActivity__loginBeforeRestore">Upewnij się, że jesteś zalogowany przed przywracaniem danych</string>
+    <string name="BackupActivity__restoreHeader">Przywracanie danych</string>
+    <string name="BackupActivity__restoreWarning">Ta akcja zastąpi Twoje aktualne dane ostatnimi z kopii zapasowej. Wszelkie niezapisane zmiany zostaną utracone. Czy na pewno chcesz kontynuować?</string>
+    <string name="BackupActivity__restoreProceedBtn">Kontynuuj</string>
+    <string name="BackupActivity__restoreCancelBtn">Anuluj</string>
+
+    //ChangePasswordActivity
+    <string name="ChangePasswordActivity__passwordUpdateSuccess">Hasło zaktualizowane</string>
+    <string name="ChangePasswordActivity__passwordUpdateFailed">Aktualizacja hasła nie powiodła się</string>
+    <string name="ChangePasswordActivity__error">Błąd: </string>
+    <string name="ChangePasswordActivity__passwordNotMatched">Hasła nie pasują do siebie</string>
+    <string name="ChangePasswordActivity__passwordLengthFailed">Hasło musi mieć co najmniej 6 znaków</string>
+    <string name="ChangePasswordActivity__retypePassword">Powtórz hasło, aby kontynuować</string>
+    <string name="ChangePasswordActivity__enterNewPassword">Wprowadź nowe hasło</string>
+    <string name="ChangePasswordActivity__enterCurrentPassword">Wprowadź bieżące hasło</string>
+
+    //ConfigurePasscodeActivity
+    <string name="ConfigurePasscodeActivity__deviceNotSupported">Urządzenie nieobsługiwane</string>
+    <string name="ConfigurePasscodeActivity__hardwareUnavailable">Sprzęt niedostępny</string>
+    <string name="ConfigurePasscodeActivity__fingerprintNotSet">Odcisk palca nie został ustawiony dla tego urządzenia</string>
+    <string name="ConfigurePasscodeActivity__verifyFingerprint">Zweryfikuj odcisk palca</string>
+    <string name="ConfigurePasscodeActivity__usePassword">Użyj hasła</string>
+    <string name="ConfigurePasscodeActivity__insert4digitPassword">Wprowadź 4-cyfrowe hasło</string>
+    <string name="ConfigurePasscodeActivity__confirmPassword">Potwierdź hasło</string>
+    <string name="ConfigurePasscodeActivity__retypePassword">Powtórz hasło, aby kontynuować</string>
+    <string name="ConfigurePasscodeActivity__success">Sukces</string>
+    <string name="ConfigurePasscodeActivity__passwordNotMatched">Hasła nie pasują do siebie</string>
+    <string name="ConfigurePasscodeActivity__insertPassword">Wprowadź hasło</string>
+    <string name="ConfigurePasscodeActivity__letsVerifyYou">Pomóż nam zweryfikować, że to naprawdę Ty, wprowadź swoje bieżące hasło</string>
+    <string name="ConfigurePasscodeActivity__appLockRemoved">Blokada aplikacji została usunięta</string>
+    <string name="ConfigurePasscodeActivity__wrongPassword">Nieprawidłowe hasło</string>
+    <string name="ConfigurePasscodeActivity__fingerprintEnabled">Odcisk palca włączony</string>
+    <string name="ConfigurePasscodeActivity__setupPassword">Ustaw hasło</string>
+    <string name="ConfigurePasscodeActivity__changePassword">Zmień hasło</string>
+
+    //CreateNoteActivity
+    <string name="CreateNoteActivity__untitled">Bez tytułu</string>
+    <string name="CreateNoteActivity__deleteNote">Usuń</string>
+    <string name="CreateNoteActivity__deleteWarning">Tej akcji nie można cofnąć</string>
+    <string name="CreateNoteActivity__voicePrompt">Słuchanie</string>
+    <string name="CreateNoteActivity__send_message_via">Wyślij wiadomość przez:</string>
+
+    //FavouritesFragment
+    <string name="FavouritesFragment__addItemToList">Dodaj przedmiot do listy</string>
+    <string name="FavouritesFragment__untitled">Bez tytułu</string>
+    <string name="FavouritesFragment__alreadyExist">Przedmiot już istnieje</string>
+    <string name="FavouritesFragment__emptyName">Pole nazwy przedmiotu jest puste</string>
+    <string name="FavouritesFragment__toolbarStarred">Oznaczone gwiazdką</string>
+    <string name="FavouritesFragment__multipleDelete">Usuń te elementy</string>
+    <string name="FavouritesFragment__singleDelete">Usuń ten element</string>
+    <string name="FavouritesFragment__deleteWarning">Tej akcji nie można
+
+ cofnąć</string>
+    <string name="FavouritesFragment__removeFromStarred">Usuń z oznaczonych gwiazdką</string>
+    <string name="FavouritesFragment__remove">Usuń</string>
+    <string name="FavouritesFragment__unstar">Usuń gwiazdkę</string>
+    <string name="FavouritesFragment__star">Oznacz przedmiot gwiazdką</string>
+    <string name="FavouritesFragment__itemsChecked">Zaznaczone przedmioty</string>
+    <string name="FavouritesFragment__itemStarred">Przedmiot oznaczony gwiazdką</string>
+    <string name="FavouritesFragment__itemUnstarred">Przedmiot nieoznaczony gwiazdką</string>
+    <string name="FavouritesFragment__addPhoto">Dodaj obraz</string>
+    <string name="FavouritesFragment__updatePhoto">Aktualizuj obraz</string>
+    <string name="FavouritesFragment__loginPrompt">Proszę zaloguj się przed kontynuowaniem</string>
+    <string name="FavouritesFragment__insertImageFailed">Błąd: Nie można wstawić obrazu</string>
+    <string name="FavouritesFragment__error">Błąd: </string>
+    <string name="FavouritesFragment__emptyPrice">Pole ceny przedmiotu jest puste</string>
+    <string name="FavouritesFragment__voicePrompt">Słuchanie</string>
+    <string name="FavouritesFragment__emptyQuantity">Pole ilości przedmiotu jest puste</string>
+    <string name="FavouritesFragment__Total">RAZEM:</string>
+    <string name="FavouritesFragment__shareBtmText1">Popraw swoje doświadczenie zakupowe z Buymate.</string>
+    <string name="FavouritesFragment__shareBtmText2">Pobierz Buymate z Google Play:</string>
+    <string name="FavouritesFragment__shareIntentText">Wyślij wiadomość przez</string>
+    <string name="FavouritesFragment__no">NIE</string>
+    <string name="FavouritesFragment__item">PRZEDMIOT</string>
+    <string name="FavouritesFragment__quantity">ILOŚĆ</string>
+    <string name="FavouritesFragment__unit">JEDNOSTKA</string>
+    <string name="FavouritesFragment__price">CENA</string>
+    <string name="FavouritesFragment__contactUs">Skontaktuj się z nami pod adresem:</string>
+    <string name="FavouritesFragment__pdfDownloadedTo">Pobrano plik PDF do</string>
+
+    //HomeActivity
+    <string name="HomeActivity__pressBack">Naciśnij ponownie przycisk wstecz, aby wyjść z aplikacji</string>
+
+    //HomeFragment
+    <string name="HomeFragment__feedback">Opinia</string>
+    <string name="HomeFragment__accountEmail">Adres e-mail konta: </string>
+    <string name="HomeFragment__appVersion">Wersja aplikacji: </string>
+    <string name="HomeFragment__device">Urządzenie: </string>
+    <string name="HomeFragment__model">Model: </string>
+    <string name="HomeFragment__brand">Marka: </string>
+    <string name="HomeFragment__osVersion">Wersja systemu operacyjnego: </string>
+    <string name="HomeFragment__sdkVersion">Wersja SDK: </string>
+    <string name="HomeFragment__mailTo">Wyślij wiadomość do:</string>
+    <string name="HomeFragment__mailError">Nie znaleziono klienta poczty e-mail</string>
+    <string name="HomeFragment__navigation_drawer_open">Otwórz szufladę nawigacyjną</string>
+    <string name="HomeFragment__navigation_drawer_close">Zamknij szufladę nawigacyjną</string>
+    <string name="HomeFragment__defaultName">Użytkowniku</string>
+    <string name="HomeFragment__hiText">Cześć,</string>
+    <string name="HomeFragment__exclam">!</string>
+    <string name="HomeFragment__emptySearch">Brak listy do wyszukania</string>
+    <string name="HomeFragment__addItemToList">Dodaj przedmiot do listy</string>
+    <string name="HomeFragment__loginPrompt">Proszę zaloguj się przed kontynuowaniem</string>
+    <string name="HomeFragment__login">Zaloguj się</string>
+    <string name="HomeFragment__shareBtmText1">Popraw swoje doświadczenie zakupowe z Buymate.</string>
+    <string name="HomeFragment__shareBtmText2">Pobierz Buymate z Google Play:</string>
+    <string name="HomeFragment__no">NIE</string>
+    <string name="HomeFragment__item">PRZEDMIOT</string>
+    <string name="HomeFragment__quantity">ILOŚĆ</string>
+    <string name="HomeFragment__unit">JEDNOSTKA</string>
+    <string name="HomeFragment__price">CENA</string>
+    <string name="HomeFragment__contactUs">Skontaktuj się z nami pod adresem:</string>
+    <string name="HomeFragment__pdfDownloadedTo">Pobrano plik PDF do</string>
+    <string name="HomeFragment__Total">RAZEM:</string>
+    <string name="HomeFragment__noListFound">Nie znaleziono listy</string>
+    <string name="HomeFragment__sortPriceText">Rozmiar</string>
+    <string name="HomeFragment__send_message_via">Wyślij wiadomość przez:</string>
+    <string name="HomeFragment__please_insert_name">Wprowadź nazwę</string>
+    <string name="HomeFragment__deleteTheseLists">Usuń te listy</string>
+    <string name="HomeFragment__deleteThisList">Usuń tę listę</string>
+    <string name="HomeFragment__delete">Usuń</string>
+    <string name="HomeFragment__deleteWarning">Tej akcji nie można cofnąć</string>
+    <string name="HomeFragment__no_list">Brak listy</string>
+    <string name="HomeFragment__list_exist_already">Ta lista już istnieje</string>
+    <string name="HomeFragment__no_alarm_app">Brak aplikacji do wykonania tej akcji</string>
+
+    //InsertPasscodeActivity
+    <string name="InsertPasscodeActivity__success">Sukces</string>
+    <string name="InsertPasscodeActivity__wrongPin">Zły PIN</string>
+    <string name="InsertPasscodeActivity__insertPin">Wpisz 4-cyfrowe hasło</string>
+    <string name="InsertPasscodeActivity__notSupported">Urządzenie nieobsługiwane</string>
+    <string name="InsertPasscodeActivity__hardwareNotAvailable">Sprzęt niedostępny</string>
+    <string name="InsertPasscodeActivity__fingerprintNotSet">Odcisk palca nie został ustawiony dla tego urządzenia</string>
+    <string name="InsertPasscodeActivity__verifyFingerprint">Zweryfikuj odcisk palca</string>
+    <string name="InsertPasscodeActivity__usePassword">Użyj hasła</string>
+
+
+    //ItemActivity
+    <string name="ItemActivity__deleteTheseItems">Usuń te przedmioty</string>
+    <string name="ItemActivity__deleteThisItem">Usuń ten przedmiot</string>
+    <string name="ItemActivity__moveTo">Przenieś do:</string>
+    <string name="ItemActivity__copyTo">Kopiuj do:</string>
+    <string name="ItemActivity__unstarred">Bez gwiazdki</string>
+    <string name="ItemActivity__unstar">Bez gwiazdki</string>
+    <string name="ItemActivity__itemStarred">Przedmiot oznaczony gwiazdką</string>
+    <string name="ItemActivity__searchHint">Szukaj na liście</string>
+    <string name="ItemActivity__itemsChecked">Zaznaczone przedmioty:</string>
+    <string name="ItemActivity__addItemToList">Dodaj przedmiot do listy</string>
+    <string name="ItemActivity__alreadyExist">Przedmiot już istnieje</string>
+    <string name="ItemActivity__emptyName">Pole nazwy przedmiotu jest puste</string>
+    <string name="ItemActivity__emptyNameCate">Pole nazwy jest puste</string>
+    <string name="ItemActivity__starItem">Oznacz przedmiot gwiazdką</string>
+    <string name="ItemActivity__addPhoto">Dodaj obraz</string>
+    <string name="ItemActivity__updatePhoto">Aktualizuj obraz</string>
+    <string name="ItemActivity__loginPrompt">Zaloguj się, aby kontynuować</string>
+    <string name="ItemActivity__insertImageFailed">Błąd: Nie można wstawić obrazu</string>
+    <string name="ItemActivity__error">Błąd: </string>
+    <string name="ItemActivity__emptyPrice">Pole ceny przedmiotu jest puste</string>
+    <string name="ItemActivity__emptyQuantity">Pole ilości przedmiotu jest puste</string>
+    <string name="ItemActivity__delete">Usuń</string>
+    <string name="ItemActivity__deleteWarning">Tej operacji nie można cofnąć</string>
+    <string name="ItemActivity__noAlarmApp">Brak aplikacji do wykonania tej operacji</string>
+    <string name="ItemActivity__Total">RAZEM:</string>
+    <string name="ItemActivity__shareBtmText1">Popraw swoje doświadczenie zakupowe z Buymate.</string>
+    <string name="ItemActivity__shareBtmText2">Pobierz Buymate z Google Play:</string>
+    <string name="ItemActivity__shareIntentText">Wyślij wiadomość przez</string>
+    <string name="ItemActivity__no">NIE</string>
+    <string name="ItemActivity__item">PRZEDMIOT</string>
+    <string name="ItemActivity__quantity">ILOŚĆ</string>
+    <string name="ItemActivity__unit">JEDNOSTKA</string>
+    <string name="ItemActivity__price">CENA</string>
+    <string name="ItemActivity__contactUs">Skontaktuj się z nami pod adresem:</string>
+    <string name="ItemActivity__pdfDownloadedTo">PDF pobrany do</string>
+    <string name="ItemActivity__voicePrompt">Słuchanie</string>
+
+
+    //LoginActivity
+    <string name="LoginActivity__error">Błąd: </string>
+    <string name="LoginActivity__emailError">Nieprawidłowy adres e-mail</string>
+    <string name="LoginActivity__passwordError">Wpisz hasło</string>
+    <string name="LoginActivity__emptyEmailError">Wprowadź adres e-mail</string>
+
+
+    //MoreFragment
+    <string name="MoreFragment__shareBtmText1">Sprawdź tę świetną aplikację zakupową! Gorąco ją polecam. Pobierz ją z Google Play.</string>
+    <string name="MoreFragment__shareVia">Udostępnij przez:</string>
+    <string name="MoreFragment__feedback">Opinia</string>
+    <string name="MoreFragment__accountEmail">Adres e-mail konta: </string>
+    <string name="MoreFragment__appVersion">Wersja aplikacji: </string>
+    <string name="MoreFragment__device">Urządzenie: </string>
+    <string name="MoreFragment__model">Model: </string>
+    <string name="MoreFragment__brand">Marka: </string>
+    <string name="MoreFragment__osVersion">Wersja systemu operacyjnego: </string>
+    <string name="MoreFragment__sdkVersion">Wersja SDK: </string>
+    <string name="MoreFragment__mailTo">Wyślij wiadomość do:</string>
+    <string name="MoreFragment__mailError">Nie znaleziono klienta poczty e-mail</string>
+    <string name="MoreFragment__signIn">Zaloguj się</string>
+    <string name="MoreFragment__account">Konto</string>
+    <string name="MoreFragment__loginPrompt">Zaloguj się, aby kontynuować</string>
+    <string name="MoreFragment__login">Zaloguj się</string>
+    <string name="MoreFragment__premiumText1">Gratulacje!</string>
+    <string name="MoreFragment__premiumText2">Korzystasz z wersji Premium aplikacji Buymate</string>
+
+
+    //NotesFragment
+    <string name="NotesFragment__multipleDelete">Usuń te notatki</string>
+    <string name="NotesFragment__singleDelete">
+
+Usuń tę notatkę</string>
+    <string name="NotesFragment__toolbarTitle">Notatki</string>
+    <string name="NotesFragment__emptyNoteSearchView">Brak notatki do wyszukania</string>
+    <string name="NotesFragment__emptyNoteRecyclerView">Nie znaleziono notatki</string>
+
+    //PaymentSuccessfulActivity
+    <string name="PaymentSuccessfulActivity__error">Błąd: </string>
+    <string name="PaymentSuccessfulActivity__itemOwnedAlready">PRZEDMIOT_JUŻ_POSIADANY</string>
+    <string name="PaymentSuccessfulActivity__featureNotSupported">FUNKCJA_NIE_WSPÓŁPRACUJE</string>
+    <string name="PaymentSuccessfulActivity__userCancelled">UŻYTKOWNIK_ANULOWAŁ</string>
+    <string name="PaymentSuccessfulActivity__developerError">BŁĄD_DEVELOPERA</string>
+    <string name="PaymentSuccessfulActivity__itemUnavailable">PRZEDMIOT_NIEDOSTĘPNY</string>
+    <string name="PaymentSuccessfulActivity__networkError">BŁĄD_SIECI</string>
+    <string name="PaymentSuccessfulActivity__serviceDisconnected">USŁUGA_ODŁĄCZONA</string>
+    <string name="PaymentSuccessfulActivity__errorInvalidPurchase">Błąd: nieprawidłowy zakup</string>
+
+
+    //RecoverPasswordActivity
+    <string name="RecoverPasswordActivity__emailNotRegistered">E-mail nie jest zarejestrowany. Proszę się zarejestrować.</string>
+    <string name="RecoverPasswordActivity__resetLinkSent">Link do resetowania został wysłany na adres e-mail</string>
+    <string name="RecoverPasswordActivity__error">Błąd: </string>
+    <string name="RecoverPasswordActivity__invalidEmail">Nieprawidłowy adres e-mail</string>
+    <string name="RecoverPasswordActivity__recoveryEmail">Wprowadź swój adres e-mail do odzyskiwania</string>
+
+
+    //SettingsActivity
+    <string name="SettingsActivity__currencyUpdated">Waluta została zaktualizowana</string>
+    <string name="SettingsActivity__currencyFieldEmpty">Pole waluty jest puste</string>
+    <string name="SettingsActivity__disabled">Wyłączone</string>
+
+    <string name="SettingsActivity__renameSwipeLeft">Zmień nazwę: przesuń w lewo</string>
+    <string name="SettingsActivity__changePriceSwipeLeft">Zmień cenę: przesuń w lewo</string>
+    <string name="SettingsActivity__changeQuantitySwipeLeft">Zmień ilość: przesuń w lewo</string>
+    <string name="SettingsActivity__starAndUnstarLeft">Oznacz i odznacz przedmiot: przesuń w lewo</string>
+    <string name="SettingsActivity__deleteSwipeLeft">Usuń: przesuń w lewo</string>
+    <string name="SettingsActivity__checkAndUncheckLeft">Zaznacz i odznacz przedmiot: przesuń w lewo</string>
+    <string name="SettingsActivity__showOptionsSwipeLeft">Pokaż opcje: przesuń w lewo</string>
+    <string name="SettingsActivity__doNothingSwipeLeft">Nic nie rób: przesuń w lewo</string>
+
+    <string name="SettingsActivity__renameSwipeRight">Zmień nazwę: przesuń w prawo</string>
+    <string name="SettingsActivity__changePriceSwipeRight">Zmień cenę: przesuń w prawo</string>
+    <string name="SettingsActivity__changeQuantitySwipeRight">Zmień ilość: przesuń w prawo</string>
+    <string name="SettingsActivity__starAndUnstarRight">Oznacz i odznacz przedmiot: przesuń w prawo</string>
+    <string name="SettingsActivity__deleteSwipeRight">Usuń: przesuń w prawo</string>
+    <string name="SettingsActivity__checkAndUncheckRight">Zaznacz i odznacz przedmiot: przesuń w prawo</string>
+    <string name="SettingsActivity__showOptionsSwipeRight">Pokaż opcje: przesuń w prawo</string>
+    <string name="SettingsActivity__doNothingSwipeRight">Nic nie rób: przesuń w prawo</string>
+
+
+    //SignUpActivity
+    <string name="SignUpActivity__emailAlreadyRegistered">E-mail już zarejestrowany</string>
+    <string name="SignUpActivity__confirmPasswordError">Hasła nie pasują do siebie</string>
+    <string name="SignUpActivity__passwordLengthError">Hasło musi mieć co najmniej 6 znaków</string>
+    <string name="SignUpActivity__invalidEmail">Nieprawidłowy adres e-mail</string>
+    <string name="SignUpActivity__confirmPassword">Wpisz ponownie hasło, aby kontynuować</string>
+    <string name="SignUpActivity__insertPassword">Wprowadź hasło</string>
+    <string name="SignUpActivity__insertEmail">Wprowadź adres e-mail</string>
+    <string name="SignUpActivity__enterName">Wprowadź swoją nazwę użytkownika, aby kontynuować</string>
+
+
+    //SwipeSettingActivity
+    <string name="SwipeSettingActivity__rename">Zmień nazwę</string>
+    <string name="SwipeSettingActivity__checkAndUncheckItem">Zaznacz i odznacz przedmiot</string>
+    <string name="SwipeSettingActivity__changePrice">Zmień cenę</string>
+    <string name="SwipeSettingActivity__changeQuantity">Zmień ilość</string>
+    <string name="SwipeSettingActivity__starAndUnstar">Oznacz i odznacz przedmiot gwiazdką</string>
+    <string name="SwipeSettingActivity__delete">Usuń</string>
+    <string name="SwipeSettingActivity__showOptions">Pokaż opcje</string>
+    <string name="SwipeSettingActivity__doNothing">Nic nie rób</string>
+
+    <string name="SwipeSettingActivity__renameSwipeLeft">Zmień nazwę: przesuń w lewo</string>
+    <string name="SwipeSettingActivity__changePriceSwipeLeft">Zmień cenę: przesuń w lewo
+
+</string>
+    <string name="SwipeSettingActivity__changeQuantitySwipeLeft">Zmień ilość: przesuń w lewo</string>
+    <string name="SwipeSettingActivity__starAndUnstarLeft">Oznacz i odznacz przedmiot: przesuń w lewo</string>
+    <string name="SwipeSettingActivity__deleteSwipeLeft">Usuń: przesuń w lewo</string>
+    <string name="SwipeSettingActivity__checkAndUncheckLeft">Zaznacz i odznacz przedmiot: przesuń w lewo</string>
+    <string name="SwipeSettingActivity__showOptionsSwipeLeft">Pokaż opcje: przesuń w lewo</string>
+    <string name="SwipeSettingActivity__doNothingSwipeLeft">Nic nie rób: przesuń w lewo</string>
+
+    <string name="SwipeSettingActivity__renameSwipeRight">Zmień nazwę: przesuń w prawo</string>
+    <string name="SwipeSettingActivity__changePriceSwipeRight">Zmień cenę: przesuń w prawo</string>
+    <string name="SwipeSettingActivity__changeQuantitySwipeRight">Zmień ilość: przesuń w prawo</string>
+    <string name="SwipeSettingActivity__starAndUnstarRight">Oznacz i odznacz przedmiot: przesuń w prawo</string>
+    <string name="SwipeSettingActivity__deleteSwipeRight">Usuń: przesuń w prawo</string>
+    <string name="SwipeSettingActivity__checkAndUncheckRight">Zaznacz i odznacz przedmiot: przesuń w prawo</string>
+    <string name="SwipeSettingActivity__showOptionsSwipeRight">Pokaż opcje: przesuń w prawo</string>
+    <string name="SwipeSettingActivity__doNothingSwipeRight">Nic nie rób: przesuń w prawo</string>
+
+
+    //UpdateNoteActivity
+    <string name="UpdateNoteActivity__untitled">Bez tytułu</string>
+    <string name="UpdateNoteActivity__deleteNote">Usuń</string>
+    <string name="UpdateNoteActivity__deleteWarning">Tej operacji nie można cofnąć</string>
+    <string name="UpdateNoteActivity__voicePrompt">Słuchanie</string>
+    <string name="UpdateNoteActivity__send_message_via">Wyślij wiadomość przez:</string>
+
+
+    //UserActivity
+    <string name="UserActivity__user">Użytkownik</string>
+    <string name="UserActivity__error">Błąd: </string>
+    <string name="UserActivity__emptyName">Proszę wprowadzić nazwę użytkownika, aby kontynuować</string>
+    <string name="UserActivity__logoutPrompt">Nie możemy się doczekać, aby Cię ponownie powitać!</string>
+    <string name="UserActivity__deleteAccText1">Wszystkie listy i inne dane dla</string>
+    <string name="UserActivity__deleteAccText2">zostaną trwale usunięte z chmury.</string>
+    <string name="UserActivity__accountDeleted">Konto zostało usunięte</string>
+
+
+    //OnboardingActivity
+    <string name="OnboardingActivity__Next">Dalej</string>
+    <string name="OnboardingActivity__Start">Start</string>
+
+    ///////////////////////////////////////////////
+
+
+    Sure, here are the translations to Polish:
+
+    ```xml
+    //activity_about
+    <string name="activity_about__toolbarText">O aplikacji</string>
+    <string name="activity_about__version">Wersja aplikacji</string>
+    <string name="activity_about__privacyPolicy">Polityka prywatności</string>
+    <string name="activity_about__credits">Twórcy</string>
+    <string name="activity_about__open_icon_content_description">Otwórz</string>
+
+    //activity_acknowledgments
+    <string name="activity_acknowledgments__toolbarText">Twórcy</string>
+    <string name="activity_acknowledgments__open_link_content_description">Otwórz link</string>
+
+    //activity_backup
+    <string name="activity_backup__toolbarText">Kopia zapasowa</string>
+    <string name="activity_backup__backupText">Utwórz kopię zapasową</string>
+    <string name="activity_backup__backupDescription">Utwórz kopię zapasową swojej listy zakupów i przywracaj ją w razie potrzeby</string>
+    <string name="activity_backup__restoreText">Przywróć</string>
+    <string name="activity_backup__restoreDescription">Zmieniłeś telefon? Przywróć dane z wcześniej wyeksportowanej kopii zapasowej</string>
+
+    //activity_change_password
+    <string name="activity_change_password__toolbarText">Zmień hasło</string>
+    <string name="activity_change_password__currentPasswordHint">Wpisz obecne hasło</string>
+    <string name="activity_change_password__newPasswordHint">Wpisz nowe hasło</string>
+    <string name="activity_change_password__confirmPasswordHint">Potwierdź nowe hasło</string>
+    <string name="activity_change_password__forgotPasswordText">Zapomniałeś hasła?</string>
+    <string name="activity_change_password__doneBtnText">Gotowe</string>
+
+    //activity_configure_passcode
+    <string name="activity_configure_passcode__toolbarText">Blokada aplikacji</string>
+    <string name="activity_configure_passcode__setPassword">Ustaw hasło</string>
+    <string name="activity_configure_passcode__fingerprintLogin">Logowanie za pomocą odcisku palca</string>
+    <string name="activity_configure_passcode__removeAppLock">Usuń blokadę aplikacji</string>
+
+    //activity_create_note
+    <string name="activity_create_note__toolbarText">Notatki</string>
+    <string name="activity_create_note__titleHint">Tytuł</string>
+    <string name="activity_create_note__descriptionHint">Zanotuj coś</string>
+
+    //activity_cross_setting
+    <string name="activity_cross_setting__toolbarText">Odkreślenie przedmiotów</string>
+    <string name="activity_cross_setting__disableSwitchText">Wyłącz odkreślanie</string>
+    <string name="activity_cross_setting__disableCrossDescription">jeśli włączone, przedmioty zostaną odkreślone po zaznaczeniu</string>
+
+    //activity_detail_list_share_setting
+    <string name="activity_detail_list_share_setting__toolbarText">Udostępnianie szczegółowej listy</string>
+    <string name="activity_detail_list_share_setting__shareWithPrice">Udostępnij z ceną</string>
+    <string name="activity_detail_list_share_setting__shareWithPriceDescription">Dołącz ceny przedmiotów podczas udostępniania</string>
+    <string name="activity_detail_list_share_setting__shareWithQuantity">Udostępnij z ilością</string>
+    <string name="activity_detail_list_share_setting__shareWithQuantityDescription">Dołącz ilość przedmiotów podczas udostępniania</string>
+    <string name="activity_detail_list_share_setting__shareWithTotal">Udostępnij z sumą</string>
+    <string name="activity_detail_list_share_setting__shareWithTotalDescription">Dołącz całkowitą sumę listy podczas udostępniania</string>
+
+    //activity_insert_passcode
+    <string name="activity_insert_passcode__toolbarText">Zaloguj się</string>
+    <string name="activity_insert_passcode__welcomeBack">Witaj ponownie!</string>
+    <string name="activity_insert_passcode__insertPinPrompt">Wprowadź 4-cyfrowy PIN</string>
+    <string name="activity_insert_passcode__loginWithFingerprint">Zaloguj się za pomocą odcisku palca</string>
+    <string name="activity_insert_passcode__loginWithFingerprintDescription">Dotknij ikony odcisku palca, aby kontynuować</string>
+
+    //activity_item
+    <string name="activity_item__total">Suma:</string>
+    <string name="activity_item_eye_icon_content_description">Pokaż sumę</string>
+    <string name="activity_item_FAB">Dodaj przedmiot</string>
+    <string name="activity_item_emptyText">Brak przedmiotów</string>
+
+    //activity_item_suggestion
+    <string name="activity_item_suggestion__toolbarText">Sugestia przedmiotu</string>
+    <string name="activity_item_suggestion__hideSuggestionText">Ukryj sugestię</string>
+    <string name="activity_item_suggestion__hideSuggestionDescription">To wyłącza pokazywanie sugestii podczas pisania.</string>
+
+    //activity_log_in
+    <string name="activity_log_in__loginText">Zaloguj się na swoje konto</string>
+    <string name="activity_log_in__email">E-mail</string>
+    <string name="activity_log_in__password">Hasło</string>
+    <string name="activity_log_in__forgotPassword">Zapomniałeś hasła?</string>
+    <string name="activity_log_in__login">Zaloguj się</string>
+    <string name="activity_log_in__or">-Lub-</string>
+    <string name="activity_log_in__continueWithGoogle">Kontynuuj z Google</string>
+    <string name="activity_log_in__noAccount">Nie masz jeszcze konta?</string>
+    <string name="activity_log_in__signUp">Zarejestruj się</string>
+
+    //activity_payment_successful
+    <string name="activity_payment_successful__header">Dziękujemy za zakup \nBuymate Premium!</string>
+    <string name="activity_payment_successful__header_desc_1">Obecnie korzystasz z pełnych funkcji Buymate\'a!</string>
+    <string name="activity_payment_successful__header_desc_2">Kopia zapasowa &amp; Przywracanie</string>
+    <string name="activity_payment_successful__header_desc_4">Usunięto reklamy</string>
+    <string name="activity_payment_successful__header_desc_5">Wsparcie Buymate</string>
+    <string name="activity_payment_successful__back_btn">Powrót do strony głównej</string>
+
+    //activity_premium
+    <string name="activity_premium__toolbarText">Premium</string>
+    <string name="activity_premium__header">Zakupienie subskrypcji Premium daje Ci dostęp do:</string>
+    <string name="activity_premium__backupText">Kopia zapasowa &amp; Przywracanie</string>
+    <string name="activity_premium__removeAdsText">Usunięcie reklam</string>
+    <string name="activity_premium__supportText">Wsparcie Buymate\'a</string>
+    <string name="activity_premium__sub_header">JEDNORAZOWA OFERTA</string>
+    <string name="activity_premium__payOneTime">Zapłać tylko raz</string>
+    <string name="activity_premium__prev_lifetime_currency_text">0.00</string>
+    <string name="activity_premium__upgrade_btn">Zaktualizuj teraz!</string>
+    <string name="activity_premium__full_star">"\u2606""\u2606""\u2606""\u2606"</string>
+    <string name="activity_premium__tip">Subskrypcja odnawia się automatycznie. Możesz ją anulować w ustawieniach Google Play</string>
+    <string name="activity_premium__no_network_header">Ups, coś poszło nie tak.</string>
+    <string name="activity_premium__no_network_subHeader">To może być problem z siecią lub błąd serwera Google Play. Spróbuj ponownie później. Jeśli problem będzie się powtarzać, skontaktuj się z naszym zespołem wsparcia.</string>
+
+    //activity_recover_password
+    <string name="activity_recover_password__sub_header">Zapomniałeś hasła</string>
+    <string name="activity_recover_password__email_box_parent">E-mail</string>
+    <string name="activity_recover_password__recoverBtn">Przywróć hasło</string>
+    <string name="activity_recover_password__recover_description">Wprowadź swój adres e-mail i kliknij przycisk „Przywróć hasło”. \n\nLink do przywrócenia hasła zostanie wysłany na Twój adres e-mail.</string>
+
+    //activity_settings
+    <string name="activity_settings__toolbarText">Ustawienia</string>
+    <string name="activity_settings__generalHeaderText">Ogólne</string>
+    <string name="activity_settings__themeText">Tryb ciemny</string>
+    <string name="activity_settings__screenText">Zachowaj jasny ekran</string>
+    <string name="activity_settings__textSizeText">Rozmiar tekstu</string>
+    <string name="activity_settings__removeAdsText">Usuń reklamy</string>
+    <string name="activity_settings__removeAdsSubText">Zostań użytkownikiem Premium</string>
+    <string name="activity_settings__advancedHeaderText">Zaawansowane</string>
+    <string name="activity_settings__strikeText">Odkreślanie przedmiotów</string>
+    <string name="activity_settings__disable_price_Text">Pokaż ceny przedmiotów</string>
+    <string name="activity_settings__item_suggestionText">Sugestia przedmiotu</string>
+    <string name="activity_settings__multiplyText">Pomnóż</string>
+    <string name="activity_settings__multiplySubText">(cena x ilość)</string>
+    <string name="activity_settings__swipeActionSubText1">Akcje przesunięcia</string>
+    <string name="activity_settings__detailedListShareTextHeader">Opcje udostępniania</string>
+    <string name="activity_settings__detailedListShareSubText">Dołącz ceny, ilość i sumy</string>
+    <string name="activity_settings__currencyTextHeader">Waluta</string>
+    <string name="activity_settings__currencySubText">Wprowadź symbol preferowanej waluty</string>
+    <string name="activity_settings__securityHeaderText">Bezpieczeństwo</string>
+    <string name="activity_settings__lockText">Blokada aplikacji</string>
+
+    ```xml
+    //activity_signup
+    <string name="activity_signup__sub_header">Utwórz swoje konto</string>
+    <string name="activity_signup__fulname_box_parent">Nazwa użytkownika</string>
+    <string name="activity_signup__email_box_parent">E-mail</string>
+    <string name="activity_signup__password_box_parent">Hasło</string>
+    <string name="activity_signup__confirm_password_box_parent">Potwierdź hasło</string>
+    <string name="activity_signup__signUpBtn">Zarejestruj się</string>
+    <string name="activity_signup__orText">-lub-</string>
+    <string name="activity_signup__googleText">Kontynuuj z Google</string>
+    <string name="activity_signup__loginText1">Masz już konto?</string>
+    <string name="activity_signup__loginText2">Zaloguj się</string>
+
+    //activity_swipe_setting
+    <string name="activity_swipe_setting__swipeToolbar">Akcje przesunięcia</string>
+    <string name="activity_swipe_setting__swipeLeftTextHeader">Przesunięcie w lewo</string>
+    <string name="activity_swipe_setting__swipeRightTextHeader">Przesunięcie w prawo</string>
+    <string name="activity_swipe_setting__customize_button">Dostosuj</string>
+    <string name="activity_swipe_setting__swipeDisableTextHeader">Wyłącz przesuwanie</string>
+    <string name="activity_swipe_setting__swipe_description">Wybierz, co ma się dziać, gdy przedmioty na liście są przesuwane w lewo lub w prawo.\n\nGdy wybrana jest opcja Wyłącz przesuwanie, przedmioty są wyłączone z możliwości przesuwania w lewo lub w prawo.</string>
+
+    //activity_update_note
+    <string name="activity_update_note__update_note_title">Notatki</string>
+    <string name="activity_update_note__update_heading_text">Tytuł</string>
+    <string name="activity_update_note__update_content_text">Zanotuj coś</string>
+
+    //activity_user
+    <string name="activity_user__account_title">Konto</string>
+    <string name="activity_user__edit_nameText">Edytuj nazwę</string>
+    <string name="activity_user__change_passwordText">Zmień hasło</string>
+    <string name="activity_user__logoutText">Wyloguj</string>
+    <string name="activity_user__delete_accountText">Usuń konto</string>
+    <string name="activity_user__userNameUpdated">Nazwa użytkownika zaktualizowana</string>
+
+    //activity_onboarding
+    <string name="activity_onboarding_skip">Pomiń</string>
+    <string name="activity_onboarding_back">Wstecz</string>
+    <string name="activity_onboarding_next">Następny</string>
+
+    //category_title_set_popup
+    <string name="category_title_set_popup__emptyText1">Wpisz nazwę listy</string>
+    <string name="category_title_set_popup__emptyText2">i kliknij <b>Utwórz</b>, gdy skończysz</string>
+    <string name="category_title_set_popup__category_name_hint">Nowa lista</string>
+    <string name="category_title_set_popup__suggestion">Sugestie:</string>
+    <string name="category_title_set_popup__suggestion_option_textView1">Zakupy</string>
+    <string name="category_title_set_popup__suggestion_option_textView2">Artykuły spożywcze</string>
+    <string name="category_title_set_popup__suggestion_option_textView4">Jedzenie</string>
+    <string name="category_title_set_popup__suggestion_option_textView5">Narzędzia</string>
+    <string name="category_title_set_popup__suggestion_option_textView6">Artykuły higieniczne</string>
+    <string name="category_title_set_popup__suggestion_option_textView7">Apteka</string>
+    <string name="category_title_set_popup__suggestion_option_textView8">Wycieczka</string>
+    <string name="category_title_set_popup__fabButton">Utwórz</string>
+
+    //cloud_dialog_popup
+    <string name="cloud_dialog_popup__percent">Tworzenie kopii zapasowej w chmurze</string>
+    <string name="cloud_dialog_popup__info">Proszę czekać, aż kopia zapasowa zostanie utworzona</string>
+
+    //custom_alert_delete_account_dialog
+    <string name="custom_alert_delete_account_dialog__header">Usunąć konto?</string>
+    <string name="custom_alert_delete_account_dialog__delete_account_text">Wszystkie listy i inne dane zostaną trwale usunięte z chmury.</string>
+    <string name="custom_alert_delete_account_dialog__CancelButton">Anuluj</string>
+    <string name="custom_alert_delete_account_dialog__BtnSave">Usuń</string>
+
+    //custom_alert_fingerprint_dialog
+    <string name="custom_alert_fingerprint_dialog__header">Uwaga !!!</string>
+    <string name="custom_alert_fingerprint_dialog__alert_text">Nie możesz używać odcisku palca z tym kontem. Aby włączyć tę funkcję, przejdź do strony ustawień po zalogowaniu.</string>
+    <string name="custom_alert_fingerprint_dialog__okBtn">Rozumiem</string>
+
+    //custom_app_version_dialog
+    <string name="custom_app_version_dialog__version_text1">Wersja: "</string>
+    <string name="custom_app_version_dialog__version_close">Zamknij</string>
+
+    //custom_currency_dialog
+    <string name="custom_currency_dialog__edit_title">Symbol waluty</string>
+    <string name="custom_currency_dialog__desc_currency_hint">Wprowadź symbol</string>
+    <string name="custom_currency_dialog__CurrencyCancelButton">Anuluj</string>
+    <string name="custom_currency_dialog__currencyBtnSave">Gotowe</string>
+
+    //custom_delete_dialog
+    <string name="custom_delete_dialog__cancel_button">Anuluj</string>
+    <string name="custom_delete_dialog__delete_button">Gotowe</string>
+
+    //custom_edit_username_dialog
+    <string name="custom_edit_username_dialog__edit_title">Edytuj nazwę</string>
+    <string name="custom_edit_username_dialog__firstNameBoxHint">Nazwa użytkownika</string>
+    <string name="custom_edit_username_dialog__nameCancelButton">Anuluj</string>
+    <string name="custom_edit_username_dialog__nameBtnSave">Gotowe</string>
+
+    //custom_image_upload_dialog
+    <string name="custom_edit_username_dialog__image_title">Dodaj obraz</string>
+    <string name="custom_edit_username_dialog__takePictureText">Zrób zdjęcie</string>
+    <string name="custom_edit_username_dialog__uploadPictureText">Prześlij obraz</string>
+
+    //custom_image_upload_dialog
+    <string name="custom_image_upload_dialog__header">Uwaga !!!</string>
+    <string name="custom_image_upload_dialog__login_btn">Zaloguj</string>
+    <string name="custom_image_upload_dialog__cancel_btn">Anuluj</string>
+
+    //custom_logout_warning_dialog
+    <string name="custom_logout_warning_dialog__header">Potwierdź wylogowanie</string>
+    <string name="custom_logout_warning_dialog__logout_btn">Wyloguj</string>
+    <string name="custom_logout_warning_dialog__cancel_btn">Anuluj</string>
+
+    //custom_premium_backup_description_dialog
+    <string name="custom_premium_backup_description_dialog__header">Tworzenie kopii zapasowej i przywracanie</string>
+    <string name="custom_premium_backup_description_dialog__sub_header">Utrzymuj swoją listę zakupów w bezpiecznym miejscu i łatwo dostępną dzięki naszemu systemowi kopii zapasowych. Przywracaj ją, kiedy tylko chcesz.</string>
+    <string name="custom_premium_backup_description_dialog__okBtn">Zamknij</string>
+
+    //custom_premium_remove_ads_description_dialog
+    <string name="custom_premium_remove_ads_description_dialog__header">Usuwanie reklam</string>
+    <string name="custom_premium_remove_ads_description_dialog__sub_header">Korzystaj z aplikacji bez reklam, dzięki naszym funkcjom premium.</string>
+    <string name="custom_premium_remove_ads_description_dialog__okBtn">Zamknij</string>
+
+    //custom_premium_support_description_dialog
+    <string name="custom_premium_support_description_dialog_header">Wsparcie dla Buymate\'a</string>
+    <string name="custom_premium_support_description_dialog__sub_header">Wsparcie dla Buymate\'a pozwala nam kontynuować udoskonalanie Twojego doświadczenia z zakupami!</string>
+    <string name="custom_premium_support_description_dialog__okBtn">Zamknij</string>
+
+    ```xml
+    //custom_share_dialog
+    <string name="custom_share_dialog__title">Udostępnij</string>
+    <string name="custom_share_dialog__asText">Udostępnij jako tekst</string>
+    <string name="custom_share_dialog__asPDF">Pobierz jako PDF</string>
+
+    //custom_swipe_action_dialog
+    <string name="custom_swipe_action_dialog__edit_title">Wybierz akcję</string>
+    <string name="custom_swipe_action_dialog__radio_button_rename">Zmień nazwę</string>
+    <string name="custom_swipe_action_dialog__radio_button_check">Zaznacz i odznacz przedmiot</string>
+    <string name="custom_swipe_action_dialog__radio_button_price">Zmień cenę</string>
+    <string name="custom_swipe_action_dialog__radio_button_quantity">Zmień ilość</string>
+    <string name="custom_swipe_action_dialog__radio_button_star">Dodaj i usuń gwiazdkę przedmiotu</string>
+    <string name="custom_swipe_action_dialog__radio_button_delete">Usuń</string>
+    <string name="custom_swipe_action_dialog__radio_button_options">Pokaż opcje</string>
+    <string name="custom_swipe_action_dialog__radio_button_do_nothing">Nie rób nic</string>
+
+    //custom_textsize_dialog
+    <string name="custom_textsize_dialog__radio_button_small">Mały</string>
+    <string name="custom_textsize_dialog__radio_button_medium">Średni" "(domyślnie)</string>
+    <string name="custom_textsize_dialog__radio_button_large">Duży</string>
+
+    //edit_category_layout
+    <string name="edit_category_layout__renameText">Zmień nazwę</string>
+    <string name="edit_category_layout__duplicateText">Zduplikuj listę</string>
+    <string name="edit_category_layout__shareText">Udostępnij listę</string>
+    <string name="edit_category_layout__alarmText">Ustaw alarm</string>
+    <string name="edit_category_layout__deleteText">Usuń</string>
+
+    //edit_item_layout
+    <string name="edit_item_layout__addImage_text">Dodaj obraz</string>
+    <string name="edit_item_layout__rename_text">Zmień nazwę</string>
+    <string name="edit_item_layout__price_text">Zmień cenę</string>
+    <string name="edit_item_layout__quantity_text">Zmień ilość</string>
+    <string name="edit_item_layout__copy_text">Kopiuj</string>
+    <string name="edit_item_layout__move_text">Przenieś</string>
+    <string name="edit_item_layout__favourites_text_1">Dodaj do ulubionych</string>
+    <string name="edit_item_layout__delete_text">Usuń</string>
+    <string name="edit_item_layout__information_text">Szczegóły</string>
+
+    //fragment_favourites
+    <string name="fragment_favourites_toolbar_title">Ulubione</string>
+    <string name="fragment_favourites_illustration_text_1">Brak elementów w ulubionych</string>
+    <string name="fragment_favourites_illustration_text_2">Dodaj gwiazdki do elementów, które chcesz</string>
+    <string name="fragment_favourites_illustration_text_3">łatwo znaleźć później</string>
+    <string name="fragment_favourites_subtotal">Suma:</string>
+    <string name="fragment_favourites_addItem_fav_fab">Dodaj element</string>
+
+    //fragment_home
+    <string name="fragment_home_toolbar_text_2">Co dzisiaj kupujemy?</string>
+    <string name="fragment_home_search_view_hint">Szukaj</string>
+    <string name="fragment_home_page_description_text">Kategorie</string>
+    <string name="fragment_home_sort_by_text">Sortuj według</string>
+    <string name="fragment_home_noList_text_1">Zacznijmy</string>
+    <string name="fragment_home_noList_text_2">Kliknij przycisk + poniżej,</string>
+    <string name="fragment_home_noList_text_3">aby utworzyć nową listę</string>
+    <string name="fragment_home_empty_create_btn">Nowa lista</string>
+
+    //fragment_more
+    <string name="fragment_more_settingToolbar">Menu</string>
+    <string name="fragment_more_premiumText">Wypróbuj Buymate Premium</string>
+    <string name="fragment_more_premiumText2">Usuń reklamy i korzystaj z więcej funkcji</string>
+    <string name="fragment_more_accountText">Konto</string>
+    <string name="fragment_more_messageText">Napisz do nas</string>
+    <string name="fragment_more_backupText">Kopia zapasowa</string>
+    <string name="fragment_more_premiumText_2">Premium</string>
+    <string name="fragment_more_websiteText">Strona internetowa</string>
+    <string name="fragment_more_shareText">Udostępnij</string>
+    <string name="fragment_more_RateText">Czy podoba Ci się aplikacja?</string>
+    <string name="fragment_more_RateText2">Oceń nas "\u2606""\u2606""\u2606""\u2606""\u2606" w Google Play</string>
+    <string name="fragment_more_twitterText">Śledź nas na Twitterze</string>
+    <string name="fragment_more_settingText">Ustawienia</string>
+    <string name="fragment_more_aboutText">O nas</string>
+
+    //fragment_notes
+    <string name="fragment_notes_toolbar_title">Notatki</string>
+    <string name="fragment_notes_illustration_text_1">Brak notatek</string>
+    <string name="fragment_notes_illustration_text_2">Dodaj notatki, aby ułatwić sobie</string>
+    <string name="fragment_notes_illustration_text_3">zakupy</string>
+    <string name="fragment_notes_search_View">Szukaj na liście</string>
+
+    //info_item_layout
+    <string name="info_layout_price_text">Cena:</string>
+    <string name="info_layout_quantity_text">Ilość:</string>
+    <string name="info_layout_subTotal_text">Suma częściowa:</string>
+
+    //move_bottom_layout
+    <string name="move_bottom_layout_search_bar">Szukaj</string>
+    <string name="move_bottom_layout_new_list_button">Utwórz nową listę</string>
+    <string name="move_bottom_layout_emptyTEXT1">Brak elementów</string>
+
+    //no_connection_layout
+    <string name="no_connection_layout_no_connection_text_1">Brak połączenia</string>
+    <string name="no_connection_layout_no_connection_text_2">Nie znaleziono połączenia z internetem. Sprawdź</string>
+    <string name="no_connection_layout_no_connection_text_3">swoje połączenie lub spróbuj ponownie.</string>
+    <string name="no_connection_layout_try_again">Spróbuj ponownie</string>
+
+    //price_update_popup
+    <string name="price_update_price_name">Wprowadź cenę</string>
+
+    //quantity_set_popup
+    <string name="quantity_set_popup_quantity_name">Wprowadź ilość</string>
+    <string name="quantity_set_popup_unit_hint">Jednostka</string>
+    <string name="quantity_set_popup_quantity_btnSave">Gotowe</string>
+
+    //set_password_layout
+    <string name="set_password_layout_header">Utwórz nowe hasło</string>
+    <string name="set_password_layout_sub_header">Ustaw swój 4-cyfrowy kod PIN, aby mieć dostęp do BuyMate\'a</string>
+
+
+
+    //set_theme_layout
+    <string name="set_theme_layout_title">Tryb ciemny</string>
+    <string name="set_theme_layout_radio_button_default">Użyj systemu</string>
+    <string name="set_theme_layout_radio_button_off">Wyłącz</string>
+    <string name="set_theme_layout_radio_button_on">Włącz</string>
+    <string name="set_theme_layout_dimSwitch">Ściemnianie</string>
+
+    //shopbottomlayout
+    <string name="shopbottomlayout_desc_name">Nazwa przedmiotu</string>
+    <string name="shopbottomlayout_more_text">Więcej</string>
+    <string name="shopbottomlayout_desc_price">Cena</string>
+    <string name="shopbottomlayout_desc_quantity">Ilość</string>
+    <string name="shopbottomlayout_unit_textView">Jednostka</string>
+    <string name="shopbottomlayout_CancelButton">Anuluj</string>
+    <string name="shopbottomlayout_BtnSave">Gotowe</string>
+    <string name="shop_bottom_layout_illustration_text_1">Już prawie gotowe!</string>
+    <string name="shop_bottom_layout_illustration_text_2">Dodaj przedmiot do listy</string>
+
+    //shopping_widget_provider
+    <string name="shopping_widget_provider_category_text_view">------</string>
+
+    //shopping_widget_provider_configure
+    <string name="shopping_widget_provider_configure_configureToolbar">Wybierz listę</string>
+    <string name="shopping_widget_provider_configure_configureCreateButton">Utwórz nową listę</string>
+
+    //sort_category_layout
+    <string name="sort_bottom_layout_title_text">Sortuj według:</string>
+    <string name="sort_bottom_layout_name_text">Nazwa</string>
+    <string name="sort_bottom_layout_date_text">Data utworzenia</string>
+    <string name="sort_bottom_layout_price_text">Cena</string>
+    <string name="sort_bottom_layout_quantity_text">Ilość</string>
+
+    //success_dialog_popup
+    <string name="success_dialog_popup_illustration_text_1">Gratulacje!</string>
+    <string name="success_dialog_popup_illustration_text_2">Twoja pierwsza lista jest gotowa!</string>
+    <string name="success_dialog_popup_button_text">Rozumiem</string>
+
+    //update_category_name_layout
+    <string name="update_category_name_layout_header_text">Zmień nazwę</string>
+    <string name="update_category_name_textBox_hint">Nazwa listy</string>
+    <string name="update_category_name_layout_button_text">Zapisz</string>
+
+    //update_item_name_layout
+    <string name="update_item_name_layout_header_text">Zmień nazwę</string>
+    <string name="update_item_name_textBox_hint">Nazwa przedmiotu</string>
+    <string name="update_item_name_layout_button_text">Zapisz</string>
+
+    //upgrade_required_layout
+    <string name="upgrade_required_layout_upgrade_text_1">Wymagana aktualizacja</string>
+    <string name="upgrade_required_layout_upgrade_text_2">Zaktualizuj do subskrypcji na całe życie Buymate, aby korzystać z tej i innych funkcji!</string>
+    <string name="upgrade_required_layout_upgradeBtn">Aktualizuj</string>
+    <string name="upgrade_required_layout_cancelButton">Anuluj</string>
+
+    //voice_typing_layout
+    <string name="voice_typing_layout_Heading">Dodaj do listy</string>
+    <string name="voice_typing_layout_description">Nazwa przedmiotu</string>
+    <string name="voice_typing_cancelButton">Anuluj</string>
+    <string name="voice_typing_addBtn">Dodaj</string>
+
+    <string-array name="units">
+        <item>oz</item>
+        <item>lb</item>
+        <item>gal</item>
+        <item>qt</item>
+        <item>pkg</item>
+        <item>can</item>
+        <item>pack</item>
+        <item>box</item>
+        <item>piece</item>
+        <item>bag</item>
+    </string-array>
+
+    <string-array name="currency">
+        <item>"\u0024"</item>
+        <item>"\u20A6"</item>
+        <item>"\u20AC"</item>
+        <item>"\u00A5"</item>
+        <item>"\u00A3"</item>
+    </string-array>
+
+    <string-array name="item_suggestions" tools:ignore="InconsistentArrays">
+        <!-- Dodaj więcej elementów w miarę potrzeby -->
+    </string-array>
+
+
+    ```xml
+    //bottom_bar_menu
+    <string name="bottom_bar_home_text">Strona główna</string>
+    <string name="bottom_bar_favourites_text">Ulubione</string>
+    <string name="bottom_bar_notes_text">Notatki</string>
+    <string name="bottom_bar_more_text">Menu</string>
+
+    //category_toolbar_hold_menu
+    <string name="category_toolbar_mark_text">Zaznacz wszystko</string>
+    <string name="category_toolbar_delete_text">Usuń</string>
+
+    //category_toolbar_menu
+    <string name="category_toolbar_setting_text">Ustawienia</string>
+
+    //favourites_toolbar_hold_menu
+    <string name="favourites_toolbar_hold_menu_mark_text">Zaznacz wszystko</string>
+    <string name="favourites_toolbar_hold_menu_delete_text">Usuń</string>
+    <string name="favourites_toolbar_hold_menu_unStar_text">Usuń gwiazdkę</string>
+
+    //favourites_toolbar_menu
+    <string name="favourites_toolbar_share_text">Udostępnij</string>
+    <string name="favourites_toolbar_voice_text">Wpis głosowy</string>
+    <string name="favourites_toolbar_sort_text">Sortuj według</string>
+    <string name="favourites_toolbar_check_text">Zaznacz wszystko</string>
+    <string name="favourites_toolbar_unCheck_text">Odznacz wszystko</string>
+
+    //item_toolbar_hold_menu
+    <string name="item_toolbar_hold_menu_mark_text">Zaznacz wszystko</string>
+    <string name="item_toolbar_hold_menu_delete_text">Usuń</string>
+    <string name="item_toolbar_hold_menu_copy_text">Kopiuj</string>
+    <string name="item_toolbar_hold_menu_move_text">Przenieś</string>
+    <string name="item_toolbar_hold_menu_star_text">Dodaj gwiazdkę</string>
+    <string name="item_toolbar_hold_menu_unStar_text">Usuń gwiazdkę</string>
+
+    //item_toolbar_menu
+    <string name="item_toolbar_menu_search_text">Szukaj</string>
+    <string name="item_toolbar_menu_voice_text">Wpis głosowy</string>
+    <string name="item_toolbar_menu_rename_text">Zmień nazwę listy</string>
+    <string name="item_toolbar_menu_share_text">Udostępnij</string>
+    <string name="item_toolbar_menu_sort_text">Sortuj według</string>
+    <string name="item_toolbar_menu_check_text">Zaznacz wszystko</string>
+    <string name="item_toolbar_menu_unCheck_text">Odznacz wszystko</string>
+    <string name="item_toolbar_menu_reminder_text">Ustaw przypomnienie</string>
+
+    //nav_menu
+    <string name="nav_home_text">Strona główna</string>
+    <string name="nav_premium_text">Premium</string>
+    <string name="nav_reminder_text">Ustaw przypomnienie</string>
+    <string name="nav_extras_text">Dodatkowe opcje</string>
+    <string name="nav_rate_text">Oceń aplikację</string>
+    <string name="nav_message_text">Napisz do nas</string>
+    <string name="nav_settings_text">Ustawienia</string>
+    <string name="nav_about_text">O aplikacji</string>
+
+    //note_toolbar_create_menu
+    <string name="note_toolbar_create_menu_voice_text">Wpis głosowy</string>
+    <string name="note_toolbar_create_menu_save_text">Zapisz</string>
+    <string name="note_toolbar_create_menu_share_text">Udostępnij</string>
+    <string name="note_toolbar_create_menu_delete_text">Usuń</string>
+
+    //note_toolbar_hold_menu
+    <string name="note_toolbar_hold_menu_mark_text">Zaznacz wszystko</string>
+    <string name="note_toolbar_hold_menu_delete_text">Usuń</string>
+
+    //note_toolbar_menu
+    <string name="note_toolbar_menu_share_text">Udostępnij</string>
+    <string name="note_toolbar_menu_voice_text">Wpis głosowy</string>
+    <string name="note_toolbar_menu_save_text">Zapisz</string>
+    <string name="note_toolbar_menu_delete_text">Usuń</string>
+
+
+</resources>

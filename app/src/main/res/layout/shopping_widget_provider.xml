@@ -37,7 +37,7 @@
                     android:maxLines="1"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:textColor="#026EAA"/>
+                    android:textColor="#026EAA" />
 
 
                 <TextView
@@ -48,7 +48,7 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:textColor="#858E93"
-                    android:textSize="14sp"/>
+                    android:textSize="14sp" />
             </LinearLayout>
 
 
@@ -66,6 +66,7 @@
                     android:layout_marginHorizontal="15dp"
                     android:src="@drawable/final_regular_sync_icon"
                     android:importantForAccessibility="no" />
+
                 <ImageView
                     android:id="@+id/widget_add_icon"
                     android:layout_width="23dp"
@@ -85,7 +86,7 @@
                 android:id="@+id/item_widget_stack_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"/>
+                android:background="@color/white" />
 
             <ImageView
                 android:id="@+id/item_widget_empty_view"
@@ -126,7 +127,6 @@
         </LinearLayout>
 
     </LinearLayout>
-
 
 
 </LinearLayout>
