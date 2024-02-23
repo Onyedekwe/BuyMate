@@ -121,7 +121,6 @@
     <string name="HomeFragment__osVersion">إصدار النظام: </string>
     <string name="HomeFragment__sdkVersion">إصدار SDK: </string>
     <string name="HomeFragment__mailTo">إرسال إلى:</string>
-    <string name="HomeFragment__mailError">لم يتم العثور على عميل بريد إلكتروني</string>
     <string name="HomeFragment__navigation_drawer_open">افتح لوحة التنقل</string>
     <string name="HomeFragment__navigation_drawer_close">أغلق لوحة التنقل</string>
     <string name="HomeFragment__defaultName">المستخدم</string>
@@ -152,7 +151,7 @@
     <string name="HomeFragment__no_list">لا توجد قوائم</string>
     <string name="HomeFragment__list_exist_already">هذه القائمة موجودة بالفعل</string>
     <string name="HomeFragment__no_alarm_app">لا توجد تطبيقات للتنبيه بهذا الإجراء</string>
-
+    <string name="HomeFragment__send_email_via">إرسال بريد إلكتروني عبر…</string>
 
     //InsertPasscodeActivity
     <string name="InsertPasscodeActivity__success">نجاح</string>
@@ -230,7 +229,7 @@
     <string name="MoreFragment__login">تسجيل الدخول</string>
     <string name="MoreFragment__premiumText1">تهانينا!</string>
     <string name="MoreFragment__premiumText2">أنت تستمتع بنسخة Buymate Premium</string>
-
+    <string name="MoreFragment__send_email_via">إرسال بريد إلكتروني عبر...</string>
 
     //NotesFragment
     <string name="NotesFragment__multipleDelete">حذف هذه الملاحظات</string>
@@ -804,6 +803,14 @@
     <string name="voice_typing_layout_description">اسم العنصر</string>
     <string name="voice_typing_cancelButton">إلغاء</string>
     <string name="voice_typing_addBtn">إضافة</string>
+
+
+    <string name="custom_rate_us_dialog_sub_header">كيف تقيم تجربتك مع التطبيق؟</string>
+    <string name="custom_rate_us_dialog_rateBtn">إرسال</string>
+    <string name="custom_rate_us_dialog_cancelBtn">لا، شكرًا</string>
+    <string name="custom_rate_us_dialog_emptyRate">يرجى تحديد تقييم</string>
+    ```
+
 
     ```xml
     <string-array name="units">

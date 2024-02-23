@@ -2,14 +2,26 @@ package com.hemerick.buymate;
 
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.transition.Explode;
+import android.util.TypedValue;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,7 +31,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
 import com.hemerick.buymate.Database.UserSettings;
 
@@ -31,6 +49,10 @@ public class HomeActivity extends AppCompatActivity {
     private UserSettings settings;
 
     private BottomNavigationView bottomNavigationView;
+
+
+    AdView adView;
+
 
 
     @Override
@@ -112,6 +134,35 @@ public class HomeActivity extends AppCompatActivity {
         fragmentTransaction.add(R.id.framelayoutContainer, new HomeFragment());
         fragmentTransaction.commit();
 
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
+
+            }
+        });
+
+        adView = findViewById(R.id.adView);
+
+        if(!settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)){
+            AdRequest adRequest = new AdRequest.Builder().build();
+            SharedPreferences preferences = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
+            long installDateMillis = preferences.getLong(UserSettings.KEY_INSTALL_DATE, 0);
+
+            if(installDateMillis == 0){
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putLong(UserSettings.KEY_INSTALL_DATE, System.currentTimeMillis());
+                editor.apply();
+            }else{
+                long currentTimeMillis = System.currentTimeMillis();
+                long elapsedTimeMillis = currentTimeMillis - installDateMillis;
+                if(elapsedTimeMillis >= UserSettings.SEVEN_DAYS_IN_MILLIS){
+                    adView.setVisibility(View.VISIBLE);
+                    adView.loadAd(adRequest);
+                }
+            }
+        }
+
+
 
     }
 
@@ -163,6 +214,9 @@ public class HomeActivity extends AppCompatActivity {
         String textSize = sharedPreferences.getString(UserSettings.CUSTOM_TEXT_SIZE, UserSettings.TEXT_MEDIUM);
         settings.setCustomTextSize(textSize);
 
+        String lifetime = sharedPreferences.getString(UserSettings.IS_LIFETIME_PURCHASED, UserSettings.NO_LIFETIME_NOT_SUBSCRIBED);
+        settings.setIsLifetimePurchased(lifetime);
+
         updateView();
     }
 
@@ -189,6 +243,8 @@ public class HomeActivity extends AppCompatActivity {
             if (!wakeLock.isHeld()) {
                 wakeLock.acquire();
             }
+
+
         }
 
 
@@ -206,6 +262,27 @@ public class HomeActivity extends AppCompatActivity {
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
             bottomNavigationView.setItemTextAppearanceActive(androidx.appcompat.R.style.Base_TextAppearance_AppCompat_Medium);
         }
+
+
+        SharedPreferences sharedPreference = getSharedPreferences(UserSettings.PREFERENCES, MODE_PRIVATE);
+
+        long launchTime = sharedPreference.getLong("LaunchTime", 0);
+        if (launchTime == 0) {
+            launchTime = System.currentTimeMillis();
+            SharedPreferences.Editor editor = sharedPreference.edit();
+            editor.putLong("LaunchTime", launchTime);
+            editor.apply();
+        }
+
+        long currentTime = System.currentTimeMillis();
+        long timeDifference = currentTime - launchTime;
+
+        long daysDifference = timeDifference / (1000 * 60 * 60 * 24);
+
+        if (daysDifference >= 7) {
+            showRatingDialog();
+        }
+
 
         if (fragment instanceof NotesFragment) {
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -233,6 +310,69 @@ public class HomeActivity extends AppCompatActivity {
 
 
     }
+
+
+    public void showRatingDialog() {
+
+        Dialog rate_dialog = new Dialog(this);
+        rate_dialog.setContentView(R.layout.custom_rate_us_dialog);
+        rate_dialog.setCancelable(false);
+        rate_dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
+        rate_dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        RatingBar ratingBar = rate_dialog.findViewById(R.id.ratingBar);
+        TextView sub_header = rate_dialog.findViewById(R.id.sub_header);
+        Button submitBtn = rate_dialog.findViewById(R.id.rateBtn);
+        Button cancelBtn = rate_dialog.findViewById(R.id.cancelBtn);
+
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
+            sub_header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            submitBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            cancelBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+        }
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
+            sub_header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            submitBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            cancelBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+        }
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
+            sub_header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            submitBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            cancelBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+        }
+
+        submitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                float rating = ratingBar.getRating();
+                if (rating > 0) {
+                    try {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
+                    } catch (ActivityNotFoundException e) {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_link))));
+                    }
+
+                } else {
+                    Toast.makeText(HomeActivity.this, getString(R.string.custom_rate_us_dialog_emptyRate), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rate_dialog.dismiss();
+            }
+        });
+
+        rate_dialog.show();
+
+
+    }
+
 
     @Override
     public void onBackPressed() {

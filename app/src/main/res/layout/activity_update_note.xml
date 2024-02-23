@@ -18,6 +18,16 @@
         app:title="@string/activity_update_note__update_note_title"
         android:textColor="?attr/textFillColor" />
 
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/backgroundColor"
+        app:adSize="BANNER"
+        android:visibility="gone"
+        app:adUnitId="ca-app-pub-3940256099942544/6300978111">
+    </com.google.android.gms.ads.AdView>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

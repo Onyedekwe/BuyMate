@@ -134,7 +134,6 @@
     <string name="HomeFragment__osVersion">Wersja systemu operacyjnego: </string>
     <string name="HomeFragment__sdkVersion">Wersja SDK: </string>
     <string name="HomeFragment__mailTo">Wyślij wiadomość do:</string>
-    <string name="HomeFragment__mailError">Nie znaleziono klienta poczty e-mail</string>
     <string name="HomeFragment__navigation_drawer_open">Otwórz szufladę nawigacyjną</string>
     <string name="HomeFragment__navigation_drawer_close">Zamknij szufladę nawigacyjną</string>
     <string name="HomeFragment__defaultName">Użytkowniku</string>
@@ -165,6 +164,7 @@
     <string name="HomeFragment__no_list">Brak listy</string>
     <string name="HomeFragment__list_exist_already">Ta lista już istnieje</string>
     <string name="HomeFragment__no_alarm_app">Brak aplikacji do wykonania tej akcji</string>
+    <string name="HomeFragment__send_email_via">Wyślij e-mail przez…</string>
 
     //InsertPasscodeActivity
     <string name="InsertPasscodeActivity__success">Sukces</string>
@@ -242,7 +242,7 @@
     <string name="MoreFragment__login">Zaloguj się</string>
     <string name="MoreFragment__premiumText1">Gratulacje!</string>
     <string name="MoreFragment__premiumText2">Korzystasz z wersji Premium aplikacji Buymate</string>
-
+    <string name="MoreFragment__send_email_via">Wyślij e-mail przez…</string>
 
     //NotesFragment
     <string name="NotesFragment__multipleDelete">Usuń te notatki</string>
@@ -786,6 +786,13 @@ Usuń tę notatkę</string>
     <string name="voice_typing_cancelButton">Anuluj</string>
     <string name="voice_typing_addBtn">Dodaj</string>
 
+
+    <string name="custom_rate_us_dialog_sub_header">Jak oceniasz nasze doświadczenie z aplikacją?</string>
+    <string name="custom_rate_us_dialog_rateBtn">Prześlij</string>
+    <string name="custom_rate_us_dialog_cancelBtn">Nie, dziękuję</string>
+    <string name="custom_rate_us_dialog_emptyRate">Proszę wybrać ocenę</string>
+    ```
+
     <string-array name="units">
         <item>oz</item>
         <item>lb</item>
@@ -807,9 +814,106 @@ Usuń tę notatkę</string>
         <item>"\u00A3"</item>
     </string-array>
 
+    Here's the translation to Polish:
+
+    ```xml
     <string-array name="item_suggestions" tools:ignore="InconsistentArrays">
-        <!-- Dodaj więcej elementów w miarę potrzeby -->
+        <item>Jabłka</item>
+        <item>Banany</item>
+        <item>Pomarańcze</item>
+        <item>Winogrona</item>
+        <item>Mięso</item>
+        <item>Truskawki</item>
+        <item>Jagody</item>
+        <item>Ananasy</item>
+        <item>Mango</item>
+        <item>Brzoskwinie</item>
+        <item>Śliwki</item>
+        <item>Warzywa</item>
+        <item>Marchewki</item>
+        <item>Brokuły</item>
+        <item>Pomidory</item>
+        <item>Ogórki</item>
+        <item>Szpinak</item>
+        <item>Fasolka szparagowa</item>
+        <item>Papryka</item>
+        <item>Cukinia</item>
+        <item>Kalafior</item>
+        <item>Jedzenie</item>
+        <item>Chleb</item>
+        <item>Mleko</item>
+        <item>Jajka</item>
+        <item>Płatki śniadaniowe</item>
+        <item>Makaron</item>
+        <item>Ryż</item>
+        <item>Kurczak</item>
+        <item>Wołowina</item>
+        <item>Ryba</item>
+        <item>Narzędzia</item>
+        <item>Nóż</item>
+        <item>Drewniana deska do krojenia</item>
+        <item>Obieraczka do ziemniaków</item>
+        <item>Otwieracz do puszek</item>
+        <item>Łyżki miarowe</item>
+        <item>Kubki miarowe</item>
+        <item>Miski do mieszania</item>
+        <item>Brytfanny</item>
+        <item>Trzepaczka</item>
+        <item>Sprzęt do sprzątania</item>
+        <item>Miotła</item>
+        <item>Wiadro</item>
+        <item>Płyn do mycia naczyń</item>
+        <item>Worki na śmieci</item>
+        <item>Gąbki</item>
+        <item>Odkurzacz</item>
+        <item>Sprzęt do ubijania</item>
+        <item>Mikser</item>
+        <item>Mikserek</item>
+        <item>Mikser ręczny</item>
+        <item>Sokowirówka</item>
+        <item>Pasta do zębów</item>
+        <item>Szampon</item>
+        <item>Odżywka</item>
+        <item>Czekolada</item>
+        <item>Mydło</item>
+        <item>Balsam</item>
+        <item>Brzytwa</item>
+        <item>Dezodorant</item>
+        <item>Płyn do prania</item>
+        <item>Płyn do zmywania naczyń</item>
+        <item>Worki na śmieci</item>
+        <item>Wybielacz</item>
+        <item>Ręczniki papierowe</item>
+        <item>Papier toaletowy</item>
+        <item>Kawa</item>
+        <item>Herbata</item>
+        <item>Cukier</item>
+        <item>Mąka</item>
+        <item>Olej kuchenny</item>
+        <item>Przyprawy</item>
+        <item>Zupa w puszce</item>
+        <item>Mrożone warzywa</item>
+        <item>Lody</item>
+        <item>Ciastka</item>
+        <item>Chipsy</item>
+        <item>Napój gazowany</item>
+        <item>Woda</item>
+        <item>Piwo</item>
+        <item>Wino</item>
+        <item>Przekąski</item>
+        <item>Świece</item>
+        <item>Żarówki</item>
+        <item>Pojemniki na przechowywanie w garażu</item>
+        <item>Artykuły biurowe</item>
+        <item>Karma dla zwierząt domowych</item>
+        <item>Żwir dla kota</item>
+        <item>Zestaw pierwszej pomocy</item>
+        <item>Baterie</item>
+        <item>Nawóz do roślin</item>
+        <item>Ramki na zdjęcia</item>
+        <item>Karty podarunkowe</item>
     </string-array>
+    ```
 
 
     ```xml

@@ -120,7 +120,6 @@
     <string name="HomeFragment__osVersion">Betriebssystemversion: </string>
     <string name="HomeFragment__sdkVersion">SDK-Version: </string>
     <string name="HomeFragment__mailTo">Mail an:</string>
-    <string name="HomeFragment__mailError">Kein E-Mail-Client gefunden</string>
     <string name="HomeFragment__navigation_drawer_open">Navigationsmenü öffnen</string>
     <string name="HomeFragment__navigation_drawer_close">Navigationsmenü schließen</string>
     <string name="HomeFragment__defaultName">Benutzer</string>
@@ -151,7 +150,7 @@
     <string name="HomeFragment__no_list">Keine Liste</string>
     <string name="HomeFragment__list_exist_already">Diese Liste existiert bereits</string>
     <string name="HomeFragment__no_alarm_app">Keine App zum Ausführen dieser Aktion gefunden</string>
-
+    <string name="HomeFragment__send_email_via">E-Mail senden über…</string>
 
     <string name="InsertPasscodeActivity__success">Erfolg</string>
     <string name="InsertPasscodeActivity__wrongPin">Falsche PIN</string>
@@ -222,6 +221,7 @@
     <string name="MoreFragment__login">Anmelden</string>
     <string name="MoreFragment__premiumText1">Herzlichen Glückwunsch!</string>
     <string name="MoreFragment__premiumText2">Sie genießen die Premium-Version von Buymate</string>
+    <string name="MoreFragment__send_email_via">E-Mail senden über…</string>
 
     <string name="NotesFragment__multipleDelete">Diese Notizen löschen</string>
     <string name="NotesFragment__singleDelete">Diese Notiz löschen</string>
@@ -773,6 +773,14 @@
     <string name="voice_typing_layout_description">Elementname</string>
     <string name="voice_typing_cancelButton">Abbrechen</string>
     <string name="voice_typing_addBtn">Hinzufügen</string>
+
+
+
+    <string name="custom_rate_us_dialog_sub_header">Wie würden Sie Ihre Erfahrung mit unserer App bewerten?</string>
+    <string name="custom_rate_us_dialog_rateBtn">Absenden</string>
+    <string name="custom_rate_us_dialog_cancelBtn">Nein, danke</string>
+    <string name="custom_rate_us_dialog_emptyRate">Bitte wählen Sie eine Bewertung aus</string>
+    ```
 
 
     <string-array name="units">

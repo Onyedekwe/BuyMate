@@ -72,6 +72,7 @@
         android:layout_marginBottom="24.5dp"
         android:background="@android:color/transparent"
         android:text="@string/activity_onboarding_back"
+        android:visibility="invisible"
         android:fontFamily="@font/lexend"
         android:textAllCaps="false"
         android:textColor="?attr/textFillColor"

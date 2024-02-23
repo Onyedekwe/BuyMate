@@ -30,6 +30,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.hemerick.buymate.Database.ShopDatabase;
 import com.hemerick.buymate.Database.UserSettings;
 
@@ -53,6 +58,8 @@ public class UpdateNoteActivity extends AppCompatActivity {
     ArrayList<String> itemCheck;
     LinearLayout full_layout;
     ShopDatabase db;
+
+    AdView adView;
 
     private UserSettings settings;
     private PowerManager.WakeLock wakeLock;
@@ -211,6 +218,35 @@ public class UpdateNoteActivity extends AppCompatActivity {
             }
         });
         loadSharedPreferences();
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
+
+            }
+        });
+
+        adView = findViewById(R.id.adView);
+        if(!settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)){
+            AdRequest adRequest = new AdRequest.Builder().build();
+
+            SharedPreferences preferences = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
+            long installDateMillis = preferences.getLong(UserSettings.KEY_INSTALL_DATE, 0);
+
+            if(installDateMillis == 0){
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putLong(UserSettings.KEY_INSTALL_DATE, System.currentTimeMillis());
+                editor.apply();
+            }else{
+                long currentTimeMillis = System.currentTimeMillis();
+                long elapsedTimeMillis = currentTimeMillis - installDateMillis;
+                if(elapsedTimeMillis >= UserSettings.SEVEN_DAYS_IN_MILLIS){
+                    adView.setVisibility(View.VISIBLE);
+                    adView.loadAd(adRequest);
+                }
+            }
+        }
+
+
     }
 
     @Override
@@ -490,6 +526,9 @@ public class UpdateNoteActivity extends AppCompatActivity {
 
         String textSize = sharedPreferences.getString(UserSettings.CUSTOM_TEXT_SIZE, UserSettings.TEXT_MEDIUM);
         settings.setCustomTextSize(textSize);
+
+        String lifetime = sharedPreferences.getString(UserSettings.IS_LIFETIME_PURCHASED, UserSettings.NO_LIFETIME_NOT_SUBSCRIBED);
+        settings.setIsLifetimePurchased(lifetime);
 
         updateView();
     }

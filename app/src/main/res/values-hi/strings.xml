@@ -25,7 +25,7 @@
 
     //Firebase
     <string name="Firebase__backup_text_heading">बादल में बैकअप किया जा रहा है</string>
-    <string name="Firebase__backup_text_subheading">कृपया प्रतीक्षा करें...</string>
+    <string name="Firebase__backup_text_subheading">कृपया प्रतीक्षा करें…</string>
     <string name="Firebase__backup_successful">बैकअप सफल</string>
     <string name="Firebase__restore_text_heading">बादल से डेटा पुनर्स्थापित किया जा रहा है</string>
     <string name="Firebase__restore_text_subheading">कृपया प्रतीक्षा करें...</string>
@@ -135,7 +135,6 @@
     <string name="HomeFragment__osVersion">ओएस संस्करण: </string>
     <string name="HomeFragment__sdkVersion">एसडीके संस्करण: </string>
     <string name="HomeFragment__mailTo">को भेजें:</string>
-    <string name="HomeFragment__mailError">कोई ईमेल क्लाइंट नहीं मिला</string>
     <string name="HomeFragment__navigation_drawer_open">नेविगेशन ड्रायर खोलें</string>
     <string name="HomeFragment__navigation_drawer_close">नेविगेशन ड्रायर बंद करें</string>
     <string name="HomeFragment__defaultName">उपयोगकर्ता</string>
@@ -166,7 +165,7 @@
     <string name="HomeFragment__no_list">कोई सूची नहीं</string>
     <string name="HomeFragment__list_exist_already">यह सूची पहले से मौजूद है</string>
     <string name="HomeFragment__no_alarm_app">इस क्रिया को पूरा करने के लिए कोई ऐप नहीं है</string>
-
+    <string name="HomeFragment__send_email_via">ईमेल भेजें ज़रिए…</string>
 
     // InsertPasscodeActivity
     <string name="InsertPasscodeActivity__success">सफलता</string>
@@ -249,7 +248,7 @@
     <string name="MoreFragment__login">लॉगिन</string>
     <string name="MoreFragment__premiumText1">बधाई हो!</string>
     <string name="MoreFragment__premiumText2">आप Buymate का प्रीमियम संस्करण आनंदित कर रहे हैं</string>
-
+    <string name="MoreFragment__send_email_via">ईमेल भेजें ज़रिए…</string>
 
     // NotesFragment
     <string name="NotesFragment__multipleDelete">इन नोट्स को हटाएं</string>
@@ -797,6 +796,15 @@
     <string name="voice_typing_layout_description">आइटम का नाम</string>
     <string name="voice_typing_cancelButton">रद्द करें</string>
     <string name="voice_typing_addBtn">जोड़ें</string>
+
+    Here's the translation to Hindi:
+
+    ```xml
+    <string name="custom_rate_us_dialog_sub_header">हमारे एप्लिकेशन का अनुभव कैसा रहा?</string>
+    <string name="custom_rate_us_dialog_rateBtn">सबमिट करें</string>
+    <string name="custom_rate_us_dialog_cancelBtn">नहीं, धन्यवाद</string>
+    <string name="custom_rate_us_dialog_emptyRate">कृपया रेटिंग का चयन करें</string>
+    ```
 
 
     <string-array name="units">

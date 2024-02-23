@@ -568,6 +568,7 @@ public class Firebase {
         cloud_dialog.setContentView(R.layout.cloud_dialog_popup);
         cloud_dialog.getWindow().setBackgroundDrawable(context.getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
         cloud_dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        cloud_dialog.setCancelable(false);
 
         TextView percent = cloud_dialog.findViewById(R.id.percent);
         TextView info = cloud_dialog.findViewById(R.id.info);
@@ -702,6 +703,7 @@ public class Firebase {
         cloud_dialog.setContentView(R.layout.cloud_dialog_popup);
         cloud_dialog.getWindow().setBackgroundDrawable(context.getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
         cloud_dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        cloud_dialog.setCancelable(false);
 
         TextView percent = cloud_dialog.findViewById(R.id.percent);
         TextView info = cloud_dialog.findViewById(R.id.info);

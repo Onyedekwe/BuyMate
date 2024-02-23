@@ -137,7 +137,6 @@
     <string name="HomeFragment__osVersion">OS Version: </string>
     <string name="HomeFragment__sdkVersion">SDK Version: </string>
     <string name="HomeFragment__mailTo">Mail to:</string>
-    <string name="HomeFragment__mailError">No email client found</string>
     <string name="HomeFragment__navigation_drawer_open">Open navigation drawer</string>
     <string name="HomeFragment__navigation_drawer_close">Close navigation drawer</string>
     <string name="HomeFragment__defaultName">User</string>
@@ -168,6 +167,7 @@
     <string name="HomeFragment__no_list">No list</string>
     <string name="HomeFragment__list_exist_already">This list already exists</string>
     <string name="HomeFragment__no_alarm_app">No app to perform this action</string>
+    <string name="HomeFragment__send_email_via">Send email via…</string>
 
 
     //InsertPasscodeActivity
@@ -246,6 +246,7 @@
     <string name="MoreFragment__login">Login</string>
     <string name="MoreFragment__premiumText1">Congratulations!</string>
     <string name="MoreFragment__premiumText2">You are enjoying Buymate\'s Premium Version</string>
+    <string name="MoreFragment__send_email_via">Send email via…</string>
 
 
     //NotesFragment
@@ -816,6 +817,12 @@
     <string name="voice_typing_cancelButton">Cancel</string>
     <string name="voice_typing_addBtn">Add</string>
 
+
+    //custom_rate_us_dialog
+    <string name="custom_rate_us_dialog_sub_header">How would you rate our app experience?</string>
+    <string name="custom_rate_us_dialog_rateBtn">Submit</string>
+    <string name="custom_rate_us_dialog_cancelBtn">No, thanks</string>
+    <string name="custom_rate_us_dialog_emptyRate">Please select a rating</string>
 
     <string-array name="units">
         <item>oz</item>

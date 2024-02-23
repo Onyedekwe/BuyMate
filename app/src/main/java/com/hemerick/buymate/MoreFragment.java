@@ -157,7 +157,7 @@ public class MoreFragment extends Fragment {
                         startActivity(emailIntent);
                     } else {
                         // If Gmail app is not installed, handle the intent with the chooser
-                        startActivity(Intent.createChooser(emailIntent, "Send email via..."));
+                        startActivity(Intent.createChooser(emailIntent, getString(R.string.MoreFragment__send_email_via)));
                     }
 
                 } else {

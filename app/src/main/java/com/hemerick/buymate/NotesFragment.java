@@ -1,10 +1,14 @@
 package com.hemerick.buymate;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -17,7 +21,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -387,6 +393,27 @@ public class NotesFragment extends Fragment implements ShopNotesAdapter.OnNoteLi
         super.onResume();
         displayData();
         shopNotesAdapter.notifyDataSetChanged();
+
+
+        SharedPreferences sharedPreference = context.getSharedPreferences(UserSettings.PREFERENCES, MODE_PRIVATE);
+
+        long launchTime = sharedPreference.getLong("LaunchTime", 0);
+        if(launchTime == 0){
+            launchTime = System.currentTimeMillis();
+            SharedPreferences.Editor editor = sharedPreference.edit();
+            editor.putLong("LaunchTime", launchTime);
+            editor.apply();
+        }
+
+        long currentTime = System.currentTimeMillis();
+        long timeDifference = currentTime - launchTime;
+
+        long daysDifference = timeDifference / (1000 * 60 * 60 * 24);
+
+        if(daysDifference >= 7){
+            showRatingDialog();
+        }
+
     }
 
     private void updateView() {
@@ -429,6 +456,71 @@ public class NotesFragment extends Fragment implements ShopNotesAdapter.OnNoteLi
         super.onDestroy();
         db.close();
     }
+
+    public void showRatingDialog(){
+        Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.custom_rate_us_dialog);
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(context.getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+
+        RatingBar ratingBar = dialog.findViewById(R.id.ratingBar);
+        TextView sub_header = dialog.findViewById(R.id.sub_header);
+        Button submitBtn = dialog.findViewById(R.id.rateBtn);
+        Button cancelBtn = dialog.findViewById(R.id.cancelBtn);
+
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
+            sub_header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            submitBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            cancelBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+        }
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
+            sub_header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            submitBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            cancelBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+        }
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
+            sub_header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            submitBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            cancelBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+        }
+
+        submitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                float rating  = ratingBar.getRating();
+                if(rating > 0){
+                    try{
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + context.getPackageName())));
+                    }catch (ActivityNotFoundException e){
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_link))));
+                    }
+
+                }else{
+                    Toast.makeText(context, context.getString(R.string.custom_rate_us_dialog_emptyRate), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
+
+
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+
+
+    }
+
 
     @Override
     public void onPause() {

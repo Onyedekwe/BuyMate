@@ -133,7 +133,6 @@
     <string name="HomeFragment__osVersion">Versión del SO: </string>
     <string name="HomeFragment__sdkVersion">Versión del SDK: </string>
     <string name="HomeFragment__mailTo">Enviar a:</string>
-    <string name="HomeFragment__mailError">No se encontró cliente de correo electrónico</string>
     <string name="HomeFragment__navigation_drawer_open">Abrir el menú de navegación</string>
     <string name="HomeFragment__navigation_drawer_close">Cerrar el menú de navegación</string>
     <string name="HomeFragment__defaultName">Usuario</string>
@@ -164,6 +163,7 @@
     <string name="HomeFragment__no_list">Sin lista</string>
     <string name="HomeFragment__list_exist_already">Esta lista ya existe</string>
     <string name="HomeFragment__no_alarm_app">No hay aplicación para realizar esta acción</string>
+    <string name="HomeFragment__send_email_via">Enviar correo electrónico mediante…</string>
 
     //InsertPasscodeActivity
     <string name="InsertPasscodeActivity__success">Éxito</string>
@@ -240,6 +240,7 @@
     <string name="MoreFragment__login">Iniciar sesión</string>
     <string name="MoreFragment__premiumText1">¡Felicidades!</string>
     <string name="MoreFragment__premiumText2">Estás disfrutando de la Versión Premium de Buymate</string>
+    <string name="MoreFragment__send_email_via">Enviar correo electrónico mediante…</string>
 
     //NotesFragment
     <string name="NotesFragment__multipleDelete">Eliminar estas notas</string>
@@ -768,6 +769,12 @@ amientas</string>
     <string name="voice_typing_cancelButton">Cancelar</string>
     <string name="voice_typing_addBtn">Agregar</string>
 
+
+    <string name="custom_rate_us_dialog_sub_header">¿Cómo calificaría su experiencia con nuestra aplicación?</string>
+    <string name="custom_rate_us_dialog_rateBtn">Enviar</string>
+    <string name="custom_rate_us_dialog_cancelBtn">No, gracias</string>
+    <string name="custom_rate_us_dialog_emptyRate">Por favor, seleccione una calificación</string>
+    ```
 
 
     <string-array name="units">

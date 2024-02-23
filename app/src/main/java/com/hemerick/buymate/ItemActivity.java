@@ -64,6 +64,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -189,6 +199,12 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             bottom_dialog, menu_unstar_dialog, menu_copy_dialog, menu_move_dialog,
             menu_delete_dialog, show_share_dialog, voice_input_dialog;
 
+
+    AdView adView;
+
+    private InterstitialAd mInterstitialAd;
+
+    int adsCounter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -394,6 +410,53 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                 }
             }
         }, 1000);
+
+
+        adsCounter = sharedPreferences_theme.getInt(UserSettings.ADS_COUNTER_KEY, 0);
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
+
+            }
+        });
+
+        adView = findViewById(R.id.adView);
+
+
+        if(!settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)){
+            AdRequest adRequest = new AdRequest.Builder().build();
+
+            SharedPreferences preferences = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
+            long installDateMillis = preferences.getLong(UserSettings.KEY_INSTALL_DATE, 0);
+
+            if(installDateMillis == 0){
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putLong(UserSettings.KEY_INSTALL_DATE, System.currentTimeMillis());
+                editor.apply();
+            }else{
+                long currentTimeMillis = System.currentTimeMillis();
+                long elapsedTimeMillis = currentTimeMillis - installDateMillis;
+                if(elapsedTimeMillis >= UserSettings.SEVEN_DAYS_IN_MILLIS){
+                    adView.setVisibility(View.VISIBLE);
+                    adView.loadAd(adRequest);
+                }
+            }
+
+            InterstitialAd.load(ItemActivity.this, "ca-app-pub-3940256099942544/1033173712", adRequest, new InterstitialAdLoadCallback() {
+                @Override
+                public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                    mInterstitialAd = null;
+                }
+
+                @Override
+                public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                    mInterstitialAd = interstitialAd;
+                }
+            });
+
+        }
+
 
     }
 
@@ -780,7 +843,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                     }
 
 
-                    delete_heading.setText(getString(R.string.ItemActivity__unstarred));
+                    delete_heading.setText(getString(R.string.ItemActivity__unstar));
                     delete_message.setText(items_selected.toString());
                     deleteButton.setText(getString(R.string.ItemActivity__unstar));
                     cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -1649,6 +1712,51 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                         recyclerView.setClickable(true);
                         main_progress_bar.setVisibility(View.INVISIBLE);
                         shopItemAdapter.notifyDataSetChanged();
+
+                        if(!settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)){
+                            if(mInterstitialAd != null){
+                                mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                                    @Override
+                                    public void onAdClicked() {
+                                        super.onAdClicked();
+                                    }
+
+                                    @Override
+                                    public void onAdDismissedFullScreenContent() {
+                                        mInterstitialAd = null;
+                                    }
+
+                                    @Override
+                                    public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                                        mInterstitialAd = null;
+                                    }
+
+                                    @Override
+                                    public void onAdImpression() {
+                                        super.onAdImpression();
+                                    }
+
+                                    @Override
+                                    public void onAdShowedFullScreenContent() {
+                                        adsCounter = 0;
+                                        SharedPreferences  sharedPreferences = getSharedPreferences(UserSettings.PREFERENCES, MODE_PRIVATE);
+                                        sharedPreferences.edit().putInt(UserSettings.ADS_COUNTER_KEY, adsCounter).apply();
+                                        super.onAdShowedFullScreenContent();
+                                    }
+                                });
+                                if(adsCounter >= 20){
+                                    mInterstitialAd.show(ItemActivity.this);
+                                }else{
+                                    adsCounter = adsCounter + 1;
+                                    SharedPreferences  sharedPreferences = getSharedPreferences(UserSettings.PREFERENCES, MODE_PRIVATE);
+                                    sharedPreferences.edit().putInt(UserSettings.ADS_COUNTER_KEY, adsCounter).apply();
+                                }
+
+                            }
+                        }
+
+
+
                     } else {
                         Toast.makeText(ItemActivity.this, getString(R.string.ItemActivity__insertImageFailed), Toast.LENGTH_SHORT).show();
                     }
@@ -1719,6 +1827,47 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                             recyclerView.setClickable(true);
                             main_progress_bar.setVisibility(View.GONE);
                             shopItemAdapter.notifyDataSetChanged();
+                            if(!settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)){
+                                if(mInterstitialAd != null){
+                                    mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                                        @Override
+                                        public void onAdClicked() {
+                                            super.onAdClicked();
+                                        }
+
+                                        @Override
+                                        public void onAdDismissedFullScreenContent() {
+                                            mInterstitialAd = null;
+                                        }
+
+                                        @Override
+                                        public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                                            mInterstitialAd = null;
+                                        }
+
+                                        @Override
+                                        public void onAdImpression() {
+                                            super.onAdImpression();
+                                        }
+
+                                        @Override
+                                        public void onAdShowedFullScreenContent() {
+                                            adsCounter = 0;
+                                            SharedPreferences  sharedPreferences = getSharedPreferences(UserSettings.PREFERENCES, MODE_PRIVATE);
+                                            sharedPreferences.edit().putInt(UserSettings.ADS_COUNTER_KEY, adsCounter).apply();
+                                            super.onAdShowedFullScreenContent();
+                                        }
+                                    });
+                                    if(adsCounter >= 20){
+                                        mInterstitialAd.show(ItemActivity.this);
+                                    }else{
+                                        adsCounter = adsCounter + 1;
+                                        SharedPreferences  sharedPreferences = getSharedPreferences(UserSettings.PREFERENCES, MODE_PRIVATE);
+                                        sharedPreferences.edit().putInt(UserSettings.ADS_COUNTER_KEY, adsCounter).apply();
+                                    }
+
+                                }
+                            }
                         } else {
                             Toast.makeText(ItemActivity.this, getString(R.string.ItemActivity__insertImageFailed), Toast.LENGTH_SHORT).show();
                         }
@@ -2800,7 +2949,42 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                     document.close();
                     progressBar.setVisibility(View.GONE);
                     show_share_dialog.dismiss();
-                    Toast.makeText(ItemActivity.this, getString(R.string.ItemActivity__pdfDownloadedTo) + directory, Toast.LENGTH_LONG).show();
+
+                    StyleableToast.makeText(ItemActivity.this, getString(R.string.ItemActivity__pdfDownloadedTo) + directory, R.style.custom_toast_2).show();
+                    if(!settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)){
+                        if(mInterstitialAd != null){
+
+                            mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                                @Override
+                                public void onAdClicked() {
+                                    super.onAdClicked();
+                                }
+
+                                @Override
+                                public void onAdDismissedFullScreenContent() {
+                                    mInterstitialAd = null;
+                                }
+
+                                @Override
+                                public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                                    mInterstitialAd = null;
+                                }
+
+                                @Override
+                                public void onAdImpression() {
+                                    super.onAdImpression();
+                                }
+
+                                @Override
+                                public void onAdShowedFullScreenContent() {
+                                    super.onAdShowedFullScreenContent();
+                                }
+                            });
+
+                            mInterstitialAd.show(ItemActivity.this);
+                        }
+                    }
+
 
                 } catch (IOException e) {
                     e.printStackTrace();

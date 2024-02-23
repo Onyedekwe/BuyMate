@@ -21,6 +21,20 @@
         app:navigationIcon="@drawable/final_regular_back_icon"
         app:titleTextColor="?attr/textFillColor" />
 
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/backgroundColor"
+        app:adSize="BANNER"
+        android:visibility="gone"
+        app:adUnitId="ca-app-pub-3940256099942544/6300978111"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cate_title">
+    </com.google.android.gms.ads.AdView>
+
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
@@ -31,7 +45,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cate_title"
+        app:layout_constraintTop_toBottomOf="@id/adView"
         app:layout_constraintVertical_bias="0.0">
 
 
@@ -48,8 +62,8 @@
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:overScrollMode="always"
-                android:background="?attr/backgroundColor">
+                android:background="?attr/backgroundColor"
+                android:overScrollMode="always">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -61,9 +75,9 @@
                         android:id="@+id/items_recyclerView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:overScrollMode="never"
                         android:layout_marginBottom="10dp"
-                        android:background="@android:color/transparent" />
+                        android:background="@android:color/transparent"
+                        android:overScrollMode="never" />
 
                     <LinearLayout
                         android:id="@+id/emptyNotesLayout"
@@ -79,8 +93,8 @@
                             android:layout_height="100dp"
                             android:layout_gravity="center"
                             android:layout_marginTop="50dp"
-                            app:srcCompat="@drawable/illustration_no_search_data"
-                            android:importantForAccessibility="no" />
+                            android:importantForAccessibility="no"
+                            app:srcCompat="@drawable/illustration_no_search_data" />
 
                         <TextView
                             android:id="@+id/emptyTEXT1"
@@ -171,10 +185,10 @@
                     android:id="@+id/eyeView"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:contentDescription="@string/activity_item_eye_icon_content_description"
-                    android:padding="8dp"
                     android:clickable="true"
+                    android:contentDescription="@string/activity_item_eye_icon_content_description"
                     android:focusable="true"
+                    android:padding="8dp"
                     android:src="@drawable/final_regular_eye"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/text2"

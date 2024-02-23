@@ -131,7 +131,6 @@
     <string name="HomeFragment__osVersion">Версия ОС: </string>
     <string name="HomeFragment__sdkVersion">Версия SDK: </string>
     <string name="HomeFragment__mailTo">Письмо на:</string>
-    <string name="HomeFragment__mailError">Почтовый клиент не найден</string>
     <string name="HomeFragment__navigation_drawer_open">Открыть боковое меню</string>
     <string name="HomeFragment__navigation_drawer_close">Закрыть боковое меню</string>
     <string name="HomeFragment__defaultName">Пользователь</string>
@@ -162,7 +161,7 @@
     <string name="HomeFragment__no_list">Нет списка</string>
     <string name="HomeFragment__list_exist_already">Этот список уже существует</string>
     <string name="HomeFragment__no_alarm_app">Нет приложения для выполнения этого действия</string>
-
+    <string name="HomeFragment__send_email_via">Отправить электронное письмо через…</string>
 
     //InsertPasscodeActivity
     <string name="InsertPasscodeActivity__success">Успешно</string>
@@ -237,7 +236,7 @@
     <string name="MoreFragment__login">Вход</string>
     <string name="MoreFragment__premiumText1">Поздравляем!</string>
     <string name="MoreFragment__premiumText2">Вы пользуетесь премиальной версией Buymate</string>
-
+    <string name="MoreFragment__send_email_via">Отправить электронное письмо через…</string>
     //NotesFragment
     <string name="NotesFragment__multipleDelete">Удалить эти заметки</string>
     <string name="NotesFragment__singleDelete">Удалить эту заметку</string>
@@ -779,6 +778,13 @@
     <string name="voice_typing_cancelButton">Отмена</string>
     <string name="voice_typing_addBtn">Добавить</string>
 
+
+
+    <string name="custom_rate_us_dialog_sub_header">Как бы вы оценили наш опыт использования приложения?</string>
+    <string name="custom_rate_us_dialog_rateBtn">Отправить</string>
+    <string name="custom_rate_us_dialog_cancelBtn">Нет, спасибо</string>
+    <string name="custom_rate_us_dialog_emptyRate">Пожалуйста, выберите оценку</string>
+    ```
 
     ```xml
     <string-array name="units">

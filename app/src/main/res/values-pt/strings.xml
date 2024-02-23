@@ -125,7 +125,6 @@
     <string name="HomeFragment__osVersion">Versão do SO: </string>
     <string name="HomeFragment__sdkVersion">Versão do SDK: </string>
     <string name="HomeFragment__mailTo">Enviar email para:</string>
-    <string name="HomeFragment__mailError">Nenhum cliente de email encontrado</string>
     <string name="HomeFragment__navigation_drawer_open">Abrir menu de navegação</string>
     <string name="HomeFragment__navigation_drawer_close">Fechar menu de navegação</string>
     <string name="HomeFragment__defaultName">Usuário</string>
@@ -156,7 +155,7 @@
     <string name="HomeFragment__no_list">Nenhuma lista</string>
     <string name="HomeFragment__list_exist_already">Esta lista já existe</string>
     <string name="HomeFragment__no_alarm_app">Nenhum aplicativo para executar esta ação</string>
-
+    <string name="HomeFragment__send_email_via">Enviar e-mail via…</string>
 
     //InsertPasscodeActivity
     <string name="InsertPasscodeActivity__success">Sucesso</string>
@@ -234,7 +233,7 @@
     <string name="MoreFragment__login">Login</string>
     <string name="MoreFragment__premiumText1">Parabéns!</string>
     <string name="MoreFragment__premiumText2">Você está desfrutando da Versão Premium do Buymate</string>
-
+    <string name="MoreFragment__send_email_via">Enviar e-mail via…</string>
 
     //NotesFragment
     <string name="NotesFragment__multipleDelete">Excluir estas notas</string>
@@ -780,9 +779,14 @@ Subtotal:</string>
     <string name="voice_typing_cancelButton">Cancelar</string>
     <string name="voice_typing_addBtn">Adicionar</string>
 
-    Sure, here are the translations for those string arrays:
 
-    ```xml
+    <string name="custom_rate_us_dialog_sub_header">Como avaliaria sua experiência com nosso aplicativo?</string>
+    <string name="custom_rate_us_dialog_rateBtn">Enviar</string>
+    <string name="custom_rate_us_dialog_cancelBtn">Não, obrigado</string>
+    <string name="custom_rate_us_dialog_emptyRate">Por favor, selecione uma avaliação</string>
+    ```
+
+
     <string-array name="units">
         <item>oz</item>
         <item>lb</item>

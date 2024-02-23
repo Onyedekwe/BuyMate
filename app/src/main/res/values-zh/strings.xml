@@ -133,7 +133,6 @@
     <string name="HomeFragment__osVersion">操作系统版本：</string>
     <string name="HomeFragment__sdkVersion">SDK 版本：</string>
     <string name="HomeFragment__mailTo">发送邮件至：</string>
-    <string name="HomeFragment__mailError">未找到邮件客户端</string>
     <string name="HomeFragment__navigation_drawer_open">打开导航抽屉</string>
     <string name="HomeFragment__navigation_drawer_close">关闭导航抽屉</string>
     <string name="HomeFragment__defaultName">用户</string>
@@ -164,7 +163,7 @@
     <string name="HomeFragment__no_list">无列表</string>
     <string name="HomeFragment__list_exist_already">此列表已存在</string>
     <string name="HomeFragment__no_alarm_app">没有应用程序执行此操作</string>
-
+    <string name="HomeFragment__send_email_via">通过电子邮件发送…</string>
     //InsertPasscodeActivity
     <string name="InsertPasscodeActivity__success">成功</string>
     <string name="InsertPasscodeActivity__wrongPin">密码错误</string>
@@ -238,7 +237,7 @@
     <string name="MoreFragment__login">登录</string>
     <string name="MoreFragment__premiumText1">恭喜！</string>
     <string name="MoreFragment__premiumText2">您正在享受Buymate的高级版本</string>
-
+    <string name="MoreFragment__send_email_via">通过电子邮件发送…</string>
     ```xml
     //NotesFragment
     <string name="NotesFragment__multipleDelete">删除这些笔记</string>
@@ -798,6 +797,14 @@
     <string name="voice_typing_layout_description">项目名称</string>
     <string name="voice_typing_cancelButton">取消</string>
     <string name="voice_typing_addBtn">添加</string>
+
+
+
+    <string name="custom_rate_us_dialog_sub_header">您对我们的应用体验有何评价？</string>
+    <string name="custom_rate_us_dialog_rateBtn">提交</string>
+    <string name="custom_rate_us_dialog_cancelBtn">不，谢谢</string>
+    <string name="custom_rate_us_dialog_emptyRate">请选择评分</string>
+    ```
 
 
     ```xml

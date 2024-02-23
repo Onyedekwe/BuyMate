@@ -57,6 +57,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -100,6 +106,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
+
+import io.github.muddz.styleabletoast.StyleableToast;
 
 
 public class FavouritesFragment extends Fragment implements ShopFavouritesAdapter.OnNoteListener {
@@ -175,6 +183,10 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
 
     int CAMERA_REQUEST = 2468;
     int GALLERY_REQUEST = 1;
+
+    int adsCounter;
+
+    private InterstitialAd mInterstitialAd;
 
     public static String formatNumber(double number) {
         return String.format("%,.2f", number);
@@ -303,6 +315,24 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
         }
 
         displayData();
+
+
+
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        InterstitialAd.load(context, "ca-app-pub-3940256099942544/1033173712", adRequest, new InterstitialAdLoadCallback() {
+            @Override
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                mInterstitialAd = null;
+            }
+
+            @Override
+            public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                mInterstitialAd = interstitialAd;
+            }
+        });
+
+
         return rootView;
 
     }
@@ -1624,6 +1654,49 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                         recyclerView.setClickable(true);
                         main_progress_bar.setVisibility(View.INVISIBLE);
                         adapter.notifyDataSetChanged();
+
+                        if(!settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)){
+                            if(mInterstitialAd != null){
+                                mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                                    @Override
+                                    public void onAdClicked() {
+                                        super.onAdClicked();
+                                    }
+
+                                    @Override
+                                    public void onAdDismissedFullScreenContent() {
+                                        mInterstitialAd = null;
+                                    }
+
+                                    @Override
+                                    public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                                        mInterstitialAd = null;
+                                    }
+
+                                    @Override
+                                    public void onAdImpression() {
+                                        super.onAdImpression();
+                                    }
+
+                                    @Override
+                                    public void onAdShowedFullScreenContent() {
+                                        adsCounter = 0;
+                                        SharedPreferences  sharedPreferences = context.getSharedPreferences(UserSettings.PREFERENCES, context.MODE_PRIVATE);
+                                        sharedPreferences.edit().putInt(UserSettings.ADS_COUNTER_KEY, adsCounter).apply();
+                                        super.onAdShowedFullScreenContent();
+                                    }
+                                });
+                                if(adsCounter >= 20){
+                                    mInterstitialAd.show(getActivity());
+                                }else{
+                                    adsCounter = adsCounter + 1;
+                                    SharedPreferences  sharedPreferences = context.getSharedPreferences(UserSettings.PREFERENCES, context.MODE_PRIVATE);
+                                    sharedPreferences.edit().putInt(UserSettings.ADS_COUNTER_KEY, adsCounter).apply();
+                                }
+
+                            }
+                        }
+
                     } else {
                         Toast.makeText(context, getString(R.string.FavouritesFragment__insertImageFailed), Toast.LENGTH_SHORT).show();
                     }
@@ -1696,6 +1769,48 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                             recyclerView.setClickable(true);
                             main_progress_bar.setVisibility(View.GONE);
                             adapter.notifyDataSetChanged();
+                            if(!settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)){
+                                if(mInterstitialAd != null){
+                                    mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                                        @Override
+                                        public void onAdClicked() {
+                                            super.onAdClicked();
+                                        }
+
+                                        @Override
+                                        public void onAdDismissedFullScreenContent() {
+                                            mInterstitialAd = null;
+                                        }
+
+                                        @Override
+                                        public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                                            mInterstitialAd = null;
+                                        }
+
+                                        @Override
+                                        public void onAdImpression() {
+                                            super.onAdImpression();
+                                        }
+
+                                        @Override
+                                        public void onAdShowedFullScreenContent() {
+                                            adsCounter = 0;
+                                            SharedPreferences  sharedPreferences = context.getSharedPreferences(UserSettings.PREFERENCES, context.MODE_PRIVATE);
+                                            sharedPreferences.edit().putInt(UserSettings.ADS_COUNTER_KEY, adsCounter).apply();
+                                            super.onAdShowedFullScreenContent();
+                                        }
+                                    });
+                                    if(adsCounter >= 20){
+                                        mInterstitialAd.show(getActivity());
+                                    }else{
+                                        adsCounter = adsCounter + 1;
+                                        SharedPreferences  sharedPreferences = context.getSharedPreferences(UserSettings.PREFERENCES, context.MODE_PRIVATE);
+                                        sharedPreferences.edit().putInt(UserSettings.ADS_COUNTER_KEY, adsCounter).apply();
+                                    }
+
+                                }
+                            }
+
                         } else {
                             Toast.makeText(context, getString(R.string.FavouritesFragment__insertImageFailed), Toast.LENGTH_SHORT).show();
                         }
@@ -2718,7 +2833,41 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                     document.close();
                     progressBar.setVisibility(View.GONE);
                     show_share_dialog.dismiss();
-                    Toast.makeText(context, getString(R.string.FavouritesFragment__pdfDownloadedTo) + directory, Toast.LENGTH_LONG).show();
+
+                    StyleableToast.makeText(context, context.getString(R.string.FavouritesFragment__pdfDownloadedTo) + directory, R.style.custom_toast_2).show();
+                    if(!settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)){
+                        if(mInterstitialAd != null){
+                            mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                                @Override
+                                public void onAdClicked() {
+                                    super.onAdClicked();
+                                }
+
+                                @Override
+                                public void onAdDismissedFullScreenContent() {
+                                    mInterstitialAd = null;
+                                }
+
+                                @Override
+                                public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                                    mInterstitialAd = null;
+                                }
+
+                                @Override
+                                public void onAdImpression() {
+                                    super.onAdImpression();
+                                }
+
+                                @Override
+                                public void onAdShowedFullScreenContent() {
+                                    super.onAdShowedFullScreenContent();
+                                }
+                            });
+
+                            mInterstitialAd.show(getActivity());
+                        }
+                    }
+
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -3079,6 +3228,8 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
 
         String suggestion = sharedPreferences.getString(UserSettings.IS_SUGGESTION_DISABLED, UserSettings.NO_SUGGESTION_NOT_DISABLED);
         settings.setIsSuggestionDisabled(suggestion);
+
+        adsCounter = sharedPreferences.getInt(UserSettings.ADS_COUNTER_KEY, 0);
 
         updateView();
     }

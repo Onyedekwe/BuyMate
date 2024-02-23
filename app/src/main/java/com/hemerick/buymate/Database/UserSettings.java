@@ -15,6 +15,12 @@ public class UserSettings extends Application {
     private String customTheme;
 
 
+    public static final String ADS_COUNTER_KEY = "adsCounterKey";
+    public static final String KEY_INSTALL_DATE = "install_date";
+    public static final long SEVEN_DAYS_IN_MILLIS = 7 * 24 * 60 * 60 * 1000;
+
+
+
     public static final String IS_DIM_THEME_ENABLED = "isDimThemeEnabled";
     public static final String YES_DIM_THEME_ENABLED = "yesDimThemeEnabled";
     public static final String NO_DIM_THEME_NOT_ENABLED = "noDimThemeNotEnabled";

@@ -237,17 +237,17 @@ public class ShopCategoryAdapter extends RecyclerView.Adapter<ShopCategoryAdapte
             itemView.setOnLongClickListener(this);
 
             if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
-                category.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.medium_text));
+                category.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.small_text));
                 num.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.mini_text));
             }
 
             if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
-                category.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.max_max_text));
+                category.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.medium_text));
                 num.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.maxi_text));
             }
 
             if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
-                category.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.max_max_max_text));
+                category.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.large_text));
                 num.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.max_max_text));
             }
 

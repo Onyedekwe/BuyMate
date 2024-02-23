@@ -1,7 +1,11 @@
 package com.hemerick.buymate;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -37,6 +41,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -58,6 +63,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -172,6 +183,9 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
 
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
+    private InterstitialAd mInterstitialAd;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -241,6 +255,10 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                     Intent intent1 = new Intent(Intent.ACTION_VIEW, uri);
                     startActivity(intent1);
                 } else if (itemId == R.id.nav_message) {
+
+
+
+
                     if (firebaseAuth.getCurrentUser() != null) {
                         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
@@ -263,19 +281,30 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                                 asterics + "\n";
 
 
-                        Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
-                        emailIntent.setData(Uri.parse(getString(R.string.HomeFragment__mailTo)));
+                        Intent emailIntent = new Intent(Intent.ACTION_SEND);
                         emailIntent.putExtra(Intent.EXTRA_EMAIL, app_email);
                         emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
                         emailIntent.putExtra(Intent.EXTRA_TEXT, deviceInfo);
+                        emailIntent.setType("message/rfc822");
+                        emailIntent.setPackage("com.google.android.gm");
+
+                        // Check if there's an app to handle this intent
                         if (emailIntent.resolveActivity(getContext().getPackageManager()) != null) {
                             startActivity(emailIntent);
                         } else {
-                            Toast.makeText(getContext(), getString(R.string.HomeFragment__mailError), Toast.LENGTH_SHORT).show();
+                            // If Gmail app is not installed, handle the intent with the chooser
+                            startActivity(Intent.createChooser(emailIntent, getString(R.string.HomeFragment__send_email_via)));
                         }
+
+
                     } else {
                         showLogInWarningDialog();
                     }
+
+
+
+
+
                 } else if (itemId == R.id.nav_about) {
                     Intent intent = new Intent(getContext(), AboutActivity.class);
                     startActivity(intent);
@@ -409,6 +438,26 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
 
         displayData();
         loadSharedPreferences();
+
+        if(!settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)){
+            AdRequest adRequest = new AdRequest.Builder().build();
+            InterstitialAd.load(context, "ca-app-pub-3940256099942544/1033173712", adRequest, new InterstitialAdLoadCallback() {
+                @Override
+                public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                    mInterstitialAd = null;
+                }
+
+                @Override
+                public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                    mInterstitialAd = interstitialAd;
+                }
+            });
+        }
+
+
+
+
+
         return rootView;
 
     }
@@ -417,7 +466,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         Cursor resCategory = db.getCategory(context);
         if (resCategory.getCount() == 0) {
 
-            SharedPreferences sharedPreferences = context.getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences sharedPreferences = context.getSharedPreferences(UserSettings.PREFERENCES, MODE_PRIVATE);
             boolean isFirstStart = sharedPreferences.getBoolean("isFirstStart", true);
 
             recyclerLayout.setVisibility(View.GONE);
@@ -454,7 +503,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
             }
             resCategory.close();
 
-            SharedPreferences sharedPreferences = context.getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences sharedPreferences = context.getSharedPreferences(UserSettings.PREFERENCES, MODE_PRIVATE);
             String sort = sharedPreferences.getString(UserSettings.CUSTOM_CATEGORY_SORT, UserSettings.DATE_ASCENDING);
             settings.setCustomCategorySort(sort);
 
@@ -709,7 +758,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         bottom_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         bottom_dialog.setContentView(R.layout.shopbottomlayout);
 
-        sharedPreferences = context.getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
+        sharedPreferences = context.getSharedPreferences(UserSettings.PREFERENCES, MODE_PRIVATE);
         boolean isFirstStart = sharedPreferences.getBoolean("isFirstStart", true);
 
 
@@ -1432,7 +1481,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         LinearLayout quantityDescend = show_sort_dialog.findViewById(R.id.quantity_descend);
         quantityDescend.setVisibility(View.GONE);
 
-        SharedPreferences sharedPreferences = context.getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = context.getSharedPreferences(UserSettings.PREFERENCES, MODE_PRIVATE);
         String sort = sharedPreferences.getString(UserSettings.CUSTOM_CATEGORY_SORT, UserSettings.DATE_ASCENDING);
         settings.setCustomCategorySort(sort);
 
@@ -1493,7 +1542,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
 
                     settings.setCustomCategorySort(UserSettings.NAME_ASCENDING);
                 }
-                SharedPreferences.Editor editor = context.getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
+                SharedPreferences.Editor editor = context.getSharedPreferences(UserSettings.PREFERENCES, MODE_PRIVATE).edit();
                 editor.putString(UserSettings.CUSTOM_CATEGORY_SORT, settings.getCustomCategorySort());
                 editor.apply();
                 displayData();
@@ -1517,7 +1566,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                     checkNameDescend.setChecked(true);
                     settings.setCustomCategorySort(UserSettings.NAME_DESCENDING);
                 }
-                SharedPreferences.Editor editor = context.getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
+                SharedPreferences.Editor editor = context.getSharedPreferences(UserSettings.PREFERENCES, MODE_PRIVATE).edit();
                 editor.putString(UserSettings.CUSTOM_CATEGORY_SORT, settings.getCustomCategorySort());
                 editor.apply();
                 displayData();
@@ -1541,7 +1590,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                     checkDateAscend.setChecked(true);
                     settings.setCustomCategorySort(UserSettings.DATE_ASCENDING);
                 }
-                SharedPreferences.Editor editor = context.getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
+                SharedPreferences.Editor editor = context.getSharedPreferences(UserSettings.PREFERENCES, MODE_PRIVATE).edit();
                 editor.putString(UserSettings.CUSTOM_CATEGORY_SORT, settings.getCustomCategorySort());
                 editor.apply();
                 displayData();
@@ -1565,7 +1614,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                     checkDateDescend.setChecked(true);
                     settings.setCustomCategorySort(UserSettings.DATE_DESCENDING);
                 }
-                SharedPreferences.Editor editor = context.getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
+                SharedPreferences.Editor editor = context.getSharedPreferences(UserSettings.PREFERENCES, MODE_PRIVATE).edit();
                 editor.putString(UserSettings.CUSTOM_CATEGORY_SORT, settings.getCustomCategorySort());
                 editor.apply();
                 displayData();
@@ -1592,7 +1641,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                     checkPriceAscend.setChecked(true);
                     settings.setCustomCategorySort(UserSettings.PRICE_ASCENDING);
                 }
-                SharedPreferences.Editor editor = context.getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
+                SharedPreferences.Editor editor = context.getSharedPreferences(UserSettings.PREFERENCES, MODE_PRIVATE).edit();
                 editor.putString(UserSettings.CUSTOM_CATEGORY_SORT, settings.getCustomCategorySort());
                 editor.apply();
                 displayData();
@@ -1617,7 +1666,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                     checkPriceDescend.setChecked(true);
                     settings.setCustomCategorySort(UserSettings.PRICE_DESCENDING);
                 }
-                SharedPreferences.Editor editor = context.getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
+                SharedPreferences.Editor editor = context.getSharedPreferences(UserSettings.PREFERENCES, MODE_PRIVATE).edit();
                 editor.putString(UserSettings.CUSTOM_CATEGORY_SORT, settings.getCustomCategorySort());
                 editor.apply();
                 displayData();
@@ -1949,7 +1998,40 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                     document.close();
                     progressBar.setVisibility(View.GONE);
                     show_share_dialog.dismiss();
-                    Toast.makeText(context, getString(R.string.HomeFragment__pdfDownloadedTo) + directory, Toast.LENGTH_LONG).show();
+                    StyleableToast.makeText(context, context.getString(R.string.HomeFragment__pdfDownloadedTo) + directory, R.style.custom_toast_2).show();
+
+                    if(!settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)){
+                        if(mInterstitialAd != null){
+                            mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                                @Override
+                                public void onAdClicked() {
+                                    super.onAdClicked();
+                                }
+
+                                @Override
+                                public void onAdDismissedFullScreenContent() {
+                                    mInterstitialAd = null;
+                                }
+
+                                @Override
+                                public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                                    mInterstitialAd = null;
+                                }
+
+                                @Override
+                                public void onAdImpression() {
+                                    super.onAdImpression();
+                                }
+
+                                @Override
+                                public void onAdShowedFullScreenContent() {
+                                    super.onAdShowedFullScreenContent();
+                                }
+                            });
+
+                            mInterstitialAd.show(getActivity());
+                        }
+                    }
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -2320,7 +2402,6 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         displayData();
         adapter.notifyDataSetChanged();
 
-
     }
 
     @Override
@@ -2361,46 +2442,49 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
             searchEditText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-            pageDescriptionText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            pageDescriptionText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.mini_text));
             navigationView.setItemTextAppearance(androidx.appcompat.R.style.Base_TextAppearance_AppCompat_Small);
             emptyText1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             emptyText2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             emptyText3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             empty_create_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             sortByText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.mini_text));
-            toolBarText_2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            toolBarText_2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
             searchEditText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-            pageDescriptionText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            pageDescriptionText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
             navigationView.setItemTextAppearance(androidx.appcompat.R.style.Base_TextAppearance_AppCompat_Menu);
             emptyText1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             emptyText2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             emptyText3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             empty_create_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             sortByText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.maxi_text));
-            toolBarText_2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_text));
+            toolBarText_2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
             searchEditText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-            pageDescriptionText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            pageDescriptionText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_text));
             navigationView.setItemTextAppearance(androidx.appcompat.R.style.Base_TextAppearance_AppCompat_Large);
             emptyText1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             emptyText2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             emptyText3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             empty_create_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             sortByText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_text));
-            toolBarText_2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_max_text));
+            toolBarText_2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
 
 
         }
+
+
+
     }
 
     private void loadSharedPreferences() {
 
-        SharedPreferences sharedPreferences = context.getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = context.getSharedPreferences(UserSettings.PREFERENCES, MODE_PRIVATE);
 
 
         String textSize = sharedPreferences.getString(UserSettings.CUSTOM_TEXT_SIZE, UserSettings.TEXT_MEDIUM);
@@ -2468,6 +2552,8 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         }
 
     }
+    
+
 
     @Override
     public void onDestroy() {

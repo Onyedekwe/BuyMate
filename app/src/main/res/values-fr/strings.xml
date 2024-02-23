@@ -140,7 +140,6 @@
     <string name="HomeFragment__osVersion">Version du système d\'exploitation : </string>
     <string name="HomeFragment__sdkVersion">Version SDK : </string>
     <string name="HomeFragment__mailTo">Envoyer un courrier à :</string>
-    <string name="HomeFragment__mailError">Aucun client de messagerie trouvé</string>
     <string name="HomeFragment__navigation_drawer_open">Ouvrir le tiroir de navigation</string>
     <string name="HomeFragment__navigation_drawer_close">Fermer le tiroir de navigation</string>
     <string name="HomeFragment__defaultName">Utilisateur</string>
@@ -171,6 +170,7 @@
     <string name="HomeFragment__no_list">Aucune liste</string>
     <string name="HomeFragment__list_exist_already">Cette liste existe déjà</string>
     <string name="HomeFragment__no_alarm_app">Aucune application pour effectuer cette action</string>
+    <string name="HomeFragment__send_email_via">Envoyer un e-mail via…</string>
 
     //InsertPasscodeActivity
     <string name="InsertPasscodeActivity__success">Succès</string>
@@ -248,6 +248,7 @@
     <string name="MoreFragment__login">Connexion</string>
     <string name="MoreFragment__premiumText1">Félicitations !</string>
     <string name="MoreFragment__premiumText2">Vous profitez de la version Premium de Buymate</string>
+    <string name="MoreFragment__send_email_via">Envoyer un e-mail via…</string>
 
     //NotesFragment
     <string name="NotesFragment__multipleDelete">Supprimer ces notes</string>
@@ -787,6 +788,13 @@
     <string name="voice_typing_layout_description">Nom de l\'article</string>
     <string name="voice_typing_cancelButton">Annuler</string>
     <string name="voice_typing_addBtn">Ajouter</string>
+    ```
+
+
+    <string name="custom_rate_us_dialog_sub_header">Comment évalueriez-vous votre expérience avec notre application ?</string>
+    <string name="custom_rate_us_dialog_rateBtn">Envoyer</string>
+    <string name="custom_rate_us_dialog_cancelBtn">Non, merci</string>
+    <string name="custom_rate_us_dialog_emptyRate">Veuillez sélectionner une note</string>
     ```
 
 

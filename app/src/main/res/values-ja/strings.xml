@@ -26,10 +26,10 @@
 
     //Firebase
     <string name="Firebase__backup_text_heading">クラウドにバックアップしています</string>
-    <string name="Firebase__backup_text_subheading">しばらくお待ちください...</string>
+    <string name="Firebase__backup_text_subheading">しばらくお待ちください…</string>
     <string name="Firebase__backup_successful">バックアップが成功しました</string>
     <string name="Firebase__restore_text_heading">クラウドからデータを復元しています</string>
-    <string name="Firebase__restore_text_subheading">しばらくお待ちください...</string>
+    <string name="Firebase__restore_text_subheading">しばらくお待ちください…</string>
     <string name="Firebase__restore_no_list_found">リストが見つかりません</string>
     <string name="Firebase__restore_no_notes_found">メモが見つかりません</string>
     <string name="Firebase__restore_completed">復元が完了しました</string>
@@ -135,7 +135,6 @@
     <string name="HomeFragment__osVersion">OSのバージョン：</string>
     <string name="HomeFragment__sdkVersion">SDKのバージョン：</string>
     <string name="HomeFragment__mailTo">メール送信先：</string>
-    <string name="HomeFragment__mailError">メールクライアントが見つかりません</string>
     <string name="HomeFragment__navigation_drawer_open">ナビゲーションドロワーを開く</string>
     <string name="HomeFragment__navigation_drawer_close">ナビゲーションドロワーを閉じる</string>
     <string name="HomeFragment__defaultName">ユーザー</string>
@@ -166,6 +165,7 @@
     <string name="HomeFragment__no_list">リストなし</string>
     <string name="HomeFragment__list_exist_already">このリストはすでに存在します</string>
     <string name="HomeFragment__no_alarm_app">この操作を実行するアプリがありません</string>
+    <string name="HomeFragment__send_email_via">メールを送信する方法…</string>
 
     //InsertPasscodeActivity
     <string name="InsertPasscodeActivity__success">成功</string>
@@ -242,6 +242,7 @@
     <string name="MoreFragment__login">ログイン</string>
     <string name="MoreFragment__premiumText1">おめでとうございます！</string>
     <string name="MoreFragment__premiumText2">Buymateのプレミアムバージョンをお楽しみいただけます</string>
+    <string name="MoreFragment__send_email_via">メールを送信する方法…</string>
 
     //NotesFragment
     <string name="NotesFragment__multipleDelete">これらのノートを削除</string>
@@ -808,9 +809,14 @@
     <string name="voice_typing_layout_description">アイテム名</string>
     <string name="voice_typing_cancelButton">キャンセル</string>
     <string name="voice_typing_addBtn">追加</string>
+
+
+    <string name="custom_rate_us_dialog_sub_header">当社のアプリの体験はどうでしたか？</string>
+    <string name="custom_rate_us_dialog_rateBtn">送信</string>
+    <string name="custom_rate_us_dialog_cancelBtn">いいえ、結構です</string>
+    <string name="custom_rate_us_dialog_emptyRate">評価を選択してください</string>
     ```
 
-    ```xml
     <string-array name="units">
         <item>オンス</item>
         <item>ポンド</item>
