@@ -447,7 +447,7 @@ oyar a Buymate</string>
     <string name="activity_premium__prev_lifetime_currency_text">0,00</string>
     <string name="activity_premium__upgrade_btn">¡Actualiza ahora!</string>
     <string name="activity_premium__full_star">"\u2606""\u2606""\u2606""\u2606"</string>
-    <string name="activity_premium__tip">La suscripción se renueva automáticamente. Puedes cancelarla en la Configuración de Google Play</string>
+    <string name="activity_premium__tip">Esta actualización también te brinda acceso completo a todas las futuras actualizaciones y características próximas.</string>
     <string name="activity_premium__no_network_header">Ups, algo salió mal.</string>
     <string name="activity_premium__no_network_subHeader">Puede ser un problema de red o un error del servidor de Google Play. Inténtalo de nuevo más tarde. Si el problema persiste, contacta a nuestro equipo de soporte.</string>
 

@@ -108,24 +108,23 @@ public class ShoppingWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
-        Toast.makeText(context, "OnDeleted", Toast.LENGTH_SHORT).show();
+        super.onDeleted(context, appWidgetIds);
     }
 
     @Override
     public void onEnabled(Context context) {
-        Toast.makeText(context, "OnEnabled", Toast.LENGTH_SHORT).show();
+        super.onEnabled(context);
     }
 
     @Override
     public void onDisabled(Context context) {
-        Toast.makeText(context, "OnDisabled", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
-
-
+        super.onReceive(context, intent);
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+
 
         if (ACTION_REFRESH.equals(intent.getAction())) {
 
@@ -152,7 +151,9 @@ public class ShoppingWidgetProvider extends AppWidgetProvider {
                 db.updateStatus(category, actual_item, 0);
             } else if (status == 0) {
                 db.updateStatus(category, actual_item, 1);
+
             }
+
             appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.item_widget_stack_view);
         } else if (ACTION_UPDATE_MY_WIDGET.equals(intent.getAction())) {
 
@@ -160,6 +161,7 @@ public class ShoppingWidgetProvider extends AppWidgetProvider {
 
             appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.item_widget_stack_view);
         }
-        super.onReceive(context, intent);
+
+
     }
 }

@@ -14,6 +14,7 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
@@ -42,8 +43,8 @@ public class ShoppingWidgetProviderConfigureActivity extends Activity implements
     public static final String KEY_BUTTON_TEXT = "keyButtonText";
     public static final String KEY_COUNT = "keyCount";
 
-    private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
-    private UserSettings settings;
+    public int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+    public UserSettings settings;
     ShopDatabase db;
 
     Button createNewListBtn;
@@ -161,7 +162,7 @@ public class ShoppingWidgetProviderConfigureActivity extends Activity implements
 
     }
 
-    private void displayData() {
+    public void displayData() {
         Cursor res = db.getCategory(ShoppingWidgetProviderConfigureActivity.this);
         if (res.getCount() == 0) {
             recyclerView.setVisibility(View.GONE);
@@ -254,10 +255,12 @@ public class ShoppingWidgetProviderConfigureActivity extends Activity implements
         finish();
 
 
+
+
     }
 
 
-    private void updateView() {
+    public void updateView() {
 
         if (settings.getCustomTheme().equals(UserSettings.DEFAULT_THEME)) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
@@ -286,7 +289,7 @@ public class ShoppingWidgetProviderConfigureActivity extends Activity implements
 
     }
 
-    private void loadSharedPreferences() {
+    public void loadSharedPreferences() {
 
         SharedPreferences sharedPreferences = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
 

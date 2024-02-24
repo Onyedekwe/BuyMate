@@ -456,7 +456,7 @@
     <string name="activity_premium__prev_lifetime_currency_text">٠.٠٠</string>
     <string name="activity_premium__upgrade_btn">الترقية الآن!</string>
     <string name="activity_premium__full_star">"\u2606""\u2606""\u2606""\u2606"</string>
-    <string name="activity_premium__tip">الاشتراك يجدد تلقائياً. يمكنك إلغاء ذلك في إعدادات Google Play</string>
+    <string name="activity_premium__tip">هذه الترقية تمنحك أيضًا وصولًا كاملاً إلى جميع التحديثات المستقبلية والميزات القادمة.</string>
     <string name="activity_premium__no_network_header">عذراً، حدث خطأ ما.</string>
     <string name="activity_premium__no_network_subHeader">قد يكون هذا مشكلة في الشبكة أو خطأ في خادم Google Play. حاول مرة أخرى لاحقًا. إذا استمرت المشكلة، اتصل بفريق الدعم الخاص بنا.</string>
 

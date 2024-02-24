@@ -19,14 +19,14 @@
             android:padding="10dp">
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/category_text_view"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/shopping_widget_provider_category_text_view"
                     android:fontFamily="@font/lexend"
@@ -34,7 +34,7 @@
                     android:maxWidth="150dp"
                     android:gravity="start"
                     android:ellipsize="end"
-                    android:maxLines="1"
+                    android:maxLines="2"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="#026EAA" />
@@ -42,10 +42,12 @@
 
                 <TextView
                     android:id="@+id/item_count_text_view"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="start"
+                    android:gravity="start|center"
                     android:ellipsize="end"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="3dp"
                     android:maxLines="1"
                     android:textColor="#858E93"
                     android:textSize="14sp" />
@@ -54,7 +56,7 @@
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:layout_gravity="center"
                 android:gravity="end">
@@ -62,7 +64,7 @@
                 <ImageView
                     android:id="@+id/widget_sync_icon"
                     android:layout_width="22dp"
-                    android:layout_height="22dp"
+                    android:layout_height="match_parent"
                     android:layout_marginHorizontal="15dp"
                     android:src="@drawable/final_regular_sync_icon"
                     android:importantForAccessibility="no" />
@@ -70,7 +72,7 @@
                 <ImageView
                     android:id="@+id/widget_add_icon"
                     android:layout_width="23dp"
-                    android:layout_height="23dp"
+                    android:layout_height="match_parent"
                     android:src="@drawable/final_regular_home_widget_icon"
                     android:importantForAccessibility="no" />
             </LinearLayout>
@@ -86,6 +88,8 @@
                 android:id="@+id/item_widget_stack_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginHorizontal="5dp"
+                android:layout_marginVertical="10dp"
                 android:background="@color/white" />
 
             <ImageView

@@ -467,7 +467,7 @@
     <string name="activity_premium__prev_lifetime_currency_text">0,00</string>
     <string name="activity_premium__upgrade_btn">Passer à la version Premium !</string>
     <string name="activity_premium__full_star">"\u2606""\u2606""\u2606""\u2606"</string>
-    <string name="activity_premium__tip">L\'abonnement se renouvelle automatiquement. Vous pouvez l\'annuler dans les paramètres de Google Play.</string>
+    <string name="activity_premium__tip">Cette mise à niveau vous donne également un accès complet à toutes les mises à jour futures et aux fonctionnalités à venir.</string>
     <string name="activity_premium__no_network_header">Oups, quelque chose s\'est mal passé.</string>
     <string name="activity_premium__no_network_subHeader">Il peut s\'agir d\'un problème de réseau ou d\'une erreur de serveur Google Play. Réessayez plus tard. Si le problème persiste, contactez notre équipe d\'assistance.</string>
 

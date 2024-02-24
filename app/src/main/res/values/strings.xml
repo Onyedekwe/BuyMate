@@ -472,7 +472,7 @@
     <string name="activity_premium__prev_lifetime_currency_text">0.00</string>
     <string name="activity_premium__upgrade_btn">Upgrade now!</string>
     <string name="activity_premium__full_star">"\u2606""\u2606""\u2606""\u2606"</string>
-    <string name="activity_premium__tip">Subscription renews automatically. You can cancel it in Google Play Setting</string>
+    <string name="activity_premium__tip">This upgrade also grants you complete access to all future updates and upcoming features.</string>
     <string name="activity_premium__no_network_header">Oops, something went wrong.</string>
     <string name="activity_premium__no_network_subHeader">It may be a network issue or a Google Play server error. Try again later. If the problem persists, contact our support team.</string>
 

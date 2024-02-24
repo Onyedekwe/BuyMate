@@ -429,7 +429,7 @@
     <string name="activity_premium__prev_lifetime_currency_text">0,00</string>
     <string name="activity_premium__upgrade_btn">Jetzt upgraden!</string>
     <string name="activity_premium__full_star">"\u2606""\u2606""\u2606""\u2606"</string>
-    <string name="activity_premium__tip">Das Abonnement verlängert sich automatisch. Sie können es in den Einstellungen von Google Play kündigen</string>
+    <string name="activity_premium__tip">Dieses Upgrade gewährt Ihnen auch vollständigen Zugriff auf alle zukünftigen Updates und kommenden Funktionen.</string>
     <string name="activity_premium__no_network_header">Oops, etwas ist schiefgelaufen.</string>
     <string name="activity_premium__no_network_subHeader">Es könnte ein Netzwerkproblem oder ein Serverfehler von Google Play sein. Versuchen Sie es später erneut. Wenn das Problem weiterhin besteht, wenden Sie sich an unser Support-Team.</string>
 

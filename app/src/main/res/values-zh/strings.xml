@@ -452,7 +452,7 @@
     <string name="activity_premium__prev_lifetime_currency_text">0.00</string>
     <string name="activity_premium__upgrade_btn">立即升级！</string>
     <string name="activity_premium__full_star">"\u2606""\u2606""\u2606""\u2606"</string>
-    <string name="activity_premium__tip">订阅将自动续订。您可以在Google Play设置中取消订阅</string>
+    <string name="activity_premium__tip">这次升级还将为您提供对所有未来更新和即将推出的功能的完全访问权限。</string>
     <string name="activity_premium__no_network_header">糟糕，出现了一些问题。</string>
     <string name="activity_premium__no_network_subHeader">可能是网络问题或Google Play服务器错误。稍后再试。如果问题仍然存在，请联系我们的支持团队。</string>
 

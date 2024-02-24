@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.text.Html;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -30,8 +31,8 @@ public class ShoppingWidgetService extends RemoteViewsService {
 
     class ShoppingWidgetItemFactory implements RemoteViewsService.RemoteViewsFactory {
 
-        private final Context context;
-        private final int appWidgetId;
+        public final Context context;
+        public final int appWidgetId;
 
         String month, day, time;
 
@@ -57,9 +58,9 @@ public class ShoppingWidgetService extends RemoteViewsService {
             while (res.moveToNext()) {
 
                 if (res.getInt(3) == 1) {
-                    Items.add(res.getString(2) + " ☑");
+                    Items.add("☑ "+res.getString(2));
                 } else {
-                    Items.add(res.getString(2));
+                    Items.add("\u2610 " + res.getString(2));
                 }
 
 
@@ -89,16 +90,16 @@ public class ShoppingWidgetService extends RemoteViewsService {
             while (res.moveToNext()) {
 
                 if (res.getInt(3) == 1) {
-                    Items.add(res.getString(2) + " ☑");
+                    Items.add("☑ "+ res.getString(2) );
                 } else {
-                    Items.add(res.getString(2));
+                    Items.add("\u2610 "+res.getString(2));
                 }
 
                 month = res.getString(5);
                 day = res.getString(7);
                 time = res.getString(8);
 
-                String full_date = context.getString(R.string.ShoppingWidgetService__added) + day + " " + month + " " + time;
+                String full_date = context.getString(R.string.ShoppingWidgetService__added) +" "+ day + " " + month + " " + time;
                 Items_Date.add(full_date);
             }
             res.close();
@@ -130,8 +131,19 @@ public class ShoppingWidgetService extends RemoteViewsService {
         public RemoteViews getViewAt(int position) {
 
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.shopping_widget_item);
-            views.setTextViewText(R.id.shopping_widget_item_text, Items.get(position));
-            views.setTextViewText(R.id.shopping_widget_item_date_text, Items_Date.get(position));
+            if(Items.get(position).contains("☑")){
+                String textWithStrikeThrough = "<strike>"+Items.get(position).replace("☑", "").trim()+"</strike>";
+                views.setTextViewText(R.id.shopping_widget_item_text, Html.fromHtml(textWithStrikeThrough, Html.FROM_HTML_MODE_COMPACT));
+                views.setTextViewText(R.id.shopping_widget_item_date_text, Items_Date.get(position));
+
+
+            }else if (Items.get(position).contains("\u2610")){
+                views.setTextViewText(R.id.shopping_widget_item_text, Items.get(position).replace("\u2610", "").trim());
+                views.setTextViewText(R.id.shopping_widget_item_date_text, Items_Date.get(position));
+            }
+
+
+
 
 
             Intent fillIntent = new Intent();

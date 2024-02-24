@@ -456,7 +456,7 @@ Desabilitar riscagem</string>
     <string name="activity_premium__prev_lifetime_currency_text">0.00</string>
     <string name="activity_premium__upgrade_btn">Atualizar agora!</string>
     <string name="activity_premium__full_star">"\u2606""\u2606""\u2606""\u2606"</string>
-    <string name="activity_premium__tip">A assinatura renova automaticamente. Você pode cancelá-la nas configurações do Google Play</string>
+    <string name="activity_premium__tip">Esta atualização também concede acesso completo a todas as futuras atualizações e recursos a serem lançados.</string>
     <string name="activity_premium__no_network_header">Ops, algo deu errado.</string>
     <string name="activity_premium__no_network_subHeader">Pode ser um problema de rede ou um erro do servidor do Google Play. Tente novamente mais tarde. Se o problema persistir, entre em contato com nossa equipe de suporte.</string>
 

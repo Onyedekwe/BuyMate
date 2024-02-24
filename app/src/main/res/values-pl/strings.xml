@@ -466,7 +466,7 @@ Usuń tę notatkę</string>
     <string name="activity_premium__prev_lifetime_currency_text">0.00</string>
     <string name="activity_premium__upgrade_btn">Zaktualizuj teraz!</string>
     <string name="activity_premium__full_star">"\u2606""\u2606""\u2606""\u2606"</string>
-    <string name="activity_premium__tip">Subskrypcja odnawia się automatycznie. Możesz ją anulować w ustawieniach Google Play</string>
+    <string name="activity_premium__tip">To ulepszenie również daje Ci pełny dostęp do wszystkich przyszłych aktualizacji i nadchodzących funkcji.</string>
     <string name="activity_premium__no_network_header">Ups, coś poszło nie tak.</string>
     <string name="activity_premium__no_network_subHeader">To może być problem z siecią lub błąd serwera Google Play. Spróbuj ponownie później. Jeśli problem będzie się powtarzać, skontaktuj się z naszym zespołem wsparcia.</string>
 

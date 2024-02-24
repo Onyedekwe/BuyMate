@@ -468,7 +468,7 @@
     <string name="activity_premium__prev_lifetime_currency_text">0.00</string>
     <string name="activity_premium__upgrade_btn">अब अपग्रेड करें!</string>
     <string name="activity_premium__full_star">"\u2606""\u2606""\u2606""\u2606"</string>
-    <string name="activity_premium__tip">सदस्यता स्वचालित रूप से नवीनीकृत होती है। आप इसे Google Play सेटिंग में रद्द कर सकते हैं</string>
+    <string name="activity_premium__tip">यह अपग्रेड आपको भविष्य के सभी अपडेट और आने वाले सुविधाओं तक पूरी पहुंच भी प्रदान करता है।</string>
     <string name="activity_premium__no_network_header">उफ़, कुछ गलत हो गया है।</string>
     <string name="activity_premium__no_network_subHeader">यह नेटवर्क समस्या या Google Play सर्वर की त्रुटि हो सकती है। बाद में पुन: प्रयास करें। यदि समस्या बनी रहती है, तो हमारी समर्थन टीम से संपर्क करें।</string>
 

@@ -468,9 +468,7 @@
     <string name="activity_premium__prev_lifetime_currency_text">0.00</string>
     <string name="activity_premium__upgrade_btn">今すぐアップグレード！</string>
     <string name="activity_premium__full_star">"\u2606""\u2606""\u2606""\u2606"</string>
-    <string name="activity_premium__tip">サブスクリプ
-
-ションは自動的に更新されます。Google Playの設定でキャンセルできます</string>
+    <string name="activity_premium__tip">このアップグレードにより、将来のすべてのアップデートや今後の機能に完全にアクセスできます。</string>
     <string name="activity_premium__no_network_header">おっと、何か問題が発生しました。</string>
     <string name="activity_premium__no_network_subHeader">ネットワークの問題またはGoogle Playサーバーのエラーかもしれません。後でもう一度やり直してください。問題が解決しない場合は、サポートチームにお問い合わせください。</string>
 

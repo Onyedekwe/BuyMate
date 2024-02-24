@@ -456,7 +456,7 @@
     <string name="activity_premium__prev_lifetime_currency_text">0,00</string>
     <string name="activity_premium__upgrade_btn">Получите премиум сейчас!</string>
     <string name="activity_premium__full_star">"\u2606""\u2606""\u2606""\u2606"</string>
-    <string name="activity_premium__tip">Подписка автоматически продлевается. Вы можете отменить ее в настройках Google Play</string>
+    <string name="activity_premium__tip">Это обновление также дает вам полный доступ ко всем будущим обновлениям и предстоящим функциям.</string>
     <string name="activity_premium__no_network_header">Упс, что-то пошло не так.</string>
     <string name="activity_premium__no_network_subHeader">Это может быть проблема сети или ошибка сервера Google Play. Повторите попытку позже. Если проблема повторится, свяжитесь с нашей службой поддержки.</string>
 
