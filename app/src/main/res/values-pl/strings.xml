@@ -133,7 +133,6 @@
     <string name="HomeFragment__brand">Marka: </string>
     <string name="HomeFragment__osVersion">Wersja systemu operacyjnego: </string>
     <string name="HomeFragment__sdkVersion">Wersja SDK: </string>
-    <string name="HomeFragment__mailTo">Wyślij wiadomość do:</string>
     <string name="HomeFragment__navigation_drawer_open">Otwórz szufladę nawigacyjną</string>
     <string name="HomeFragment__navigation_drawer_close">Zamknij szufladę nawigacyjną</string>
     <string name="HomeFragment__defaultName">Użytkowniku</string>
@@ -215,6 +214,9 @@
     <string name="ItemActivity__pdfDownloadedTo">PDF pobrany do</string>
     <string name="ItemActivity__voicePrompt">Słuchanie</string>
 
+    //ItemSuggestionActivity
+    <string name="ItemSuggestionActivity__success">Sukces</string>
+
 
     //LoginActivity
     <string name="LoginActivity__error">Błąd: </string>
@@ -234,8 +236,6 @@
     <string name="MoreFragment__brand">Marka: </string>
     <string name="MoreFragment__osVersion">Wersja systemu operacyjnego: </string>
     <string name="MoreFragment__sdkVersion">Wersja SDK: </string>
-    <string name="MoreFragment__mailTo">Wyślij wiadomość do:</string>
-    <string name="MoreFragment__mailError">Nie znaleziono klienta poczty e-mail</string>
     <string name="MoreFragment__signIn">Zaloguj się</string>
     <string name="MoreFragment__account">Konto</string>
     <string name="MoreFragment__loginPrompt">Zaloguj się, aby kontynuować</string>
@@ -434,7 +434,8 @@ Usuń tę notatkę</string>
     //activity_item_suggestion
     <string name="activity_item_suggestion__toolbarText">Sugestia przedmiotu</string>
     <string name="activity_item_suggestion__hideSuggestionText">Ukryj sugestię</string>
-    <string name="activity_item_suggestion__hideSuggestionDescription">To wyłącza pokazywanie sugestii podczas pisania.</string>
+    <string name="activity_item_suggestion__resetSuggestionText">Zresetuj sugestię</string>
+
 
     //activity_log_in
     <string name="activity_log_in__loginText">Zaloguj się na swoje konto</string>
@@ -579,6 +580,12 @@ Usuń tę notatkę</string>
     //custom_delete_dialog
     <string name="custom_delete_dialog__cancel_button">Anuluj</string>
     <string name="custom_delete_dialog__delete_button">Gotowe</string>
+
+    <string name="custom_suggestion_reset_dialog_header">Zresetować sugestie?</string>
+    <string name="custom_suggestion_reset_description">To działanie przywróci listę Twoich sugestii do domyślnej wersji aplikacji.</string>
+    <string name="custom_suggestion_cancelBtn">Anuluj</string>
+    <string name="custom_suggestion_ResetBtn">Resetuj</string>
+
 
     //custom_edit_username_dialog
     <string name="custom_edit_username_dialog__edit_title">Edytuj nazwę</string>

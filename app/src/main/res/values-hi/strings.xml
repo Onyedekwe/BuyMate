@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">Buymate</string>
+    <string name="app_name">Buymate:</string>
     <string name="app_version" translatable="false">1.0.1</string>
     <string name="app_link" translatable="false">https://play.google.com/store/apps/details?id=</string>
     <string name="app_email" translatable="false">hemerickservices@gmail.com</string>
@@ -134,7 +134,6 @@
     <string name="HomeFragment__brand">ब्रांड: </string>
     <string name="HomeFragment__osVersion">ओएस संस्करण: </string>
     <string name="HomeFragment__sdkVersion">एसडीके संस्करण: </string>
-    <string name="HomeFragment__mailTo">को भेजें:</string>
     <string name="HomeFragment__navigation_drawer_open">नेविगेशन ड्रायर खोलें</string>
     <string name="HomeFragment__navigation_drawer_close">नेविगेशन ड्रायर बंद करें</string>
     <string name="HomeFragment__defaultName">उपयोगकर्ता</string>
@@ -217,6 +216,9 @@
     <string name="ItemActivity__contactUs">हमसे संपर्क करें:</string>
     <string name="ItemActivity__pdfDownloadedTo">पीडीएफ डाउनलोड किया गया</string>
     <string name="ItemActivity__voicePrompt">सुनना</string>
+
+    //ItemSuggestionActivity
+    <string name="ItemSuggestionActivity__success">सफलता</string>
     ```
 
     Here are the translations to Hindi:
@@ -240,8 +242,6 @@
     <string name="MoreFragment__brand">ब्रांड: </string>
     <string name="MoreFragment__osVersion">OS संस्करण: </string>
     <string name="MoreFragment__sdkVersion">SDK संस्करण: </string>
-    <string name="MoreFragment__mailTo">को भेजें:</string>
-    <string name="MoreFragment__mailError">कोई ईमेल क्लाइंट नहीं मिला</string>
     <string name="MoreFragment__signIn">साइन इन करें</string>
     <string name="MoreFragment__account">खाता</string>
     <string name="MoreFragment__loginPrompt">कृपया आगे बढ़ने से पहले लॉगिन करें</string>
@@ -285,9 +285,7 @@
     <string name="SettingsActivity__renameSwipeLeft">नाम बदलें: बायाँ स्वाइप करें</string>
     <string name="SettingsActivity__changePriceSwipeLeft">कीमत बदलें: बायाँ स्वाइप करें</string>
     <string name="SettingsActivity__changeQuantitySwipeLeft">मात्रा बदलें: बायाँ स्वाइप करें</string>
-    <string name="SettingsActivity__starAndUnstarLeft">
-
-आइटम को स्टार और अस्टार करें: बायाँ स्वाइप करें</string>
+    <string name="SettingsActivity__starAndUnstarLeft">आइटम को स्टार और अस्टार करें: बायाँ स्वाइप करें</string>
     <string name="SettingsActivity__deleteSwipeLeft">हटाएं: बायाँ स्वाइप करें</string>
     <string name="SettingsActivity__checkAndUncheckLeft">आइटम को चेक और अनचेक करें: बायाँ स्वाइप करें</string>
     <string name="SettingsActivity__showOptionsSwipeLeft">विकल्प दिखाएं: बायाँ स्वाइप करें</string>
@@ -436,7 +434,8 @@
     // activity_item_suggestion
     <string name="activity_item_suggestion__toolbarText">आइटम सुझाव</string>
     <string name="activity_item_suggestion__hideSuggestionText">सुझाव छिपाएं</string>
-    <string name="activity_item_suggestion__hideSuggestionDescription">यह टाइप करते समय सुझाव दिखाना अक्षम कर देता है।</string>
+    <string name="activity_item_suggestion__resetSuggestionText">सुझाव रीसेट करें</string>
+
 
     // activity_log_in
     <string name="activity_log_in__loginText">अपने खाते में लॉगिन करें</string>
@@ -624,6 +623,13 @@
     <string name="custom_share_dialog__title">शेयर</string>
     <string name="custom_share_dialog__asText">पाठ के रूप में शेयर करें</string>
     <string name="custom_share_dialog__asPDF">PDF डाउनलोड करें</string>
+
+
+    <string name="custom_suggestion_reset_dialog_header">सुझाव रीसेट करें?</string>
+    <string name="custom_suggestion_reset_description">यह कार्रवाई आपके सुझाव सूची को एप्लिकेशन की डिफ़ॉल्ट संस्करण पर पुनः स्थापित करेगी।</string>
+    <string name="custom_suggestion_cancelBtn">रद्द करें</string>
+    <string name="custom_suggestion_ResetBtn">रीसेट करें</string>
+    ```
 
     //custom_swipe_action_dialog
     <string name="custom_swipe_action_dialog__edit_title">क्रिया का चयन करें</string>

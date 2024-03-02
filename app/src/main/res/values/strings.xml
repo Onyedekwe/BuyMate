@@ -136,7 +136,6 @@
     <string name="HomeFragment__brand">Brand: </string>
     <string name="HomeFragment__osVersion">OS Version: </string>
     <string name="HomeFragment__sdkVersion">SDK Version: </string>
-    <string name="HomeFragment__mailTo">Mail to:</string>
     <string name="HomeFragment__navigation_drawer_open">Open navigation drawer</string>
     <string name="HomeFragment__navigation_drawer_close">Close navigation drawer</string>
     <string name="HomeFragment__defaultName">User</string>
@@ -220,6 +219,10 @@
     <string name="ItemActivity__voicePrompt">Listening</string>
 
 
+    //ItemSuggestionActivity
+    <string name="ItemSuggestionActivity__success">Success</string>
+
+
     //LoginActivity
     <string name="LoginActivity__error">Error: </string>
     <string name="LoginActivity__emailError">Not a valid email address</string>
@@ -238,8 +241,6 @@
     <string name="MoreFragment__brand">Brand: </string>
     <string name="MoreFragment__osVersion">OS Version: </string>
     <string name="MoreFragment__sdkVersion">SDK Version: </string>
-    <string name="MoreFragment__mailTo">Mail to:</string>
-    <string name="MoreFragment__mailError">No email client found</string>
     <string name="MoreFragment__signIn">Sign in</string>
     <string name="MoreFragment__account">Account</string>
     <string name="MoreFragment__loginPrompt">Please login before you can proceed</string>
@@ -438,7 +439,7 @@
     //activity_item_suggestion
     <string name="activity_item_suggestion__toolbarText">Item suggestion</string>
     <string name="activity_item_suggestion__hideSuggestionText">Hide suggestion</string>
-    <string name="activity_item_suggestion__hideSuggestionDescription">This disables suggestions from showing while typing.</string>
+    <string name="activity_item_suggestion__resetSuggestionText">Reset suggestion</string>
 
 
     //activity_log_in
@@ -1019,5 +1020,11 @@
     <string name="note_toolbar_menu_save_text">Save</string>
     <string name="note_toolbar_menu_delete_text">Delete</string>
 
+
+    //custom_suggestion_reset_dialog
+    <string name="custom_suggestion_reset_dialog_header">Reset Suggestions?</string>
+    <string name="custom_suggestion_reset_description">This action will restore your suggestion list to the default version of the app.</string>
+    <string name="custom_suggestion_cancelBtn">Cancel</string>
+    <string name="custom_suggestion_ResetBtn">Reset</string>
 
 </resources>

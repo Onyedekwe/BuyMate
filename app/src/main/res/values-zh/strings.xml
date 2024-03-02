@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">Buymate</string>
+    <string name="app_name">Buymate:</string>
     <string name="app_version" translatable="false">1.0.1</string>
     <string name="app_link" translatable="false">https://play.google.com/store/apps/details?id=</string>
     <string name="app_email" translatable="false">hemerickservices@gmail.com</string>
@@ -132,7 +132,6 @@
     <string name="HomeFragment__brand">品牌：</string>
     <string name="HomeFragment__osVersion">操作系统版本：</string>
     <string name="HomeFragment__sdkVersion">SDK 版本：</string>
-    <string name="HomeFragment__mailTo">发送邮件至：</string>
     <string name="HomeFragment__navigation_drawer_open">打开导航抽屉</string>
     <string name="HomeFragment__navigation_drawer_close">关闭导航抽屉</string>
     <string name="HomeFragment__defaultName">用户</string>
@@ -212,6 +211,9 @@
     <string name="ItemActivity__pdfDownloadedTo">PDF 下载到</string>
     <string name="ItemActivity__voicePrompt">正在听取</string>
 
+    //ItemSuggestionActivity
+    <string name="ItemSuggestionActivity__success">成功</string>
+
     //LoginActivity
     <string name="LoginActivity__error">错误：</string>
     <string name="LoginActivity__emailError">无效的电子邮件地址</string>
@@ -229,8 +231,6 @@
     <string name="MoreFragment__brand">品牌：</string>
     <string name="MoreFragment__osVersion">操作系统版本：</string>
     <string name="MoreFragment__sdkVersion">SDK 版本：</string>
-    <string name="MoreFragment__mailTo">发送邮件至：</string>
-    <string name="MoreFragment__mailError">未找到邮件客户端</string>
     <string name="MoreFragment__signIn">登录</string>
     <string name="MoreFragment__account">账户</string>
     <string name="MoreFragment__loginPrompt">请登录后继续</string>
@@ -418,7 +418,7 @@
     //activity_item_suggestion
     <string name="activity_item_suggestion__toolbarText">商品建议</string>
     <string name="activity_item_suggestion__hideSuggestionText">隐藏建议</string>
-    <string name="activity_item_suggestion__hideSuggestionDescription">在输入时禁止显示建议。</string>
+    <string name="activity_item_suggestion__resetSuggestionText">重置建议</string>
 
 
     //activity_log_in
@@ -574,6 +574,13 @@
     //custom_delete_dialog
     <string name="custom_delete_dialog__cancel_button">取消</string>
     <string name="custom_delete_dialog__delete_button">完成</string>
+
+
+    <string name="custom_suggestion_reset_dialog_header">重置建议？</string>
+    <string name="custom_suggestion_reset_description">此操作将把您的建议列表恢复到应用程序的默认版本。</string>
+    <string name="custom_suggestion_cancelBtn">取消</string>
+    <string name="custom_suggestion_ResetBtn">重置</string>
+    ```
 
     //custom_edit_username_dialog
     <string name="custom_edit_username_dialog__edit_title">编辑用户名</string>

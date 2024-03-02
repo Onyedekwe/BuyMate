@@ -124,7 +124,6 @@
     <string name="HomeFragment__brand">Marca: </string>
     <string name="HomeFragment__osVersion">Versão do SO: </string>
     <string name="HomeFragment__sdkVersion">Versão do SDK: </string>
-    <string name="HomeFragment__mailTo">Enviar email para:</string>
     <string name="HomeFragment__navigation_drawer_open">Abrir menu de navegação</string>
     <string name="HomeFragment__navigation_drawer_close">Fechar menu de navegação</string>
     <string name="HomeFragment__defaultName">Usuário</string>
@@ -206,6 +205,9 @@
     <string name="ItemActivity__pdfDownloadedTo">PDF baixado para</string>
     <string name="ItemActivity__voicePrompt">Ouvindo</string>
 
+    //ItemSuggestionActivity
+    <string name="ItemSuggestionActivity__success">Sucesso</string>
+
 
     //LoginActivity
     <string name="LoginActivity__error">Erro: </string>
@@ -225,8 +227,6 @@
     <string name="MoreFragment__brand">Marca: </string>
     <string name="MoreFragment__osVersion">Versão do SO: </string>
     <string name="MoreFragment__sdkVersion">Versão do SDK: </string>
-    <string name="MoreFragment__mailTo">Enviar email para:</string>
-    <string name="MoreFragment__mailError">Nenhum cliente de email encontrado</string>
     <string name="MoreFragment__signIn">Entrar</string>
     <string name="MoreFragment__account">Conta</string>
     <string name="MoreFragment__loginPrompt">Por favor, faça login antes de prosseguir</string>
@@ -421,7 +421,8 @@ Desabilitar riscagem</string>
     //activity_item_suggestion
     <string name="activity_item_suggestion__toolbarText">Sugestão de item</string>
     <string name="activity_item_suggestion__hideSuggestionText">Ocultar sugestão</string>
-    <string name="activity_item_suggestion__hideSuggestionDescription">Isso impede que as sugestões apareçam durante a digitação.</string>
+    <string name="activity_item_suggestion__resetSuggestionText">Redefinir sugestão</string>
+
 
     //activity_log_in
     <string name="activity_log_in__loginText">Faça login na sua conta</string>
@@ -587,9 +588,14 @@ Desabilitar riscagem</string>
     <string name="custom_image_upload_dialog__login_btn">Fazer login</string>
     <string name="custom_image_upload_dialog__cancel_btn">Cancelar</string>
 
-    Here are the translations for those strings:
 
-    ```xml
+    <string name="custom_suggestion_reset_dialog_header">Redefinir sugestões?</string>
+    <string name="custom_suggestion_reset_description">Esta ação irá restaurar a sua lista de sugestões para a versão padrão do aplicativo.</string>
+    <string name="custom_suggestion_cancelBtn">Cancelar</string>
+    <string name="custom_suggestion_ResetBtn">Redefinir</string>
+    ```
+
+
     //custom_logout_warning_dialog
     <string name="custom_logout_warning_dialog__header">Confirmar saída</string>
     <string name="custom_logout_warning_dialog__logout_btn">Sair</string>

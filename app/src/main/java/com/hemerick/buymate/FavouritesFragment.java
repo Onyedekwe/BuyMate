@@ -2574,7 +2574,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                 result.append("   ").append(formatNumber(PriceQuantityIndex));
             }
 
-            result.append("\n\n");
+            result.append("\n");
         }
 
         if (settings.getIsShareTotalDisabled().equals(UserSettings.NO_SHARE_TOTAL_NOT_DISABLED)) {

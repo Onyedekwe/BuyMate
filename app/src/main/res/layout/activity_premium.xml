@@ -233,7 +233,6 @@
                     android:id="@+id/sub_header"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:fontFamily="@font/lexend"
                     android:gravity="center"
                     android:text="@string/activity_premium__sub_header"
                     android:layout_gravity="center"

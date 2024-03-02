@@ -411,6 +411,9 @@ public class NotesFragment extends Fragment implements ShopNotesAdapter.OnNoteLi
         long daysDifference = timeDifference / (1000 * 60 * 60 * 24);
 
         if(daysDifference >= 7){
+            SharedPreferences.Editor editor = sharedPreference.edit();
+            editor.putLong("LaunchTime", currentTime);
+            editor.apply();
             showRatingDialog();
         }
 
@@ -499,6 +502,7 @@ public class NotesFragment extends Fragment implements ShopNotesAdapter.OnNoteLi
                     }catch (ActivityNotFoundException e){
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_link))));
                     }
+                    dialog.dismiss();
 
                 }else{
                     Toast.makeText(context, context.getString(R.string.custom_rate_us_dialog_emptyRate), Toast.LENGTH_SHORT).show();

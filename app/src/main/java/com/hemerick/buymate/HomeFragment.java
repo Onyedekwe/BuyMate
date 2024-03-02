@@ -405,6 +405,8 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         unitCheck = new ArrayList<>();
         recyclerView = rootView.findViewById(R.id.todo_list);
 
+
+
         adapter = new ShopCategoryAdapter(context, settings, category_list, this);
         recyclerView.setAdapter(adapter);
         updateRecyclerView();
@@ -435,6 +437,9 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
 
             }
         });
+        
+
+        
 
         displayData();
         loadSharedPreferences();
@@ -1740,7 +1745,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                 result.append("   ").append(formatNumber(PriceQuantityIndex));
             }
 
-            result.append("\n\n");
+            result.append("\n");
         }
 
         if (settings.getIsShareTotalDisabled().equals(UserSettings.NO_SHARE_TOTAL_NOT_DISABLED)) {

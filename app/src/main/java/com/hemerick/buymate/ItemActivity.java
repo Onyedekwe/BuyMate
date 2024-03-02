@@ -2695,7 +2695,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                 result.append("   ").append(formatNumber(PriceQuantityIndex));
             }
 
-            result.append("\n\n");
+            result.append("\n");
 
 
         }

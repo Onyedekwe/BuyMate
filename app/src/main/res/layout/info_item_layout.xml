@@ -46,7 +46,6 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
-        android:id="@+id/bottomBarLine"
         android:layout_width="match_parent"
         android:layout_height="1.5dp"
         android:background="?attr/trackColor"
@@ -91,7 +90,6 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -195,7 +193,6 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
-        android:id="@+id/lin2"
         android:layout_width="match_parent"
         android:layout_height="1.5dp"
         android:layout_marginTop="5dp"
@@ -203,7 +200,6 @@
         android:orientation="vertical" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/linearLayout4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"

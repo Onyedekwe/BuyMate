@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">Buymate</string>
+    <string name="app_name">Buymate:</string>
     <string name="app_version">1.0.1</string>
     <string name="app_link">https://play.google.com/store/apps/details?id=</string>
     <string name="app_email">hemerickservices@gmail.com</string>
@@ -130,7 +130,6 @@
     <string name="HomeFragment__brand">Бренд: </string>
     <string name="HomeFragment__osVersion">Версия ОС: </string>
     <string name="HomeFragment__sdkVersion">Версия SDK: </string>
-    <string name="HomeFragment__mailTo">Письмо на:</string>
     <string name="HomeFragment__navigation_drawer_open">Открыть боковое меню</string>
     <string name="HomeFragment__navigation_drawer_close">Закрыть боковое меню</string>
     <string name="HomeFragment__defaultName">Пользователь</string>
@@ -211,6 +210,10 @@
     <string name="ItemActivity__pdfDownloadedTo">PDF загружен в</string>
     <string name="ItemActivity__voicePrompt">Прослушивание</string>
 
+
+    //ItemSuggestionActivity
+    <string name="ItemSuggestionActivity__success">Успешно</string>
+
     //LoginActivity
     <string name="LoginActivity__error">Ошибка: </string>
     <string name="LoginActivity__emailError">Недопустимый адрес электронной почты</string>
@@ -228,8 +231,6 @@
     <string name="MoreFragment__brand">Бренд: </string>
     <string name="MoreFragment__osVersion">Версия ОС: </string>
     <string name="MoreFragment__sdkVersion">Версия SDK: </string>
-    <string name="MoreFragment__mailTo">Отправить по электронной почте:</string>
-    <string name="MoreFragment__mailError">Почтовый клиент не найден</string>
     <string name="MoreFragment__signIn">Войти</string>
     <string name="MoreFragment__account">Аккаунт</string>
     <string name="MoreFragment__loginPrompt">Пожалуйста, войдите, прежде чем продолжить</string>
@@ -420,7 +421,8 @@
     //activity_item_suggestion
     <string name="activity_item_suggestion__toolbarText">Подсказка по элементам</string>
     <string name="activity_item_suggestion__hideSuggestionText">Скрыть подсказку</string>
-    <string name="activity_item_suggestion__hideSuggestionDescription">Это отключает отображение подсказок при вводе текста.</string>
+    <string name="activity_item_suggestion__resetSuggestionText">Сбросить предложение</string>
+
 
 
     //activity_log_in
@@ -784,6 +786,13 @@
     <string name="custom_rate_us_dialog_rateBtn">Отправить</string>
     <string name="custom_rate_us_dialog_cancelBtn">Нет, спасибо</string>
     <string name="custom_rate_us_dialog_emptyRate">Пожалуйста, выберите оценку</string>
+
+
+    <string name="custom_suggestion_reset_dialog_header">Сбросить предложения?</string>
+    <string name="custom_suggestion_reset_description">Это действие восстановит ваш список предложений до версии приложения по умолчанию.</string>
+    <string name="custom_suggestion_cancelBtn">Отмена</string>
+    <string name="custom_suggestion_ResetBtn">Сбросить</string>
+    ```
     ```
 
     ```xml

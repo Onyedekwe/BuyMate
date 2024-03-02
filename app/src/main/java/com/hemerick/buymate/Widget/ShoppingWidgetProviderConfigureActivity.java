@@ -5,7 +5,6 @@ import static com.hemerick.buymate.Widget.ShoppingWidgetProvider.ACTION_UPDATE_M
 
 import android.app.Activity;
 import android.app.PendingIntent;
-import android.app.UiModeManager;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
@@ -14,11 +13,11 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RemoteViews;
 
 import androidx.appcompat.app.AppCompatDelegate;
@@ -58,6 +57,10 @@ public class ShoppingWidgetProviderConfigureActivity extends Activity implements
     Toolbar toolbar;
 
     Intent buttonIntent;
+
+    ProgressBar progressBar;
+
+    WidgetConfigAdapter adapter;
 
 
     @Override
@@ -131,10 +134,11 @@ public class ShoppingWidgetProviderConfigureActivity extends Activity implements
         });
 
 
+        progressBar = findViewById(R.id.ProgressBar);
         category_list = new ArrayList<>();
 
 
-        WidgetConfigAdapter adapter = new WidgetConfigAdapter(ShoppingWidgetProviderConfigureActivity.this, settings, category_list, this);
+        adapter = new WidgetConfigAdapter(ShoppingWidgetProviderConfigureActivity.this, settings, category_list, this);
         recyclerView = findViewById(R.id.configureListView);
         recyclerView.setLayoutManager(new LinearLayoutManager(ShoppingWidgetProviderConfigureActivity.this));
         recyclerView.setAdapter(adapter);
@@ -194,6 +198,20 @@ public class ShoppingWidgetProviderConfigureActivity extends Activity implements
     }
 
     public void confirmConfiguration() {
+        if(checkConfirmWidget()){
+            super.onBackPressed();
+        }
+    }
+
+
+    public boolean checkConfirmWidget(){
+        progressBar.setVisibility(View.VISIBLE);
+
+        SharedPreferences prefs = getSharedPreferences(SHARED_PRES, MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(KEY_BUTTON_TEXT + appWidgetId, list_text);
+        editor.putString(KEY_BUTTON_TEXT + appWidgetId + KEY_COUNT, getListCount());
+        editor.apply();
 
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
 
@@ -225,6 +243,9 @@ public class ShoppingWidgetProviderConfigureActivity extends Activity implements
         refreshIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         PendingIntent refreshPendingIntent = PendingIntent.getBroadcast(this, appWidgetId, refreshIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
 
+        Intent resultValue = new Intent();
+        resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        setResult(RESULT_OK, resultValue);
 
         RemoteViews views = new RemoteViews(this.getPackageName(), R.layout.shopping_widget_provider);
         views.setOnClickPendingIntent(R.id.widget_add_icon, buttonPendingIntent);
@@ -239,25 +260,14 @@ public class ShoppingWidgetProviderConfigureActivity extends Activity implements
 
         views.setPendingIntentTemplate(R.id.item_widget_stack_view, clickPendingIntent);
 
-
-        SharedPreferences prefs = getSharedPreferences(SHARED_PRES, MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(KEY_BUTTON_TEXT + appWidgetId, list_text);
-        editor.putString(KEY_BUTTON_TEXT + appWidgetId + KEY_COUNT, getListCount());
-        editor.apply();
-
-
-        Intent resultValue = new Intent();
-        resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-        setResult(RESULT_OK, resultValue);
-
         appWidgetManager.updateAppWidget(appWidgetId, views);
-        finish();
+        progressBar.setVisibility(View.INVISIBLE);
 
-
-
+        return true;
 
     }
+
+
 
 
     public void updateView() {

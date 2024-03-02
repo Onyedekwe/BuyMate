@@ -88,7 +88,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
                             android:layout_marginTop="12dp"
-                            android:fontFamily="@font/lexend"
                             android:text="@string/fragment_more_premiumText"
                             android:textColor="@color/white"
                             android:letterSpacing="0.03"
@@ -101,7 +100,6 @@
                             android:layout_marginStart="5dp"
                             android:layout_marginTop="3dp"
                             android:layout_marginBottom="10dp"
-                            android:fontFamily="@font/lexend"
                             android:text="@string/fragment_more_premiumText2"
                             android:textColor="@color/white" />
 
@@ -196,7 +194,6 @@
 
 
                     <ImageView
-                        android:id="@+id/imageView6"
                         android:layout_width="15dp"
                         android:layout_height="15dp"
                         android:layout_gravity="center"
@@ -251,7 +248,6 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
-                        android:id="@+id/imageView7"
                         android:layout_width="15dp"
                         android:layout_height="15dp"
                         android:layout_gravity="center"

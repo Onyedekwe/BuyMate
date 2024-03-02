@@ -221,6 +221,18 @@ public class ShopDatabase extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void deleteAllSuggest() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete("SuggestTable", null, null);
+        db.close();
+    }
+
+    public void deleteAllSuggestUnit() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete("SuggestUnitTable", null, null);
+        db.close();
+    }
+
     public void deleteAllNote() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete("NoteTable", null, null);

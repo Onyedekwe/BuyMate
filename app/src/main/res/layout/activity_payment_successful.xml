@@ -26,7 +26,6 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/app_name_box"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -75,7 +74,6 @@
                 android:layout_marginHorizontal="10dp"
                 android:layout_marginTop="20dp"
                 android:text="@string/activity_payment_successful__header"
-                android:fontFamily="@font/lexend"
                 android:textAlignment="center"
                 android:textColor="?attr/textFillColor"
                 android:textStyle="bold" />
@@ -89,7 +87,6 @@
                 android:paddingHorizontal="10dp"
                 android:layout_marginHorizontal="10dp"
                 android:layout_marginTop="10dp"
-                android:fontFamily="@font/lexend"
                 android:text="@string/activity_payment_successful__header_desc_1"
                 android:textColor="?attr/textFillColor" />
 

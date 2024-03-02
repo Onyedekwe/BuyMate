@@ -15,9 +15,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/backgroundColor</item>
         <item name="android:windowAnimationStyle">@style/ActivityAnimation</item>
-
-
-
+        
         <!-- Customize your theme here. -->
         <item name="backgroundColor">#111315</item>
         <item name="colorSurface">#30353c</item>

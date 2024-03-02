@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">Buymate</string>
+    <string name="app_name">Buymate:</string>
     <string name="app_version" translatable="false">1.0.1</string>
     <string name="app_link" translatable="false">https://play.google.com/store/apps/details?id=</string>
     <string name="app_email" translatable="false">hemerickservices@gmail.com</string>
@@ -65,9 +65,7 @@
     <string name="ConfigurePasscodeActivity__insert4digitPassword">4桁のパスワードを入力してください</string>
     <string name="ConfigurePasscodeActivity__confirmPassword">パスワードを確認</string>
     <string name="ConfigurePasscodeActivity__retypePassword">続行するにはパスワードを再入力してください</string>
-    <string name="ConfigurePasscodeActivity__success">
-
-成功</string>
+    <string name="ConfigurePasscodeActivity__success">成功</string>
     <string name="ConfigurePasscodeActivity__passwordNotMatched">パスワードが一致しません</string>
     <string name="ConfigurePasscodeActivity__insertPassword">パスワードを入力してください</string>
     <string name="ConfigurePasscodeActivity__letsVerifyYou">実際にあなたであることを確認してください。現在のパスワードを入力してください</string>
@@ -134,7 +132,6 @@
     <string name="HomeFragment__brand">ブランド：</string>
     <string name="HomeFragment__osVersion">OSのバージョン：</string>
     <string name="HomeFragment__sdkVersion">SDKのバージョン：</string>
-    <string name="HomeFragment__mailTo">メール送信先：</string>
     <string name="HomeFragment__navigation_drawer_open">ナビゲーションドロワーを開く</string>
     <string name="HomeFragment__navigation_drawer_close">ナビゲーションドロワーを閉じる</string>
     <string name="HomeFragment__defaultName">ユーザー</string>
@@ -217,6 +214,9 @@
     <string name="ItemActivity__pdfDownloadedTo">PDFがダウンロードされました：</string>
     <string name="ItemActivity__voicePrompt">リスニング</string>
 
+    //ItemSuggestionActivity
+    <string name="ItemSuggestionActivity__success">成功</string>
+
     //LoginActivity
     <string name="LoginActivity__error">エラー：</string>
     <string name="LoginActivity__emailError">有効なメールアドレスではありません</string>
@@ -234,8 +234,6 @@
     <string name="MoreFragment__brand">ブランド：</string>
     <string name="MoreFragment__osVersion">OSのバージョン：</string>
     <string name="MoreFragment__sdkVersion">SDKのバージョン：</string>
-    <string name="MoreFragment__mailTo">メール送信先：</string>
-    <string name="MoreFragment__mailError">メールクライアントが見つかりません</string>
     <string name="MoreFragment__signIn">サインイン</string>
     <string name="MoreFragment__account">アカウント</string>
     <string name="MoreFragment__loginPrompt">続行する前にログインしてください</string>
@@ -434,7 +432,11 @@
     //activity_item_suggestion
     <string name="activity_item_suggestion__toolbarText">アイテムの提案</string>
     <string name="activity_item_suggestion__hideSuggestionText">提案を非表示にする</string>
-    <string name="activity_item_suggestion__hideSuggestionDescription">入力中に提案を表示しないようにします。</string>
+    <string name="activity_item_suggestion__resetSuggestionText">提案をリセットする</string>
+
+
+
+
 
 
     //activity_log_in
@@ -626,6 +628,11 @@
     <string name="custom_share_dialog__title">共有</string>
     <string name="custom_share_dialog__asText">テキストとして共有</string>
     <string name="custom_share_dialog__asPDF">PDF としてダウンロード</string>
+
+    <string name="custom_suggestion_reset_dialog_header">提案をリセットしますか？</string>
+    <string name="custom_suggestion_reset_description">この操作により、提案リストがアプリのデフォルトバージョンに復元されます。</string>
+    <string name="custom_suggestion_cancelBtn">キャンセル</string>
+    <string name="custom_suggestion_ResetBtn">リセット</string>
 
 
     //custom_swipe_action_dialog

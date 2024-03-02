@@ -1,33 +1,61 @@
 package com.hemerick.buymate;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.PowerManager;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.hemerick.buymate.Database.Firebase;
+import com.hemerick.buymate.Database.ShopDatabase;
 import com.hemerick.buymate.Database.UserSettings;
+import com.hemerick.buymate.NetworkUtils.ConnectivityUtils;
+
+import java.util.ArrayList;
+
+import io.github.muddz.styleabletoast.StyleableToast;
 
 public class ItemSuggestionActivity extends AppCompatActivity {
     private UserSettings settings;
 
+    ShopDatabase db;
+
     Toolbar toolbar;
     SwitchCompat suggestionDisableSwitch;
-    TextView suggestionDescription, suggestionHeader;
-    ConstraintLayout suggestionDisableLayout;
+    TextView suggestionHeader, suggestionResetHeader;
+    ConstraintLayout suggestionDisableLayout, suggestionResetLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        db = new ShopDatabase(this);
 
         settings = new UserSettings();
         SharedPreferences sharedPreferences_theme = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
@@ -67,9 +95,17 @@ public class ItemSuggestionActivity extends AppCompatActivity {
 
         suggestionDisableSwitch = findViewById(R.id.disable_suggestion_switch);
         suggestionDisableLayout = findViewById(R.id.suggestionDisableLayout);
-        suggestionDescription = findViewById(R.id.suggestion_description);
         suggestionHeader = findViewById(R.id.suggestionDisableTextHeader);
 
+        suggestionResetLayout = findViewById(R.id.suggestionResetLayout);
+        suggestionResetHeader = findViewById(R.id.suggestionResetTextHeader);
+
+        suggestionResetLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSuggestionResetDialog();
+            }
+        });
 
         suggestionDisableLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,24 +143,98 @@ public class ItemSuggestionActivity extends AppCompatActivity {
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
 
             suggestionHeader.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-            suggestionDescription.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            suggestionResetHeader.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
 
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
             suggestionHeader.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-            suggestionDescription.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            suggestionResetHeader.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
             suggestionHeader.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
-            suggestionDescription.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            suggestionResetHeader.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+
         }
 
 
         suggestionDisableSwitch.setChecked(settings.getIsSuggestionDisabled().equals(UserSettings.YES_SUGGESTION_DISABLED));
 
 
+    }
+
+    public void showSuggestionResetDialog() {
+        Dialog dialog = new Dialog(ItemSuggestionActivity.this);
+        dialog.setContentView(R.layout.custom_suggestion_reset_dialog);
+        dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.bg_transparent_curved_rectangle_2));
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        TextView header = dialog.findViewById(R.id.header);
+        TextView reset_suggestion_text = dialog.findViewById(R.id.delete_account_text);
+        Button cancelBtn = dialog.findViewById(R.id.CancelButton);
+        Button resetBtn = dialog.findViewById(R.id.BtnSave);
+        ProgressBar progressBar = dialog.findViewById(R.id.progress_bar);
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
+            header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            reset_suggestion_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            cancelBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            resetBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+
+        }
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
+            header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            reset_suggestion_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            cancelBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            resetBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+        }
+
+        if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
+            header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            reset_suggestion_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            cancelBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            resetBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+        }
+
+
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        resetBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
+
+                db.deleteAllSuggest();
+                db.deleteAllSuggestUnit();
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        String[] suggestion_list = getResources().getStringArray(R.array.item_suggestions);
+                        String[] unit_list = getResources().getStringArray(R.array.units);
+                        for (String s : suggestion_list) {
+                            db.insertSuggest(s);
+                        }
+                        for (String su : unit_list) {
+                            db.insertSuggestUnit(su);
+                        }
+                        progressBar.setVisibility(View.INVISIBLE);
+                        StyleableToast.makeText(ItemSuggestionActivity.this, getString(R.string.ItemSuggestionActivity__success), R.style.custom_toast_2).show();
+                        dialog.dismiss();
+                    }
+                }, 3000);
+
+            }
+        });
+
+        dialog.show();
     }
 
     private void loadSharedPreferences() {

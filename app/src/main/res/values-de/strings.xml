@@ -119,7 +119,6 @@
     <string name="HomeFragment__brand">Marke: </string>
     <string name="HomeFragment__osVersion">Betriebssystemversion: </string>
     <string name="HomeFragment__sdkVersion">SDK-Version: </string>
-    <string name="HomeFragment__mailTo">Mail an:</string>
     <string name="HomeFragment__navigation_drawer_open">Navigationsmenü öffnen</string>
     <string name="HomeFragment__navigation_drawer_close">Navigationsmenü schließen</string>
     <string name="HomeFragment__defaultName">Benutzer</string>
@@ -198,6 +197,9 @@
     <string name="ItemActivity__pdfDownloadedTo">PDF heruntergeladen nach</string>
     <string name="ItemActivity__voicePrompt">Hören</string>
 
+    //ItemSuggestionActivity
+    <string name="ItemSuggestionActivity__success">Erfolg</string>
+
     <string name="LoginActivity__error">Fehler: </string>
     <string name="LoginActivity__emailError">Keine gültige E-Mail-Adresse</string>
     <string name="LoginActivity__passwordError">Passwort eingeben</string>
@@ -213,8 +215,6 @@
     <string name="MoreFragment__brand">Marke: </string>
     <string name="MoreFragment__osVersion">Betriebssystemversion: </string>
     <string name="MoreFragment__sdkVersion">SDK-Version: </string>
-    <string name="MoreFragment__mailTo">E-Mail an:</string>
-    <string name="MoreFragment__mailError">Kein E-Mail-Client gefunden</string>
     <string name="MoreFragment__signIn">Anmelden</string>
     <string name="MoreFragment__account">Konto</string>
     <string name="MoreFragment__loginPrompt">Bitte melden Sie sich an, bevor Sie fortfahren können</string>
@@ -395,7 +395,7 @@
     <!-- activity_item_suggestion -->
     <string name="activity_item_suggestion__toolbarText">Artikelvorschlag</string>
     <string name="activity_item_suggestion__hideSuggestionText">Vorschlag ausblenden</string>
-    <string name="activity_item_suggestion__hideSuggestionDescription">Dies deaktiviert die Anzeige von Vorschlägen beim Tippen.</string>
+    <string name="activity_item_suggestion__resetSuggestionText">Vorschlag zurücksetzen</string>
 
     <!-- activity_log_in -->
     <string name="activity_log_in__loginText">Melden Sie sich bei Ihrem Konto an</string>
@@ -533,8 +533,13 @@
     <!-- custom_app_version_dialog -->
     <string name="custom_app_version_dialog__version_text1">Version:" "</string>
     <string name="custom_app_version_dialog__version_close">Schließen</string>
+
+    <string name="custom_suggestion_reset_dialog_header">Vorschläge zurücksetzen?</string>
+    <string name="custom_suggestion_reset_description">Diese Aktion stellt Ihre Vorschlagsliste auf die Standardversion der App zurück.</string>
+    <string name="custom_suggestion_cancelBtn">Abbrechen</string>
+    <string name="custom_suggestion_ResetBtn">Zurücksetzen</string>
     ```
-    Sure, here are the translations:
+    ```
 
     ```xml
     //custom_currency_dialog

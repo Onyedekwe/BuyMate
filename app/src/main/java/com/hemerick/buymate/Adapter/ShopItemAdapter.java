@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.TypedValue;
@@ -338,12 +339,12 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.MyView
                     if (isChecked) {
                         db.updateStatus(category, textBox.getText().toString(), 1);
                         if (settings.getIsCrossDisabled().equals(UserSettings.NO_CROSS_NOT_DISABLED)) {
-                            textBox.setForeground(context.getDrawable(R.drawable.bg_strike_through));
+                            textBox.setPaintFlags(textBox.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                         }
                     } else {
                         db.updateStatus(category, textBox.getText().toString(), 0);
                         if (settings.getIsCrossDisabled().equals(UserSettings.NO_CROSS_NOT_DISABLED)) {
-                            textBox.setForeground(null);
+                            textBox.setPaintFlags(textBox.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
                         }
 
                     }

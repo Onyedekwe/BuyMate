@@ -280,6 +280,9 @@ public class HomeActivity extends AppCompatActivity {
         long daysDifference = timeDifference / (1000 * 60 * 60 * 24);
 
         if (daysDifference >= 7) {
+            SharedPreferences.Editor editor = sharedPreference.edit();
+            editor.putLong("LaunchTime", currentTime);
+            editor.apply();
             showRatingDialog();
         }
 
@@ -354,6 +357,8 @@ public class HomeActivity extends AppCompatActivity {
                     } catch (ActivityNotFoundException e) {
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_link))));
                     }
+
+                    rate_dialog.dismiss();
 
                 } else {
                     Toast.makeText(HomeActivity.this, getString(R.string.custom_rate_us_dialog_emptyRate), Toast.LENGTH_SHORT).show();

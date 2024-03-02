@@ -139,7 +139,6 @@
     <string name="HomeFragment__brand">Marque : </string>
     <string name="HomeFragment__osVersion">Version du système d\'exploitation : </string>
     <string name="HomeFragment__sdkVersion">Version SDK : </string>
-    <string name="HomeFragment__mailTo">Envoyer un courrier à :</string>
     <string name="HomeFragment__navigation_drawer_open">Ouvrir le tiroir de navigation</string>
     <string name="HomeFragment__navigation_drawer_close">Fermer le tiroir de navigation</string>
     <string name="HomeFragment__defaultName">Utilisateur</string>
@@ -223,6 +222,9 @@
     <string name="ItemActivity__pdfDownloadedTo">PDF téléchargé dans</string>
     <string name="ItemActivity__voicePrompt">Écoute</string>
 
+    //ItemSuggestionActivity
+    <string name="ItemSuggestionActivity__success">Succès</string>
+
     //LoginActivity
     <string name="LoginActivity__error">Erreur : </string>
     <string name="LoginActivity__emailError">Adresse e-mail non valide</string>
@@ -240,8 +242,6 @@
     <string name="MoreFragment__brand">Marque :</string>
     <string name="MoreFragment__osVersion">Version du système d\'exploitation :</string>
     <string name="MoreFragment__sdkVersion">Version SDK :</string>
-    <string name="MoreFragment__mailTo">Envoyer un courrier à :</string>
-    <string name="MoreFragment__mailError">Aucun client de messagerie trouvé</string>
     <string name="MoreFragment__signIn">Connexion</string>
     <string name="MoreFragment__account">Compte</string>
     <string name="MoreFragment__loginPrompt">Veuillez vous connecter avant de continuer</string>
@@ -431,11 +431,11 @@
     <string name="activity_item_emptyText">Aucun article</string>
     ```
 
-    ```xml
     //activity_item_suggestion
     <string name="activity_item_suggestion__toolbarText">Suggestion d\'article</string>
     <string name="activity_item_suggestion__hideSuggestionText">Masquer la suggestion</string>
-    <string name="activity_item_suggestion__hideSuggestionDescription">Cela désactive l\'affichage des suggestions pendant la saisie.</string>
+    <string name="activity_item_suggestion__resetSuggestionText">Réinitialiser la suggestion</string>
+
 
     //activity_log_in
     <string name="activity_log_in__loginText">Connectez-vous à votre compte</string>
@@ -640,6 +640,14 @@
     <string name="custom_textsize_dialog__radio_button_small">Petit</string>
     <string name="custom_textsize_dialog__radio_button_medium">Moyen" "(par défaut)</string>
     <string name="custom_textsize_dialog__radio_button_large">Grand</string>
+
+
+
+    <string name="custom_suggestion_reset_dialog_header">Réinitialiser les suggestions ?</string>
+    <string name="custom_suggestion_reset_description">Cette action restaurera votre liste de suggestions à la version par défaut de l\'application.</string>
+    <string name="custom_suggestion_cancelBtn">Annuler</string>
+    <string name="custom_suggestion_ResetBtn">Réinitialiser</string>
+    ```
 
     //edit_category_layout
     <string name="edit_category_layout__renameText">Renommer</string>
