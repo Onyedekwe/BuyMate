@@ -28,7 +28,8 @@
         android:layout_height="wrap_content"
         android:background="?attr/backgroundColor"
         app:adSize="BANNER"
-        app:adUnitId="ca-app-pub-3940256099942544/6300978111"></com.google.android.gms.ads.AdView>
+        app:adUnitId="ca-app-pub-4208883735301832/3675949107">
+    </com.google.android.gms.ads.AdView>
 
 
 

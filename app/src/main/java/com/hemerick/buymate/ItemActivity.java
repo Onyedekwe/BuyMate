@@ -443,7 +443,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                 }
             }
 
-            InterstitialAd.load(ItemActivity.this, "ca-app-pub-3940256099942544/1033173712", adRequest, new InterstitialAdLoadCallback() {
+            InterstitialAd.load(ItemActivity.this, "ca-app-pub-4208883735301832/9606114397", adRequest, new InterstitialAdLoadCallback() {
                 @Override
                 public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                     mInterstitialAd = null;

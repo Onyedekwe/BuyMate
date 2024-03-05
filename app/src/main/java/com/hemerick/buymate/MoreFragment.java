@@ -65,14 +65,14 @@ public class MoreFragment extends Fragment {
         twitter_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                openLink("https://twitter.com/buymate_app");
             }
         });
         website_layout = rootView.findViewById(R.id.websiteLayout);
         website_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                openLink("https://buymate.000webhostapp.com/");
             }
         });
 
@@ -222,6 +222,13 @@ public class MoreFragment extends Fragment {
         loadSharedPreferences();
         return rootView;
     }
+
+    private void openLink(String url) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+        startActivity(intent);
+    }
+
 
     public void showLogInWarningDialog() {
         Dialog dialog = new Dialog(getContext());

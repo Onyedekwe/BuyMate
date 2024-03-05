@@ -25,7 +25,7 @@
         android:background="?attr/backgroundColor"
         app:adSize="BANNER"
         android:visibility="gone"
-        app:adUnitId="ca-app-pub-3940256099942544/6300978111">
+        app:adUnitId="ca-app-pub-4208883735301832/3675949107">
     </com.google.android.gms.ads.AdView>
 
     <ScrollView
