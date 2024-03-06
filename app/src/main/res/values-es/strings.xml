@@ -559,7 +559,7 @@ oyar a Buymate</string>
 
     //custom_delete_dialog
     <string name="custom_delete_dialog__cancel_button">Cancelar</string>
-    <string name="custom_delete_dialog__delete_button">Listo</string>
+    <string name="custom_delete_dialog__delete_button">Eliminar</string>
 
 
     <string name="custom_suggestion_reset_dialog_header">¿Restablecer sugerencias?</string>

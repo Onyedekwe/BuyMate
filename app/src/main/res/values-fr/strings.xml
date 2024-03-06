@@ -579,7 +579,7 @@
 
     //custom_delete_dialog
     <string name="custom_delete_dialog__cancel_button">Annuler</string>
-    <string name="custom_delete_dialog__delete_button">Terminé</string>
+    <string name="custom_delete_dialog__delete_button">Supprimer</string>
 
     //custom_edit_username_dialog
     <string name="custom_edit_username_dialog__edit_title">Modifier le nom</string>

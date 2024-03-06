@@ -2566,6 +2566,10 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                     } else {
                         result.append(" " + "[" + temp_quantity_list.get(i) + unitCheck.get(i).trim() + "]");
                     }
+                }else {
+                    if (!unitCheck.get(i).trim().isEmpty()) {
+                        result.append(" " + "[" + temp_quantity_list.get(i) + " " + unitCheck.get(i).trim() + "]");
+                    }
                 }
             }
 

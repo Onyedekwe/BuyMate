@@ -570,7 +570,7 @@ Desabilitar riscagem</string>
 
     //custom_delete_dialog
     <string name="custom_delete_dialog__cancel_button">Cancelar</string>
-    <string name="custom_delete_dialog__delete_button">Concluir</string>
+    <string name="custom_delete_dialog__delete_button">Excluir</string>
 
     //custom_edit_username_dialog
     <string name="custom_edit_username_dialog__edit_title">Editar nome</string>

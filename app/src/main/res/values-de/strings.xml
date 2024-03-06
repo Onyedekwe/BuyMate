@@ -539,9 +539,6 @@
     <string name="custom_suggestion_cancelBtn">Abbrechen</string>
     <string name="custom_suggestion_ResetBtn">Zurücksetzen</string>
     ```
-    ```
-
-    ```xml
     //custom_currency_dialog
     <string name="custom_currency_dialog__edit_title">Währungssymbol</string>
     <string name="custom_currency_dialog__desc_currency_hint">Symbol einfügen</string>
@@ -551,7 +548,7 @@
 
     //custom_delete_dialog
     <string name="custom_delete_dialog__cancel_button">Abbrechen</string>
-    <string name="custom_delete_dialog__delete_button">Fertig</string>
+    <string name="custom_delete_dialog__delete_button">Löschen</string>
 
     //custom_edit_username_dialog
     <string name="custom_edit_username_dialog__edit_title">Name bearbeiten</string>

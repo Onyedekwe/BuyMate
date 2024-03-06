@@ -579,7 +579,7 @@ Usuń tę notatkę</string>
 
     //custom_delete_dialog
     <string name="custom_delete_dialog__cancel_button">Anuluj</string>
-    <string name="custom_delete_dialog__delete_button">Gotowe</string>
+    <string name="custom_delete_dialog__delete_button">Usuń</string>
 
     <string name="custom_suggestion_reset_dialog_header">Zresetować sugestie?</string>
     <string name="custom_suggestion_reset_description">To działanie przywróci listę Twoich sugestii do domyślnej wersji aplikacji.</string>

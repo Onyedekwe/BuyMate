@@ -572,7 +572,7 @@
 
     //custom_delete_dialog
     <string name="custom_delete_dialog__cancel_button">Отмена</string>
-    <string name="custom_delete_dialog__delete_button">Готово</string>
+    <string name="custom_delete_dialog__delete_button">Удалить</string>
 
     //custom_edit_username_dialog
     <string name="custom_edit_username_dialog__edit_title">Изменить имя</string>

@@ -581,7 +581,7 @@
 
     //custom_delete_dialog
     <string name="custom_delete_dialog__cancel_button">キャンセル</string>
-    <string name="custom_delete_dialog__delete_button">完了</string>
+    <string name="custom_delete_dialog__delete_button">削除</string>
 
     //custom_edit_username_dialog
     <string name="custom_edit_username_dialog__edit_title">名前を編集</string>

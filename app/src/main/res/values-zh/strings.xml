@@ -573,7 +573,7 @@
 
     //custom_delete_dialog
     <string name="custom_delete_dialog__cancel_button">取消</string>
-    <string name="custom_delete_dialog__delete_button">完成</string>
+    <string name="custom_delete_dialog__delete_button">删除</string>
 
 
     <string name="custom_suggestion_reset_dialog_header">重置建议？</string>

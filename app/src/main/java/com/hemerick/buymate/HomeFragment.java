@@ -1738,6 +1738,10 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                     } else {
                         result.append(" " + "[" + quantityCheck.get(i) + unitCheck.get(i).trim() + "]");
                     }
+                }else{
+                    if (!unitCheck.get(i).trim().isEmpty()) {
+                        result.append(" " + "[" + quantityCheck.get(i) + " " + unitCheck.get(i).trim() + "]");
+                    }
                 }
             }
 

@@ -581,7 +581,7 @@
 
     //custom_delete_dialog
     <string name="custom_delete_dialog__cancel_button">रद्द करें</string>
-    <string name="custom_delete_dialog__delete_button">संपन्न</string>
+    <string name="custom_delete_dialog__delete_button">हटाएं</string>
 
     //custom_edit_username_dialog
     <string name="custom_edit_username_dialog__edit_title">नाम संपादित करें</string>

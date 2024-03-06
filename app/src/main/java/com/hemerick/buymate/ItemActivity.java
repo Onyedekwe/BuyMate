@@ -2688,6 +2688,10 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
                     } else {
                         result.append(" " + "[" + Items_Quantities_List.get(i) + unitCheck.get(i).trim() + "]");
                     }
+                }else{
+                    if (!unitCheck.get(i).trim().isEmpty()) {
+                        result.append(" " + "[" + Items_Quantities_List.get(i) + " " + unitCheck.get(i).trim() + "]");
+                    }
                 }
             }
 
