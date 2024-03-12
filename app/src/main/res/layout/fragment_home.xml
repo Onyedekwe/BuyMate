@@ -83,19 +83,19 @@
 
                     <ImageView
                         android:id="@+id/recyclerViewLayoutIcon"
-                        android:layout_width="42dp"
-                        android:layout_height="42dp"
+                        android:layout_width="43dp"
+                        android:layout_height="43dp"
                         android:clickable="true"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
                         android:layout_gravity="center"
                         android:scaleType="fitCenter"
-                        android:background="@drawable/bg_transparent_curved_rectangle"
+                        android:background="@drawable/bg_transparent_curved_rectangle_recycler_button"
                         android:backgroundTint="?attr/colorPrimary"
                         android:focusable="true"
                         android:layout_marginStart="12dp"
                         android:layout_marginEnd="15dp"
-                        android:padding="8dp"
+                        android:padding="10dp"
                         android:foreground="?attr/selectableItemBackground"
                         android:src="@drawable/final_regular_slider_icon"
                         android:importantForAccessibility="no" />

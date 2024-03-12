@@ -1349,15 +1349,6 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
 
     //for inserting new item
     public void insertItem(String category, String description, int status, double price, String month, String year, String day, String time, double quantity, String unit) {
-
-        String finalPrice = formatNumberV2(price);
-        String finalQuantity = formatNumberV2(quantity);
-
-        db.insertItem(category, description, status, finalPrice, month, year, day, time, finalQuantity, unit);
-        Items.add(description);
-        shopItemAdapter.notifyDataSetChanged();
-        getsum();
-
         if (!suggest_list.contains(description.trim())) {
             db.insertSuggest(description);
         }
@@ -1365,6 +1356,15 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         if (!suggest_unit_list.contains(unit.trim())) {
             db.insertSuggestUnit(unit);
         }
+        String finalPrice = formatNumberV2(price);
+        String finalQuantity = formatNumberV2(quantity);
+
+        db.insertItem(category, description, status, finalPrice, month, year, day, time, finalQuantity, unit);
+        Items.add(description);
+        shopItemAdapter.notifyItemInserted(Items.size() + 1);
+        getsum();
+
+
 
 
     }
@@ -2038,6 +2038,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         quantity_dialog.setContentView(R.layout.quantity_set_popup);
         TextView header = quantity_dialog.findViewById(R.id.header);
         EditText quantityValue = quantity_dialog.findViewById(R.id.quantity_name);
+        ExtendedFloatingActionButton quantitySaveBtn = quantity_dialog.findViewById(R.id.quantity_btnSave);
 
         AutoCompleteTextView unitText = quantity_dialog.findViewById(R.id.unit_textView);
         String[] unit_list = getResources().getStringArray(R.array.units);
@@ -2048,18 +2049,21 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
             header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             quantityValue.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             unitText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            quantitySaveBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
             header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             quantityValue.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             unitText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            quantitySaveBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
             header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             quantityValue.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             unitText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            quantitySaveBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
         }
 
 
@@ -2079,7 +2083,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         }
 
 
-        ExtendedFloatingActionButton quantitySaveBtn = quantity_dialog.findViewById(R.id.quantity_btnSave);
+
         quantitySaveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -3792,8 +3796,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         sugest1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String existingText = categoryName.getText().toString();
-                String newText = existingText + " " + sugest1.getText().toString();
+                String newText = sugest1.getText().toString() + " ";
                 categoryName.setText(newText);
                 categoryName.setSelection(categoryName.getText().length());
             }
@@ -3802,8 +3805,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         sugest2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String existingText = categoryName.getText().toString();
-                String newText = existingText + " " + sugest2.getText().toString();
+                String newText = sugest2.getText().toString() + " ";
                 categoryName.setText(newText);
                 categoryName.setSelection(categoryName.getText().length());
             }
@@ -3811,8 +3813,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         sugest3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String existingText = categoryName.getText().toString();
-                String newText = existingText + " " + sugest3.getText().toString();
+                String newText = sugest3.getText().toString() + " ";
                 categoryName.setText(newText);
                 categoryName.setSelection(categoryName.getText().length());
             }
@@ -3820,8 +3821,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         sugest4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String existingText = categoryName.getText().toString();
-                String newText = existingText + " " + sugest4.getText().toString();
+                String newText = sugest4.getText().toString() + " ";
                 categoryName.setText(newText);
                 categoryName.setSelection(categoryName.getText().length());
             }
@@ -3829,8 +3829,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         sugest5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String existingText = categoryName.getText().toString();
-                String newText = existingText + " " + sugest5.getText().toString();
+                String newText =  sugest5.getText().toString() + " ";
                 categoryName.setText(newText);
                 categoryName.setSelection(categoryName.getText().length());
             }
@@ -3838,8 +3837,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         sugest6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String existingText = categoryName.getText().toString();
-                String newText = existingText + " " + sugest6.getText().toString();
+                String newText = sugest6.getText().toString() + " ";
                 categoryName.setText(newText);
                 categoryName.setSelection(categoryName.getText().length());
             }
@@ -3847,8 +3845,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         sugest7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String existingText = categoryName.getText().toString();
-                String newText = existingText + " " + sugest7.getText().toString();
+                String newText =  sugest7.getText().toString() + " ";
                 categoryName.setText(newText);
                 categoryName.setSelection(categoryName.getText().length());
             }
@@ -3856,8 +3853,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         sugest8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String existingText = categoryName.getText().toString();
-                String newText = existingText + " " + sugest8.getText().toString();
+                String newText = sugest8.getText().toString() + " ";
                 categoryName.setText(newText);
                 categoryName.setSelection(categoryName.getText().length());
             }
@@ -3981,7 +3977,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         isFirstStart = sharedPreferences_firstStart.getBoolean("isFirstStart", true);
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
-            Total_Summation_Textbox.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_text));
+            Total_Summation_Textbox.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_max_max_text));
             Items_list_size_textbox.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             Total_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             fab.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
@@ -3991,7 +3987,7 @@ public class ItemActivity extends AppCompatActivity implements ShopItemAdapter.O
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
-            Total_Summation_Textbox.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_max_text));
+            Total_Summation_Textbox.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_max_max_text));
             Items_list_size_textbox.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             Total_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             emptyText1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));

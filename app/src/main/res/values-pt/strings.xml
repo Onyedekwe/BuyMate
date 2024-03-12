@@ -807,11 +807,20 @@ Subtotal:</string>
     </string-array>
 
     <string-array name="currency">
-        <item>"\u0024"</item>
-        <item>"\u20A6"</item>
-        <item>"\u20AC"</item>
-        <item>"\u00A5"</item>
-        <item>"\u00A3"</item>
+        <item>"\u0024"</item> <!-- US Dollar -->
+        <item>"\u20A6"</item> <!-- Nigerian Naira -->
+        <item>"\u20AC"</item> <!-- Euro -->
+        <item>"\u00A5"</item> <!-- Japanese Yen -->
+        <item>"\u00A3"</item> <!-- British Pound Sterling -->
+        <item>"\u20B9"</item> <!-- Indian Rupee -->
+        <item>"\u20B1"</item> <!-- Philippine Peso -->
+        <item>"\u20A9"</item> <!-- South Korean Won -->
+        <item>"\u20AA"</item> <!-- Israeli New Shekel -->
+        <item>"\u20AB"</item> <!-- Vietnamese Dong -->
+        <item>"\u0052\u0073"</item> <!-- Brazilian Real -->
+        <item>"\u0049\u004E\u0052"</item> <!-- Indonesian Rupiah -->
+        <item>"\u0062\u0074\u002e"</item> <!-- Bitcoin -->
+        <!-- Add more currencies as needed -->
     </string-array>
 
     <string-array name="item_suggestions" tools:ignore="InconsistentArrays">

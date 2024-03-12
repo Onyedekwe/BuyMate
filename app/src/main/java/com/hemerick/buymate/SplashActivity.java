@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
+import androidx.core.splashscreen.SplashScreen;
 
 import com.hemerick.buymate.Database.UserSettings;
 
@@ -26,46 +27,43 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SplashScreen.installSplashScreen(this);
+
+
+        try {
+            Thread.sleep(800);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+
         setContentView(R.layout.activity_splash);
         settings = new UserSettings();
         linearLayout = findViewById(R.id.appName);
         loadSharedPreferences();
+        linearLayout.setVisibility(View.VISIBLE);
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                linearLayout.setVisibility(View.VISIBLE);
-            }
-        }, 500);
 
 
         if (settings.getIsAppFirstStart().equals(UserSettings.YES_APP_FIRST_START)) {
 
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
+
                     Intent intent = new Intent(SplashActivity.this, OnboardingActivity.class);
                     startActivity(intent);
                     finish();
-                }
-            }, 1500);
+
 
         } else {
 
             if (settings.getIsAuthenticated().equals(UserSettings.NOT_AUTHENTICATED)) {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
+
                         Intent signup_intent = new Intent(SplashActivity.this, SignUpActivity.class);
                         startActivity(signup_intent);
                         finish();
-                    }
-                }, 1500);
+
             } else {
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
+
                         Intent intentHome, intentPasscode;
                         if (settings.getPassword().equals(UserSettings.NOT_SET_PASSWORD)) {
                             intentHome = new Intent(SplashActivity.this, HomeActivity.class);
@@ -76,8 +74,6 @@ public class SplashActivity extends AppCompatActivity {
                             startActivity(intentPasscode);
                             finish();
                         }
-                    }
-                }, 1500);
 
             }
 

@@ -120,6 +120,7 @@
             android:exported="false" />
         <activity
             android:name=".SplashActivity"
+            android:theme="@style/MyTheme.Splash"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

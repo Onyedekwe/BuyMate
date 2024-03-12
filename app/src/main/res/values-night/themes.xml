@@ -30,6 +30,11 @@
         <item name="itemTextAppearanceInactive">@color/inactive_text_color</item>
     </style>
 
+    <style name="MyTheme.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#026EAA</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/buymate_splash_icon_with_circle</item>
+        <item name="postSplashScreenTheme">@style/Theme.ShoppingList</item>
+    </style>
     <style name="Dynamic_Dim" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">#00A8FA</item>
         <item name="colorPrimaryVariant">#0096CC</item>

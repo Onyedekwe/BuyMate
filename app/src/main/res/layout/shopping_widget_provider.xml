@@ -22,6 +22,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_gravity="center"
                 android:orientation="horizontal">
 
                 <TextView
@@ -56,23 +57,29 @@
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_gravity="center"
                 android:gravity="end">
 
                 <ImageView
                     android:id="@+id/widget_sync_icon"
-                    android:layout_width="22dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/blue_gradient"
+                    android:padding="5dp"
+                    android:clickable="true"
                     android:layout_marginHorizontal="15dp"
                     android:src="@drawable/final_regular_sync_icon"
                     android:importantForAccessibility="no" />
 
                 <ImageView
                     android:id="@+id/widget_add_icon"
-                    android:layout_width="23dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/blue_gradient"
+                    android:padding="5dp"
+                    android:clickable="true"
                     android:src="@drawable/final_regular_home_widget_icon"
                     android:importantForAccessibility="no" />
             </LinearLayout>

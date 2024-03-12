@@ -452,10 +452,7 @@ public class SettingsActivity extends AppCompatActivity {
                 editor.putString(UserSettings.CUSTOM_THEME, settings.getCustomTheme());
                 editor.apply();
                 dialog.dismiss();
-                Intent intent = new Intent(SettingsActivity.this, SettingsActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                finish();
+                recreate();
 
             }
 
@@ -469,10 +466,7 @@ public class SettingsActivity extends AppCompatActivity {
                 editor.putString(UserSettings.CUSTOM_THEME, settings.getCustomTheme());
                 editor.apply();
                 dialog.dismiss();
-                Intent intent = new Intent(SettingsActivity.this, SettingsActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                finish();
+                recreate();
             }
         });
 
@@ -484,10 +478,7 @@ public class SettingsActivity extends AppCompatActivity {
                 editor.putString(UserSettings.CUSTOM_THEME, settings.getCustomTheme());
                 editor.apply();
                 dialog.dismiss();
-                Intent intent = new Intent(SettingsActivity.this, SettingsActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                finish();
+                recreate();
             }
         });
 

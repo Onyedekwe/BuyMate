@@ -12,7 +12,7 @@ android {
         applicationId "com.hemerick.buymate"
         minSdk 24
         targetSdk 33
-        versionCode 26
+        versionCode 27
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -63,4 +63,6 @@ dependencies {
 
     implementation 'com.itextpdf:itext7-core:7.2.4'
     implementation 'com.google.android.gms:play-services-ads:22.6.0'
+
+    implementation 'androidx.core:core-splashscreen:1.0.0-beta02'
 }

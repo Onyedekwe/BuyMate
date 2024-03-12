@@ -81,6 +81,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.hemerick.buymate.Adapter.ShopCategoryAdapter;
 import com.hemerick.buymate.Database.ShopDatabase;
 import com.hemerick.buymate.Database.UserSettings;
+import com.itextpdf.io.font.PdfEncodings;
 import com.itextpdf.io.font.constants.StandardFonts;
 import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
@@ -1009,8 +1010,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         sugest1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String existingText = categoryName.getText().toString();
-                String newText = existingText + " " + sugest1.getText().toString();
+                String newText = sugest1.getText().toString() + " ";
                 categoryName.setText(newText);
                 categoryName.setSelection(categoryName.getText().length());
             }
@@ -1019,8 +1019,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         sugest2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String existingText = categoryName.getText().toString();
-                String newText = existingText + " " + sugest2.getText().toString();
+                String newText = sugest2.getText().toString() + " ";
                 categoryName.setText(newText);
                 categoryName.setSelection(categoryName.getText().length());
             }
@@ -1028,8 +1027,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         sugest3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String existingText = categoryName.getText().toString();
-                String newText = existingText + " " + sugest3.getText().toString();
+                String newText = sugest3.getText().toString() + " ";
                 categoryName.setText(newText);
                 categoryName.setSelection(categoryName.getText().length());
             }
@@ -1037,8 +1035,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         sugest4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String existingText = categoryName.getText().toString();
-                String newText = existingText + " " + sugest4.getText().toString();
+                String newText = sugest4.getText().toString() + " ";
                 categoryName.setText(newText);
                 categoryName.setSelection(categoryName.getText().length());
             }
@@ -1046,8 +1043,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         sugest5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String existingText = categoryName.getText().toString();
-                String newText = existingText + " " + sugest5.getText().toString();
+                String newText =  sugest5.getText().toString() + " ";
                 categoryName.setText(newText);
                 categoryName.setSelection(categoryName.getText().length());
             }
@@ -1055,8 +1051,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         sugest6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String existingText = categoryName.getText().toString();
-                String newText = existingText + " " + sugest6.getText().toString();
+                String newText = sugest6.getText().toString() + " ";
                 categoryName.setText(newText);
                 categoryName.setSelection(categoryName.getText().length());
             }
@@ -1064,8 +1059,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         sugest7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String existingText = categoryName.getText().toString();
-                String newText = existingText + " " + sugest7.getText().toString();
+                String newText =  sugest7.getText().toString() + " ";
                 categoryName.setText(newText);
                 categoryName.setSelection(categoryName.getText().length());
             }
@@ -1073,8 +1067,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         sugest8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String existingText = categoryName.getText().toString();
-                String newText = existingText + " " + sugest8.getText().toString();
+                String newText = sugest8.getText().toString() + " ";
                 categoryName.setText(newText);
                 categoryName.setSelection(categoryName.getText().length());
             }
@@ -2189,11 +2182,6 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
 
 
     public void insertItem(String category, String description, int status, double price, String month, String year, String day, String time, double quantity, String unit) {
-        String finalPrice = formatNumberV2(price);
-        String finalQuantity = formatNumberV2(quantity);
-        db.insertItem(category, description, status, finalPrice, month, year, day, time, finalQuantity, unit);
-
-
         if (!suggest_list.contains(description.trim())) {
             db.insertSuggest(description);
         }
@@ -2201,6 +2189,9 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         if (!suggest_unit_list.contains(unit.trim())) {
             db.insertSuggestUnit(unit);
         }
+        String finalPrice = formatNumberV2(price);
+        String finalQuantity = formatNumberV2(quantity);
+        db.insertItem(category, description, status, finalPrice, month, year, day, time, finalQuantity, unit);
 
         Intent intent = new Intent(context, ItemActivity.class);
         intent.putExtra("ITEM", category);

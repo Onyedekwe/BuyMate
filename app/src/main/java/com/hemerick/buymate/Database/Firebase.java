@@ -689,8 +689,14 @@ public class Firebase {
 
                     }
                 }
-                cloud_dialog.dismiss();
-                StyleableToast.makeText(context, context.getString(R.string.Firebase__backup_successful), R.style.custom_toast_2).show();
+                try {
+                    Thread.sleep(3000);
+                    cloud_dialog.dismiss();
+                    StyleableToast.makeText(context, context.getString(R.string.Firebase__backup_successful), R.style.custom_toast_2).show();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+
 
             }
         }, 3000);

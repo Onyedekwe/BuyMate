@@ -511,17 +511,6 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
 
     //for inserting new item
     public void insertItem(String cate, String description, int status, double price, String month, String year, String day, String time, double quantity, String unit) {
-
-        String finalPrice = formatNumberV2(price);
-        String finalQuantity = formatNumberV2(quantity);
-
-        db.insertItem(cate, description, status, finalPrice, month, year, day, time, finalQuantity, unit);
-        db.updateFavourites(cate, description, 1);
-        itemFavourites.add(description);
-        category.add(cate);
-        adapter.notifyDataSetChanged();
-        getSum();
-
         if (!suggest_list.contains(description.trim())) {
             db.insertSuggest(description);
         }
@@ -529,6 +518,17 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
         if (!suggest_unit_list.contains(unit.trim())) {
             db.insertSuggestUnit(unit);
         }
+        String finalPrice = formatNumberV2(price);
+        String finalQuantity = formatNumberV2(quantity);
+
+        db.insertItem(cate, description, status, finalPrice, month, year, day, time, finalQuantity, unit);
+        db.updateFavourites(cate, description, 1);
+        itemFavourites.add(description);
+        category.add(cate);
+        adapter.notifyItemInserted(category.size() + 1);
+        getSum();
+
+
     }
 
     public void getDateNdTime() {
@@ -2054,6 +2054,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
         dialog.setContentView(R.layout.quantity_set_popup);
         TextView header = dialog.findViewById(R.id.header);
         EditText quantityValue = dialog.findViewById(R.id.quantity_name);
+        ExtendedFloatingActionButton quantitySaveBtn = dialog.findViewById(R.id.quantity_btnSave);
 
         AutoCompleteTextView unitText = dialog.findViewById(R.id.unit_textView);
         String[] unit_list = getResources().getStringArray(R.array.units);
@@ -2075,18 +2076,21 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
             header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             quantityValue.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             unitText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            quantitySaveBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
             header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             quantityValue.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             unitText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            quantitySaveBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
             header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             quantityValue.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             unitText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            quantitySaveBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
         }
 
         header.setText(description);
@@ -2095,7 +2099,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
             unitText.setText(temp_unit);
         }
 
-        ExtendedFloatingActionButton quantitySaveBtn = dialog.findViewById(R.id.quantity_btnSave);
+
         quantitySaveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -3151,7 +3155,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
             totalItems.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-            total.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_text));
+            total.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_max_max_text));
             subTotalText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             empty_text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             empty_text2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
@@ -3163,7 +3167,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
             totalItems.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
-            total.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_max_text));
+            total.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.max_max_max_max_text));
             subTotalText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             empty_text1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             currency_textbox.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
