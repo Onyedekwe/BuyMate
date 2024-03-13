@@ -2,10 +2,8 @@ package com.hemerick.buymate;
 
 import static android.content.Context.MODE_PRIVATE;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -41,10 +39,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -81,7 +77,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.hemerick.buymate.Adapter.ShopCategoryAdapter;
 import com.hemerick.buymate.Database.ShopDatabase;
 import com.hemerick.buymate.Database.UserSettings;
-import com.itextpdf.io.font.PdfEncodings;
 import com.itextpdf.io.font.constants.StandardFonts;
 import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
@@ -114,7 +109,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Locale;
-import java.util.Objects;
 
 import io.github.muddz.styleabletoast.StyleableToast;
 
@@ -258,8 +252,6 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                 } else if (itemId == R.id.nav_message) {
 
 
-
-
                     if (firebaseAuth.getCurrentUser() != null) {
                         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
@@ -267,7 +259,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                         String[] app_email = new String[]{getString(R.string.app_email)};
 
                         String asterics = "*******";
-                        String subject = getString(R.string.app_name) +" "+ getString(R.string.HomeFragment__feedback);
+                        String subject = getString(R.string.app_name) + " " + getString(R.string.HomeFragment__feedback);
                         String email = firebaseUser.getEmail();
                         String app_version = getString(R.string.app_version);
 
@@ -301,9 +293,6 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                     } else {
                         showLogInWarningDialog();
                     }
-
-
-
 
 
                 } else if (itemId == R.id.nav_about) {
@@ -351,7 +340,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                         } else {
                             first_name = settings.getUsername().trim();
                         }
-                        collapsingToolbarLayout.setTitle(getString(R.string.HomeFragment__hiText) +" "+ first_name + getString(R.string.HomeFragment__exclam));
+                        collapsingToolbarLayout.setTitle(getString(R.string.HomeFragment__hiText) + " " + first_name + getString(R.string.HomeFragment__exclam));
                     }
                 }
             }
@@ -407,7 +396,6 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         recyclerView = rootView.findViewById(R.id.todo_list);
 
 
-
         adapter = new ShopCategoryAdapter(context, settings, category_list, this);
         recyclerView.setAdapter(adapter);
         updateRecyclerView();
@@ -438,14 +426,12 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
 
             }
         });
-        
 
-        
 
         displayData();
         loadSharedPreferences();
 
-        if(!settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)){
+        if (!settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)) {
             AdRequest adRequest = new AdRequest.Builder().build();
             InterstitialAd.load(context, "ca-app-pub-4208883735301832/9606114397", adRequest, new InterstitialAdLoadCallback() {
                 @Override
@@ -459,9 +445,6 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                 }
             });
         }
-
-
-
 
 
         return rootView;
@@ -946,6 +929,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         LinearLayout newCategoryIllustrationLayout = show_category_dialog.findViewById(R.id.newCategory_Illustration_Layout);
         TextView emptyText1 = show_category_dialog.findViewById(R.id.emptyText1);
         TextView emptyText2 = show_category_dialog.findViewById(R.id.emptyText2);
+        TextView suggest_header = show_category_dialog.findViewById(R.id.Suggest_header);
         TextView sugest1 = show_category_dialog.findViewById(R.id.Suggest_1);
         TextView sugest2 = show_category_dialog.findViewById(R.id.Suggest_2);
         TextView sugest3 = show_category_dialog.findViewById(R.id.Suggest_3);
@@ -965,6 +949,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
             categoryName.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             emptyText1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             emptyText2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
+            suggest_header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             sugest1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             sugest2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             sugest3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
@@ -980,6 +965,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
             categoryName.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             emptyText1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             emptyText2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
+            suggest_header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             sugest1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             sugest2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
             sugest3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.medium_text));
@@ -995,6 +981,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
             categoryName.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             emptyText1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             emptyText2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
+            suggest_header.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             sugest1.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             sugest2.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
             sugest3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.large_text));
@@ -1043,7 +1030,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         sugest5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String newText =  sugest5.getText().toString() + " ";
+                String newText = sugest5.getText().toString() + " ";
                 categoryName.setText(newText);
                 categoryName.setSelection(categoryName.getText().length());
             }
@@ -1059,7 +1046,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         sugest7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String newText =  sugest7.getText().toString() + " ";
+                String newText = sugest7.getText().toString() + " ";
                 categoryName.setText(newText);
                 categoryName.setSelection(categoryName.getText().length());
             }
@@ -1213,7 +1200,6 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                     fragmentTransaction.add(R.id.framelayoutContainer, new HomeFragment());
                     fragmentTransaction.commit();
                 }
-
 
 
             }
@@ -1387,7 +1373,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         edit_dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
-    public void duplicateList(String listName){
+    public void duplicateList(String listName) {
         ArrayList<String> descriptions = new ArrayList<>();
         ArrayList<Integer> status = new ArrayList<>();
         ArrayList<String> price = new ArrayList<>();
@@ -1397,7 +1383,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         ArrayList<String> photourl = new ArrayList<>();
 
         Cursor res = db.getItems(listName, context);
-        while(res.moveToNext()){
+        while (res.moveToNext()) {
             descriptions.add(res.getString(2));
             status.add(res.getInt(3));
             price.add(res.getString(4));
@@ -1427,7 +1413,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         }
         getDateNdTime();
         for (int i = 0; i < descriptions.size(); i++) {
-            insertItemV2(listName, descriptions.get(i),status.get(i) , Double.parseDouble(price.get(i)), month, year, day, time, Double.parseDouble(quantity.get(i)), unit.get(i));
+            insertItemV2(listName, descriptions.get(i), status.get(i), Double.parseDouble(price.get(i)), month, year, day, time, Double.parseDouble(quantity.get(i)), unit.get(i));
             db.updateFavourites(listName, descriptions.get(i), favourites.get(i));
             db.updatePhoto(listName, descriptions.get(i), photourl.get(i));
         }
@@ -1437,8 +1423,6 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         fragmentTransaction.commit();
 
     }
-
-
 
 
     private void showSortByDialog() {
@@ -1731,7 +1715,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                     } else {
                         result.append(" " + "[" + quantityCheck.get(i) + unitCheck.get(i).trim() + "]");
                     }
-                }else{
+                } else {
                     if (!unitCheck.get(i).trim().isEmpty()) {
                         result.append(" " + "[" + quantityCheck.get(i) + " " + unitCheck.get(i).trim() + "]");
                     }
@@ -1893,6 +1877,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                         currency = "NGN";
                     }
 
+
                     PdfFont font = PdfFontFactory.createFont(StandardFonts.HELVETICA);
 
 
@@ -1910,6 +1895,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                     table.setMarginTop(20f);
                     table.setFontSize(18f);
                     table.setFontColor(itextBlack);
+
 
                     table.addCell(new Cell().add(new Paragraph(getString(R.string.HomeFragment__no))).setTextAlignment(TextAlignment.LEFT).setBold().setPaddingLeft(8f).setCharacterSpacing(1.5f).setFontColor(itextBlack));
                     table.addCell(new Cell().add(new Paragraph(getString(R.string.HomeFragment__item))).setTextAlignment(TextAlignment.LEFT).setBold().setPaddingLeft(8f).setCharacterSpacing(1.5f).setFontColor(itextBlack));
@@ -2002,8 +1988,8 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
                     show_share_dialog.dismiss();
                     StyleableToast.makeText(context, context.getString(R.string.HomeFragment__pdfDownloadedTo) + directory, R.style.custom_toast_2).show();
 
-                    if(!settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)){
-                        if(mInterstitialAd != null){
+                    if (!settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)) {
+                        if (mInterstitialAd != null) {
                             mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
                                 @Override
                                 public void onAdClicked() {
@@ -2479,7 +2465,6 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         }
 
 
-
     }
 
     private void loadSharedPreferences() {
@@ -2504,7 +2489,7 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
 
         String firstname = sharedPreferences.getString(UserSettings.USER_NAME, UserSettings.USER_NAME_NOT_SET);
         settings.setUsername(firstname);
-        
+
 
         String multiply_disabled = sharedPreferences.getString(UserSettings.IS_MULTIPLY_DISABLED, UserSettings.YES_MULTIPLY_DISABLED);
         settings.setIsMultiplyDisabled(multiply_disabled);
@@ -2552,7 +2537,6 @@ public class HomeFragment extends Fragment implements ShopCategoryAdapter.OnNote
         }
 
     }
-    
 
 
     @Override

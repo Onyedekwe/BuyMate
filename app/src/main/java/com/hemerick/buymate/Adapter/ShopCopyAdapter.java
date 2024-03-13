@@ -161,7 +161,6 @@ public class ShopCopyAdapter extends RecyclerView.Adapter<ShopCopyAdapter.MyCopy
     }
 
 
-
     @Override
     public int getItemCount() {
         return items.size();

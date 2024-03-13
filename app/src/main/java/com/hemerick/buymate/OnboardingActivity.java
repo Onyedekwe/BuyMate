@@ -1,8 +1,5 @@
 package com.hemerick.buymate;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,6 +10,9 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
+
 import com.hemerick.buymate.Adapter.ViewPagerAdapter;
 import com.hemerick.buymate.Database.UserSettings;
 
@@ -20,12 +20,13 @@ public class OnboardingActivity extends AppCompatActivity {
 
     ViewPager viewPager;
     LinearLayout linearLayout;
-            Button skipBtn, backBtn, nextBtn;
-            ImageButton back_top_btn;
+    Button skipBtn, backBtn, nextBtn;
+    ImageButton back_top_btn;
     TextView[] dots;
     ViewPagerAdapter viewPagerAdapter;
 
     private UserSettings settings;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +65,7 @@ public class OnboardingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(getItem(0) > 0)
+                if (getItem(0) > 0)
                     viewPager.setCurrentItem(getItem(-1), true);
             }
         });
@@ -73,9 +74,9 @@ public class OnboardingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(getItem(0) < 2)
+                if (getItem(0) < 2)
                     viewPager.setCurrentItem(getItem(1), true);
-                else{
+                else {
 
                     settings.setIsAppFirstStart(UserSettings.NO_APP_NOT_FIRST_START);
                     SharedPreferences.Editor editor = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE).edit();
@@ -91,7 +92,7 @@ public class OnboardingActivity extends AppCompatActivity {
         });
 
         viewPager = findViewById(R.id.onboard_viewpager);
-        linearLayout = (LinearLayout) findViewById(R.id.indicator_layout);
+        linearLayout = findViewById(R.id.indicator_layout);
 
         viewPagerAdapter = new ViewPagerAdapter(this);
         viewPager.setAdapter(viewPagerAdapter);
@@ -101,11 +102,11 @@ public class OnboardingActivity extends AppCompatActivity {
 
     }
 
-    public void setIndicator(int position){
+    public void setIndicator(int position) {
         dots = new TextView[3];
         linearLayout.removeAllViews();
 
-        for(int i = 0; i < dots.length; i++){
+        for (int i = 0; i < dots.length; i++) {
             dots[i] = new TextView(this);
             dots[i].setText("●");
             dots[i].setTextSize(20);
@@ -115,38 +116,39 @@ public class OnboardingActivity extends AppCompatActivity {
 
         dots[position].setTextColor(getResources().getColor(R.color.black, getApplicationContext().getTheme()));
     }
-   ViewPager.OnPageChangeListener viewListener = new ViewPager.OnPageChangeListener() {
-       @Override
-       public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-       }
+    ViewPager.OnPageChangeListener viewListener = new ViewPager.OnPageChangeListener() {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-       @Override
-       public void onPageSelected(int position) {
-        setIndicator(position);
-
-        if(position > 0){
-            backBtn.setVisibility(View.VISIBLE);
-        }else{
-            backBtn.setVisibility(View.INVISIBLE);
         }
 
-        if(position == 2){
-            nextBtn.setText(getString(R.string.OnboardingActivity__Start));
-        }else{
-            nextBtn.setText(getString(R.string.OnboardingActivity__Next));
+        @Override
+        public void onPageSelected(int position) {
+            setIndicator(position);
+
+            if (position > 0) {
+                backBtn.setVisibility(View.VISIBLE);
+            } else {
+                backBtn.setVisibility(View.INVISIBLE);
+            }
+
+            if (position == 2) {
+                nextBtn.setText(getString(R.string.OnboardingActivity__Start));
+            } else {
+                nextBtn.setText(getString(R.string.OnboardingActivity__Next));
+            }
+
         }
 
-       }
+        @Override
+        public void onPageScrollStateChanged(int state) {
 
-       @Override
-       public void onPageScrollStateChanged(int state) {
+        }
+    };
 
-       }
-   } ;
-
-    private int getItem(int i){
-        return  viewPager.getCurrentItem() + i;
+    private int getItem(int i) {
+        return viewPager.getCurrentItem() + i;
     }
 
 

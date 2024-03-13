@@ -34,6 +34,7 @@ import com.hemerick.buymate.Database.Firebase;
 import com.hemerick.buymate.Database.ShopDatabase;
 import com.hemerick.buymate.Database.UserSettings;
 import com.hemerick.buymate.NetworkUtils.ConnectivityUtils;
+
 import java.util.List;
 
 public class BackupActivity extends AppCompatActivity {
@@ -137,7 +138,7 @@ public class BackupActivity extends AppCompatActivity {
         ConnectivityUtils.checkInternetConnectivity(this, new ConnectivityUtils.InternetCheckListener() {
             @Override
             public void onInternetCheckComplete(boolean isInternetAvailable) {
-                if(isInternetAvailable == true){
+                if (isInternetAvailable) {
                     progressBar.setVisibility(View.GONE);
                     if (settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)) {
                         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
@@ -153,7 +154,7 @@ public class BackupActivity extends AppCompatActivity {
                     } else {
                         showUpgradeRequiredDialog();
                     }
-                }else{
+                } else {
                     int code = 1;
                     progressBar.setVisibility(View.GONE);
                     showNoNetworkDialog(code);
@@ -164,14 +165,13 @@ public class BackupActivity extends AppCompatActivity {
     }
 
 
-
     public void restoreData() {
 
         progressBar.setVisibility(View.VISIBLE);
         ConnectivityUtils.checkInternetConnectivity(this, new ConnectivityUtils.InternetCheckListener() {
             @Override
             public void onInternetCheckComplete(boolean isInternetAvailable) {
-                if(isInternetAvailable == true){
+                if (isInternetAvailable) {
                     progressBar.setVisibility(View.GONE);
                     if (settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)) {
                         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
@@ -183,7 +183,7 @@ public class BackupActivity extends AppCompatActivity {
                     } else {
                         showUpgradeRequiredDialog();
                     }
-                }else{
+                } else {
                     int code = 2;
                     progressBar.setVisibility(View.GONE);
                     showNoNetworkDialog(code);
@@ -234,9 +234,9 @@ public class BackupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                if(code == 1){
+                if (code == 1) {
                     backupData();
-                }else if(code == 2){
+                } else if (code == 2) {
                     restoreData();
                 }
             }
@@ -363,7 +363,7 @@ public class BackupActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    public void showLoginDialog(String text){
+    public void showLoginDialog(String text) {
         Dialog dialog = new Dialog(BackupActivity.this);
         dialog.setContentView(R.layout.custom_login_dialog);
         dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.bg_transparent_curved_rectangle_2));

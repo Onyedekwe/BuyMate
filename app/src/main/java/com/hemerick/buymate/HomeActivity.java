@@ -11,14 +11,10 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.PowerManager;
-import android.transition.Explode;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -37,7 +33,6 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
 import com.hemerick.buymate.Database.UserSettings;
 
@@ -52,7 +47,6 @@ public class HomeActivity extends AppCompatActivity {
 
 
     AdView adView;
-
 
 
     @Override
@@ -143,25 +137,24 @@ public class HomeActivity extends AppCompatActivity {
 
         adView = findViewById(R.id.adView);
 
-        if(!settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)){
+        if (!settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)) {
             AdRequest adRequest = new AdRequest.Builder().build();
             SharedPreferences preferences = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
             long installDateMillis = preferences.getLong(UserSettings.KEY_INSTALL_DATE, 0);
 
-            if(installDateMillis == 0){
+            if (installDateMillis == 0) {
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putLong(UserSettings.KEY_INSTALL_DATE, System.currentTimeMillis());
                 editor.apply();
-            }else{
+            } else {
                 long currentTimeMillis = System.currentTimeMillis();
                 long elapsedTimeMillis = currentTimeMillis - installDateMillis;
-                if(elapsedTimeMillis >= UserSettings.SEVEN_DAYS_IN_MILLIS){
+                if (elapsedTimeMillis >= UserSettings.SEVEN_DAYS_IN_MILLIS) {
                     adView.setVisibility(View.VISIBLE);
                     adView.loadAd(adRequest);
                 }
             }
         }
-
 
 
     }

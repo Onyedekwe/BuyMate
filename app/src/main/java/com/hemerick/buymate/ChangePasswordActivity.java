@@ -127,7 +127,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         ConnectivityUtils.checkInternetConnectivity(this, new ConnectivityUtils.InternetCheckListener() {
             @Override
             public void onInternetCheckComplete(boolean isInternetAvailable) {
-                if(isInternetAvailable){
+                if (isInternetAvailable) {
                     String current_password = currentPassword.getText().toString().trim();
                     String new_password = newPassword.getText().toString().trim();
                     String confirm_password = confirmPassword.getText().toString().trim();
@@ -168,7 +168,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                                                                             });
                                                                 } else {
                                                                     progressBar.setVisibility(View.INVISIBLE);
-                                                                    StyleableToast.makeText(ChangePasswordActivity.this,  getString(R.string.ChangePasswordActivity__error) + task.getException(), R.style.custom_toast).show();
+                                                                    StyleableToast.makeText(ChangePasswordActivity.this, getString(R.string.ChangePasswordActivity__error) + task.getException(), R.style.custom_toast).show();
 
                                                                 }
                                                             }
@@ -192,7 +192,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                     } else {
                         current_password_parent.setError(getString(R.string.ChangePasswordActivity__enterCurrentPassword));
                     }
-                }else{
+                } else {
                     progressBar.setVisibility(View.GONE);
                     final Dialog dialog = new Dialog(ChangePasswordActivity.this);
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

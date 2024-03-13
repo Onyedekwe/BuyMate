@@ -120,22 +120,14 @@ public class SwipeSettingActivity extends AppCompatActivity {
         swipe_disable_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(swipeDisableSwitch.isChecked()){
-                    swipeDisableSwitch.setChecked(false);
-                }else{
-                    swipeDisableSwitch.setChecked(true);
-                }
+                swipeDisableSwitch.setChecked(!swipeDisableSwitch.isChecked());
             }
         });
 
         swipe_disable_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(swipeDisableSwitch.isChecked()){
-                    swipeDisableSwitch.setChecked(false);
-                }else{
-                    swipeDisableSwitch.setChecked(true);
-                }
+                swipeDisableSwitch.setChecked(!swipeDisableSwitch.isChecked());
             }
         });
         swipeDisableSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

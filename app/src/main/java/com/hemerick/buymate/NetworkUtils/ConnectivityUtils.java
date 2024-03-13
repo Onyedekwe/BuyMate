@@ -11,29 +11,32 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class ConnectivityUtils {
-    public interface InternetCheckListener{
+    public interface InternetCheckListener {
         void onInternetCheckComplete(boolean isInternetAvailable);
     }
-    public static void checkInternetConnectivity(Context context, InternetCheckListener listener){
+
+    public static void checkInternetConnectivity(Context context, InternetCheckListener listener) {
         new InternetCheckAsyncTask(listener).execute(context);
     }
 
-    private static class InternetCheckAsyncTask extends AsyncTask<Context, Void, Boolean>{
+    private static class InternetCheckAsyncTask extends AsyncTask<Context, Void, Boolean> {
         private final InternetCheckListener listener;
-        InternetCheckAsyncTask(InternetCheckListener listener){
+
+        InternetCheckAsyncTask(InternetCheckListener listener) {
             this.listener = listener;
         }
+
         @Override
         protected Boolean doInBackground(Context... contexts) {
-            if(isNetworkAvailable(contexts[0])){
-                try{
+            if (isNetworkAvailable(contexts[0])) {
+                try {
                     HttpURLConnection urlConnection = (HttpURLConnection) (new URL("http://www.google.com").openConnection());
                     urlConnection.setRequestProperty("User-Agent", "ConnectionTest");
                     urlConnection.setRequestProperty("Connection", "close");
                     urlConnection.setConnectTimeout(1500);
                     urlConnection.connect();
                     return (urlConnection.getResponseCode() == 200);
-                }catch(IOException e){
+                } catch (IOException e) {
                     e.printStackTrace();
                     return false;
                 }
@@ -44,15 +47,15 @@ public class ConnectivityUtils {
 
         @Override
         protected void onPostExecute(Boolean isInternetAvailable) {
-           if(listener != null){
-               listener.onInternetCheckComplete(isInternetAvailable);
-           }
+            if (listener != null) {
+                listener.onInternetCheckComplete(isInternetAvailable);
+            }
         }
     }
 
-    public static boolean isNetworkAvailable(Context context){
+    public static boolean isNetworkAvailable(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if(connectivityManager != null){
+        if (connectivityManager != null) {
             NetworkInfo mobileNetworkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
             NetworkInfo wifiNetworkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
             return (mobileNetworkInfo != null && mobileNetworkInfo.isConnectedOrConnecting()) ||

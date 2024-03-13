@@ -26,6 +26,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -190,9 +191,12 @@ public class CreateNoteActivity extends AppCompatActivity {
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
             for (int i = 0; i < menu.size(); i++) {
                 MenuItem menuItem = menu.getItem(i);
-                SpannableString spannableString = new SpannableString(menuItem.getTitle());
-                spannableString.setSpan(new RelativeSizeSpan(0.9f), 0, spannableString.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-                menuItem.setTitle(spannableString);
+                CharSequence title = menuItem.getTitle();
+                if (!(title instanceof SpannableString)) {
+                    SpannableString spannableString = new SpannableString(title);
+                    spannableString.setSpan(new RelativeSizeSpan(0.9f), 0, spannableString.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                    menuItem.setTitle(spannableString);
+                }
             }
 
         }
@@ -200,18 +204,24 @@ public class CreateNoteActivity extends AppCompatActivity {
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
             for (int i = 0; i < menu.size(); i++) {
                 MenuItem menuItem = menu.getItem(i);
-                SpannableString spannableString = new SpannableString(menuItem.getTitle());
-                spannableString.setSpan(new RelativeSizeSpan(1.1f), 0, spannableString.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-                menuItem.setTitle(spannableString);
+                CharSequence title = menuItem.getTitle();
+                if (!(title instanceof SpannableString)) {
+                    SpannableString spannableString = new SpannableString(title);
+                    spannableString.setSpan(new RelativeSizeSpan(1.1f), 0, spannableString.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                    menuItem.setTitle(spannableString);
+                }
             }
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
             for (int i = 0; i < menu.size(); i++) {
                 MenuItem menuItem = menu.getItem(i);
-                SpannableString spannableString = new SpannableString(menuItem.getTitle());
-                spannableString.setSpan(new RelativeSizeSpan(1.3f), 0, spannableString.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-                menuItem.setTitle(spannableString);
+                CharSequence title = menuItem.getTitle();
+                if (!(title instanceof SpannableString)) {
+                    SpannableString spannableString = new SpannableString(title);
+                    spannableString.setSpan(new RelativeSizeSpan(1.3f), 0, spannableString.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                    menuItem.setTitle(spannableString);
+                }
             }
         }
         return true;
@@ -462,8 +472,8 @@ public class CreateNoteActivity extends AppCompatActivity {
         SimpleDateFormat sdfMonth = new SimpleDateFormat("MMMM", Locale.getDefault());
         String currentMonth = sdfMonth.format(date);
 
-       // SimpleDateFormat sdfMonthNumber = new SimpleDateFormat("MM", Locale.getDefault());
-       // String currentMonthNumber = sdfMonthNumber.format(date);
+        // SimpleDateFormat sdfMonthNumber = new SimpleDateFormat("MM", Locale.getDefault());
+        // String currentMonthNumber = sdfMonthNumber.format(date);
 
         SimpleDateFormat sdfYear = new SimpleDateFormat("yyyy", Locale.getDefault());
         String currentYear = sdfYear.format(date);
@@ -675,7 +685,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         res.close();
 
 
-        if(heading_check.contains(headBox)){
+        if (heading_check.contains(headBox)) {
             db.deleteNote(headBox, contentBox);
         }
 

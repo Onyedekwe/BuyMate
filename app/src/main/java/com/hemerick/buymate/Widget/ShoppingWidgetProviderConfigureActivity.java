@@ -13,6 +13,7 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
@@ -198,14 +199,32 @@ public class ShoppingWidgetProviderConfigureActivity extends Activity implements
     }
 
     public void confirmConfiguration() {
-        if(checkConfirmWidget()){
-            super.onBackPressed();
-        }
+
+        progressBar.setVisibility(View.VISIBLE);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (checkConfirmWidget()) {
+                    try {
+                        Thread.sleep(1500);
+                        goBack();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    progressBar.setVisibility(View.INVISIBLE);
+                }
+            }
+        }, 3000);
+
     }
 
+    public void goBack() {
+        super.onBackPressed();
+    }
 
-    public boolean checkConfirmWidget(){
-        progressBar.setVisibility(View.VISIBLE);
+    public boolean checkConfirmWidget() {
+
 
         SharedPreferences prefs = getSharedPreferences(SHARED_PRES, MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -213,7 +232,6 @@ public class ShoppingWidgetProviderConfigureActivity extends Activity implements
         editor.putString(KEY_BUTTON_TEXT + appWidgetId + KEY_COUNT, getListCount());
         editor.apply();
 
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
 
         if (settings.getIsAuthenticated().equals(UserSettings.NOT_AUTHENTICATED)) {
             buttonIntent = new Intent(ShoppingWidgetProviderConfigureActivity.this, SignUpActivity.class);
@@ -260,14 +278,12 @@ public class ShoppingWidgetProviderConfigureActivity extends Activity implements
 
         views.setPendingIntentTemplate(R.id.item_widget_stack_view, clickPendingIntent);
 
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
         appWidgetManager.updateAppWidget(appWidgetId, views);
-        progressBar.setVisibility(View.INVISIBLE);
 
         return true;
 
     }
-
-
 
 
     public void updateView() {
@@ -281,7 +297,6 @@ public class ShoppingWidgetProviderConfigureActivity extends Activity implements
         if (settings.getCustomTheme().equals(UserSettings.DARK_THEME)) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
-
 
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {

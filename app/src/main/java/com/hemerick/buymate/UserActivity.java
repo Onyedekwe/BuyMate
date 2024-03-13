@@ -14,9 +14,6 @@ import android.os.Handler;
 import android.os.PowerManager;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -195,7 +192,6 @@ public class UserActivity extends AppCompatActivity {
     }
 
 
-
     public void showEditNameDialog() {
 
         Dialog dialog = new Dialog(UserActivity.this);
@@ -296,7 +292,7 @@ public class UserActivity extends AppCompatActivity {
         TextView cancelBtn = dialog.findViewById(R.id.okBtn);
         ProgressBar progressBar = dialog.findViewById(R.id.progress_bar);
 
-        String temp_text = getString(R.string.UserActivity__logoutPrompt) +"\n"+ "\uD83D\uDE0A";
+        String temp_text = getString(R.string.UserActivity__logoutPrompt) + "\n" + "\uD83D\uDE0A";
         alertText.setText(temp_text);
 
 
@@ -351,7 +347,7 @@ public class UserActivity extends AppCompatActivity {
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               dialog.dismiss();
+                dialog.dismiss();
             }
         });
 
@@ -394,7 +390,7 @@ public class UserActivity extends AppCompatActivity {
         }
 
         String current_email = firebaseUser.getEmail().trim();
-        String temp_text = getString(R.string.UserActivity__deleteAccText1) + " "+ current_email+" "+ getString(R.string.UserActivity__deleteAccText2);
+        String temp_text = getString(R.string.UserActivity__deleteAccText1) + " " + current_email + " " + getString(R.string.UserActivity__deleteAccText2);
         delete_account_alert_text.setText(temp_text);
 
         cancelBtn.setOnClickListener(new View.OnClickListener() {
@@ -411,7 +407,7 @@ public class UserActivity extends AppCompatActivity {
                 ConnectivityUtils.checkInternetConnectivity(UserActivity.this, new ConnectivityUtils.InternetCheckListener() {
                     @Override
                     public void onInternetCheckComplete(boolean isInternetAvailable) {
-                        if(isInternetAvailable){
+                        if (isInternetAvailable) {
                             progressBar.setVisibility(View.GONE);
                             FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                             progressBar.setVisibility(View.VISIBLE);
@@ -476,7 +472,7 @@ public class UserActivity extends AppCompatActivity {
 
                                 }
                             }, 2000);
-                        }else{
+                        } else {
                             progressBar.setVisibility(View.GONE);
                             showNoNetworkDialog();
                         }

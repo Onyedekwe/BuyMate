@@ -87,11 +87,7 @@ public class DetailListShareSettingActivity extends AppCompatActivity {
         shareWithPriceLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(shareWithPriceSwitch.isChecked()){
-                    shareWithPriceSwitch.setChecked(false);
-                }else{
-                    shareWithPriceSwitch.setChecked(true);
-                }
+                shareWithPriceSwitch.setChecked(!shareWithPriceSwitch.isChecked());
             }
         });
 
@@ -115,11 +111,7 @@ public class DetailListShareSettingActivity extends AppCompatActivity {
         shareWithQuantityLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(shareWithQuantitySwitch.isChecked()){
-                    shareWithQuantitySwitch.setChecked(false);
-                }else{
-                    shareWithQuantitySwitch.setChecked(true);
-                }
+                shareWithQuantitySwitch.setChecked(!shareWithQuantitySwitch.isChecked());
             }
         });
 
@@ -143,11 +135,7 @@ public class DetailListShareSettingActivity extends AppCompatActivity {
         shareWithTotalLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(shareWithTotalSwitch.isChecked()){
-                    shareWithTotalSwitch.setChecked(false);
-                }else{
-                    shareWithTotalSwitch.setChecked(true);
-                }
+                shareWithTotalSwitch.setChecked(!shareWithTotalSwitch.isChecked());
             }
         });
         shareWithTotalSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -182,7 +170,6 @@ public class DetailListShareSettingActivity extends AppCompatActivity {
             shareWithQuantitySubText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             shareWithTotalText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
             shareWithTotalSubText.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.small_text));
-
 
 
         }

@@ -49,6 +49,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.hemerick.buymate.Database.UserSettings;
 import com.hemerick.buymate.NetworkUtils.ConnectivityUtils;
+
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -202,11 +203,11 @@ public class LogInActivity extends AppCompatActivity {
             @Override
             public void onInternetCheckComplete(boolean isInternetAvailable) {
 
-                if(isInternetAvailable){
+                if (isInternetAvailable) {
                     progressBar.setVisibility(View.GONE);
                     Intent intent = googleSignInClient.getSignInIntent();
                     startActivityForResult(intent, RC_SIGN_IN);
-                }else {
+                } else {
                     progressBar.setVisibility(View.GONE);
                     final Dialog dialog = new Dialog(LogInActivity.this);
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -375,7 +376,7 @@ public class LogInActivity extends AppCompatActivity {
         ConnectivityUtils.checkInternetConnectivity(this, new ConnectivityUtils.InternetCheckListener() {
             @Override
             public void onInternetCheckComplete(boolean isInternetAvailable) {
-                if(isInternetAvailable){
+                if (isInternetAvailable) {
                     progressBar.setVisibility(View.GONE);
                     String emailText = emailbox.getText().toString().trim();
                     String passwordText = passwordbox.getText().toString().trim();
@@ -430,7 +431,7 @@ public class LogInActivity extends AppCompatActivity {
                     } else {
                         emailLayout.setError(getString(R.string.LoginActivity__emptyEmailError));
                     }
-                }else {
+                } else {
                     progressBar.setVisibility(View.GONE);
                     final Dialog dialog = new Dialog(LogInActivity.this);
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

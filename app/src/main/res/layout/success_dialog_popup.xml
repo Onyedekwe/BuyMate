@@ -12,7 +12,7 @@
         android:layout_height="100dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
+        app:layout_constraintTop_toTopOf="parent">
 
         <pl.droidsonroids.gif.GifImageView
             android:layout_width="match_parent"
@@ -20,8 +20,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="16dp"
             android:background="@color/white"
-            android:src="@drawable/gif_confetti_gif"
-            />
+            android:src="@drawable/gif_confetti_gif" />
 
         <pl.droidsonroids.gif.GifImageView
             android:layout_width="wrap_content"
@@ -31,8 +30,6 @@
             android:src="@drawable/illustration_new_list_created" />
 
     </FrameLayout>
-
-
 
 
     <TextView

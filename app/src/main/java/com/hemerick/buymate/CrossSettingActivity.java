@@ -73,11 +73,7 @@ public class CrossSettingActivity extends AppCompatActivity {
         crossSwitchLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(crossSwitch.isChecked()){
-                    crossSwitch.setChecked(false);
-                }else{
-                    crossSwitch.setChecked(true);
-                }
+                crossSwitch.setChecked(!crossSwitch.isChecked());
             }
         });
 

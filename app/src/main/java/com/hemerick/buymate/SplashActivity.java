@@ -3,10 +3,7 @@ package com.hemerick.buymate;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
@@ -39,41 +36,38 @@ public class SplashActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_splash);
         settings = new UserSettings();
-        linearLayout = findViewById(R.id.appName);
         loadSharedPreferences();
-        linearLayout.setVisibility(View.VISIBLE);
-
 
 
         if (settings.getIsAppFirstStart().equals(UserSettings.YES_APP_FIRST_START)) {
 
 
-                    Intent intent = new Intent(SplashActivity.this, OnboardingActivity.class);
-                    startActivity(intent);
-                    finish();
+            Intent intent = new Intent(SplashActivity.this, OnboardingActivity.class);
+            startActivity(intent);
+            finish();
 
 
         } else {
 
             if (settings.getIsAuthenticated().equals(UserSettings.NOT_AUTHENTICATED)) {
 
-                        Intent signup_intent = new Intent(SplashActivity.this, SignUpActivity.class);
-                        startActivity(signup_intent);
-                        finish();
+                Intent signup_intent = new Intent(SplashActivity.this, SignUpActivity.class);
+                startActivity(signup_intent);
+                finish();
 
             } else {
 
 
-                        Intent intentHome, intentPasscode;
-                        if (settings.getPassword().equals(UserSettings.NOT_SET_PASSWORD)) {
-                            intentHome = new Intent(SplashActivity.this, HomeActivity.class);
-                            startActivity(intentHome);
-                            finish();
-                        } else {
-                            intentPasscode = new Intent(SplashActivity.this, InsertPasscodeActivity.class);
-                            startActivity(intentPasscode);
-                            finish();
-                        }
+                Intent intentHome, intentPasscode;
+                if (settings.getPassword().equals(UserSettings.NOT_SET_PASSWORD)) {
+                    intentHome = new Intent(SplashActivity.this, HomeActivity.class);
+                    startActivity(intentHome);
+                    finish();
+                } else {
+                    intentPasscode = new Intent(SplashActivity.this, InsertPasscodeActivity.class);
+                    startActivity(intentPasscode);
+                    finish();
+                }
 
             }
 

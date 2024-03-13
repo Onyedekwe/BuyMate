@@ -147,7 +147,6 @@ public class ShopNotesAdapter extends RecyclerView.Adapter<ShopNotesAdapter.MyVi
     }
 
 
-
     public void setSelectAll() {
         if (selectListHeading.size() == heading_id.size()) {
             isEnable = false;

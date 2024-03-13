@@ -1,7 +1,6 @@
 package com.hemerick.buymate;
 
 import android.app.Dialog;
-import android.app.UiModeManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -70,14 +69,14 @@ public class PaymentSuccessfulActivity extends AppCompatActivity {
         backupCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               showBackupDialog();
+                showBackupDialog();
             }
         });
 
         adsCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              showRemoveAdsDialog();
+                showRemoveAdsDialog();
             }
         });
 

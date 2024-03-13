@@ -44,8 +44,6 @@ import com.hemerick.buymate.Database.UserSettings;
 
 import java.util.ArrayList;
 
-import io.github.muddz.styleabletoast.StyleableToast;
-
 public class NotesFragment extends Fragment implements ShopNotesAdapter.OnNoteListener {
 
     SwipeRefreshLayout swipeRefreshLayout;
@@ -153,6 +151,7 @@ public class NotesFragment extends Fragment implements ShopNotesAdapter.OnNoteLi
         return rootView;
     }
 
+
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         boolean checkSelected = shopNotesAdapter.isSelected();
@@ -238,7 +237,7 @@ public class NotesFragment extends Fragment implements ShopNotesAdapter.OnNoteLi
                                     recyclerView.setVisibility(View.GONE);
                                     emptyNotesLayout.setVisibility(View.VISIBLE);
                                 }
-                            }else{
+                            } else {
 
                                 searchEditText.setText("");
 
@@ -398,7 +397,7 @@ public class NotesFragment extends Fragment implements ShopNotesAdapter.OnNoteLi
         SharedPreferences sharedPreference = context.getSharedPreferences(UserSettings.PREFERENCES, MODE_PRIVATE);
 
         long launchTime = sharedPreference.getLong("LaunchTime", 0);
-        if(launchTime == 0){
+        if (launchTime == 0) {
             launchTime = System.currentTimeMillis();
             SharedPreferences.Editor editor = sharedPreference.edit();
             editor.putLong("LaunchTime", launchTime);
@@ -410,7 +409,7 @@ public class NotesFragment extends Fragment implements ShopNotesAdapter.OnNoteLi
 
         long daysDifference = timeDifference / (1000 * 60 * 60 * 24);
 
-        if(daysDifference >= 7){
+        if (daysDifference >= 7) {
             SharedPreferences.Editor editor = sharedPreference.edit();
             editor.putLong("LaunchTime", currentTime);
             editor.apply();
@@ -460,7 +459,7 @@ public class NotesFragment extends Fragment implements ShopNotesAdapter.OnNoteLi
         db.close();
     }
 
-    public void showRatingDialog(){
+    public void showRatingDialog() {
         Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.custom_rate_us_dialog);
         dialog.setCancelable(false);
@@ -495,22 +494,20 @@ public class NotesFragment extends Fragment implements ShopNotesAdapter.OnNoteLi
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                float rating  = ratingBar.getRating();
-                if(rating > 0){
-                    try{
+                float rating = ratingBar.getRating();
+                if (rating > 0) {
+                    try {
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + context.getPackageName())));
-                    }catch (ActivityNotFoundException e){
+                    } catch (ActivityNotFoundException e) {
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_link))));
                     }
                     dialog.dismiss();
 
-                }else{
+                } else {
                     Toast.makeText(context, context.getString(R.string.custom_rate_us_dialog_emptyRate), Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
-
 
 
         cancelBtn.setOnClickListener(new View.OnClickListener() {

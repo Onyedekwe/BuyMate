@@ -198,7 +198,7 @@ public class SignUpActivity extends AppCompatActivity {
         ConnectivityUtils.checkInternetConnectivity(this, new ConnectivityUtils.InternetCheckListener() {
             @Override
             public void onInternetCheckComplete(boolean isInternetAvailable) {
-                if(isInternetAvailable){
+                if (isInternetAvailable) {
                     progressBar.setVisibility(View.GONE);
                     String fullnameText = fullnamebox.getText().toString().trim();
                     String emailText = emailbox.getText().toString().trim();
@@ -283,7 +283,7 @@ public class SignUpActivity extends AppCompatActivity {
                     } else {
                         fullnameLayout.setError(getString(R.string.SignUpActivity__enterName));
                     }
-                }else{
+                } else {
                     progressBar.setVisibility(View.GONE);
                     final Dialog dialog = new Dialog(SignUpActivity.this);
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -343,11 +343,11 @@ public class SignUpActivity extends AppCompatActivity {
         ConnectivityUtils.checkInternetConnectivity(this, new ConnectivityUtils.InternetCheckListener() {
             @Override
             public void onInternetCheckComplete(boolean isInternetAvailable) {
-                if(isInternetAvailable){
+                if (isInternetAvailable) {
                     progressBar.setVisibility(View.GONE);
                     Intent intent = googleSignInClient.getSignInIntent();
                     startActivityForResult(intent, RC_SIGN_IN);
-                }else{
+                } else {
                     progressBar.setVisibility(View.GONE);
                     final Dialog dialog = new Dialog(SignUpActivity.this);
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

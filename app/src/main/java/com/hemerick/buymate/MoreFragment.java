@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
@@ -122,15 +121,15 @@ public class MoreFragment extends Fragment {
         message_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
-                if (firebaseAuth.getCurrentUser() != null) {
-                    FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                if (firebaseUser != null) {
 
 
                     String[] app_email = new String[]{getString(R.string.app_email)};
 
                     String asterics = "*******";
-                    String subject = getString(R.string.app_name) +" "+ getString(R.string.MoreFragment__feedback);
+                    String subject = getString(R.string.app_name) + " " + getString(R.string.MoreFragment__feedback);
                     String email = firebaseUser.getEmail();
                     String app_version = getString(R.string.app_version);
 

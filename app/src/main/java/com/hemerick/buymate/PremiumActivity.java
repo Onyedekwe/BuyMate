@@ -194,7 +194,7 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
                 ConnectivityUtils.checkInternetConnectivity(PremiumActivity.this, new ConnectivityUtils.InternetCheckListener() {
                     @Override
                     public void onInternetCheckComplete(boolean isInternetAvailable) {
-                        if(isInternetAvailable){
+                        if (isInternetAvailable) {
                             progressBar.setVisibility(View.GONE);
                             billingClient = BillingClient.newBuilder(PremiumActivity.this)
                                     .enablePendingPurchases().setListener(PremiumActivity.this).build();
@@ -245,7 +245,7 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
                                     }
                                 }
                             });
-                        }else{
+                        } else {
                             progressBar.setVisibility(View.GONE);
                             no_network_layout.setVisibility(View.VISIBLE);
                             price_details_container.setVisibility(View.GONE);
@@ -572,7 +572,6 @@ public class PremiumActivity extends AppCompatActivity implements PurchasesUpdat
 
         dialog.show();
     }
-
 
 
     private void updateView() {

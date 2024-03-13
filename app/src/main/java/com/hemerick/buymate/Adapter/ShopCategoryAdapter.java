@@ -29,7 +29,6 @@ import com.hemerick.buymate.Database.UserSettings;
 import com.hemerick.buymate.HomeActivity;
 import com.hemerick.buymate.HomeFragment;
 import com.hemerick.buymate.R;
-import com.hemerick.buymate.Widget.ShoppingWidgetProviderConfigureActivity;
 
 import java.util.ArrayList;
 
@@ -52,7 +51,6 @@ public class ShopCategoryAdapter extends RecyclerView.Adapter<ShopCategoryAdapte
         this.settings = settings;
         db = new ShopDatabase(context.getApplicationContext());
     }
-
 
 
     @SuppressLint("NotifyDataSetChanged")

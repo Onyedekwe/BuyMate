@@ -31,13 +31,12 @@
 
         <ImageView
             android:id="@+id/favouritesIcon"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginEnd="3dp"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
-            android:src="@drawable/final_regular_star_icon"
+            android:src="@drawable/final_star_light_icon"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -120,8 +119,8 @@
 
             <ImageView
                 android:id="@+id/reduce"
-                android:layout_width="38dp"
-                android:layout_height="38dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_gravity="start"
                 android:layout_marginEnd="5dp"
                 android:clickable="true"
@@ -152,7 +151,7 @@
                     android:gravity="center"
                     android:maxLength="7"
                     android:maxLines="1"
-                    android:minWidth="25dp"
+                    android:minWidth="28dp"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -178,8 +177,8 @@
 
             <ImageView
                 android:id="@+id/increase"
-                android:layout_width="38dp"
-                android:layout_height="38dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_gravity="end"
                 android:layout_marginStart="5dp"
                 android:clickable="true"

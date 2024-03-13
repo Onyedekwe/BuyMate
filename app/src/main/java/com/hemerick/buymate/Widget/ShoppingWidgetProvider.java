@@ -14,7 +14,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 import com.hemerick.buymate.Database.ShopDatabase;
 import com.hemerick.buymate.Database.UserSettings;

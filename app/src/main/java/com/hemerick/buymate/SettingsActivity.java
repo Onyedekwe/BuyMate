@@ -159,15 +159,10 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
 
-
         ScreenLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(keepScreenBrightSwitch.isChecked()){
-                    keepScreenBrightSwitch.setChecked(false);
-                }else{
-                    keepScreenBrightSwitch.setChecked(true);
-                }
+                keepScreenBrightSwitch.setChecked(!keepScreenBrightSwitch.isChecked());
             }
         });
 
@@ -205,11 +200,7 @@ public class SettingsActivity extends AppCompatActivity {
         MultiplyLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(multiplySwitch.isChecked()){
-                    multiplySwitch.setChecked(false);
-                }else{
-                    multiplySwitch.setChecked(true);
-                }
+                multiplySwitch.setChecked(!multiplySwitch.isChecked());
             }
         });
         multiplySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -229,11 +220,7 @@ public class SettingsActivity extends AppCompatActivity {
         DisablePriceLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(disablePriceSwitch.isChecked()){
-                    disablePriceSwitch.setChecked(false);
-                }else{
-                    disablePriceSwitch.setChecked(true);
-                }
+                disablePriceSwitch.setChecked(!disablePriceSwitch.isChecked());
             }
         });
         disablePriceSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -485,11 +472,7 @@ public class SettingsActivity extends AppCompatActivity {
         dim_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(dim_switch.isChecked()){
-                    dim_switch.setChecked(false);
-                }else{
-                    dim_switch.setChecked(true);
-                }
+                dim_switch.setChecked(!dim_switch.isChecked());
             }
         });
         dim_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -501,7 +484,7 @@ public class SettingsActivity extends AppCompatActivity {
                     editor.putString(UserSettings.IS_DIM_THEME_ENABLED, settings.getIsDimThemeEnabled());
                     editor.apply();
                     dialog.dismiss();
-                    if(!off.isChecked()){
+                    if (!off.isChecked()) {
                         recreate();
                     }
 
@@ -512,7 +495,7 @@ public class SettingsActivity extends AppCompatActivity {
                     editor.putString(UserSettings.IS_DIM_THEME_ENABLED, settings.getIsDimThemeEnabled());
                     editor.apply();
                     dialog.dismiss();
-                    if(!off.isChecked()){
+                    if (!off.isChecked()) {
                         recreate();
                     }
 

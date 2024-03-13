@@ -169,7 +169,6 @@ public class ShopMoveAdapter extends RecyclerView.Adapter<ShopMoveAdapter.MyMove
     }
 
 
-
     @Override
     public int getItemCount() {
         return items.size();

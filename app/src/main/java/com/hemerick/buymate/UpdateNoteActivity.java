@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -226,20 +227,20 @@ public class UpdateNoteActivity extends AppCompatActivity {
         });
 
         adView = findViewById(R.id.adView);
-        if(!settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)){
+        if (!settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)) {
             AdRequest adRequest = new AdRequest.Builder().build();
 
             SharedPreferences preferences = getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
             long installDateMillis = preferences.getLong(UserSettings.KEY_INSTALL_DATE, 0);
 
-            if(installDateMillis == 0){
+            if (installDateMillis == 0) {
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putLong(UserSettings.KEY_INSTALL_DATE, System.currentTimeMillis());
                 editor.apply();
-            }else{
+            } else {
                 long currentTimeMillis = System.currentTimeMillis();
                 long elapsedTimeMillis = currentTimeMillis - installDateMillis;
-                if(elapsedTimeMillis >= UserSettings.SEVEN_DAYS_IN_MILLIS){
+                if (elapsedTimeMillis >= UserSettings.SEVEN_DAYS_IN_MILLIS) {
                     adView.setVisibility(View.VISIBLE);
                     adView.loadAd(adRequest);
                 }
@@ -255,9 +256,12 @@ public class UpdateNoteActivity extends AppCompatActivity {
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
             for (int i = 0; i < menu.size(); i++) {
                 MenuItem menuItem = menu.getItem(i);
-                SpannableString spannableString = new SpannableString(menuItem.getTitle());
-                spannableString.setSpan(new RelativeSizeSpan(0.9f), 0, spannableString.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-                menuItem.setTitle(spannableString);
+                CharSequence title = menuItem.getTitle();
+                if (!(title instanceof SpannableString)) {
+                    SpannableString spannableString = new SpannableString(title);
+                    spannableString.setSpan(new RelativeSizeSpan(0.9f), 0, spannableString.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                    menuItem.setTitle(spannableString);
+                }
             }
 
         }
@@ -265,18 +269,24 @@ public class UpdateNoteActivity extends AppCompatActivity {
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
             for (int i = 0; i < menu.size(); i++) {
                 MenuItem menuItem = menu.getItem(i);
-                SpannableString spannableString = new SpannableString(menuItem.getTitle());
-                spannableString.setSpan(new RelativeSizeSpan(1.1f), 0, spannableString.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-                menuItem.setTitle(spannableString);
+                CharSequence title = menuItem.getTitle();
+                if (!(title instanceof SpannableString)) {
+                    SpannableString spannableString = new SpannableString(title);
+                    spannableString.setSpan(new RelativeSizeSpan(1.1f), 0, spannableString.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                    menuItem.setTitle(spannableString);
+                }
             }
         }
 
         if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
             for (int i = 0; i < menu.size(); i++) {
                 MenuItem menuItem = menu.getItem(i);
-                SpannableString spannableString = new SpannableString(menuItem.getTitle());
-                spannableString.setSpan(new RelativeSizeSpan(1.3f), 0, spannableString.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-                menuItem.setTitle(spannableString);
+                CharSequence title = menuItem.getTitle();
+                if (!(title instanceof SpannableString)) {
+                    SpannableString spannableString = new SpannableString(title);
+                    spannableString.setSpan(new RelativeSizeSpan(1.3f), 0, spannableString.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                    menuItem.setTitle(spannableString);
+                }
             }
         }
         return true;

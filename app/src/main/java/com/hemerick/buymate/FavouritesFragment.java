@@ -317,8 +317,6 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
         displayData();
 
 
-
-
         AdRequest adRequest = new AdRequest.Builder().build();
         InterstitialAd.load(context, "ca-app-pub-4208883735301832/9606114397", adRequest, new InterstitialAdLoadCallback() {
             @Override
@@ -575,9 +573,12 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                 if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
                     for (int i = 0; i < menu.size(); i++) {
                         MenuItem menuItem = menu.getItem(i);
-                        SpannableString spannableString = new SpannableString(menuItem.getTitle());
-                        spannableString.setSpan(new RelativeSizeSpan(0.9f), 0, spannableString.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-                        menuItem.setTitle(spannableString);
+                        CharSequence title = menuItem.getTitle();
+                        if (!(title instanceof SpannableString)) {
+                            SpannableString spannableString = new SpannableString(title);
+                            spannableString.setSpan(new RelativeSizeSpan(0.9f), 0, spannableString.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                            menuItem.setTitle(spannableString);
+                        }
                     }
 
                 }
@@ -585,18 +586,24 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                 if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
                     for (int i = 0; i < menu.size(); i++) {
                         MenuItem menuItem = menu.getItem(i);
-                        SpannableString spannableString = new SpannableString(menuItem.getTitle());
-                        spannableString.setSpan(new RelativeSizeSpan(1.1f), 0, spannableString.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-                        menuItem.setTitle(spannableString);
+                        CharSequence title = menuItem.getTitle();
+                        if (!(title instanceof SpannableString)) {
+                            SpannableString spannableString = new SpannableString(title);
+                            spannableString.setSpan(new RelativeSizeSpan(1.1f), 0, spannableString.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                            menuItem.setTitle(spannableString);
+                        }
                     }
                 }
 
                 if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
                     for (int i = 0; i < menu.size(); i++) {
                         MenuItem menuItem = menu.getItem(i);
-                        SpannableString spannableString = new SpannableString(menuItem.getTitle());
-                        spannableString.setSpan(new RelativeSizeSpan(1.3f), 0, spannableString.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-                        menuItem.setTitle(spannableString);
+                        CharSequence title = menuItem.getTitle();
+                        if (!(title instanceof SpannableString)) {
+                            SpannableString spannableString = new SpannableString(title);
+                            spannableString.setSpan(new RelativeSizeSpan(1.3f), 0, spannableString.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                            menuItem.setTitle(spannableString);
+                        }
                     }
                 }
 
@@ -805,9 +812,12 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                 if (settings.getCustomTextSize().equals(UserSettings.TEXT_SMALL)) {
                     for (int i = 0; i < menu.size(); i++) {
                         MenuItem menuItem = menu.getItem(i);
-                        SpannableString spannableString = new SpannableString(menuItem.getTitle());
-                        spannableString.setSpan(new RelativeSizeSpan(0.9f), 0, spannableString.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-                        menuItem.setTitle(spannableString);
+                        CharSequence title = menuItem.getTitle();
+                        if (!(title instanceof SpannableString)) {
+                            SpannableString spannableString = new SpannableString(title);
+                            spannableString.setSpan(new RelativeSizeSpan(0.9f), 0, spannableString.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                            menuItem.setTitle(spannableString);
+                        }
                     }
 
                 }
@@ -815,18 +825,24 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                 if (settings.getCustomTextSize().equals(UserSettings.TEXT_MEDIUM)) {
                     for (int i = 0; i < menu.size(); i++) {
                         MenuItem menuItem = menu.getItem(i);
-                        SpannableString spannableString = new SpannableString(menuItem.getTitle());
-                        spannableString.setSpan(new RelativeSizeSpan(1.1f), 0, spannableString.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-                        menuItem.setTitle(spannableString);
+                        CharSequence title = menuItem.getTitle();
+                        if (!(title instanceof SpannableString)) {
+                            SpannableString spannableString = new SpannableString(title);
+                            spannableString.setSpan(new RelativeSizeSpan(1.1f), 0, spannableString.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                            menuItem.setTitle(spannableString);
+                        }
                     }
                 }
 
                 if (settings.getCustomTextSize().equals(UserSettings.TEXT_LARGE)) {
                     for (int i = 0; i < menu.size(); i++) {
                         MenuItem menuItem = menu.getItem(i);
-                        SpannableString spannableString = new SpannableString(menuItem.getTitle());
-                        spannableString.setSpan(new RelativeSizeSpan(1.3f), 0, spannableString.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-                        menuItem.setTitle(spannableString);
+                        CharSequence title = menuItem.getTitle();
+                        if (!(title instanceof SpannableString)) {
+                            SpannableString spannableString = new SpannableString(title);
+                            spannableString.setSpan(new RelativeSizeSpan(1.3f), 0, spannableString.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                            menuItem.setTitle(spannableString);
+                        }
                     }
                 }
 
@@ -1655,8 +1671,8 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                         main_progress_bar.setVisibility(View.INVISIBLE);
                         adapter.notifyDataSetChanged();
 
-                        if(!settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)){
-                            if(mInterstitialAd != null){
+                        if (!settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)) {
+                            if (mInterstitialAd != null) {
                                 mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
                                     @Override
                                     public void onAdClicked() {
@@ -1681,16 +1697,16 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                                     @Override
                                     public void onAdShowedFullScreenContent() {
                                         adsCounter = 0;
-                                        SharedPreferences  sharedPreferences = context.getSharedPreferences(UserSettings.PREFERENCES, context.MODE_PRIVATE);
+                                        SharedPreferences sharedPreferences = context.getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
                                         sharedPreferences.edit().putInt(UserSettings.ADS_COUNTER_KEY, adsCounter).apply();
                                         super.onAdShowedFullScreenContent();
                                     }
                                 });
-                                if(adsCounter >= 20){
+                                if (adsCounter >= 20) {
                                     mInterstitialAd.show(getActivity());
-                                }else{
+                                } else {
                                     adsCounter = adsCounter + 1;
-                                    SharedPreferences  sharedPreferences = context.getSharedPreferences(UserSettings.PREFERENCES, context.MODE_PRIVATE);
+                                    SharedPreferences sharedPreferences = context.getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
                                     sharedPreferences.edit().putInt(UserSettings.ADS_COUNTER_KEY, adsCounter).apply();
                                 }
 
@@ -1769,8 +1785,8 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                             recyclerView.setClickable(true);
                             main_progress_bar.setVisibility(View.GONE);
                             adapter.notifyDataSetChanged();
-                            if(!settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)){
-                                if(mInterstitialAd != null){
+                            if (!settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)) {
+                                if (mInterstitialAd != null) {
                                     mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
                                         @Override
                                         public void onAdClicked() {
@@ -1795,16 +1811,16 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                                         @Override
                                         public void onAdShowedFullScreenContent() {
                                             adsCounter = 0;
-                                            SharedPreferences  sharedPreferences = context.getSharedPreferences(UserSettings.PREFERENCES, context.MODE_PRIVATE);
+                                            SharedPreferences sharedPreferences = context.getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
                                             sharedPreferences.edit().putInt(UserSettings.ADS_COUNTER_KEY, adsCounter).apply();
                                             super.onAdShowedFullScreenContent();
                                         }
                                     });
-                                    if(adsCounter >= 20){
+                                    if (adsCounter >= 20) {
                                         mInterstitialAd.show(getActivity());
-                                    }else{
+                                    } else {
                                         adsCounter = adsCounter + 1;
-                                        SharedPreferences  sharedPreferences = context.getSharedPreferences(UserSettings.PREFERENCES, context.MODE_PRIVATE);
+                                        SharedPreferences sharedPreferences = context.getSharedPreferences(UserSettings.PREFERENCES, Context.MODE_PRIVATE);
                                         sharedPreferences.edit().putInt(UserSettings.ADS_COUNTER_KEY, adsCounter).apply();
                                     }
 
@@ -2016,7 +2032,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
             public void onClick(View v) {
                 ArrayList<String> descriptions = new ArrayList<>();
 
-                for(String item : itemFavourites){
+                for (String item : itemFavourites) {
                     descriptions.add(item.toLowerCase());
                 }
 
@@ -2025,7 +2041,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                     getDateNdTime();
                     insertItem(CATEGORY, voice_text, 0, 0, month, year, day, time, 1, " ");
                     voice_input_dialog.dismiss();
-                }else {
+                } else {
                     Toast.makeText(context, getString(R.string.FavouritesFragment__alreadyExist), Toast.LENGTH_SHORT).show();
                 }
 
@@ -2570,7 +2586,7 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                     } else {
                         result.append(" " + "[" + temp_quantity_list.get(i) + unitCheck.get(i).trim() + "]");
                     }
-                }else {
+                } else {
                     if (!unitCheck.get(i).trim().isEmpty()) {
                         result.append(" " + "[" + temp_quantity_list.get(i) + " " + unitCheck.get(i).trim() + "]");
                     }
@@ -2843,8 +2859,8 @@ public class FavouritesFragment extends Fragment implements ShopFavouritesAdapte
                     show_share_dialog.dismiss();
 
                     StyleableToast.makeText(context, context.getString(R.string.FavouritesFragment__pdfDownloadedTo) + directory, R.style.custom_toast_2).show();
-                    if(!settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)){
-                        if(mInterstitialAd != null){
+                    if (!settings.getIsLifetimePurchased().equals(UserSettings.YES_LIFETIME_PURCHASED)) {
+                        if (mInterstitialAd != null) {
                             mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
                                 @Override
                                 public void onAdClicked() {

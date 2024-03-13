@@ -20,7 +20,6 @@ public class UserSettings extends Application {
     public static final long SEVEN_DAYS_IN_MILLIS = 7 * 24 * 60 * 60 * 1000;
 
 
-
     public static final String IS_DIM_THEME_ENABLED = "isDimThemeEnabled";
     public static final String YES_DIM_THEME_ENABLED = "yesDimThemeEnabled";
     public static final String NO_DIM_THEME_NOT_ENABLED = "noDimThemeNotEnabled";

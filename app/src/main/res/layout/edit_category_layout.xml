@@ -44,7 +44,7 @@
 
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:layout_gravity="center"
                     android:importantForAccessibility="no"
                     android:src="@drawable/final_regular_rename_icon">
@@ -54,8 +54,9 @@
                 <TextView
                     android:id="@+id/renameText"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:layout_gravity="center"
+                    android:gravity="center"
                     android:layout_marginStart="10dp"
                     android:padding="5dp"
                     android:text="@string/edit_category_layout__renameText"
@@ -67,7 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="5dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
@@ -75,7 +76,7 @@
 
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:layout_gravity="center"
                     android:importantForAccessibility="no"
                     android:src="@drawable/final_regular_copy_icon">
@@ -85,8 +86,9 @@
                 <TextView
                     android:id="@+id/duplicateText"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:layout_gravity="center"
+                    android:gravity="center"
                     android:layout_marginStart="10dp"
                     android:padding="5dp"
                     android:text="@string/edit_category_layout__duplicateText"
@@ -98,7 +100,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="5dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
@@ -106,7 +108,7 @@
 
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="37dp"
+                    android:layout_height="50dp"
                     android:layout_gravity="center"
                     android:importantForAccessibility="no"
                     android:src="@drawable/final_regular_share_icon">
@@ -116,8 +118,9 @@
                 <TextView
                     android:id="@+id/shareText"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:layout_gravity="center"
+                    android:gravity="center"
                     android:layout_marginStart="10dp"
                     android:padding="5dp"
                     android:text="@string/edit_category_layout__shareText"
@@ -129,7 +132,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="5dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
@@ -137,7 +140,7 @@
 
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="37dp"
+                    android:layout_height="50dp"
                     android:layout_gravity="center"
                     android:importantForAccessibility="no"
                     android:src="@drawable/final_regular_reminder_icon">
@@ -147,8 +150,9 @@
                 <TextView
                     android:id="@+id/alarmText"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:layout_gravity="center"
+                    android:gravity="center"
                     android:layout_marginStart="10dp"
                     android:padding="5dp"
                     android:text="@string/edit_category_layout__alarmText"
@@ -160,7 +164,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="5dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
@@ -168,7 +172,7 @@
 
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="37dp"
+                    android:layout_height="50dp"
                     android:layout_gravity="center"
                     android:importantForAccessibility="no"
                     android:src="@drawable/final_regular_trash_icon">
@@ -178,8 +182,9 @@
                 <TextView
                     android:id="@+id/deleteText"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:layout_gravity="center"
+                    android:gravity="center"
                     android:layout_marginStart="10dp"
                     android:padding="5dp"
                     android:text="@string/edit_category_layout__deleteText"

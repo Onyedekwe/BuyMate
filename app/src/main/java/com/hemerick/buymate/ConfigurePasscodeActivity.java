@@ -131,11 +131,7 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
         fingerPrintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(fingerprintSwitcher.isChecked()){
-                    fingerprintSwitcher.setChecked(false);
-                }else{
-                    fingerprintSwitcher.setChecked(true);
-                }
+                fingerprintSwitcher.setChecked(!fingerprintSwitcher.isChecked());
             }
         });
         fingerprintSwitcher.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -301,7 +297,6 @@ public class ConfigurePasscodeActivity extends AppCompatActivity {
         TextView Header = dialog.findViewById(R.id.header);
         TextView subHeader = dialog.findViewById(R.id.sub_header);
         PinView pinView = dialog.findViewById(R.id.password_pin);
-
 
 
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);

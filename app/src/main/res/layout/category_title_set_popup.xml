@@ -79,6 +79,7 @@
 
 
         <TextView
+            android:id="@+id/Suggest_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -108,10 +109,10 @@
                     android:focusable="true"
                     android:foreground="?attr/selectableItemBackground"
                     android:background="@drawable/bg_stroke_curve_corner"
-                    android:paddingStart="15dp"
-                    android:paddingTop="5dp"
-                    android:paddingEnd="15dp"
-                    android:paddingBottom="5dp"
+                    android:paddingStart="20dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="20dp"
+                    android:paddingBottom="10dp"
                     android:text="@string/category_title_set_popup__suggestion_option_textView1"
                     android:textColor="?attr/textFillColor" />
 
@@ -124,10 +125,10 @@
                     android:focusable="true"
                     android:foreground="?attr/selectableItemBackground"
                     android:background="@drawable/bg_stroke_curve_corner"
-                    android:paddingStart="15dp"
-                    android:paddingTop="5dp"
-                    android:paddingEnd="15dp"
-                    android:paddingBottom="5dp"
+                    android:paddingStart="20dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="20dp"
+                    android:paddingBottom="10dp"
                     android:text="@string/category_title_set_popup__suggestion_option_textView2"
                     android:textColor="?attr/textFillColor" />
 
@@ -141,10 +142,10 @@
                     android:focusable="true"
                     android:foreground="?attr/selectableItemBackground"
                     android:background="@drawable/bg_stroke_curve_corner"
-                    android:paddingStart="15dp"
-                    android:paddingTop="5dp"
-                    android:paddingEnd="15dp"
-                    android:paddingBottom="5dp"
+                    android:paddingStart="20dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="20dp"
+                    android:paddingBottom="10dp"
                     android:textColor="?attr/textFillColor" />
 
                 <TextView
@@ -156,10 +157,10 @@
                     android:focusable="true"
                     android:foreground="?attr/selectableItemBackground"
                     android:background="@drawable/bg_stroke_curve_corner"
-                    android:paddingStart="15dp"
-                    android:paddingTop="5dp"
-                    android:paddingEnd="15dp"
-                    android:paddingBottom="5dp"
+                    android:paddingStart="20dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="20dp"
+                    android:paddingBottom="10dp"
                     android:text="@string/category_title_set_popup__suggestion_option_textView4"
                     android:textColor="?attr/textFillColor" />
 
@@ -172,10 +173,10 @@
                     android:focusable="true"
                     android:foreground="?attr/selectableItemBackground"
                     android:background="@drawable/bg_stroke_curve_corner"
-                    android:paddingStart="15dp"
-                    android:paddingTop="5dp"
-                    android:paddingEnd="15dp"
-                    android:paddingBottom="5dp"
+                    android:paddingStart="20dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="20dp"
+                    android:paddingBottom="10dp"
                     android:text="@string/category_title_set_popup__suggestion_option_textView5"
                     android:textColor="?attr/textFillColor" />
 
@@ -188,10 +189,10 @@
                     android:focusable="true"
                     android:foreground="?attr/selectableItemBackground"
                     android:background="@drawable/bg_stroke_curve_corner"
-                    android:paddingStart="15dp"
-                    android:paddingTop="5dp"
-                    android:paddingEnd="15dp"
-                    android:paddingBottom="5dp"
+                    android:paddingStart="20dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="20dp"
+                    android:paddingBottom="10dp"
                     android:text="@string/category_title_set_popup__suggestion_option_textView6"
                     android:textColor="?attr/textFillColor" />
 
@@ -204,10 +205,10 @@
                     android:focusable="true"
                     android:foreground="?attr/selectableItemBackground"
                     android:background="@drawable/bg_stroke_curve_corner"
-                    android:paddingStart="15dp"
-                    android:paddingTop="5dp"
-                    android:paddingEnd="15dp"
-                    android:paddingBottom="5dp"
+                    android:paddingStart="20dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="20dp"
+                    android:paddingBottom="10dp"
                     android:text="@string/category_title_set_popup__suggestion_option_textView7"
                     android:textColor="?attr/textFillColor" />
 
@@ -220,10 +221,10 @@
                     android:focusable="true"
                     android:foreground="?attr/selectableItemBackground"
                     android:background="@drawable/bg_stroke_curve_corner"
-                    android:paddingStart="15dp"
-                    android:paddingTop="5dp"
-                    android:paddingEnd="15dp"
-                    android:paddingBottom="5dp"
+                    android:paddingStart="20dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="20dp"
+                    android:paddingBottom="10dp"
                     android:text="@string/category_title_set_popup__suggestion_option_textView8"
                     android:textColor="?attr/textFillColor" />
 

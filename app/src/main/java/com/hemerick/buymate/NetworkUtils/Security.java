@@ -2,7 +2,6 @@ package com.hemerick.buymate.NetworkUtils;
 
 import android.text.TextUtils;
 import android.util.Base64;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;

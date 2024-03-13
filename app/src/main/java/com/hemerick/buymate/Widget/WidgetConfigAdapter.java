@@ -29,7 +29,7 @@ public class WidgetConfigAdapter extends RecyclerView.Adapter<WidgetConfigAdapte
     ShopDatabase db;
 
     UserSettings settings;
-    private ArrayList<String> shop_id;
+    private final ArrayList<String> shop_id;
 
 
     public WidgetConfigAdapter(Context context, UserSettings settings, ArrayList<String> shop_id, OnNoteListener onNoteListener) {
@@ -96,8 +96,6 @@ public class WidgetConfigAdapter extends RecyclerView.Adapter<WidgetConfigAdapte
     public String getItemName(int position) {
         return shop_id.get(position);
     }
-
-
 
 
     public interface OnNoteListener {

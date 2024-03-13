@@ -2,10 +2,8 @@ package com.hemerick.buymate;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
@@ -17,27 +15,13 @@ import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.hemerick.buymate.Database.Firebase;
 import com.hemerick.buymate.Database.ShopDatabase;
 import com.hemerick.buymate.Database.UserSettings;
-import com.hemerick.buymate.NetworkUtils.ConnectivityUtils;
-
-import java.util.ArrayList;
 
 import io.github.muddz.styleabletoast.StyleableToast;
 
@@ -110,11 +94,7 @@ public class ItemSuggestionActivity extends AppCompatActivity {
         suggestionDisableLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(suggestionDisableSwitch.isChecked()){
-                    suggestionDisableSwitch.setChecked(false);
-                }else{
-                    suggestionDisableSwitch.setChecked(true);
-                }
+                suggestionDisableSwitch.setChecked(!suggestionDisableSwitch.isChecked());
             }
         });
         suggestionDisableSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
