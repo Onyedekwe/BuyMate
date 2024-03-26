@@ -27,6 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
+                android:contentDescription="@string/activity_onboarding_back"
                 app:navigationIcon="@drawable/final_regular_back_icon"
                 app:title="@string/activity_settings__toolbarText" />
 

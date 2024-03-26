@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "401382920363",
+    "firebase_url": "https://buymate-b7923-default-rtdb.firebaseio.com",
     "project_id": "buymate-b7923",
     "storage_bucket": "buymate-b7923.appspot.com"
   },
@@ -12,7 +13,28 @@
           "package_name": "com.hemerick.buymate"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "401382920363-jsv4vkce275hb21h0ai21ae9e8o6va29.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hemerick.buymate",
+            "certificate_hash": "d5a8604f665055cb06d70327735a6530e1ffbae7"
+          }
+        },
+        {
+          "client_id": "401382920363-t1mrmfgm703fk2tn2id6muhpq5i6ol24.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hemerick.buymate",
+            "certificate_hash": "6363a13b1ba607a3d619328d53ce7441ab4bed4b"
+          }
+        },
+        {
+          "client_id": "401382920363-u289nhkse3o3fi2tevrq68m7oic9vaj6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDTTksa4GvnmthI-AM1KnkxzYG5LEquHgc"
@@ -20,7 +42,49 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "401382920363-u289nhkse3o3fi2tevrq68m7oic9vaj6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:401382920363:android:ad5fab8aaf8bf0e97267ee",
+        "android_client_info": {
+          "package_name": "com.henrychinedu.buymate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "401382920363-grvkbv2ebt86ml5ckcdmtcghgnpkqh62.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.henrychinedu.buymate",
+            "certificate_hash": "6363a13b1ba607a3d619328d53ce7441ab4bed4b"
+          }
+        },
+        {
+          "client_id": "401382920363-u289nhkse3o3fi2tevrq68m7oic9vaj6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTTksa4GvnmthI-AM1KnkxzYG5LEquHgc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "401382920363-u289nhkse3o3fi2tevrq68m7oic9vaj6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

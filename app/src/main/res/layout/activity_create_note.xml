@@ -16,6 +16,7 @@
         android:background="?attr/backgroundColor"
         app:navigationIcon="@drawable/final_regular_back_icon"
         app:title="@string/activity_create_note__toolbarText"
+        android:contentDescription="@string/activity_onboarding_back"
         app:titleTextColor="?attr/textFillColor" />
 
     <ScrollView

@@ -4,23 +4,27 @@
     <item
         android:id="@+id/myhome"
         android:icon="@drawable/bg_home_icon"
-        android:title="@string/bottom_bar_home_text" />
+        android:title="@string/bottom_bar_home_text"
+        android:contentDescription="@string/bottom_bar_home_text"/>
 
 
     <item
         android:id="@+id/myfavourties"
         android:icon="@drawable/bg_favourites_icon"
-        android:title="@string/bottom_bar_favourites_text" />
+        android:title="@string/bottom_bar_favourites_text"
+        android:contentDescription="@string/bottom_bar_favourites_text"/>
 
     <item
         android:id="@+id/mynotes"
         android:icon="@drawable/bg_notes_icon"
-        android:title="@string/bottom_bar_notes_text" />
+        android:title="@string/bottom_bar_notes_text"
+        android:contentDescription="@string/bottom_bar_notes_text"/>
 
     <item
         android:id="@+id/mymore"
         android:icon="@drawable/bg_more_icon"
-        android:title="@string/bottom_bar_more_text" />
+        android:title="@string/bottom_bar_more_text"
+        android:contentDescription="@string/bottom_bar_more_text"/>
 
 
 </menu>

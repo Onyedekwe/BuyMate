@@ -20,6 +20,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/final_regular_back_icon"
         app:title="@string/activity_insert_passcode__toolbarText"
+        android:importantForAccessibility="no"
         app:titleTextColor="?attr/textFillColor" />
 
     <androidx.core.widget.NestedScrollView

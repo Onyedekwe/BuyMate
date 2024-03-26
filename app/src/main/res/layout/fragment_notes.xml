@@ -151,5 +151,6 @@
         app:iconTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:importantForAccessibility="no"
         app:tint="@color/white" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -5,14 +5,14 @@ plugins {
 }
 
 android {
-    namespace 'com.hemerick.buymate'
+    namespace 'com.henrychinedu.buymate'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.hemerick.buymate"
+        applicationId "com.henrychinedu.buymate"
         minSdk 24
         targetSdk 33
-        versionCode 28
+        versionCode 12
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

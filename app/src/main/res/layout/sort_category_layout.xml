@@ -33,6 +33,7 @@
         android:layout_marginTop="10dp"
         android:clickable="true"
         android:focusable="true"
+        android:importantForAccessibility="no"
         android:foreground="?attr/selectableItemBackground"
         android:orientation="horizontal">
 
@@ -41,6 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:importantForAccessibility="no"
             app:buttonTint="?attr/colorSecondaryVariant" />
 
         <TextView
@@ -71,6 +73,7 @@
         android:layout_marginTop="5dp"
         android:clickable="true"
         android:focusable="true"
+        android:importantForAccessibility="no"
         android:foreground="?attr/selectableItemBackground"
         android:orientation="horizontal">
 
@@ -79,6 +82,7 @@
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:importantForAccessibility="no"
             app:buttonTint="?attr/colorSecondaryVariant" />
 
         <TextView
@@ -110,6 +114,7 @@
         android:layout_marginTop="5dp"
         android:clickable="true"
         android:focusable="true"
+        android:importantForAccessibility="no"
         android:foreground="?attr/selectableItemBackground"
         android:orientation="horizontal">
 
@@ -118,6 +123,7 @@
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:importantForAccessibility="no"
             app:buttonTint="?attr/colorSecondaryVariant" />
 
         <TextView
@@ -148,6 +154,7 @@
         android:layout_marginTop="5dp"
         android:clickable="true"
         android:focusable="true"
+        android:importantForAccessibility="no"
         android:foreground="?attr/selectableItemBackground"
         android:orientation="horizontal">
 
@@ -156,6 +163,7 @@
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:importantForAccessibility="no"
             app:buttonTint="?attr/colorSecondaryVariant" />
 
         <TextView
@@ -187,6 +195,7 @@
         android:layout_marginTop="5dp"
         android:clickable="true"
         android:focusable="true"
+        android:importantForAccessibility="no"
         android:foreground="?attr/selectableItemBackground"
         android:orientation="horizontal">
 
@@ -195,6 +204,7 @@
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:importantForAccessibility="no"
             app:buttonTint="?attr/colorSecondaryVariant" />
 
         <TextView
@@ -225,6 +235,7 @@
         android:layout_marginTop="5dp"
         android:clickable="true"
         android:focusable="true"
+        android:importantForAccessibility="no"
         android:foreground="?attr/selectableItemBackground"
         android:orientation="horizontal">
 
@@ -233,6 +244,7 @@
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:importantForAccessibility="no"
             app:buttonTint="?attr/colorSecondaryVariant" />
 
         <TextView
@@ -263,6 +275,7 @@
         android:layout_marginTop="5dp"
         android:clickable="true"
         android:focusable="true"
+        android:importantForAccessibility="no"
         android:foreground="?attr/selectableItemBackground"
         android:orientation="horizontal">
 
@@ -271,6 +284,7 @@
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:importantForAccessibility="no"
             app:buttonTint="?attr/colorSecondaryVariant" />
 
         <TextView
@@ -301,6 +315,7 @@
         android:layout_marginTop="5dp"
         android:clickable="true"
         android:focusable="true"
+        android:importantForAccessibility="no"
         android:foreground="?attr/selectableItemBackground"
         android:orientation="horizontal">
 
@@ -309,6 +324,7 @@
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:importantForAccessibility="no"
             app:buttonTint="?attr/colorSecondaryVariant" />
 
         <TextView

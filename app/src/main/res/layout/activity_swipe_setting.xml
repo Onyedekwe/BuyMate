@@ -16,6 +16,7 @@
         android:elevation="1dp"
         app:navigationIcon="@drawable/final_regular_back_icon"
         app:title="@string/activity_swipe_setting__swipeToolbar"
+        android:contentDescription="@string/activity_onboarding_back"
         app:titleTextColor="?attr/textFillColor" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -68,6 +69,7 @@
             android:textColor="?attr/colorPrimary"
             android:textSize="17sp"
             app:cornerRadius="16dp"
+            android:importantForAccessibility="no"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -131,6 +133,7 @@
             android:textColor="?attr/colorPrimary"
             android:textSize="17sp"
             app:cornerRadius="16dp"
+            android:importantForAccessibility="no"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

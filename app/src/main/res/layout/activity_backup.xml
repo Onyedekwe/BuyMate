@@ -19,6 +19,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/final_regular_back_icon"
         app:title="@string/activity_backup__toolbarText"
+        android:contentDescription="@string/activity_onboarding_back"
         app:titleTextColor="?attr/textFillColor" />
 
 
@@ -39,10 +40,12 @@
             android:layout_height="wrap_content"
             app:cardElevation="5dp"
             app:cardCornerRadius="25dp"
+            android:contentDescription=""
             android:backgroundTint="?attr/colorPrimary"
             android:layout_gravity="center"
             android:clickable="true"
             android:focusable="true"
+            android:importantForAccessibility="no"
             android:foreground="?attr/selectableItemBackground">
 
             <LinearLayout
@@ -105,6 +108,7 @@
             android:layout_gravity="center"
             android:clickable="true"
             android:focusable="true"
+            android:importantForAccessibility="no"
             android:foreground="?attr/selectableItemBackground">
 
             <LinearLayout

@@ -3,7 +3,7 @@
     <string name="app_version" translatable="false">1.0.1</string>
     <string name="app_link" translatable="false">https://play.google.com/store/apps/details?id=</string>
     <string name="app_email" translatable="false">hemerickservices@gmail.com</string>
-    <string name="app_lifetime_product_id" translatable="false">com.hemerick.lifetime_subscription</string>
+    <string name="app_lifetime_product_id" translatable="false">com.buymate.lifetime_subscription</string>
     <string name="default_web_client_id" translatable="false">401382920363-u289nhkse3o3fi2tevrq68m7oic9vaj6.apps.googleusercontent.com</string>
 
 

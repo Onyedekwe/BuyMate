@@ -19,6 +19,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/final_regular_back_icon"
         app:title="@string/activity_item_suggestion__toolbarText"
+        android:contentDescription="@string/activity_onboarding_back"
         app:titleTextColor="?attr/textFillColor" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
